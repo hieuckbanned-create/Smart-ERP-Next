@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { usersApi } from '@/lib/api-client';
+import { usersApi, apiClient } from '@/lib/api-client';
 import { initSocket, closeSocket } from '@/lib/socket';
 import { LayoutDashboard, Users, Settings, LogOut, Bell, Wifi, WifiOff } from 'lucide-react';
 import { syncService } from '@smart-erp/sync';
@@ -18,6 +18,7 @@ export default function DashboardPage() {
   const [notifications, setNotifications] = useState<Array<{ message: string; timestamp: string }>>([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [insights, setInsights] = useState<any[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -29,6 +30,7 @@ export default function DashboardPage() {
 
     setUser(JSON.parse(storedUser));
     fetchUsers();
+    fetchInsights();
 
     // Initialize WebSocket connection
     const parsedUser = JSON.parse(storedUser);
@@ -63,8 +65,14 @@ export default function DashboardPage() {
     }
   };
 
-  // Monitor online status
-  useEffect(() => {
+  const fetchInsights = async () => {
+    try {
+      const response = await apiClient.get('/insights/dashboard');
+      setInsights(response.data.insights || []);
+    } catch (err) {
+      console.error('Failed to fetch insights:', err);
+    }
+  };
     const handleOnline = () => {
       setIsOnline(true);
       syncService.processQueue();

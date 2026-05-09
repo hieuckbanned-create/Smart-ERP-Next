@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ReportsModule } from './reports/reports.module';
+import { InsightsModule } from './insights/insights.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 
 @Module({
@@ -20,6 +21,7 @@ import { TenantMiddleware } from './common/middleware/tenant.middleware';
     TenantsModule,
     NotificationsModule,
     ReportsModule,
+    InsightsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
