@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased]
+
+### Added
+- Reorder point management: set minimum stock and reorder quantity per product
+- Auto-suggested purchase order quantities when stock falls below reorder point
+- New "Reorder points" tab in inventory page with inline editing
+- API endpoints: PATCH /products/:id/reorder-points, GET /inventory/reorder-suggestions
+
 ## [0.3.0] — 2026-05-10
 
 ### Added — Wave 6
