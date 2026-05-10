@@ -7,12 +7,19 @@ export class SyncService {
     this.apiBase = apiBase;
   }
 
-  async queueOperation(entity: string, action: 'create' | 'update' | 'delete', data: any, entityId: string, version?: number): Promise<void> {
-    // Get current vector clock for this entity
+  // ─── Queue operations ────────────────────────────────────────────────────────
+
+  async queueOperation(
+    entity: string,
+    action: 'create' | 'update' | 'delete',
+    data: any,
+    entityId: string,
+    version?: number
+  ): Promise<void> {
     const existing = await db.entities.get(entityId);
-    const newVersion = (existing?.version || 0) + 1;
-    const vectorClock = existing?.vectorClock || {};
-    vectorClock[localStorage.getItem('device_id') || 'local'] = newVersion;
+    const newVersion = (existing?.version ?? 0) + 1;
+    const deviceId = this.getDeviceId();
+    const vectorClock = { ...(existing?.vectorClock ?? {}), [deviceId]: newVersion };
 
     await db.syncQueue.add({
       entity,
@@ -21,11 +28,11 @@ export class SyncService {
       entityId,
       retries: 0,
       createdAt: Date.now(),
-      version: version || newVersion,
-      vectorClock
+      version: version ?? newVersion,
+      vectorClock,
     });
-    // Trigger sync in background
-    this.processQueue();
+
+    this.processQueue().catch(console.error);
   }
 
   async processQueue(): Promise<void> {
@@ -36,29 +43,25 @@ export class SyncService {
         await db.syncQueue.delete(item.id!);
       } catch (err) {
         console.error('Sync failed for item', item.id, err);
-        // Increment retries, maybe backoff later
         await db.syncQueue.update(item.id!, { retries: item.retries + 1 });
       }
     }
   }
 
   private async executeSyncItem(item: SyncQueueItem): Promise<void> {
-    const token = localStorage.getItem('access_token');
+    const token = this.getToken();
+    const tenantId = this.getTenantId();
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(tenantId ? { 'X-Tenant-ID': tenantId } : {}),
     };
-    const tenantId = localStorage.getItem('tenant_id');
-    if (tenantId) {
-      headers['X-Tenant-ID'] = tenantId;
-    }
 
-    // CRDT: Send version and vector clock for conflict resolution
     const payload = {
       ...item.data,
       _version: item.version,
       _vectorClock: item.vectorClock,
-      _deviceId: localStorage.getItem('device_id')
+      _deviceId: this.getDeviceId(),
     };
 
     let url = `${this.apiBase}/${item.entity}`;
@@ -74,7 +77,6 @@ export class SyncService {
 
     const response = await fetch(url, options);
     if (!response.ok) {
-      // Handle conflict (409): merge logic
       if (response.status === 409) {
         const conflict = await response.json();
         await this.resolveConflict(item, conflict);
@@ -83,50 +85,93 @@ export class SyncService {
       throw new Error(`Sync failed: ${response.status}`);
     }
 
-    // Update local entity version after successful sync
     await db.entities.put({
       id: item.entityId,
-      version: item.version,
-      vectorClock: item.vectorClock,
-      lastSyncedAt: Date.now()
+      version: item.version ?? 0,
+      vectorClock: item.vectorClock ?? {},
+      lastSyncedAt: Date.now(),
     });
   }
 
   private async resolveConflict(localItem: SyncQueueItem, remoteVersion: any): Promise<void> {
-    // Last-write-wins with vector clock comparison
-    const localClock = localItem.vectorClock;
-    const remoteClock = remoteVersion.vectorClock || {};
+    const localClock = localItem.vectorClock ?? {};
+    const remoteClock = remoteVersion.vectorClock ?? {};
 
-    // If remote is newer, pull and overwrite local
     if (this.isNewer(remoteClock, localClock)) {
       const merged = await this.mergeData(localItem.data, remoteVersion.data);
-      await db.entities.update(localItem.entityId, { data: merged, version: remoteVersion.version, vectorClock: remoteClock });
+      await db.entities.update(localItem.entityId, {
+        data: merged,
+        version: remoteVersion.version,
+        vectorClock: remoteClock,
+      } as any);
     }
-    // Remove from queue after conflict resolution
     await db.syncQueue.delete(localItem.id!);
   }
 
   private isNewer(clockA: Record<string, number>, clockB: Record<string, number>): boolean {
     let newer = false;
     for (const [device, time] of Object.entries(clockA)) {
-      if ((clockB[device] || 0) < time) newer = true;
-      if ((clockB[device] || 0) > time) return false;
+      if ((clockB[device] ?? 0) < time) newer = true;
+      if ((clockB[device] ?? 0) > time) return false;
     }
     return newer;
   }
 
   private async mergeData(local: any, remote: any): Promise<any> {
-    // Simple deep merge for now - can be extended per entity type
     return { ...local, ...remote, _mergedAt: Date.now() };
   }
 
+  // ─── Offline cache helpers ───────────────────────────────────────────────────
+
   async syncUsers(users: any[]): Promise<void> {
-    await db.users.bulkPut(users.map(u => ({ ...u, syncedAt: Date.now() })));
+    await db.users.bulkPut(users.map((u) => ({ ...u, syncedAt: Date.now() })));
   }
 
   async getOfflineUsers(): Promise<any[]> {
-    return await db.users.toArray();
+    return db.users.toArray();
+  }
+
+  async syncProducts(products: any[]): Promise<void> {
+    await db.products.bulkPut(products.map((p) => ({ ...p, syncedAt: Date.now() })));
+  }
+
+  async getOfflineProducts(): Promise<any[]> {
+    return db.products.toArray();
+  }
+
+  async syncCustomers(customers: any[]): Promise<void> {
+    await db.customers.bulkPut(customers.map((c) => ({ ...c, syncedAt: Date.now() })));
+  }
+
+  async getOfflineCustomers(): Promise<any[]> {
+    return db.customers.toArray();
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────────────────
+
+  private getToken(): string | null {
+    if (typeof localStorage === 'undefined') return null;
+    return localStorage.getItem('access_token');
+  }
+
+  private getTenantId(): string | null {
+    if (typeof localStorage === 'undefined') return null;
+    return localStorage.getItem('tenant_id');
+  }
+
+  private getDeviceId(): string {
+    if (typeof localStorage === 'undefined') return 'server';
+    let id = localStorage.getItem('device_id');
+    if (!id) {
+      id = `device_${Math.random().toString(36).slice(2, 10)}`;
+      localStorage.setItem('device_id', id);
+    }
+    return id;
   }
 }
 
-export const syncService = new SyncService(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000');
+export const syncService = new SyncService(
+  typeof process !== 'undefined'
+    ? process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'
+    : 'http://localhost:3000'
+);
