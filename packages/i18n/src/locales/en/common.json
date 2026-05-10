@@ -56,6 +56,7 @@
 
   "payment": {
     "status": {
+      "label": "Payment",
       "unpaid": "Unpaid",
       "partial": "Partially Paid",
       "paid": "Paid"
@@ -261,6 +262,9 @@
     "orderedQty": "Ordered Qty",
     "receivedQty": "Received Qty",
     "unitCost": "Unit Cost",
+    "total": "Total",
+    "status": "Status",
+    "createdAt": "Created At",
     "searchPlaceholder": "Search by PO code, supplier..."
   },
 
@@ -379,6 +383,7 @@
     "orders": "orders",
     "suppliers": "suppliers",
     "customers": "customers",
+    "purchaseOrders": "purchase orders",
     "actions": "Actions",
     "viewDetails": "View details",
     "view": "View",

@@ -56,6 +56,7 @@
 
   "payment": {
     "status": {
+      "label": "Thanh toán",
       "unpaid": "Chưa thanh toán",
       "partial": "Thanh toán một phần",
       "paid": "Đã thanh toán"
@@ -261,6 +262,9 @@
     "orderedQty": "SL đặt",
     "receivedQty": "SL đã nhận",
     "unitCost": "Giá nhập",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
     "searchPlaceholder": "Tìm theo mã đơn, nhà cung cấp..."
   },
 
@@ -379,6 +383,7 @@
     "orders": "đơn hàng",
     "suppliers": "nhà cung cấp",
     "customers": "khách hàng",
+    "purchaseOrders": "đơn nhập hàng",
     "actions": "Thao tác",
     "viewDetails": "Xem chi tiết",
     "view": "Xem",

@@ -85,7 +85,7 @@ export default function PurchasingPage() {
   };
 
   const handleCancel = async (id: string) => {
-    if (!confirm('Bạn có chắc muốn hủy đơn nhập này?')) return;
+    if (!confirm(t('common.confirmDeleteMessage'))) return;
     await apiClient.patch(`/purchasing/${id}/cancel`);
     fetchOrders();
   };
@@ -103,7 +103,7 @@ export default function PurchasingPage() {
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 {t('purchasing.title')}
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{total} đơn nhập hàng</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{total} {t('common.purchaseOrders')}</p>
             </div>
           </div>
           <button
@@ -157,7 +157,7 @@ export default function PurchasingPage() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Đang tải...
+            {t('common.loading')}
           </div>
         ) : (
           <>
@@ -166,18 +166,18 @@ export default function PurchasingPage() {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Mã đơn</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Tổng tiền</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Trạng thái</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Thanh toán</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Ngày dự kiến</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Ngày tạo</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Thao tác</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('purchasing.code')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.total')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">{t('purchasing.status')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">{t('payment.status.label')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.expectedDate')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('purchasing.createdAt')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">{t('common.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                     {orders.length === 0 ? (
-                      <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">Không có đơn nhập hàng nào</td></tr>
+                      <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">{t('common.noData')}</td></tr>
                     ) : orders.map((order) => (
                       <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <td className="px-4 py-3 font-mono font-bold text-indigo-600">{order.code}</td>
@@ -195,7 +195,7 @@ export default function PurchasingPage() {
                             order.paymentStatus === 'partial' ? 'bg-yellow-100 text-yellow-700' :
                             'bg-red-100 text-red-700'
                           }`}>
-                            {order.paymentStatus === 'paid' ? 'Đã TT' : order.paymentStatus === 'partial' ? 'Một phần' : 'Chưa TT'}
+                            {order.paymentStatus === 'paid' ? t('payment.status.paid') : order.paymentStatus === 'partial' ? t('payment.status.partial') : t('payment.status.unpaid')}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-right text-xs text-gray-500">
