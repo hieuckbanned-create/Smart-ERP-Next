@@ -1,4 +1,4 @@
-import { device, element, by, expect, waitFor } from 'detox';
+import { device, element, by, expect } from 'detox';
 
 describe('Offline sync', () => {
   beforeAll(async () => {
