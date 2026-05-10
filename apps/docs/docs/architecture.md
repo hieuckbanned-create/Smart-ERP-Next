@@ -17,6 +17,7 @@ smart-erp-next/
 │   ├── i18n/         # i18next vi/en (200+ keys)
 │   ├── types/        # Shared TypeScript types
 │   ├── validation/   # Zod schemas
+│   ├── shared/       # Platform, module, localization, positioning contracts
 │   ├── sync/         # Offline sync + CRDT (Dexie)
 │   ├── ui/           # Shared React components (11 components)
 │   ├── hooks/        # Shared React hooks (6 hooks)
@@ -28,18 +29,19 @@ smart-erp-next/
 
 ## Công nghệ
 
-| Thành phần | Công nghệ |
-|-----------|-----------|
-| Monorepo | pnpm 9 + Turborepo 2 |
-| Backend | NestJS 10, JWT, bcrypt, Socket.IO 4 |
-| Database | PostgreSQL 14+, Drizzle ORM |
-| Web | Next.js 15, React 19, Tailwind CSS 3 |
-| Mobile | Expo 52, React Native 0.76, SecureStore |
-| Desktop | Tauri 2 (Rust + WebView) |
-| i18n | i18next, react-i18next |
-| Validation | Zod + class-validator |
-| Offline | Dexie (IndexedDB) + CRDT vector clocks |
-| Real-time | Socket.IO 4 |
+| Thành phần  | Công nghệ                                                  |
+| ----------- | ---------------------------------------------------------- |
+| Monorepo    | pnpm 9 + Turborepo 2                                       |
+| Backend     | NestJS 10, JWT, bcrypt, Socket.IO 4                        |
+| Database    | PostgreSQL 14+, Drizzle ORM                                |
+| Web         | Next.js 15, React 19, Tailwind CSS 3                       |
+| Mobile      | Expo 52, React Native 0.76, SecureStore                    |
+| Desktop     | Tauri 2 (Rust + WebView)                                   |
+| i18n        | i18next, react-i18next                                     |
+| Validation  | Zod + class-validator                                      |
+| Shared core | `@smart-erp/shared` platform/module/localization contracts |
+| Offline     | Dexie (IndexedDB) + CRDT vector clocks                     |
+| Real-time   | Socket.IO 4                                                |
 
 ## Database Schema (12 tables)
 
@@ -61,22 +63,22 @@ tenants
 
 ## API Modules (15)
 
-| Module | Endpoint | Mô tả |
-|--------|----------|-------|
-| Auth | `/auth` | Login, register, JWT |
-| Users | `/users` | CRUD, tenant-scoped, stats |
-| Tenants | `/tenants` | Multi-tenant management |
-| Products | `/products` | CRUD, stock adjust, transactions |
-| Customers | `/customers` | CRUD, debt tracking |
-| Suppliers | `/suppliers` | CRUD |
-| Warehouses | `/warehouses` | CRUD, default warehouse |
-| Orders | `/orders` | Create, state machine, payment |
-| Purchasing | `/purchasing` | PO create, confirm, receive |
-| Inventory | `/inventory` | Adjust, history, low-stock |
-| Payments | `/payments` | Receipt/payment, summary |
-| Reports | `/reports` | Revenue, profit, top-products |
-| Insights | `/insights` | Dashboard analytics |
-| Notifications | WS `/notifications` | Real-time events |
+| Module        | Endpoint            | Mô tả                            |
+| ------------- | ------------------- | -------------------------------- |
+| Auth          | `/auth`             | Login, register, JWT             |
+| Users         | `/users`            | CRUD, tenant-scoped, stats       |
+| Tenants       | `/tenants`          | Multi-tenant management          |
+| Products      | `/products`         | CRUD, stock adjust, transactions |
+| Customers     | `/customers`        | CRUD, debt tracking              |
+| Suppliers     | `/suppliers`        | CRUD                             |
+| Warehouses    | `/warehouses`       | CRUD, default warehouse          |
+| Orders        | `/orders`           | Create, state machine, payment   |
+| Purchasing    | `/purchasing`       | PO create, confirm, receive      |
+| Inventory     | `/inventory`        | Adjust, history, low-stock       |
+| Payments      | `/payments`         | Receipt/payment, summary         |
+| Reports       | `/reports`          | Revenue, profit, top-products    |
+| Insights      | `/insights`         | Dashboard analytics              |
+| Notifications | WS `/notifications` | Real-time events                 |
 
 ## Luồng dữ liệu
 
@@ -92,20 +94,21 @@ Client (web/mobile/desktop)
 ## Multi-tenant Security
 
 Mỗi request được inject `tenantId` qua:
+
 1. **JWT payload** — `req.user.tenantId` (primary, từ login)
 2. **X-Tenant-ID header** — fallback cho external integrations
 3. **Tất cả DB queries** đều filter theo `tenantId` — không bao giờ cross-tenant
 
 ## RBAC (Role-Based Access Control)
 
-| Role | Quyền |
-|------|-------|
-| admin | Toàn quyền |
-| manager | Xem + sửa tất cả, không xóa |
-| accountant | Kế toán, báo cáo, thu chi |
-| warehouse | Kho hàng, nhập/xuất, mua hàng |
-| sales | Bán hàng, khách hàng, đơn hàng |
-| user | Chỉ xem |
+| Role       | Quyền                          |
+| ---------- | ------------------------------ |
+| admin      | Toàn quyền                     |
+| manager    | Xem + sửa tất cả, không xóa    |
+| accountant | Kế toán, báo cáo, thu chi      |
+| warehouse  | Kho hàng, nhập/xuất, mua hàng  |
+| sales      | Bán hàng, khách hàng, đơn hàng |
+| user       | Chỉ xem                        |
 
 ## Offline-first & CRDT Sync
 
@@ -129,34 +132,47 @@ interface TokenProvider {
 
 ## Real-time Events (Socket.IO)
 
-| Event | Trigger |
-|-------|---------|
-| `user.registered` | Đăng ký tài khoản mới |
-| `order.created` | Tạo đơn hàng mới |
-| `order.status_changed` | Thay đổi trạng thái đơn |
-| `order.payment_received` | Nhận thanh toán |
-| `stock.low` | Tồn kho dưới mức tối thiểu |
-| `stock.adjusted` | Điều chỉnh tồn kho |
-| `system.alert` | Cảnh báo hệ thống |
+| Event                    | Trigger                    |
+| ------------------------ | -------------------------- |
+| `user.registered`        | Đăng ký tài khoản mới      |
+| `order.created`          | Tạo đơn hàng mới           |
+| `order.status_changed`   | Thay đổi trạng thái đơn    |
+| `order.payment_received` | Nhận thanh toán            |
+| `stock.low`              | Tồn kho dưới mức tối thiểu |
+| `stock.adjusted`         | Điều chỉnh tồn kho         |
+| `system.alert`           | Cảnh báo hệ thống          |
 
 ## Bản địa hóa (i18n)
 
 - Ngôn ngữ mặc định: **Tiếng Việt** (`vi`)
 - Hỗ trợ: `vi`, `en`
 - Package: `@smart-erp/i18n`
+- Product locale contract: `@smart-erp/shared` (`LOCALIZATION_PROFILES`, `DEFAULT_LOCALE`)
 - Namespace: `common` (tất cả modules)
 - Key pattern: `module.key` (ví dụ: `products.title`, `orders.status`)
 - 200+ keys mỗi ngôn ngữ
 
+## Native Platform Contract
+
+Smart ERP Next dùng `@smart-erp/shared` làm nguồn sự thật cho app native, module ERP, profile bản địa hóa và trụ cột cạnh tranh. Các app được phép khác nhau về UI/lifecycle nhưng không được tự định nghĩa lại module, locale, currency, timezone, payment method hoặc target support.
+
+| Contract                  | Mục đích                                                                |
+| ------------------------- | ----------------------------------------------------------------------- |
+| `NATIVE_PLATFORMS`        | Khai báo API, Web, Mobile, Desktop, Docs và trách nhiệm từng target     |
+| `ERP_MODULES`             | Module catalog, trạng thái core/growth/planned, offline-first, realtime |
+| `LOCALIZATION_PROFILES`   | `vi`/`en`, VND/USD, timezone, date format, tax label, invoice profile   |
+| `DIFFERENTIATION_PILLARS` | Cơ sở ưu tiên để vượt ERPNext/Odoo/VietERP/KiotViet/Nhanhvn/MISA        |
+
 ## Packages
 
-| Package | Mô tả | Dùng ở |
-|---------|-------|--------|
-| `@smart-erp/database` | Drizzle schemas, migrations | API |
-| `@smart-erp/i18n` | i18next vi/en | Web, Mobile |
-| `@smart-erp/types` | TypeScript types | Tất cả |
-| `@smart-erp/validation` | Zod schemas | Web, API |
-| `@smart-erp/sync` | Offline sync + CRDT | Web, Mobile |
-| `@smart-erp/ui` | React components | Web |
-| `@smart-erp/hooks` | React hooks | Web |
-| `@smart-erp/utils` | Pure TS utilities | Tất cả |
+| Package                 | Mô tả                                                 | Dùng ở      |
+| ----------------------- | ----------------------------------------------------- | ----------- |
+| `@smart-erp/database`   | Drizzle schemas, migrations                           | API         |
+| `@smart-erp/i18n`       | i18next vi/en                                         | Web, Mobile |
+| `@smart-erp/types`      | TypeScript types                                      | Tất cả      |
+| `@smart-erp/validation` | Zod schemas                                           | Web, API    |
+| `@smart-erp/shared`     | Platform, module, localization, positioning contracts | Tất cả      |
+| `@smart-erp/sync`       | Offline sync + CRDT                                   | Web, Mobile |
+| `@smart-erp/ui`         | React components                                      | Web         |
+| `@smart-erp/hooks`      | React hooks                                           | Web         |
+| `@smart-erp/utils`      | Pure TS utilities                                     | Tất cả      |

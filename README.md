@@ -10,33 +10,33 @@
 
 ## So sánh với đối thủ
 
-| Tính năng | Smart ERP Next | KiotViet | Nhanhvn | MISA | ERPNext |
-|-----------|:-:|:-:|:-:|:-:|:-:|
-| Native đa nền tảng | ✅ Web+Mobile+Desktop | ❌ | ❌ | ❌ | ❌ |
-| Offline-first + CRDT | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Mã nguồn mở | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Bản địa hóa vi/en | ✅ Built-in | ✅ | ✅ | ✅ | Partial |
-| Multi-tenant | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Real-time WebSocket | ✅ | Partial | Partial | ❌ | ❌ |
-| POS tích hợp | ✅ | ✅ | ✅ | ❌ | ✅ |
-| Monorepo shared packages | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Tính năng                |    Smart ERP Next     | KiotViet | Nhanhvn | MISA | ERPNext |
+| ------------------------ | :-------------------: | :------: | :-----: | :--: | :-----: |
+| Native đa nền tảng       | ✅ Web+Mobile+Desktop |    ❌    |   ❌    |  ❌  |   ❌    |
+| Offline-first + CRDT     |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
+| Mã nguồn mở              |          ✅           |    ❌    |   ❌    |  ❌  |   ✅    |
+| Bản địa hóa vi/en        |      ✅ Built-in      |    ✅    |   ✅    |  ✅  | Partial |
+| Multi-tenant             |          ✅           |    ❌    |   ❌    |  ❌  |   ✅    |
+| Real-time WebSocket      |          ✅           | Partial  | Partial |  ❌  |   ❌    |
+| POS tích hợp             |          ✅           |    ✅    |   ✅    |  ❌  |   ✅    |
+| Monorepo shared packages |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 
 ---
 
 ## Tech Stack
 
-| Thành phần | Công nghệ |
-|-----------|-----------|
-| Monorepo | pnpm 9 + Turborepo 2 |
-| Backend API | NestJS 10, Drizzle ORM, PostgreSQL 14+ |
-| Web App | Next.js 15, React 19, Tailwind CSS 3 |
-| Mobile | Expo 52, React Native 0.76, SecureStore |
-| Desktop | Tauri 2 (Rust + WebView) |
-| Docs | Docusaurus 3 (vi/en) |
-| i18n | i18next — vi mặc định, en hỗ trợ |
-| Validation | Zod (frontend) + class-validator (API) |
-| Offline Sync | Dexie (IndexedDB) + CRDT vector clocks |
-| Real-time | Socket.IO 4 |
+| Thành phần   | Công nghệ                               |
+| ------------ | --------------------------------------- |
+| Monorepo     | pnpm 9 + Turborepo 2                    |
+| Backend API  | NestJS 10, Drizzle ORM, PostgreSQL 14+  |
+| Web App      | Next.js 15, React 19, Tailwind CSS 3    |
+| Mobile       | Expo 52, React Native 0.76, SecureStore |
+| Desktop      | Tauri 2 (Rust + WebView)                |
+| Docs         | Docusaurus 3 (vi/en)                    |
+| i18n         | i18next — vi mặc định, en hỗ trợ        |
+| Validation   | Zod (frontend) + class-validator (API)  |
+| Offline Sync | Dexie (IndexedDB) + CRDT vector clocks  |
+| Real-time    | Socket.IO 4                             |
 
 ---
 
@@ -46,7 +46,7 @@
 smart-erp-next/
 ├── apps/
 │   ├── api/          # NestJS backend — 15 modules
-│   ├── web/          # Next.js 15 — 27 pages
+│   ├── web/          # Next.js 15 — 28 pages
 │   ├── mobile/       # Expo 52 — 5 screens + auth
 │   ├── desktop/      # Tauri 2 — wraps web app
 │   └── docs/         # Docusaurus 3 — vi/en
@@ -54,6 +54,7 @@ smart-erp-next/
 │   ├── database/     # Drizzle ORM schemas + SQL migrations
 │   ├── i18n/         # i18next vi/en translations (200+ keys)
 │   ├── types/        # Shared TypeScript types
+│   ├── shared/       # Platform/module/localization/positioning contracts
 │   ├── validation/   # Zod schemas (product, customer, order)
 │   ├── sync/         # Offline sync + CRDT service (Dexie)
 │   ├── ui/           # Shared React components (10 components)
@@ -68,20 +69,21 @@ smart-erp-next/
 
 ## Modules (API + Web)
 
-| Module | API | Web | Mobile |
-|--------|:---:|:---:|:------:|
-| Dashboard | ✅ | ✅ | ✅ |
-| POS (Bán hàng) | ✅ | ✅ | 🔜 |
-| Đơn hàng | ✅ | ✅ | ✅ |
-| Sản phẩm | ✅ | ✅ | ✅ |
-| Kho hàng | ✅ | ✅ | 🔜 |
-| Khách hàng | ✅ | ✅ | ✅ |
-| Nhà cung cấp | ✅ | ✅ | 🔜 |
-| Mua hàng | ✅ | ✅ | 🔜 |
-| Thu chi | ✅ | ✅ | 🔜 |
-| Quản lý kho | ✅ | ✅ | 🔜 |
-| Báo cáo | ✅ | ✅ | 🔜 |
-| Cài đặt | — | ✅ | 🔜 |
+| Module         | API | Web | Mobile |
+| -------------- | :-: | :-: | :----: |
+| Dashboard      | ✅  | ✅  |   ✅   |
+| POS (Bán hàng) | ✅  | ✅  |   🔜   |
+| Đơn hàng       | ✅  | ✅  |   ✅   |
+| Sản phẩm       | ✅  | ✅  |   ✅   |
+| Kho hàng       | ✅  | ✅  |   🔜   |
+| Khách hàng     | ✅  | ✅  |   ✅   |
+| Nhà cung cấp   | ✅  | ✅  |   🔜   |
+| Mua hàng       | ✅  | ✅  |   🔜   |
+| Thu chi        | ✅  | ✅  |   🔜   |
+| Quản lý kho    | ✅  | ✅  |   🔜   |
+| Người dùng     | ✅  | ✅  |   🔜   |
+| Báo cáo        | ✅  | ✅  |   🔜   |
+| Cài đặt        |  —  | ✅  |   🔜   |
 
 ---
 
@@ -103,16 +105,17 @@ tenants
 
 ## Packages
 
-| Package | Mô tả |
-|---------|-------|
-| `@smart-erp/database` | Drizzle ORM schemas, SQL migrations |
-| `@smart-erp/i18n` | i18next vi/en, `initI18n()`, `useTranslation` |
-| `@smart-erp/types` | TypeScript types: User, Product, Order, Customer... |
-| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt |
-| `@smart-erp/sync` | Offline sync + CRDT vector clocks (Dexie) |
-| `@smart-erp/ui` | Button, Card, DataTable, Sidebar, StatCard, Badge... |
-| `@smart-erp/hooks` | useDebounce, usePagination, useFormatters, useOnlineStatus... |
-| `@smart-erp/utils` | formatVND, formatDate, slugify, maskPhone (no React dep) |
+| Package                 | Mô tả                                                                     |
+| ----------------------- | ------------------------------------------------------------------------- |
+| `@smart-erp/database`   | Drizzle ORM schemas, SQL migrations                                       |
+| `@smart-erp/i18n`       | i18next vi/en, `initI18n()`, `useTranslation`                             |
+| `@smart-erp/shared`     | Native platform, ERP module, localization, competitive strategy contracts |
+| `@smart-erp/types`      | TypeScript types: User, Product, Order, Customer...                       |
+| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt                                 |
+| `@smart-erp/sync`       | Offline sync + CRDT vector clocks (Dexie)                                 |
+| `@smart-erp/ui`         | Button, Card, DataTable, Sidebar, StatCard, Badge...                      |
+| `@smart-erp/hooks`      | useDebounce, usePagination, useFormatters, useOnlineStatus...             |
+| `@smart-erp/utils`      | formatVND, formatDate, slugify, maskPhone (no React dep)                  |
 
 ---
 
@@ -141,6 +144,7 @@ cp apps/api/.env.example apps/api/.env
 ```
 
 `apps/api/.env`:
+
 ```env
 DATABASE_URL=postgresql://postgres:password@localhost:5432/smart_erp
 JWT_SECRET=your-secret-key-min-32-chars
@@ -150,6 +154,7 @@ NODE_ENV=development
 ```
 
 `apps/web/.env.local`:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
@@ -182,30 +187,31 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 
 ## Web Routes
 
-| Route | Mô tả |
-|-------|-------|
-| `/login` | Đăng nhập |
-| `/dashboard` | Tổng quan |
-| `/pos` | Bán hàng tại quầy |
-| `/orders` | Danh sách đơn hàng |
-| `/orders/[id]` | Chi tiết đơn hàng |
-| `/products` | Danh sách sản phẩm |
-| `/products/create` | Tạo sản phẩm |
-| `/products/[id]/edit` | Sửa sản phẩm |
-| `/inventory` | Kho hàng |
-| `/customers` | Khách hàng |
-| `/customers/create` | Tạo khách hàng |
-| `/customers/[id]/edit` | Sửa khách hàng |
-| `/suppliers` | Nhà cung cấp |
-| `/suppliers/create` | Tạo NCC |
-| `/suppliers/[id]/edit` | Sửa NCC |
-| `/purchasing` | Đơn nhập hàng |
-| `/purchasing/create` | Tạo đơn nhập |
-| `/purchasing/[id]` | Chi tiết + nhận hàng |
-| `/payments` | Thu chi |
-| `/warehouses` | Quản lý kho |
-| `/reports` | Báo cáo |
-| `/settings` | Cài đặt |
+| Route                  | Mô tả                |
+| ---------------------- | -------------------- |
+| `/login`               | Đăng nhập            |
+| `/dashboard`           | Tổng quan            |
+| `/pos`                 | Bán hàng tại quầy    |
+| `/orders`              | Danh sách đơn hàng   |
+| `/orders/[id]`         | Chi tiết đơn hàng    |
+| `/products`            | Danh sách sản phẩm   |
+| `/products/create`     | Tạo sản phẩm         |
+| `/products/[id]/edit`  | Sửa sản phẩm         |
+| `/inventory`           | Kho hàng             |
+| `/customers`           | Khách hàng           |
+| `/customers/create`    | Tạo khách hàng       |
+| `/customers/[id]/edit` | Sửa khách hàng       |
+| `/suppliers`           | Nhà cung cấp         |
+| `/suppliers/create`    | Tạo NCC              |
+| `/suppliers/[id]/edit` | Sửa NCC              |
+| `/purchasing`          | Đơn nhập hàng        |
+| `/purchasing/create`   | Tạo đơn nhập         |
+| `/purchasing/[id]`     | Chi tiết + nhận hàng |
+| `/payments`            | Thu chi              |
+| `/warehouses`          | Quản lý kho          |
+| `/reports`             | Báo cáo              |
+| `/users`               | Quản lý người dùng   |
+| `/settings`            | Cài đặt              |
 
 ---
 

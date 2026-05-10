@@ -86,7 +86,7 @@ export default function POSPage() {
       setLoadingProducts(true);
       try {
         const res = await productsApi.getAll({ search: productSearch, limit: 12, isActive: true });
-        setProducts(res.data.items);
+        setProducts(res.items);
       } catch {
         setProducts([]);
       } finally {

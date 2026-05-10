@@ -1,0 +1,9 @@
+{
+  "extends": "@smart-erp/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

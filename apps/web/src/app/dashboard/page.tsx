@@ -213,7 +213,7 @@ export default function DashboardPage() {
                   tickFormatter={(v) => `${(v / 1_000_000).toFixed(0)}M`}
                 />
                 <Tooltip
-                  formatter={(value: number) => [formatVND(value), 'Doanh thu']}
+                  formatter={(value) => [formatVND(Number(value ?? 0)), 'Doanh thu']}
                 />
                 <Area
                   type="monotone"

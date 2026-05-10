@@ -32,6 +32,11 @@ export interface Order {
   paymentStatus: string;
   paymentMethod: string | null;
   notes: string | null;
+  cancelReason: string | null;
+  confirmedAt: string | null;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+  cancelledAt: string | null;
   createdAt: string;
   updatedAt: string;
   items?: OrderItem[];

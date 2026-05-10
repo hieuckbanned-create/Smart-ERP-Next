@@ -2,13 +2,13 @@
 
 ## Yêu cầu
 
-| Công cụ | Phiên bản |
-|---------|-----------|
-| Node.js | >= 20 |
-| pnpm | >= 9 |
-| PostgreSQL | >= 14 |
-| Rust | >= 1.75 (cho Tauri desktop) |
-| Expo CLI | >= 0.18 (cho mobile) |
+| Công cụ    | Phiên bản                   |
+| ---------- | --------------------------- |
+| Node.js    | >= 20                       |
+| pnpm       | >= 9                        |
+| PostgreSQL | >= 14                       |
+| Rust       | >= 1.75 (cho Tauri desktop) |
+| Expo CLI   | >= 0.18 (cho mobile)        |
 
 ## Cài đặt
 
@@ -29,6 +29,7 @@ cp apps/web/.env.example apps/web/.env.local
 ```
 
 `apps/api/.env`:
+
 ```env
 DATABASE_URL=postgresql://postgres:password@localhost:5432/smart_erp
 JWT_SECRET=your-secret-key-min-32-chars
@@ -38,6 +39,7 @@ NODE_ENV=development
 ```
 
 `apps/web/.env.local`:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
@@ -71,73 +73,84 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 
 ## Packages
 
-| Package | Mô tả | Dùng ở |
-|---------|-------|--------|
-| `@smart-erp/database` | Drizzle ORM schemas, SQL migrations | API |
-| `@smart-erp/i18n` | i18next vi/en, `initI18n()`, `useTranslation` | Web, Mobile |
-| `@smart-erp/types` | TypeScript types: User, Product, Order, Customer... | Tất cả |
-| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt | Web, API |
-| `@smart-erp/sync` | Offline sync + CRDT vector clocks (Dexie) | Web, Mobile |
-| `@smart-erp/ui` | Button, Card, DataTable, Toast, Sidebar... | Web |
-| `@smart-erp/hooks` | useDebounce, usePagination, useFormatters, useNotifications... | Web |
-| `@smart-erp/utils` | formatVND, formatDate, slugify, maskPhone (no React dep) | Tất cả |
+| Package                 | Mô tả                                                          | Dùng ở      |
+| ----------------------- | -------------------------------------------------------------- | ----------- |
+| `@smart-erp/database`   | Drizzle ORM schemas, SQL migrations                            | API         |
+| `@smart-erp/i18n`       | i18next vi/en, `initI18n()`, `useTranslation`                  | Web, Mobile |
+| `@smart-erp/types`      | TypeScript types: User, Product, Order, Customer...            | Tất cả      |
+| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt                      | Web, API    |
+| `@smart-erp/shared`     | Platform/module/localization contracts, competitive pillars    | Tất cả      |
+| `@smart-erp/sync`       | Offline sync + CRDT vector clocks (Dexie)                      | Web, Mobile |
+| `@smart-erp/ui`         | Button, Card, DataTable, Toast, Sidebar...                     | Web         |
+| `@smart-erp/hooks`      | useDebounce, usePagination, useFormatters, useNotifications... | Web         |
+| `@smart-erp/utils`      | formatVND, formatDate, slugify, maskPhone (no React dep)       | Tất cả      |
 
 ## API Modules
 
-| Module | Endpoint | Mô tả |
-|--------|----------|-------|
-| Auth | `/auth` | Đăng nhập, đăng ký |
-| Products | `/products` | CRUD + stock adjustment + transactions |
-| Customers | `/customers` | CRUD + debt tracking |
-| Suppliers | `/suppliers` | CRUD |
-| Orders | `/orders` | Tạo đơn, state machine, payment |
-| Purchasing | `/purchasing` | Đơn nhập, nhận hàng từng phần |
-| Payments | `/payments` | Phiếu thu/chi, summary |
-| Warehouses | `/warehouses` | CRUD, default warehouse |
-| Inventory | `/inventory` | Điều chỉnh kho, lịch sử, low-stock |
-| Reports | `/reports` | Revenue, profit, top-products, inventory, customers |
-| Insights | `/insights` | Dashboard analytics |
-| Users | `/users` | Quản lý người dùng |
-| Tenants | `/tenants` | Quản lý tenant |
+| Module     | Endpoint      | Mô tả                                               |
+| ---------- | ------------- | --------------------------------------------------- |
+| Auth       | `/auth`       | Đăng nhập, đăng ký                                  |
+| Products   | `/products`   | CRUD + stock adjustment + transactions              |
+| Customers  | `/customers`  | CRUD + debt tracking                                |
+| Suppliers  | `/suppliers`  | CRUD                                                |
+| Orders     | `/orders`     | Tạo đơn, state machine, payment                     |
+| Purchasing | `/purchasing` | Đơn nhập, nhận hàng từng phần                       |
+| Payments   | `/payments`   | Phiếu thu/chi, summary                              |
+| Warehouses | `/warehouses` | CRUD, default warehouse                             |
+| Inventory  | `/inventory`  | Điều chỉnh kho, lịch sử, low-stock                  |
+| Reports    | `/reports`    | Revenue, profit, top-products, inventory, customers |
+| Insights   | `/insights`   | Dashboard analytics                                 |
+| Users      | `/users`      | Quản lý người dùng                                  |
+| Tenants    | `/tenants`    | Quản lý tenant                                      |
 
 ## Web Pages
 
-| Route | Mô tả |
-|-------|-------|
-| `/` | Redirect → `/dashboard` |
-| `/login` | Đăng nhập |
-| `/dashboard` | Tổng quan |
-| `/pos` | Bán hàng tại quầy |
-| `/orders` | Danh sách đơn hàng |
-| `/orders/[id]` | Chi tiết đơn hàng + timeline |
-| `/products` | Danh sách sản phẩm |
-| `/products/create` | Tạo sản phẩm |
-| `/products/[id]` | Chi tiết + lịch sử kho |
-| `/products/[id]/edit` | Sửa sản phẩm |
-| `/inventory` | Kho hàng + điều chỉnh |
-| `/customers` | Khách hàng |
-| `/customers/create` | Tạo khách hàng |
-| `/customers/[id]` | Chi tiết khách hàng |
-| `/customers/[id]/edit` | Sửa khách hàng |
-| `/suppliers` | Nhà cung cấp |
-| `/suppliers/create` | Tạo NCC |
-| `/suppliers/[id]` | Chi tiết NCC |
-| `/suppliers/[id]/edit` | Sửa NCC |
-| `/purchasing` | Đơn nhập hàng |
-| `/purchasing/create` | Tạo đơn nhập |
-| `/purchasing/[id]` | Chi tiết + nhận hàng |
-| `/payments` | Thu chi (phiếu thu/chi) |
-| `/warehouses` | Quản lý kho |
-| `/reports` | Báo cáo (doanh thu, lợi nhuận, tồn kho) |
-| `/settings` | Cài đặt hệ thống |
+| Route                  | Mô tả                                   |
+| ---------------------- | --------------------------------------- |
+| `/`                    | Redirect → `/dashboard`                 |
+| `/login`               | Đăng nhập                               |
+| `/dashboard`           | Tổng quan                               |
+| `/pos`                 | Bán hàng tại quầy                       |
+| `/orders`              | Danh sách đơn hàng                      |
+| `/orders/[id]`         | Chi tiết đơn hàng + timeline            |
+| `/products`            | Danh sách sản phẩm                      |
+| `/products/create`     | Tạo sản phẩm                            |
+| `/products/[id]`       | Chi tiết + lịch sử kho                  |
+| `/products/[id]/edit`  | Sửa sản phẩm                            |
+| `/inventory`           | Kho hàng + điều chỉnh                   |
+| `/customers`           | Khách hàng                              |
+| `/customers/create`    | Tạo khách hàng                          |
+| `/customers/[id]`      | Chi tiết khách hàng                     |
+| `/customers/[id]/edit` | Sửa khách hàng                          |
+| `/suppliers`           | Nhà cung cấp                            |
+| `/suppliers/create`    | Tạo NCC                                 |
+| `/suppliers/[id]`      | Chi tiết NCC                            |
+| `/suppliers/[id]/edit` | Sửa NCC                                 |
+| `/purchasing`          | Đơn nhập hàng                           |
+| `/purchasing/create`   | Tạo đơn nhập                            |
+| `/purchasing/[id]`     | Chi tiết + nhận hàng                    |
+| `/payments`            | Thu chi (phiếu thu/chi)                 |
+| `/warehouses`          | Quản lý kho                             |
+| `/reports`             | Báo cáo (doanh thu, lợi nhuận, tồn kho) |
+| `/users`               | Quản lý người dùng                      |
+| `/settings`            | Cài đặt hệ thống                        |
 
 ## i18n Rules
 
 - Ngôn ngữ mặc định: **Tiếng Việt** (`vi`)
 - Hỗ trợ: `vi`, `en`
 - Package: `@smart-erp/i18n`
+- Locale/currency/timezone/payment profile: `@smart-erp/shared`
 - Luôn dùng `t('section.key')` — không hardcode string tiếng Việt trong component
 - Thêm key vào cả `vi/common.json` VÀ `en/common.json`
+
+## Shared Architecture Rules
+
+- Cross-platform product facts go into `@smart-erp/shared` or another `packages/*` package, not directly into app code.
+- Apps under `apps/*` own native composition only: routing, screen lifecycle, platform storage, and UI shell.
+- New module work must update `ERP_MODULES` when target support, offline-first, realtime, or maturity changes.
+- Vietnam-specific defaults must be modeled through `LOCALIZATION_PROFILES` before being consumed by web/mobile/desktop.
+- A change that claims competitive advantage must map to one `DIFFERENTIATION_PILLARS` entry or add a new pillar with engineering implications.
 
 ## Commit Convention
 

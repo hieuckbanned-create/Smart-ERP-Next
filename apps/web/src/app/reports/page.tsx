@@ -242,7 +242,7 @@ export default function ReportsPage() {
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                       <XAxis dataKey="period" tickFormatter={(v) => new Date(v).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })} tick={{ fontSize: 11 }} />
                       <YAxis tickFormatter={formatShort} tick={{ fontSize: 11 }} />
-                      <Tooltip formatter={(v: number) => [formatVND(v), 'Doanh thu']} labelFormatter={(l) => new Date(l).toLocaleDateString('vi-VN')} />
+                      <Tooltip formatter={(v) => [formatVND(Number(v ?? 0)), 'Doanh thu']} labelFormatter={(l) => new Date(l).toLocaleDateString('vi-VN')} />
                       <Area type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} fill="url(#revGrad)" name="Doanh thu" />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -266,7 +266,7 @@ export default function ReportsPage() {
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                       <XAxis dataKey="period" tickFormatter={(v) => new Date(v).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })} tick={{ fontSize: 11 }} />
                       <YAxis tickFormatter={formatShort} tick={{ fontSize: 11 }} />
-                      <Tooltip formatter={(v: number, name: string) => [formatVND(v), name === 'revenue' ? 'Doanh thu' : name === 'cost' ? 'Giá vốn' : 'Lợi nhuận']} />
+                      <Tooltip formatter={(v, name) => [formatVND(Number(v ?? 0)), name === 'revenue' ? 'Doanh thu' : name === 'cost' ? 'Giá vốn' : 'Lợi nhuận']} />
                       <Legend formatter={(v) => v === 'revenue' ? 'Doanh thu' : v === 'cost' ? 'Giá vốn' : 'Lợi nhuận'} />
                       <Bar dataKey="revenue" fill="#3b82f6" name="revenue" />
                       <Bar dataKey="cost" fill="#f59e0b" name="cost" />

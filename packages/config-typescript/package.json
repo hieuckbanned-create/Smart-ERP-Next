@@ -1,1 +1,17 @@
-{"files":["base.json","react-library.json","nextjs.json","node.json"],"name":"@smart-erp/tsconfig","private":true,"version":"0.0.0"}
+{
+  "files": [
+    "base.json",
+    "react-library.json",
+    "nextjs.json",
+    "node.json"
+  ],
+  "name": "@smart-erp/tsconfig",
+  "private": true,
+  "version": "0.0.0",
+  "exports": {
+    "./base.json": "./base.json",
+    "./react-library.json": "./react-library.json",
+    "./nextjs.json": "./nextjs.json",
+    "./node.json": "./node.json"
+  }
+}
