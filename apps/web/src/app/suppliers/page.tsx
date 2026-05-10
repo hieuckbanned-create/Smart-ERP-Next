@@ -75,7 +75,7 @@ export default function SuppliersPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('suppliers.title')}</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{total} nhà cung cấp</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{total} {t('common.suppliers')}</p>
             </div>
           </div>
           <button
@@ -99,7 +99,7 @@ export default function SuppliersPage() {
                 className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">Tìm</button>
+            <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">{t('actions.search')}</button>
           </form>
         </div>
 
@@ -109,7 +109,7 @@ export default function SuppliersPage() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Đang tải...
+            {t('common.loading')}
           </div>
         ) : (
           <>
@@ -118,13 +118,13 @@ export default function SuppliersPage() {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Mã NCC</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tên nhà cung cấp</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Liên hệ</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">MST</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Công nợ</th>
-                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Tổng nhập</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Thao tác</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('suppliers.code')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('suppliers.name')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('suppliers.contact')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('suppliers.taxCode')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('suppliers.currentDebt')}</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('suppliers.totalPurchased')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">{t('common.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -184,7 +184,7 @@ export default function SuppliersPage() {
             </div>
             {totalPages > 1 && (
               <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500">{total} nhà cung cấp</p>
+                <p className="text-sm text-gray-500">{total} {t('common.suppliers')}</p>
                 <div className="flex gap-1">
                   <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
                     className="px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-sm disabled:opacity-40">
