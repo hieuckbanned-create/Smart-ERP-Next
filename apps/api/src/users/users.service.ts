@@ -1,17 +1,24 @@
 import {
-  Injectable, ConflictException, NotFoundException, ForbiddenException,
-} from '@nestjs/common';
-import { db } from '@smart-erp/database';
-import { users } from '@smart-erp/database/schema';
-import { eq, and, ilike, or, sql } from '@smart-erp/database/drizzle';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { db } from "@smart-erp/database";
+import { users } from "@smart-erp/database/schema";
+import { eq, and, ilike, or, sql } from "@smart-erp/database/drizzle";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
   async create(createUserDto: CreateUserDto) {
+    if (!createUserDto.tenantId) {
+      throw new BadRequestException("tenantId is required");
+    }
+
     const existing = await this.findByEmail(createUserDto.email);
-    if (existing) throw new ConflictException('Email đã được sử dụng');
+    if (existing) throw new ConflictException("Email đã được sử dụng");
 
     const [user] = await db
       .insert(users)
@@ -20,7 +27,7 @@ export class UsersService {
         name: createUserDto.name ?? null,
         tenantId: createUserDto.tenantId,
         passwordHash: (createUserDto as any).passwordHash ?? null,
-        role: (createUserDto as any).role ?? 'user',
+        role: (createUserDto as any).role ?? "user",
       })
       .returning();
 
@@ -35,8 +42,8 @@ export class UsersService {
       conditions.push(
         or(
           ilike(users.email, `%${search}%`),
-          ilike(users.name, `%${search}%`)
-        )!
+          ilike(users.name, `%${search}%`),
+        )!,
       );
     }
 
@@ -70,7 +77,7 @@ export class UsersService {
       .from(users)
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)));
 
-    if (!user) throw new NotFoundException('Không tìm thấy người dùng');
+    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
     return user;
   }
 
@@ -86,7 +93,7 @@ export class UsersService {
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)))
       .returning();
 
-    if (!user) throw new NotFoundException('Không tìm thấy người dùng');
+    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
     return user;
   }
 
@@ -96,7 +103,7 @@ export class UsersService {
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)))
       .returning();
 
-    if (!user) throw new NotFoundException('Không tìm thấy người dùng');
+    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
     return user;
   }
 
@@ -107,14 +114,14 @@ export class UsersService {
       .where(eq(users.tenantId, tenantId));
 
     const byRole = await db.execute(
-      sql`SELECT role, count(*)::int AS count FROM users WHERE tenant_id = ${tenantId} GROUP BY role`
+      sql`SELECT role, count(*)::int AS count FROM users WHERE tenant_id = ${tenantId} GROUP BY role`,
     );
 
     return {
       total,
       byRole: (byRole.rows as any[]).reduce(
         (acc, r) => ({ ...acc, [r.role]: r.count }),
-        {} as Record<string, number>
+        {} as Record<string, number>,
       ),
     };
   }

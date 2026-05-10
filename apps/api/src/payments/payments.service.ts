@@ -1,18 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { db } from '@smart-erp/database';
-import { payments } from '@smart-erp/database/schema';
-import { eq, and, ilike, sql, desc, gte, lte } from '@smart-erp/database/drizzle';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { db } from "@smart-erp/database";
+import { payments } from "@smart-erp/database/schema";
+import {
+  eq,
+  and,
+  ilike,
+  sql,
+  desc,
+  gte,
+  lte,
+} from "@smart-erp/database/drizzle";
+import { CreatePaymentDto } from "./dto/create-payment.dto";
 
 @Injectable()
 export class PaymentsService {
   private async generateCode(tenantId: string, type: string): Promise<string> {
-    const prefix = type === 'receipt' ? 'PT' : 'PC';
+    const prefix = type === "receipt" ? "PT" : "PC";
     const [{ count }] = await db
       .select({ count: sql<number>`count(*)::int` })
       .from(payments)
       .where(and(eq(payments.tenantId, tenantId), eq(payments.type, type)));
-    return `${prefix}-${(count + 1).toString().padStart(6, '0')}`;
+    return `${prefix}-${(count + 1).toString().padStart(6, "0")}`;
   }
 
   async create(tenantId: string, userId: string, dto: CreatePaymentDto) {
@@ -32,7 +40,7 @@ export class PaymentsService {
         method: dto.method,
         bankAccount: dto.bankAccount ?? null,
         transactionRef: dto.transactionRef ?? null,
-        status: 'completed',
+        status: "completed",
         notes: dto.notes ?? null,
         createdBy: userId,
         paidAt: new Date(),
@@ -50,7 +58,7 @@ export class PaymentsService {
       method?: string;
       from?: string;
       to?: string;
-    }
+    },
   ) {
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 20, 100);
@@ -76,7 +84,13 @@ export class PaymentsService {
       .limit(limit)
       .offset(offset);
 
-    return { items, total: count, page, limit, totalPages: Math.ceil(count / limit) };
+    return {
+      items,
+      total: count,
+      page,
+      limit,
+      totalPages: Math.ceil(count / limit),
+    };
   }
 
   async findOne(tenantId: string, id: string) {
@@ -84,12 +98,15 @@ export class PaymentsService {
       .select()
       .from(payments)
       .where(and(eq(payments.tenantId, tenantId), eq(payments.id, id)));
-    if (!payment) throw new NotFoundException('Không tìm thấy phiếu thu/chi');
+    if (!payment) throw new NotFoundException("Không tìm thấy phiếu thu/chi");
     return payment;
   }
 
   async getSummary(tenantId: string, from?: string, to?: string) {
-    const conditions = [eq(payments.tenantId, tenantId), eq(payments.status, 'completed')];
+    const conditions = [
+      eq(payments.tenantId, tenantId),
+      eq(payments.status, "completed"),
+    ];
     if (from) conditions.push(gte(payments.paidAt, new Date(from)));
     if (to) conditions.push(lte(payments.paidAt, new Date(to)));
 
@@ -105,20 +122,26 @@ export class PaymentsService {
           ${from ? sql`AND paid_at >= ${new Date(from)}` : sql``}
           ${to ? sql`AND paid_at <= ${new Date(to)}` : sql``}
         GROUP BY type
-      `
+      `,
     );
 
-    const summary = { receipt: 0, payment: 0, receiptCount: 0, paymentCount: 0 };
+    const summary = {
+      receipt: 0,
+      payment: 0,
+      receiptCount: 0,
+      paymentCount: 0,
+      balance: 0,
+    };
     for (const row of rows.rows as any[]) {
-      if (row.type === 'receipt') {
-        summary.receipt = parseFloat(row.total ?? '0');
+      if (row.type === "receipt") {
+        summary.receipt = parseFloat(row.total ?? "0");
         summary.receiptCount = row.count;
       } else {
-        summary.payment = parseFloat(row.total ?? '0');
+        summary.payment = parseFloat(row.total ?? "0");
         summary.paymentCount = row.count;
       }
     }
-    summary['balance'] = summary.receipt - summary.payment;
+    summary.balance = summary.receipt - summary.payment;
     return summary;
   }
 }

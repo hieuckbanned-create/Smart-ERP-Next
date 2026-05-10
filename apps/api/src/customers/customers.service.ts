@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { db } from '@smart-erp/database';
-import { customers } from '@smart-erp/database/schema';
-import { eq, and, ilike, or, sql } from '@smart-erp/database/drizzle';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from "@nestjs/common";
+import { db } from "@smart-erp/database";
+import { customers } from "@smart-erp/database/schema";
+import { eq, and, ilike, or, sql } from "@smart-erp/database/drizzle";
+import { CreateCustomerDto } from "./dto/create-customer.dto";
+import { UpdateCustomerDto } from "./dto/update-customer.dto";
 
 @Injectable()
 export class CustomersService {
@@ -11,20 +15,28 @@ export class CustomersService {
     const existing = await db
       .select()
       .from(customers)
-      .where(and(eq(customers.tenantId, tenantId), eq(customers.code, dto.code)));
+      .where(
+        and(eq(customers.tenantId, tenantId), eq(customers.code, dto.code)),
+      );
     if (existing.length > 0) {
-      throw new ConflictException('Mã khách hàng đã tồn tại');
+      throw new ConflictException("Mã khách hàng đã tồn tại");
     }
     const [customer] = await db
       .insert(customers)
-      .values({ ...dto, tenantId })
+      .values({ ...dto, tenantId, debtLimit: dto.debtLimit?.toString() })
       .returning();
     return customer;
   }
 
   async findAll(
     tenantId: string,
-    query: { page?: number; limit?: number; search?: string; group?: string; isActive?: boolean }
+    query: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      group?: string;
+      isActive?: boolean;
+    },
   ) {
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 20, 100);
@@ -37,8 +49,8 @@ export class CustomersService {
         or(
           ilike(customers.name, `%${query.search}%`),
           ilike(customers.phone, `%${query.search}%`),
-          ilike(customers.code, `%${query.search}%`)
-        )!
+          ilike(customers.code, `%${query.search}%`),
+        )!,
       );
     }
     if (query.group) {
@@ -77,17 +89,23 @@ export class CustomersService {
       .select()
       .from(customers)
       .where(and(eq(customers.tenantId, tenantId), eq(customers.id, id)));
-    if (!customer) throw new NotFoundException('Không tìm thấy khách hàng');
+    if (!customer) throw new NotFoundException("Không tìm thấy khách hàng");
     return customer;
   }
 
   async update(tenantId: string, id: string, dto: UpdateCustomerDto) {
+    const values = {
+      ...dto,
+      debtLimit: dto.debtLimit?.toString(),
+      updatedAt: new Date(),
+    };
+
     const [customer] = await db
       .update(customers)
-      .set({ ...dto, updatedAt: new Date() })
+      .set(values)
       .where(and(eq(customers.tenantId, tenantId), eq(customers.id, id)))
       .returning();
-    if (!customer) throw new NotFoundException('Không tìm thấy khách hàng');
+    if (!customer) throw new NotFoundException("Không tìm thấy khách hàng");
     return customer;
   }
 
@@ -96,7 +114,7 @@ export class CustomersService {
       .delete(customers)
       .where(and(eq(customers.tenantId, tenantId), eq(customers.id, id)))
       .returning();
-    if (!customer) throw new NotFoundException('Không tìm thấy khách hàng');
+    if (!customer) throw new NotFoundException("Không tìm thấy khách hàng");
     return customer;
   }
 }

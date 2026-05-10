@@ -157,6 +157,8 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 - API services import schema from `@smart-erp/database/schema`.
 - API services import Drizzle helpers from `@smart-erp/database/drizzle`, not directly from `drizzle-orm`.
 - This keeps schema columns, SQL helpers, and query builders on one Drizzle type instance across the workspace.
+- PostgreSQL `numeric` columns are represented as strings by Drizzle; API services must serialize validated numbers with `.toString()` before insert/update.
+- User registration and user creation require a `tenantId`; do not persist tenant-less users because all ERP data is tenant-scoped.
 
 ## Commit Convention
 

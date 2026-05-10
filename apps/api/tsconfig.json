@@ -3,6 +3,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "./dist",
+    "strictPropertyInitialization": false,
     "paths": {
       "@smart-erp/database": ["../../packages/database/src/index.ts"],
       "@smart-erp/database/drizzle": ["../../packages/database/src/drizzle.ts"],

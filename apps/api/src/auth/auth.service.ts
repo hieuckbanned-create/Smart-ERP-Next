@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { db } from '@smart-erp/database';
-import { users } from '@smart-erp/database/schema';
-import { eq } from '@smart-erp/database/drizzle';
-import { UsersService } from '../users/users.service';
-import { NotificationsGateway } from '../notifications/notifications.gateway';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
+import { db } from "@smart-erp/database";
+import { users } from "@smart-erp/database/schema";
+import { eq } from "@smart-erp/database/drizzle";
+import { UsersService } from "../users/users.service";
+import { NotificationsGateway } from "../notifications/notifications.gateway";
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       tenantId: user.tenantId,
-      role: user.role ?? 'user',
+      role: user.role ?? "user",
     };
     return {
       access_token: this.jwtService.sign(payload),
@@ -40,12 +40,21 @@ export class AuthService {
         email: user.email,
         name: user.name,
         tenantId: user.tenantId,
-        role: user.role ?? 'user',
+        role: user.role ?? "user",
       },
     };
   }
 
-  async register(email: string, password: string, name?: string, tenantId?: string) {
+  async register(
+    email: string,
+    password: string,
+    name?: string,
+    tenantId?: string,
+  ) {
+    if (!tenantId) {
+      throw new BadRequestException("tenantId is required");
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert directly to include passwordHash (bypasses service which strips it)
@@ -55,12 +64,12 @@ export class AuthService {
         email,
         name: name ?? null,
         passwordHash: hashedPassword,
-        tenantId: tenantId ?? null,
-        role: 'user',
+        tenantId,
+        role: "user",
       })
       .returning();
 
-    this.notificationsGateway.broadcast('user.registered', {
+    this.notificationsGateway.broadcast("user.registered", {
       id: user.id,
       email: user.email,
       name: user.name,
