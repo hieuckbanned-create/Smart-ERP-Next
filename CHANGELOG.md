@@ -8,6 +8,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Web client offline sync**: Dexie-powered offline storage, background sync with CRDT merge
+- Sync button + status indicator in app header
+- Products page now works offline and syncs when online
+- Offline-first sync foundations: sync_metadata table, /sync/pull and /sync/push endpoints
+- i18n keys for sync status (online/offline, last sync, pending changes)
+
+### Added
 - Reorder point management: set minimum stock and reorder quantity per product
 - Auto-suggested purchase order quantities when stock falls below reorder point
 - New "Reorder points" tab in inventory page with inline editing

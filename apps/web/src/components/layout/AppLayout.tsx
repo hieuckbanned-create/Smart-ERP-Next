@@ -24,8 +24,11 @@ import {
   Moon,
   ShoppingBag,
   CreditCard,
+  RefreshCw,
+  TrendingUp,
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
+import { syncService } from "../../lib/sync-service";
 
 interface NavItem {
   key: string;
@@ -62,6 +65,34 @@ export default function AppLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await syncService.sync();
+      // Show toast or update UI
+      console.log("Sync completed");
+    } catch (err) {
+      console.error("Sync failed", err);
+    } finally {
+      setSyncing(false);
+    }
+  };
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await syncService.sync();
+      // Show toast or update UI
+      console.log("Sync completed");
+    } catch (err) {
+      console.error("Sync failed", err);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -146,6 +177,12 @@ export default function AppLayout({
       label: t("nav.reports"),
       icon: <BarChart3 className="w-5 h-5" />,
       href: "/reports",
+    },
+    {
+      key: "forecast",
+      label: "Dự báo",
+      icon: <TrendingUp className="w-5 h-5" />,
+      href: "/reports/forecast",
     },
     {
       key: "users",
@@ -305,6 +342,22 @@ export default function AppLayout({
               )}
             </div>
 
+            <button
+              onClick={handleSync}
+              disabled={syncing}
+              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition disabled:opacity-50"
+              title="Sync offline changes"
+            >
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
+            </button>
+            <button
+              onClick={handleSync}
+              disabled={syncing}
+              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition disabled:opacity-50"
+              title="Sync offline changes"
+            >
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
+            </button>
             <button
               onClick={toggleDark}
               className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition"
