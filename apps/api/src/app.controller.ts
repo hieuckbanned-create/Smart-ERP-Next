@@ -1,20 +1,27 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { db } from '@smart-erp/database';
+import { sql } from 'drizzle-orm';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getRoot() {
+    return { name: 'Smart ERP Next API', version: '0.3.0' };
   }
 
   @Get('health')
-  getHealth(): { status: string; timestamp: string } {
+  async getHealth() {
+    let dbStatus = 'ok';
+    try {
+      await db.execute(sql`SELECT 1`);
+    } catch {
+      dbStatus = 'error';
+    }
     return {
-      status: 'ok',
+      status: dbStatus === 'ok' ? 'ok' : 'degraded',
+      db: dbStatus,
       timestamp: new Date().toISOString(),
+      uptime: Math.floor(process.uptime()),
     };
   }
 }

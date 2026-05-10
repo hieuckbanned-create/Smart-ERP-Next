@@ -2,25 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── CSS custom properties ─────────────────────────────────────────────────── */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  --color-primary: 59 130 246;      /* blue-500 */
+  --color-primary-dark: 37 99 235;  /* blue-600 */
+  --color-success: 16 185 129;      /* emerald-500 */
+  --color-warning: 245 158 11;      /* amber-500 */
+  --color-danger: 239 68 68;        /* red-500 */
+  --sidebar-width: 16rem;
+  --header-height: 3.5rem;
+  --radius: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 10, 10, 10;
-  }
+/* ── Dark mode ──────────────────────────────────────────────────────────────── */
+html.dark {
+  color-scheme: dark;
 }
 
+/* ── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+/* ── Focus ring ─────────────────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────────── */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Transitions ────────────────────────────────────────────────────────────── */
+* {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Print ──────────────────────────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────────── */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 }

@@ -8,6 +8,7 @@ export { Pagination, type PaginationProps } from './components/Pagination';
 export { Card, CardHeader, CardTitle, CardContent, type CardProps } from './components/Card';
 export { Badge, type BadgeProps } from './components/Badge';
 export { StatCard, type StatCardProps } from './components/StatCard';
+export { Toast, ToastContainer, type ToastProps, type ToastVariant } from './components/Toast';
 
 // Utils
 export { cn } from './utils/cn';

@@ -13,6 +13,7 @@ import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { PurchasingModule } from './purchasing/purchasing.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -31,6 +32,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     OrdersModule,
     SuppliersModule,
     InventoryModule,
+    PurchasingModule,
   ],
   controllers: [AppController],
   providers: [

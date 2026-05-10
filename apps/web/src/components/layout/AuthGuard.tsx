@@ -32,8 +32,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     setUser(parsedUser);
     setReady(true);
 
-    // Init WebSocket
-    initSocket(parsedUser.id);
+    // Init WebSocket with both userId and tenantId
+    initSocket(parsedUser.id, parsedUser.tenantId);
 
     // Online/offline listeners
     const handleOnline = () => {

@@ -1,11 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // Static export for Tauri
-  transpilePackages: ['@smart-erp/i18n', '@smart-erp/types', '@smart-erp/validation'],
+  // NOTE: Remove `output: 'export'` — it breaks API routes and server components.
+  // Tauri desktop uses the dev server (localhost:3001) in dev mode and
+  // a separate static build via `next export` only when packaging.
+  transpilePackages: [
+    '@smart-erp/i18n',
+    '@smart-erp/types',
+    '@smart-erp/validation',
+    '@smart-erp/hooks',
+    '@smart-erp/utils',
+    '@smart-erp/sync',
+    '@smart-erp/ui',
+  ],
   images: {
-    unoptimized: true,  // Required for static export
+    remotePatterns: [],
   },
-  trailingSlash: true,
+  // Strict mode for better React error detection
+  reactStrictMode: true,
+  // Compress responses
+  compress: true,
+  // Power header
+  poweredByHeader: false,
 };
 
 export default nextConfig;

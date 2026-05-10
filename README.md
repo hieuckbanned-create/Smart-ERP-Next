@@ -1,81 +1,118 @@
 # Smart ERP Next
 
-Hệ thống quản trị doanh nghiệp thế hệ mới — vượt trội hơn ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.
+**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.
 
-## Điểm khác biệt
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
+[![pnpm](https://img.shields.io/badge/pnpm-9+-orange.svg)](https://pnpm.io)
+
+---
+
+## So sánh với đối thủ
 
 | Tính năng | Smart ERP Next | KiotViet | Nhanhvn | MISA | ERPNext |
-|-----------|---------------|----------|---------|------|---------|
-| Native đa nền tảng | ✅ Web + Mobile + Desktop | Web only | Web only | Web only | Web only |
-| Offline-first + CRDT sync | ✅ | ❌ | ❌ | ❌ | ❌ |
+|-----------|:-:|:-:|:-:|:-:|:-:|
+| Native đa nền tảng | ✅ Web+Mobile+Desktop | ❌ | ❌ | ❌ | ❌ |
+| Offline-first + CRDT | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Mã nguồn mở | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Bản địa hóa tiếng Việt | ✅ Built-in | ✅ | ✅ | ✅ | Partial |
+| Bản địa hóa vi/en | ✅ Built-in | ✅ | ✅ | ✅ | Partial |
 | Multi-tenant | ✅ | ❌ | ❌ | ❌ | ✅ |
 | Real-time WebSocket | ✅ | Partial | Partial | ❌ | ❌ |
+| POS tích hợp | ✅ | ✅ | ✅ | ❌ | ✅ |
 | Monorepo shared packages | ✅ | ❌ | ❌ | ❌ | ❌ |
+
+---
 
 ## Tech Stack
 
 | Thành phần | Công nghệ |
 |-----------|-----------|
-| Monorepo | pnpm + Turborepo |
-| Backend API | NestJS 10, JWT, bcrypt, Socket.IO |
-| Database | PostgreSQL 14+, Drizzle ORM |
-| Web App | Next.js 15, React 19, Tailwind CSS |
-| Mobile | Expo 52, React Native 0.76 |
+| Monorepo | pnpm 9 + Turborepo 2 |
+| Backend API | NestJS 10, Drizzle ORM, PostgreSQL 14+ |
+| Web App | Next.js 15, React 19, Tailwind CSS 3 |
+| Mobile | Expo 52, React Native 0.76, SecureStore |
 | Desktop | Tauri 2 (Rust + WebView) |
-| Docs | Docusaurus 3 |
-| i18n | i18next (vi/en built-in) |
-| Validation | Zod + class-validator |
+| Docs | Docusaurus 3 (vi/en) |
+| i18n | i18next — vi mặc định, en hỗ trợ |
+| Validation | Zod (frontend) + class-validator (API) |
 | Offline Sync | Dexie (IndexedDB) + CRDT vector clocks |
+| Real-time | Socket.IO 4 |
+
+---
 
 ## Cấu trúc dự án
 
 ```
 smart-erp-next/
 ├── apps/
-│   ├── api/          # NestJS backend
-│   ├── web/          # Next.js 15 web app
-│   ├── mobile/       # Expo React Native
-│   ├── desktop/      # Tauri desktop
-│   └── docs/         # Docusaurus docs
+│   ├── api/          # NestJS backend — 12 modules
+│   ├── web/          # Next.js 15 — 11 pages
+│   ├── mobile/       # Expo 52 — 4 screens + auth
+│   ├── desktop/      # Tauri 2 — wraps web app
+│   └── docs/         # Docusaurus 3 — vi/en
 ├── packages/
-│   ├── database/     # Drizzle ORM schemas & migrations
-│   ├── i18n/         # i18next (vi/en translations)
+│   ├── database/     # Drizzle ORM schemas + SQL migrations
+│   ├── i18n/         # i18next vi/en translations (200+ keys)
 │   ├── types/        # Shared TypeScript types
-│   ├── validation/   # Zod schemas
-│   ├── sync/         # Offline sync + CRDT service
-│   ├── ui/           # Shared UI components
+│   ├── validation/   # Zod schemas (product, customer, order)
+│   ├── sync/         # Offline sync + CRDT service (Dexie)
+│   ├── ui/           # Shared React components (10 components)
+│   ├── hooks/        # Shared React hooks (5 hooks)
+│   ├── utils/        # Pure TS utilities (currency, date, string)
 │   ├── config-eslint/
 │   └── config-typescript/
-└── docs/             # API documentation
+└── docs/             # API reference
 ```
 
-## Modules
+---
 
-- **Dashboard** — Tổng quan doanh thu, đơn hàng, khách hàng, tồn kho
-- **POS** — Bán hàng tại quầy (đang phát triển)
-- **Đơn hàng** — Quản lý đơn bán, trạng thái, thanh toán
-- **Sản phẩm** — CRUD, SKU, tồn kho, danh mục
-- **Kho hàng** — Nhập/xuất kho, điều chỉnh, chuyển kho
-- **Khách hàng** — CRM cơ bản, công nợ, điểm tích lũy
-- **Nhà cung cấp** — Quản lý NCC, công nợ
-- **Mua hàng** — Đơn nhập hàng, nhận hàng
-- **Báo cáo** — Doanh thu, lợi nhuận, tồn kho
-- **Cài đặt** — Thông tin công ty, phân quyền
+## Modules (API + Web)
+
+| Module | API | Web | Mobile |
+|--------|:---:|:---:|:------:|
+| Dashboard | ✅ | ✅ | ✅ |
+| POS (Bán hàng) | ✅ | ✅ | 🔜 |
+| Đơn hàng | ✅ | ✅ | ✅ |
+| Sản phẩm | ✅ | ✅ | ✅ |
+| Kho hàng | ✅ | ✅ | 🔜 |
+| Khách hàng | ✅ | ✅ | ✅ |
+| Nhà cung cấp | ✅ | ✅ | 🔜 |
+| Mua hàng | ✅ | ✅ | 🔜 |
+| Báo cáo | ✅ | ✅ | 🔜 |
+| Cài đặt | — | ✅ | 🔜 |
+
+---
 
 ## Database Schema
 
 ```
-tenants → users → products → product_categories
-                           → inventory_transactions
-       → customers
-       → suppliers
-       → warehouses
-       → orders → order_items
-       → purchase_orders → purchase_order_items
-       → payments
+tenants
+  ├── users (roles: admin/manager/accountant/warehouse/sales/user)
+  ├── products → product_categories, inventory_transactions
+  ├── customers
+  ├── suppliers
+  ├── warehouses
+  ├── orders → order_items
+  ├── purchase_orders → purchase_order_items
+  └── payments
 ```
+
+---
+
+## Packages
+
+| Package | Mô tả |
+|---------|-------|
+| `@smart-erp/database` | Drizzle ORM schemas, SQL migrations |
+| `@smart-erp/i18n` | i18next vi/en, `initI18n()`, `useTranslation` |
+| `@smart-erp/types` | TypeScript types: User, Product, Order, Customer... |
+| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt |
+| `@smart-erp/sync` | Offline sync + CRDT vector clocks (Dexie) |
+| `@smart-erp/ui` | Button, Card, DataTable, Sidebar, StatCard, Badge... |
+| `@smart-erp/hooks` | useDebounce, usePagination, useFormatters, useOnlineStatus... |
+| `@smart-erp/utils` | formatVND, formatDate, slugify, maskPhone (no React dep) |
+
+---
 
 ## Bắt đầu
 
@@ -84,32 +121,30 @@ tenants → users → products → product_categories
 - Node.js >= 20
 - pnpm >= 9
 - PostgreSQL >= 14
+- Rust (cho Tauri desktop)
 
 ### Cài đặt
 
 ```bash
-git clone https://github.com/your-org/smart-erp-next.git
+git clone https://github.com/smart-erp/smart-erp-next.git
 cd smart-erp-next
 pnpm install
-
-# Cấu hình môi trường
-cp apps/api/.env.example apps/api/.env
-# Chỉnh sửa DATABASE_URL và JWT_SECRET
-
-# Chạy migrations
-cd packages/database && pnpm generate && pnpm migrate
-
-# Khởi động dev servers
-pnpm dev
 ```
 
-### Biến môi trường
+### Cấu hình môi trường
+
+```bash
+cp apps/api/.env.example apps/api/.env
+# Chỉnh sửa DATABASE_URL và JWT_SECRET
+```
 
 `apps/api/.env`:
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/smart_erp
+DATABASE_URL=postgresql://postgres:password@localhost:5432/smart_erp
 JWT_SECRET=your-secret-key-min-32-chars
+JWT_EXPIRES_IN=7d
 PORT=3000
+NODE_ENV=development
 ```
 
 `apps/web/.env.local`:
@@ -117,55 +152,70 @@ PORT=3000
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-## API Endpoints
+### Database
 
-### Auth
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| POST | `/auth/login` | Đăng nhập |
-| POST | `/auth/register` | Đăng ký |
+```bash
+# Chạy migration SQL
+psql $DATABASE_URL -f packages/database/drizzle/0001_initial_schema.sql
 
-### Products
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/products` | Danh sách (phân trang, tìm kiếm) |
-| GET | `/products/:id` | Chi tiết |
-| POST | `/products` | Tạo mới |
-| PATCH | `/products/:id` | Cập nhật |
-| DELETE | `/products/:id` | Xóa |
-| PATCH | `/products/:id/stock` | Điều chỉnh tồn kho |
+# Hoặc dùng Drizzle migrate
+cd packages/database && pnpm migrate
+```
 
-### Customers
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/customers` | Danh sách |
-| GET | `/customers/:id` | Chi tiết |
-| POST | `/customers` | Tạo mới |
-| PATCH | `/customers/:id` | Cập nhật |
-| DELETE | `/customers/:id` | Xóa |
+### Khởi động
 
-### Orders
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/orders` | Danh sách |
-| GET | `/orders/:id` | Chi tiết + items |
-| POST | `/orders` | Tạo đơn hàng |
-| PATCH | `/orders/:id/status` | Cập nhật trạng thái |
+```bash
+# Tất cả cùng lúc
+pnpm dev
+
+# Riêng lẻ
+pnpm --filter @smart-erp/api dev        # API: http://localhost:3000
+pnpm --filter @smart-erp/web dev        # Web: http://localhost:3001
+pnpm --filter @smart-erp/mobile start   # Mobile: Expo
+pnpm --filter @smart-erp/desktop dev    # Desktop: Tauri
+pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
+```
+
+---
+
+## Web Routes
+
+| Route | Mô tả |
+|-------|-------|
+| `/login` | Đăng nhập |
+| `/dashboard` | Tổng quan |
+| `/pos` | Bán hàng tại quầy |
+| `/orders` | Danh sách đơn hàng |
+| `/orders/[id]` | Chi tiết đơn hàng |
+| `/products` | Danh sách sản phẩm |
+| `/products/create` | Tạo sản phẩm |
+| `/products/[id]/edit` | Sửa sản phẩm |
+| `/inventory` | Kho hàng |
+| `/customers` | Khách hàng |
+| `/customers/create` | Tạo khách hàng |
+| `/customers/[id]/edit` | Sửa khách hàng |
+| `/suppliers` | Nhà cung cấp |
+| `/suppliers/create` | Tạo NCC |
+| `/suppliers/[id]/edit` | Sửa NCC |
+| `/purchasing` | Đơn nhập hàng |
+| `/purchasing/create` | Tạo đơn nhập |
+| `/purchasing/[id]` | Chi tiết + nhận hàng |
+| `/reports` | Báo cáo |
+| `/settings` | Cài đặt |
+
+---
 
 ## Commit Convention
 
-Format: `type(scope): mô tả`
+```
+type(scope): mô tả ngắn gọn
 
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+Types: feat, fix, docs, style, refactor, test, chore
+Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks, utils, docs
+```
 
-Scopes: `api`, `web`, `mobile`, `desktop`, `db`, `i18n`, `ui`, `sync`, `types`
-
-Ví dụ:
-- `feat(api): add customers module with CRUD and debt tracking`
-- `feat(web): add customers page with search and pagination`
-- `feat(db): add orders, customers, suppliers, warehouses schemas`
-- `feat(i18n): expand vi/en translations for all modules`
+---
 
 ## License
 
-MIT
+MIT © Smart ERP Team

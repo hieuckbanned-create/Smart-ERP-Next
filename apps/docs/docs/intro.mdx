@@ -1,47 +1,67 @@
 ---
 sidebar_position: 1
+title: Giới thiệu
+description: Smart ERP Next — Hệ thống quản trị doanh nghiệp thế hệ mới
 ---
 
-# Tutorial Intro
+# Smart ERP Next
 
-Let's discover **Docusaurus in less than 5 minutes**.
+**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.
 
-## Getting Started
+## Tại sao chọn Smart ERP Next?
 
-Get started by **creating a new site**.
+| Tính năng | Smart ERP Next | KiotViet | Nhanhvn | MISA | ERPNext |
+|-----------|:-:|:-:|:-:|:-:|:-:|
+| Native đa nền tảng (Web + Mobile + Desktop) | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Offline-first + CRDT sync | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Mã nguồn mở | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Bản địa hóa tiếng Việt built-in | ✅ | ✅ | ✅ | ✅ | Partial |
+| Multi-tenant | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Real-time WebSocket | ✅ | Partial | Partial | ❌ | ❌ |
+| Monorepo shared packages | ✅ | ❌ | ❌ | ❌ | ❌ |
+| POS tích hợp | ✅ | ✅ | ✅ | ❌ | ✅ |
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Modules
 
-### What you'll need
+- 🏠 **Dashboard** — Tổng quan doanh thu, đơn hàng, tồn kho, insights
+- 🛒 **POS** — Bán hàng tại quầy với 6 phương thức thanh toán
+- 📦 **Sản phẩm** — CRUD, SKU, tồn kho, danh mục phân cấp
+- 🏭 **Kho hàng** — Nhập/xuất/điều chỉnh kho, lịch sử giao dịch
+- 👥 **Khách hàng** — CRM, công nợ, điểm tích lũy, nhóm KH
+- 🚚 **Nhà cung cấp** — Quản lý NCC, công nợ, ngân hàng
+- 📋 **Mua hàng** — Đơn nhập hàng, nhận hàng từng phần
+- 🛍️ **Đơn hàng** — Quản lý đơn bán, state machine, thanh toán
+- 📊 **Báo cáo** — Doanh thu, lợi nhuận, tồn kho, khách hàng
+- ⚙️ **Cài đặt** — Công ty, ngôn ngữ, thông báo, bảo mật
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## Tech Stack
 
-## Generate a new site
+| Thành phần | Công nghệ |
+|-----------|-----------|
+| Monorepo | pnpm + Turborepo |
+| Backend | NestJS 10, Drizzle ORM, PostgreSQL 14+ |
+| Web | Next.js 15, React 19, Tailwind CSS |
+| Mobile | Expo 52, React Native 0.76 |
+| Desktop | Tauri 2 (Rust + WebView) |
+| i18n | i18next (vi/en built-in) |
+| Offline | Dexie (IndexedDB) + CRDT vector clocks |
+| Real-time | Socket.IO |
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
+## Bắt đầu nhanh
 
 ```bash
-npm init docusaurus@latest my-website classic
+git clone https://github.com/smart-erp/smart-erp-next.git
+cd smart-erp-next
+pnpm install
+
+# Cấu hình môi trường
+cp apps/api/.env.example apps/api/.env
+
+# Chạy database migration
+psql $DATABASE_URL -f packages/database/drizzle/0001_initial_schema.sql
+
+# Khởi động tất cả services
+pnpm dev
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Xem thêm tại [Hướng dẫn phát triển](/docs/development).

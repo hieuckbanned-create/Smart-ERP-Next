@@ -2,16 +2,18 @@
 
 ## Yêu cầu
 
-- Node.js >= 20
-- pnpm >= 9
-- PostgreSQL >= 14
-- Rust (cho Tauri desktop)
-- Expo CLI (cho mobile)
+| Công cụ | Phiên bản |
+|---------|-----------|
+| Node.js | >= 20 |
+| pnpm | >= 9 |
+| PostgreSQL | >= 14 |
+| Rust | >= 1.75 (cho Tauri desktop) |
+| Expo CLI | >= 0.18 (cho mobile) |
 
 ## Cài đặt
 
 ```bash
-git clone https://github.com/your-org/smart-erp-next.git
+git clone https://github.com/smart-erp/smart-erp-next.git
 cd smart-erp-next
 pnpm install
 ```
@@ -21,22 +23,33 @@ pnpm install
 ```bash
 # API
 cp apps/api/.env.example apps/api/.env
-# Chỉnh sửa DATABASE_URL và JWT_SECRET
 
 # Web
 cp apps/web/.env.example apps/web/.env.local
-# Chỉnh sửa NEXT_PUBLIC_API_URL
+```
+
+`apps/api/.env`:
+```env
+DATABASE_URL=postgresql://postgres:password@localhost:5432/smart_erp
+JWT_SECRET=your-secret-key-min-32-chars
+JWT_EXPIRES_IN=7d
+PORT=3000
+NODE_ENV=development
+```
+
+`apps/web/.env.local`:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
 ## Database
 
 ```bash
-# Chạy migration SQL trực tiếp
+# Chạy migration SQL trực tiếp (khuyến nghị)
 psql $DATABASE_URL -f packages/database/drizzle/0001_initial_schema.sql
 
 # Hoặc dùng Drizzle migrate
-cd packages/database
-pnpm migrate
+cd packages/database && pnpm migrate
 
 # Tạo migration mới sau khi thay đổi schema
 pnpm generate
@@ -56,29 +69,31 @@ pnpm --filter @smart-erp/desktop dev    # Desktop: Tauri
 pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 ```
 
-## Cấu trúc packages
+## Packages
 
-| Package | Mô tả |
-|---------|-------|
-| `@smart-erp/database` | Drizzle ORM schemas, migrations |
-| `@smart-erp/types` | TypeScript types dùng chung |
-| `@smart-erp/validation` | Zod schemas cho form/API validation |
-| `@smart-erp/i18n` | i18next translations (vi/en) |
-| `@smart-erp/sync` | Offline sync + CRDT service |
-| `@smart-erp/ui` | Shared React components |
-| `@smart-erp/hooks` | Shared React hooks |
+| Package | Mô tả | Dùng ở |
+|---------|-------|--------|
+| `@smart-erp/database` | Drizzle ORM schemas, SQL migrations | API |
+| `@smart-erp/i18n` | i18next vi/en, `initI18n()`, `useTranslation` | Web, Mobile |
+| `@smart-erp/types` | TypeScript types: User, Product, Order, Customer... | Tất cả |
+| `@smart-erp/validation` | Zod schemas với error messages tiếng Việt | Web, API |
+| `@smart-erp/sync` | Offline sync + CRDT vector clocks (Dexie) | Web, Mobile |
+| `@smart-erp/ui` | Button, Card, DataTable, Toast, Sidebar... | Web |
+| `@smart-erp/hooks` | useDebounce, usePagination, useFormatters, useNotifications... | Web |
+| `@smart-erp/utils` | formatVND, formatDate, slugify, maskPhone (no React dep) | Tất cả |
 
 ## API Modules
 
 | Module | Endpoint | Mô tả |
 |--------|----------|-------|
 | Auth | `/auth` | Đăng nhập, đăng ký |
-| Products | `/products` | CRUD + stock adjustment |
+| Products | `/products` | CRUD + stock adjustment + transactions |
 | Customers | `/customers` | CRUD + debt tracking |
 | Suppliers | `/suppliers` | CRUD |
-| Orders | `/orders` | Tạo đơn, cập nhật trạng thái |
-| Inventory | `/inventory` | Nhập/xuất kho, tồn kho |
-| Reports | `/reports` | Doanh thu, lợi nhuận, tồn kho |
+| Orders | `/orders` | Tạo đơn, state machine, payment |
+| Purchasing | `/purchasing` | Đơn nhập, nhận hàng từng phần |
+| Inventory | `/inventory` | Điều chỉnh kho, lịch sử, low-stock |
+| Reports | `/reports` | Revenue, profit, top-products, inventory, customers |
 | Insights | `/insights` | Dashboard analytics |
 | Users | `/users` | Quản lý người dùng |
 | Tenants | `/tenants` | Quản lý tenant |
@@ -87,18 +102,38 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 
 | Route | Mô tả |
 |-------|-------|
+| `/` | Redirect → `/dashboard` |
 | `/login` | Đăng nhập |
 | `/dashboard` | Tổng quan |
 | `/pos` | Bán hàng tại quầy |
 | `/orders` | Danh sách đơn hàng |
+| `/orders/[id]` | Chi tiết đơn hàng + timeline |
 | `/products` | Danh sách sản phẩm |
 | `/products/create` | Tạo sản phẩm |
+| `/products/[id]` | Chi tiết + lịch sử kho |
 | `/products/[id]/edit` | Sửa sản phẩm |
-| `/inventory` | Kho hàng |
+| `/inventory` | Kho hàng + điều chỉnh |
 | `/customers` | Khách hàng |
+| `/customers/create` | Tạo khách hàng |
+| `/customers/[id]` | Chi tiết khách hàng |
+| `/customers/[id]/edit` | Sửa khách hàng |
 | `/suppliers` | Nhà cung cấp |
-| `/reports` | Báo cáo |
-| `/settings` | Cài đặt |
+| `/suppliers/create` | Tạo NCC |
+| `/suppliers/[id]` | Chi tiết NCC |
+| `/suppliers/[id]/edit` | Sửa NCC |
+| `/purchasing` | Đơn nhập hàng |
+| `/purchasing/create` | Tạo đơn nhập |
+| `/purchasing/[id]` | Chi tiết + nhận hàng |
+| `/reports` | Báo cáo (doanh thu, lợi nhuận, tồn kho) |
+| `/settings` | Cài đặt hệ thống |
+
+## i18n Rules
+
+- Ngôn ngữ mặc định: **Tiếng Việt** (`vi`)
+- Hỗ trợ: `vi`, `en`
+- Package: `@smart-erp/i18n`
+- Luôn dùng `t('section.key')` — không hardcode string tiếng Việt trong component
+- Thêm key vào cả `vi/common.json` VÀ `en/common.json`
 
 ## Commit Convention
 
@@ -106,18 +141,17 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 type(scope): mô tả ngắn gọn
 
 Types: feat, fix, docs, style, refactor, test, chore
-Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks
-```
-
-## Testing
-
-```bash
-pnpm test              # Tất cả
-pnpm --filter @smart-erp/api test   # API tests
+Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks, utils, docs
 ```
 
 ## Build production
 
 ```bash
 pnpm build
+```
+
+## Type check
+
+```bash
+pnpm type-check
 ```

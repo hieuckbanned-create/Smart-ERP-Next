@@ -9,6 +9,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@smart-erp/utils": "workspace:*",
     "react": "^19.0.0"
   },
   "devDependencies": {

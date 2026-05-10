@@ -1,0 +1,15 @@
+{
+  "name": "@smart-erp/utils",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts"
+  },
+  "devDependencies": {
+    "@smart-erp/tsconfig": "workspace:*",
+    "typescript": "^5.4.5"
+  }
+}

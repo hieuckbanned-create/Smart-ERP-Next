@@ -1,31 +1,37 @@
-import { io, Socket } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
 
 let socket: Socket | null = null;
 
-export const initSocket = (userId?: string): Socket => {
-  if (socket) return socket;
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
-  socket = io('http://localhost:3000/notifications', {
+export function initSocket(userId: string, tenantId?: string): Socket {
+  if (socket?.connected) return socket;
+
+  socket = io(`${API_URL}/notifications`, {
     transports: ['websocket'],
-    auth: { userId },
+    auth: { userId, tenantId },
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionAttempts: 5,
   });
 
   socket.on('connect', () => {
-    console.log('Socket connected:', socket?.id);
+    // Join tenant room for targeted broadcasts
+    if (tenantId) socket?.emit('join', { room: `tenant:${tenantId}` });
   });
 
-  socket.on('disconnect', () => {
-    console.log('Socket disconnected');
+  socket.on('connect_error', (err) => {
+    console.warn('Socket connection error:', err.message);
   });
 
   return socket;
-};
+}
 
-export const getSocket = () => socket;
+export const getSocket = (): Socket | null => socket;
 
-export const closeSocket = () => {
+export function closeSocket(): void {
   if (socket) {
     socket.disconnect();
     socket = null;
   }
-};
+}
