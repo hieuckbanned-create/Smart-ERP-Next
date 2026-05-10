@@ -58,12 +58,12 @@ const statusColors: Record<string, string> = {
 };
 
 const statusLabels: Record<string, string> = {
-  draft: 'Nháp',
-  confirmed: 'Đã xác nhận',
-  processing: 'Đang xử lý',
-  shipped: 'Đã giao vận',
-  delivered: 'Đã giao hàng',
-  cancelled: 'Đã hủy',
+  draft: t('orders.status.draft'),
+  confirmed: t('orders.status.confirmed'),
+  processing: t('orders.status.processing'),
+  shipped: t('orders.status.shipped'),
+  delivered: t('orders.status.delivered'),
+  cancelled: t('orders.status.cancelled'),
 };
 
 // Mock data for when API is not ready
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
                   {formatVND(stats.todayRevenue)}
                 </p>
-                <p className="mt-1 text-xs text-green-600">↑ 12.5% so với hôm qua</p>
+                <p className="mt-1 text-xs text-green-600">{t('dashboard.revenueChange')}</p>
               </div>
               <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
                 <DollarSign className="w-5 h-5" />
@@ -150,7 +150,7 @@ export default function DashboardPage() {
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.todayOrders')}</p>
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{stats.todayOrders}</p>
-                <p className="mt-1 text-xs text-green-600">↑ 8.2% so với hôm qua</p>
+                <p className="mt-1 text-xs text-green-600">{t('dashboard.ordersChange')}</p>
               </div>
               <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-green-600 dark:text-green-400">
                 <ShoppingBag className="w-5 h-5" />
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.newCustomers')}</p>
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{stats.totalCustomers.toLocaleString('vi-VN')}</p>
-                <p className="mt-1 text-xs text-green-600">↑ 3.1% tháng này</p>
+                <p className="mt-1 text-xs text-green-600">{t('dashboard.customersChange')}</p>
               </div>
               <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600 dark:text-purple-400">
                 <Users className="w-5 h-5" />
@@ -176,7 +176,7 @@ export default function DashboardPage() {
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{t('dashboard.lowStock')}</p>
                 <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{stats.lowStockCount}</p>
-                <p className="mt-1 text-xs text-red-600">Cần nhập thêm hàng</p>
+                <p className="mt-1 text-xs text-red-600">{t('dashboard.lowStockAlert')}</p>
               </div>
               <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400">
                 <AlertTriangle className="w-5 h-5" />
@@ -195,7 +195,7 @@ export default function DashboardPage() {
               </h2>
               <div className="flex items-center gap-1 text-xs text-green-600">
                 <TrendingUp className="w-4 h-4" />
-                <span>+18.2% tuần này</span>
+                <span>{t('dashboard.revenueWeeklyChange')}</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={220}>
@@ -239,7 +239,7 @@ export default function DashboardPage() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{product.name}</p>
-                    <p className="text-xs text-gray-400">{product.sku} · {product.sold} đã bán</p>
+                    <p className="text-xs text-gray-400">{product.sku} · {product.sold} {t('dashboard.sold')}</p>
                   </div>
                   <p className="text-sm font-semibold text-gray-900 dark:text-white flex-shrink-0">
                     {formatVND(product.revenue)}
@@ -256,17 +256,17 @@ export default function DashboardPage() {
             <h2 className="text-base font-semibold text-gray-900 dark:text-white">
               {t('dashboard.recentOrders')}
             </h2>
-            <a href="/orders" className="text-sm text-blue-600 hover:underline">Xem tất cả →</a>
+            <a href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</a>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Mã đơn</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Khách hàng</th>
-                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Tổng tiền</th>
-                  <th className="px-5 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Trạng thái</th>
-                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">Thời gian</th>
+                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.orderCode')}</th>
+                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.customer')}</th>
+                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.total')}</th>
+                  <th className="px-5 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.status')}</th>
+                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.time')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">

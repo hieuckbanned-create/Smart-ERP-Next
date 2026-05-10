@@ -97,11 +97,23 @@
     "todayOrders": "Đơn hàng hôm nay",
     "newCustomers": "Khách hàng mới",
     "lowStock": "Sắp hết hàng",
+    "lowStockAlert": "Cần nhập thêm hàng",
     "recentOrders": "Đơn hàng gần đây",
     "topProducts": "Sản phẩm bán chạy",
     "revenueChart": "Biểu đồ doanh thu",
     "weeklyRevenue": "Doanh thu tuần",
-    "monthlyRevenue": "Doanh thu tháng"
+    "monthlyRevenue": "Doanh thu tháng",
+    "revenueChange": "↑ 12.5% so với hôm qua",
+    "ordersChange": "↑ 8.2% so với hôm qua",
+    "customersChange": "↑ 3.1% tháng này",
+    "revenueWeeklyChange": "+18.2% tuần này",
+    "sold": "đã bán",
+    "viewAll": "Xem tất cả",
+    "orderCode": "Mã đơn",
+    "customer": "Khách hàng",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "time": "Thời gian"
   },
 
   "products": {

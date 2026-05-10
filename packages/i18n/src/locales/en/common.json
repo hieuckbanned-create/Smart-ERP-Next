@@ -97,11 +97,23 @@
     "todayOrders": "Today's Orders",
     "newCustomers": "New Customers",
     "lowStock": "Low Stock",
+    "lowStockAlert": "Need to restock",
     "recentOrders": "Recent Orders",
     "topProducts": "Top Products",
     "revenueChart": "Revenue Chart",
     "weeklyRevenue": "Weekly Revenue",
-    "monthlyRevenue": "Monthly Revenue"
+    "monthlyRevenue": "Monthly Revenue",
+    "revenueChange": "↑ 12.5% vs yesterday",
+    "ordersChange": "↑ 8.2% vs yesterday",
+    "customersChange": "↑ 3.1% this month",
+    "revenueWeeklyChange": "+18.2% this week",
+    "sold": "sold",
+    "viewAll": "View all",
+    "orderCode": "Order Code",
+    "customer": "Customer",
+    "total": "Total",
+    "status": "Status",
+    "time": "Time"
   },
 
   "products": {
