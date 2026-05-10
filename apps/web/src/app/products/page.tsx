@@ -9,6 +9,8 @@ import {
   Package, Search, Plus, Edit, Trash2, Eye,
   ChevronLeft, ChevronRight, AlertTriangle,
 } from 'lucide-react';
+import { db } from '@/lib/offline-db';
+import { syncService } from '@/lib/sync-service';
 
 const formatVND = (v: number | string) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(

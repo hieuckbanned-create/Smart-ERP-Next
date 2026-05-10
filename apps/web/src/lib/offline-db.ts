@@ -9,7 +9,7 @@ export interface OfflineProduct {
   reorderQuantity: number;
   leadTimeDays: number;
   safetyStock: number;
-  updatedAt: number;  // timestamp for CRDT clock
+  updatedAt: number;
   deleted: boolean;
 }
 
