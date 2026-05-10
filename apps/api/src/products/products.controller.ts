@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Request,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -11,27 +23,64 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  create(@Request() req: any, @Body() dto: CreateProductDto) {
+    return this.productsService.create(req.user.tenantId, dto);
   }
 
   @Get()
-  findAll(@Query() query: QueryProductDto) {
-    return this.productsService.findAll(query);
+  findAll(@Request() req: any, @Query() query: QueryProductDto) {
+    return this.productsService.findAll(req.user.tenantId, query);
+  }
+
+  @Get('sku/:sku')
+  findBySku(@Request() req: any, @Param('sku') sku: string) {
+    return this.productsService.findBySku(req.user.tenantId, sku);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(id);
+  findOne(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
+    return this.productsService.findOne(req.user.tenantId, id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  update(
+    @Request() req: any,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateProductDto,
+  ) {
+    return this.productsService.update(req.user.tenantId, id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(id);
+  remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
+    return this.productsService.remove(req.user.tenantId, id);
+  }
+
+  @Patch(':id/stock')
+  adjustStock(
+    @Request() req: any,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body()
+    body: {
+      quantity: number;
+      type: 'IN' | 'OUT' | 'ADJUSTMENT';
+      notes?: string;
+      reference?: string;
+    },
+  ) {
+    return this.productsService.adjustStock(
+      req.user.tenantId,
+      id,
+      body.quantity,
+      body.type,
+      body.notes,
+      body.reference,
+      req.user.sub,
+    );
+  }
+
+  @Get(':id/transactions')
+  getTransactions(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
+    return this.productsService.getTransactions(req.user.tenantId, id);
   }
 }

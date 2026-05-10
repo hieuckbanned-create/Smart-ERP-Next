@@ -1,66 +1,172 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { TenantsService } from '../tenants/tenants.service';
+import { db } from '@smart-erp/database';
+import { orders, products, customers } from '@smart-erp/database/schema';
+import { eq, and, gte, sql, desc } from 'drizzle-orm';
 
 @Injectable()
 export class InsightsService {
-  constructor(
-    private usersService: UsersService,
-    private tenantsService: TenantsService,
-  ) {}
+  async getDashboardInsights(tenantId: string) {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterdayStart = new Date(todayStart.getTime() - 86_400_000);
+    const weekStart = new Date(todayStart.getTime() - 6 * 86_400_000);
 
-  async getDashboardInsights(tenantId?: string) {
-    // Fetch real data
-    const users = await this.usersService.findAll(tenantId);
-    const tenants = tenantId ? null : await this.tenantsService.findAll();
+    // Today's orders
+    const todayOrders = await db
+      .select()
+      .from(orders)
+      .where(and(eq(orders.tenantId, tenantId), gte(orders.createdAt, todayStart)));
 
-    // Calculate metrics
-    const totalUsers = users.length;
-    const newUsersLast7d = users.filter(u => {
-      const daysSince = (Date.now() - new Date(u.createdAt).getTime()) / (1000 * 3600 * 24);
-      return daysSince <= 7;
-    }).length;
+    const todayRevenue = todayOrders.reduce(
+      (s, o) => s + parseFloat(o.total as string),
+      0
+    );
 
-    const insights = [];
+    // Yesterday's revenue for trend
+    const yesterdayOrders = await db
+      .select()
+      .from(orders)
+      .where(
+        and(
+          eq(orders.tenantId, tenantId),
+          gte(orders.createdAt, yesterdayStart),
+          sql`created_at < ${todayStart}`
+        )
+      );
+    const yesterdayRevenue = yesterdayOrders.reduce(
+      (s, o) => s + parseFloat(o.total as string),
+      0
+    );
 
-    // Rule-based insights (no AI call for MVP)
-    if (newUsersLast7d > totalUsers * 0.3) {
+    // Total customers
+    const [{ customerCount }] = await db
+      .select({ customerCount: sql<number>`count(*)::int` })
+      .from(customers)
+      .where(eq(customers.tenantId, tenantId));
+
+    // Low stock products
+    const [{ lowStockCount }] = await db
+      .select({ lowStockCount: sql<number>`count(*)::int` })
+      .from(products)
+      .where(
+        and(
+          eq(products.tenantId, tenantId),
+          eq(products.isActive, true),
+          sql`stock <= min_stock`
+        )
+      );
+
+    // Weekly revenue chart (last 7 days)
+    const weeklyOrders = await db
+      .select()
+      .from(orders)
+      .where(and(eq(orders.tenantId, tenantId), gte(orders.createdAt, weekStart)));
+
+    const revenueByDay = new Map<string, number>();
+    const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(todayStart.getTime() - i * 86_400_000);
+      const key = d.toISOString().slice(0, 10);
+      revenueByDay.set(key, 0);
+    }
+    for (const o of weeklyOrders) {
+      const key = new Date(o.createdAt).toISOString().slice(0, 10);
+      if (revenueByDay.has(key)) {
+        revenueByDay.set(key, (revenueByDay.get(key) ?? 0) + parseFloat(o.total as string));
+      }
+    }
+    const revenueChart = Array.from(revenueByDay.entries()).map(([date, revenue]) => ({
+      date: dayNames[new Date(date).getDay()],
+      revenue,
+    }));
+
+    // Recent orders (last 5)
+    const recentOrders = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.tenantId, tenantId))
+      .orderBy(desc(orders.createdAt))
+      .limit(5);
+
+    // Top products by order count (simplified — count order_items)
+    const topProductsRaw = await db.execute(
+      sql`
+        SELECT oi.product_id, oi.product_name, oi.product_sku,
+               SUM(oi.quantity)::int AS sold,
+               SUM(oi.line_total)::numeric AS revenue
+        FROM order_items oi
+        JOIN orders o ON o.id = oi.order_id
+        WHERE o.tenant_id = ${tenantId}
+          AND o.created_at >= ${weekStart}
+        GROUP BY oi.product_id, oi.product_name, oi.product_sku
+        ORDER BY sold DESC
+        LIMIT 5
+      `
+    );
+
+    // Rule-based insights
+    const insights: { type: string; severity: string; message: string }[] = [];
+    const revenueTrend =
+      yesterdayRevenue > 0
+        ? ((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100
+        : 0;
+
+    if (revenueTrend > 20) {
       insights.push({
         type: 'growth',
         severity: 'info',
-        message: `📈 High user growth: ${newUsersLast7d} new users in the last 7 days (${Math.round(newUsersLast7d/totalUsers*100)}% of total).`,
+        message: `📈 Doanh thu hôm nay tăng ${revenueTrend.toFixed(1)}% so với hôm qua.`,
       });
-    } else if (newUsersLast7d === 0 && totalUsers > 5) {
+    } else if (revenueTrend < -20) {
       insights.push({
         type: 'warning',
         severity: 'medium',
-        message: '⚠️ No new user registrations in the last 7 days. Consider running a marketing campaign.',
+        message: `⚠️ Doanh thu hôm nay giảm ${Math.abs(revenueTrend).toFixed(1)}% so với hôm qua.`,
       });
     }
 
-    if (totalUsers < 3 && (Date.now() - new Date(users[0]?.createdAt).getTime()) > 30*24*3600*1000) {
+    if (lowStockCount > 0) {
       insights.push({
         type: 'alert',
         severity: 'high',
-        message: '🔴 Tenant has only 1‑2 users after 30+ days. Low engagement risk.',
+        message: `🔴 ${lowStockCount} sản phẩm sắp hết hàng. Cần nhập thêm.`,
       });
     }
 
-    // Always return some generic insight
     if (insights.length === 0) {
       insights.push({
         type: 'info',
         severity: 'low',
-        message: '✅ All metrics look healthy. Keep up the good work!',
+        message: '✅ Mọi chỉ số đều ổn định. Tiếp tục phát huy!',
       });
     }
 
     return {
+      todayRevenue,
+      todayOrders: todayOrders.length,
+      totalCustomers: customerCount,
+      lowStockCount,
+      revenueChart,
+      recentOrders: recentOrders.map((o) => ({
+        id: o.id,
+        code: o.code,
+        customerName: 'Khách hàng',
+        total: parseFloat(o.total as string),
+        status: o.status,
+        createdAt: o.createdAt,
+      })),
+      topProducts: (topProductsRaw.rows as any[]).map((r) => ({
+        id: r.product_id,
+        name: r.product_name,
+        sku: r.product_sku,
+        sold: r.sold,
+        revenue: parseFloat(r.revenue),
+      })),
       insights,
       metrics: {
-        totalUsers,
-        newUsersLast7d,
-        totalTenants: tenants?.length || 1,
+        todayRevenue,
+        yesterdayRevenue,
+        revenueTrend: parseFloat(revenueTrend.toFixed(1)),
       },
       generatedAt: new Date().toISOString(),
     };

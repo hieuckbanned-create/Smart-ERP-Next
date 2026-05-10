@@ -1,82 +1,161 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { products } from '@smart-erp/database/schema';
-import { eq } from 'drizzle-orm';
+import { products, inventoryTransactions } from '@smart-erp/database/schema';
+import { eq, and, ilike, or, gte, lte, sql, desc } from 'drizzle-orm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { QueryProductDto } from './dto/query-product.dto';
 
 @Injectable()
 export class ProductsService {
-  async create(createProductDto: CreateProductDto) {
-    const existing = await db.select().from(products).where(eq(products.sku, createProductDto.sku));
+  async create(tenantId: string, dto: CreateProductDto) {
+    const existing = await db
+      .select()
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.sku, dto.sku)));
     if (existing.length > 0) {
-      throw new ConflictException('SKU already exists');
+      throw new ConflictException('Mã SKU đã tồn tại');
     }
-    const [product] = await db.insert(products).values({
-      ...createProductDto,
-      stock: createProductDto.stock ?? 0,
-      isActive: createProductDto.isActive ?? true,
-    }).returning();
+    const [product] = await db
+      .insert(products)
+      .values({ ...dto, tenantId, stock: dto.stock ?? 0, isActive: dto.isActive ?? true })
+      .returning();
     return product;
   }
 
-  async findAll(query: QueryProductDto) {
-    let sql = db.select().from(products);
-    const conditions = [];
+  async findAll(tenantId: string, query: QueryProductDto) {
+    const page = query.page ?? 1;
+    const limit = Math.min(query.limit ?? 20, 100);
+    const offset = (page - 1) * limit;
+
+    const conditions = [eq(products.tenantId, tenantId)];
 
     if (query.search) {
-      conditions.push(sql`(name LIKE ${`%${query.search}%`} OR sku LIKE ${`%${query.search}%`})`);
-    }
-    if (query.categoryId) {
-      conditions.push(sql`category_id = ${query.categoryId}`);
+      conditions.push(
+        or(
+          ilike(products.name, `%${query.search}%`),
+          ilike(products.sku, `%${query.search}%`)
+        )!
+      );
     }
     if (query.minPrice !== undefined) {
-      conditions.push(sql`price >= ${query.minPrice}`);
+      conditions.push(gte(products.price, query.minPrice.toString()));
     }
     if (query.maxPrice !== undefined) {
-      conditions.push(sql`price <= ${query.maxPrice}`);
+      conditions.push(lte(products.price, query.maxPrice.toString()));
     }
     if (query.isActive !== undefined) {
-      conditions.push(sql`is_active = ${query.isActive}`);
+      conditions.push(eq(products.isActive, query.isActive));
     }
 
-    if (conditions.length > 0) {
-      sql = sql.where(sql`${conditions.join(' AND ')}`);
-    }
+    const where = and(...conditions);
 
-    const total = (await sql)[0] ? (await sql).length : 0;
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(products)
+      .where(where);
 
-    const offset = (query.page - 1) * query.limit;
-    const data = await sql.limit(query.limit).offset(offset);
+    const items = await db
+      .select()
+      .from(products)
+      .where(where)
+      .orderBy(products.name)
+      .limit(limit)
+      .offset(offset);
 
-    return {
-      data,
-      total,
-      page: query.page,
-      limit: query.limit,
-      totalPages: Math.ceil(total / query.limit),
-    };
+    return { items, total: count, page, limit, totalPages: Math.ceil(count / limit) };
   }
 
-  async findOne(id: string) {
-    const [product] = await db.select().from(products).where(eq(products.id, id));
-    if (!product) throw new NotFoundException('Product not found');
+  async findOne(tenantId: string, id: string) {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.id, id)));
+    if (!product) throw new NotFoundException('Không tìm thấy sản phẩm');
     return product;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
-    const [product] = await db.update(products)
-      .set({ ...updateProductDto, updatedAt: new Date() })
-      .where(eq(products.id, id))
+  async findBySku(tenantId: string, sku: string) {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.sku, sku)));
+    if (!product) throw new NotFoundException('Không tìm thấy sản phẩm');
+    return product;
+  }
+
+  async update(tenantId: string, id: string, dto: UpdateProductDto) {
+    const [product] = await db
+      .update(products)
+      .set({ ...dto, updatedAt: new Date() })
+      .where(and(eq(products.tenantId, tenantId), eq(products.id, id)))
       .returning();
-    if (!product) throw new NotFoundException('Product not found');
+    if (!product) throw new NotFoundException('Không tìm thấy sản phẩm');
     return product;
   }
 
-  async remove(id: string) {
-    const [product] = await db.delete(products).where(eq(products.id, id)).returning();
-    if (!product) throw new NotFoundException('Product not found');
+  async remove(tenantId: string, id: string) {
+    const [product] = await db
+      .delete(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.id, id)))
+      .returning();
+    if (!product) throw new NotFoundException('Không tìm thấy sản phẩm');
     return product;
+  }
+
+  async adjustStock(
+    tenantId: string,
+    id: string,
+    quantity: number,
+    type: 'IN' | 'OUT' | 'ADJUSTMENT',
+    notes?: string,
+    reference?: string,
+    createdBy?: string
+  ) {
+    const product = await this.findOne(tenantId, id);
+    const previousStock = product.stock;
+    const newStock =
+      type === 'OUT' ? previousStock - quantity : previousStock + quantity;
+
+    if (newStock < 0) {
+      throw new ConflictException(
+        `Tồn kho không đủ. Hiện có: ${previousStock}, yêu cầu xuất: ${quantity}`
+      );
+    }
+
+    const [updated] = await db
+      .update(products)
+      .set({ stock: newStock, updatedAt: new Date() })
+      .where(and(eq(products.tenantId, tenantId), eq(products.id, id)))
+      .returning();
+
+    // Record transaction
+    await db.insert(inventoryTransactions).values({
+      tenantId,
+      productId: id,
+      type,
+      quantity,
+      previousStock,
+      newStock,
+      reference: reference ?? null,
+      notes: notes ?? null,
+      createdBy: createdBy ?? null,
+    });
+
+    return updated;
+  }
+
+  async getTransactions(tenantId: string, productId: string) {
+    return db
+      .select()
+      .from(inventoryTransactions)
+      .where(
+        and(
+          eq(inventoryTransactions.tenantId, tenantId),
+          eq(inventoryTransactions.productId, productId)
+        )
+      )
+      .orderBy(desc(inventoryTransactions.createdAt))
+      .limit(50);
   }
 }

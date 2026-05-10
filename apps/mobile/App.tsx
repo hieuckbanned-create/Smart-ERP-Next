@@ -1,84 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
-  Platform,
+  Text, View, StyleSheet, TouchableOpacity,
+  ScrollView, SafeAreaView, StatusBar, Platform,
 } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { initI18n } from '@smart-erp/i18n';
 import { syncService } from '@smart-erp/sync';
+import ProductsScreen from './src/screens/ProductsScreen';
+import OrdersScreen from './src/screens/OrdersScreen';
+import CustomersScreen from './src/screens/CustomersScreen';
 
-// Khởi tạo i18n với tiếng Việt mặc định
 initI18n('vi');
 
 type Screen = 'dashboard' | 'products' | 'orders' | 'customers';
 
-interface NavItem {
-  key: Screen;
-  label: string;
-  icon: string;
-}
-
-const navItems: NavItem[] = [
+const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: 'dashboard', label: 'Tổng quan', icon: '📊' },
   { key: 'products', label: 'Sản phẩm', icon: '📦' },
   { key: 'orders', label: 'Đơn hàng', icon: '🛒' },
   { key: 'customers', label: 'Khách hàng', icon: '👥' },
 ];
 
-// Mock stats for offline-first display
-const mockStats = {
+const MOCK_STATS = {
   todayRevenue: 12_500_000,
   todayOrders: 24,
   totalCustomers: 1_248,
   lowStockCount: 7,
 };
 
-const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+const formatVND = (n: number) =>
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
 
 function DashboardScreen() {
   return (
     <ScrollView style={styles.screenContainer} showsVerticalScrollIndicator={false}>
       <Text style={styles.screenTitle}>Bảng điều khiển</Text>
       <View style={styles.statsGrid}>
-        <View style={[styles.statCard, { borderLeftColor: '#3b82f6' }]}>
-          <Text style={styles.statLabel}>Doanh thu hôm nay</Text>
-          <Text style={styles.statValue}>{formatVND(mockStats.todayRevenue)}</Text>
-          <Text style={styles.statTrend}>↑ 12.5%</Text>
-        </View>
-        <View style={[styles.statCard, { borderLeftColor: '#10b981' }]}>
-          <Text style={styles.statLabel}>Đơn hàng hôm nay</Text>
-          <Text style={styles.statValue}>{mockStats.todayOrders}</Text>
-          <Text style={styles.statTrend}>↑ 8.2%</Text>
-        </View>
-        <View style={[styles.statCard, { borderLeftColor: '#8b5cf6' }]}>
-          <Text style={styles.statLabel}>Khách hàng</Text>
-          <Text style={styles.statValue}>{mockStats.totalCustomers.toLocaleString('vi-VN')}</Text>
-          <Text style={styles.statTrend}>↑ 3.1%</Text>
-        </View>
-        <View style={[styles.statCard, { borderLeftColor: '#ef4444' }]}>
-          <Text style={styles.statLabel}>Sắp hết hàng</Text>
-          <Text style={[styles.statValue, { color: '#ef4444' }]}>{mockStats.lowStockCount}</Text>
-          <Text style={[styles.statTrend, { color: '#ef4444' }]}>Cần nhập thêm</Text>
-        </View>
+        {[
+          { label: 'Doanh thu hôm nay', value: formatVND(MOCK_STATS.todayRevenue), trend: '↑ 12.5%', color: '#3b82f6' },
+          { label: 'Đơn hàng hôm nay', value: MOCK_STATS.todayOrders.toString(), trend: '↑ 8.2%', color: '#10b981' },
+          { label: 'Khách hàng', value: MOCK_STATS.totalCustomers.toLocaleString('vi-VN'), trend: '↑ 3.1%', color: '#8b5cf6' },
+          { label: 'Sắp hết hàng', value: MOCK_STATS.lowStockCount.toString(), trend: 'Cần nhập thêm', color: '#ef4444', danger: true },
+        ].map((card) => (
+          <View key={card.label} style={[styles.statCard, { borderLeftColor: card.color }]}>
+            <Text style={styles.statLabel}>{card.label}</Text>
+            <Text style={[styles.statValue, card.danger && { color: card.color }]}>{card.value}</Text>
+            <Text style={[styles.statTrend, card.danger && { color: card.color }]}>{card.trend}</Text>
+          </View>
+        ))}
       </View>
     </ScrollView>
-  );
-}
-
-function PlaceholderScreen({ title }: { title: string }) {
-  return (
-    <View style={styles.placeholderContainer}>
-      <Text style={styles.placeholderIcon}>🚧</Text>
-      <Text style={styles.placeholderTitle}>{title}</Text>
-      <Text style={styles.placeholderText}>Đang phát triển...</Text>
-    </View>
   );
 }
 
@@ -92,14 +63,10 @@ export default function App() {
 
   const renderScreen = () => {
     switch (activeScreen) {
-      case 'dashboard':
-        return <DashboardScreen />;
-      case 'products':
-        return <PlaceholderScreen title="Sản phẩm" />;
-      case 'orders':
-        return <PlaceholderScreen title="Đơn hàng" />;
-      case 'customers':
-        return <PlaceholderScreen title="Khách hàng" />;
+      case 'dashboard': return <DashboardScreen />;
+      case 'products': return <ProductsScreen />;
+      case 'orders': return <OrdersScreen />;
+      case 'customers': return <CustomersScreen />;
     }
   };
 
@@ -111,7 +78,9 @@ export default function App() {
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>Smart ERP</Text>
-          <Text style={styles.headerSubtitle}>Quản trị doanh nghiệp</Text>
+          <Text style={styles.headerSubtitle}>
+            {NAV_ITEMS.find((n) => n.key === activeScreen)?.label}
+          </Text>
         </View>
         <View style={[styles.onlineBadge, { backgroundColor: isOnline ? '#dcfce7' : '#fef9c3' }]}>
           <Text style={[styles.onlineText, { color: isOnline ? '#16a34a' : '#ca8a04' }]}>
@@ -125,7 +94,7 @@ export default function App() {
 
       {/* Bottom navigation */}
       <View style={styles.bottomNav}>
-        {navItems.map((item) => (
+        {NAV_ITEMS.map((item) => (
           <TouchableOpacity
             key={item.key}
             style={styles.navItem}
@@ -133,12 +102,7 @@ export default function App() {
             activeOpacity={0.7}
           >
             <Text style={styles.navIcon}>{item.icon}</Text>
-            <Text
-              style={[
-                styles.navLabel,
-                activeScreen === item.key && styles.navLabelActive,
-              ]}
-            >
+            <Text style={[styles.navLabel, activeScreen === item.key && styles.navLabelActive]}>
               {item.label}
             </Text>
             {activeScreen === item.key && <View style={styles.navIndicator} />}
@@ -165,41 +129,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
-  },
-  headerSubtitle: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginTop: 1,
-  },
-  onlineBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
-  },
-  onlineText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  content: {
-    flex: 1,
-  },
-  screenContainer: {
-    flex: 1,
-    padding: 16,
-  },
-  screenTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#111827',
-    marginBottom: 16,
-  },
-  statsGrid: {
-    gap: 12,
-  },
+  headerTitle: { fontSize: 18, fontWeight: '700', color: '#111827' },
+  headerSubtitle: { fontSize: 12, color: '#6b7280', marginTop: 1 },
+  onlineBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
+  onlineText: { fontSize: 12, fontWeight: '600' },
+  content: { flex: 1 },
+  screenContainer: { flex: 1, padding: 16 },
+  screenTitle: { fontSize: 20, fontWeight: '700', color: '#111827', marginBottom: 16 },
+  statsGrid: { gap: 12 },
   statCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -211,41 +148,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  statLabel: {
-    fontSize: 13,
-    color: '#6b7280',
-    marginBottom: 4,
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#111827',
-  },
-  statTrend: {
-    fontSize: 12,
-    color: '#10b981',
-    marginTop: 4,
-  },
-  placeholderContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 32,
-  },
-  placeholderIcon: {
-    fontSize: 48,
-    marginBottom: 16,
-  },
-  placeholderTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#111827',
-    marginBottom: 8,
-  },
-  placeholderText: {
-    fontSize: 14,
-    color: '#6b7280',
-  },
+  statLabel: { fontSize: 13, color: '#6b7280', marginBottom: 4 },
+  statValue: { fontSize: 22, fontWeight: '700', color: '#111827' },
+  statTrend: { fontSize: 12, color: '#10b981', marginTop: 4 },
   bottomNav: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -260,19 +165,9 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     position: 'relative',
   },
-  navIcon: {
-    fontSize: 22,
-    marginBottom: 3,
-  },
-  navLabel: {
-    fontSize: 10,
-    color: '#9ca3af',
-    fontWeight: '500',
-  },
-  navLabelActive: {
-    color: '#3b82f6',
-    fontWeight: '700',
-  },
+  navIcon: { fontSize: 22, marginBottom: 3 },
+  navLabel: { fontSize: 10, color: '#9ca3af', fontWeight: '500' },
+  navLabelActive: { color: '#3b82f6', fontWeight: '700' },
   navIndicator: {
     position: 'absolute',
     top: 0,

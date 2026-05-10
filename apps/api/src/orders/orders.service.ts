@@ -5,44 +5,42 @@ import {
 } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems, products } from '@smart-erp/database/schema';
-import { eq, and, ilike, or, sql, desc } from 'drizzle-orm';
+import { eq, and, ilike, sql, desc } from 'drizzle-orm';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { NotificationsGateway } from '../notifications/notifications.gateway';
 
 @Injectable()
 export class OrdersService {
+  constructor(private readonly notifications: NotificationsGateway) {}
+
   private async generateCode(tenantId: string): Promise<string> {
     const [{ count }] = await db
       .select({ count: sql<number>`count(*)::int` })
       .from(orders)
       .where(eq(orders.tenantId, tenantId));
-    const seq = (count + 1).toString().padStart(6, '0');
-    return `DH-${seq}`;
+    return `DH-${(count + 1).toString().padStart(6, '0')}`;
   }
 
   async create(tenantId: string, userId: string, dto: CreateOrderDto) {
-    if (!dto.items || dto.items.length === 0) {
+    if (!dto.items?.length) {
       throw new BadRequestException('Đơn hàng phải có ít nhất 1 sản phẩm');
     }
 
-    // Fetch product info for each item
+    // Fetch products for snapshot
     const productIds = dto.items.map((i) => i.productId);
     const productList = await db
       .select()
       .from(products)
       .where(and(eq(products.tenantId, tenantId), sql`id = ANY(${productIds})`));
-
     const productMap = new Map(productList.map((p) => [p.id, p]));
 
-    // Calculate totals
     let subtotal = 0;
     const itemsData = dto.items.map((item) => {
       const product = productMap.get(item.productId);
       if (!product) throw new BadRequestException(`Sản phẩm ${item.productId} không tồn tại`);
-
       const lineDiscount = item.discountAmount ?? 0;
       const lineTotal = item.quantity * item.unitPrice - lineDiscount;
       subtotal += lineTotal;
-
       return {
         productId: item.productId,
         productName: product.name,
@@ -50,7 +48,7 @@ export class OrdersService {
         unit: product.unit ?? 'piece',
         quantity: item.quantity,
         unitPrice: item.unitPrice.toString(),
-        discountAmount: (item.discountAmount ?? 0).toString(),
+        discountAmount: lineDiscount.toString(),
         discountPercent: (item.discountPercent ?? 0).toString(),
         taxRate: (item.taxRate ?? 0).toString(),
         lineTotal: lineTotal.toString(),
@@ -63,10 +61,9 @@ export class OrdersService {
 
     const discountAmount = dto.discountAmount ?? 0;
     const shippingFee = dto.shippingFee ?? 0;
-    const total = subtotal - discountAmount + shippingFee;
+    const total = Math.max(0, subtotal - discountAmount + shippingFee);
     const paidAmount = dto.paymentMethod && dto.paymentMethod !== 'credit' ? total : 0;
     const debtAmount = total - paidAmount;
-
     const code = await this.generateCode(tenantId);
 
     const [order] = await db
@@ -95,10 +92,18 @@ export class OrdersService {
       })
       .returning();
 
-    // Insert order items
     await db.insert(orderItems).values(
       itemsData.map((item) => ({ ...item, orderId: order.id }))
     );
+
+    // Real-time notification
+    this.notifications.broadcastToTenant(tenantId, 'order.created', {
+      id: order.id,
+      code: order.code,
+      total: order.total,
+      channel: order.channel,
+      createdAt: order.createdAt,
+    });
 
     return { ...order, items: itemsData };
   }
@@ -119,22 +124,12 @@ export class OrdersService {
     const offset = (page - 1) * limit;
 
     const conditions = [eq(orders.tenantId, tenantId)];
-
-    if (query.search) {
-      conditions.push(ilike(orders.code, `%${query.search}%`));
-    }
-    if (query.status) {
-      conditions.push(eq(orders.status, query.status));
-    }
-    if (query.paymentStatus) {
-      conditions.push(eq(orders.paymentStatus, query.paymentStatus));
-    }
-    if (query.channel) {
-      conditions.push(eq(orders.channel, query.channel));
-    }
+    if (query.search) conditions.push(ilike(orders.code, `%${query.search}%`));
+    if (query.status) conditions.push(eq(orders.status, query.status));
+    if (query.paymentStatus) conditions.push(eq(orders.paymentStatus, query.paymentStatus));
+    if (query.channel) conditions.push(eq(orders.channel, query.channel));
 
     const where = and(...conditions);
-
     const [{ count }] = await db
       .select({ count: sql<number>`count(*)::int` })
       .from(orders)
@@ -184,7 +179,7 @@ export class OrdersService {
     const allowed = validTransitions[order.status] ?? [];
     if (!allowed.includes(status)) {
       throw new BadRequestException(
-        `Không thể chuyển từ trạng thái "${order.status}" sang "${status}"`
+        `Không thể chuyển từ "${order.status}" sang "${status}"`
       );
     }
 
@@ -202,6 +197,12 @@ export class OrdersService {
       .set(updateData)
       .where(and(eq(orders.tenantId, tenantId), eq(orders.id, id)))
       .returning();
+
+    this.notifications.broadcastToTenant(tenantId, 'order.status_changed', {
+      id: updated.id,
+      code: updated.code,
+      status: updated.status,
+    });
 
     return updated;
   }

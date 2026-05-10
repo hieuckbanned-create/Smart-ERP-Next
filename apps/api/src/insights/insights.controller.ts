@@ -1,18 +1,14 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { InsightsService } from './insights.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('insights')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
+@UseGuards(JwtAuthGuard)
 export class InsightsController {
   constructor(private readonly insightsService: InsightsService) {}
 
   @Get('dashboard')
-  async getDashboardInsights(@Req() req: any) {
-    const tenantId = req.tenantId;
-    return this.insightsService.getDashboardInsights(tenantId);
+  getDashboardInsights(@Request() req: any) {
+    return this.insightsService.getDashboardInsights(req.user.tenantId);
   }
 }

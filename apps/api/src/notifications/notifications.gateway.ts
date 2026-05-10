@@ -4,53 +4,76 @@ import {
   SubscribeMessage,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
 
+export type NotificationEvent =
+  | 'user.registered'
+  | 'order.created'
+  | 'order.status_changed'
+  | 'order.payment_received'
+  | 'stock.low'
+  | 'stock.adjusted'
+  | 'system.alert';
+
 @WebSocketGateway({
-  cors: {
-    origin: '*', // In production, restrict to your frontend domain
-    credentials: true,
-  },
+  cors: { origin: '*', credentials: true },
   namespace: 'notifications',
 })
 @Injectable()
-export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class NotificationsGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
 
-  private connectedClients: Map<string, string> = new Map(); // socketId -> userId
+  /** socketId → { userId, tenantId } */
+  private clients = new Map<string, { userId: string; tenantId: string }>();
 
   handleConnection(client: Socket) {
-    // Extract user ID from handshake (you can pass JWT token)
-    const userId = client.handshake.auth.userId;
+    const userId = client.handshake.auth.userId as string;
+    const tenantId = client.handshake.auth.tenantId as string;
     if (userId) {
-      this.connectedClients.set(client.id, userId);
-      console.log(`Client connected: ${client.id} (user ${userId})`);
-    } else {
-      console.log(`Client connected (anonymous): ${client.id}`);
+      this.clients.set(client.id, { userId, tenantId });
     }
   }
 
   handleDisconnect(client: Socket) {
-    this.connectedClients.delete(client.id);
-    console.log(`Client disconnected: ${client.id}`);
+    this.clients.delete(client.id);
   }
 
-  // Send notification to a specific user
-  sendNotificationToUser(userId: string, event: string, payload: any) {
-    const targetSocketIds = Array.from(this.connectedClients.entries())
-      .filter(([_, uid]) => uid === userId)
-      .map(([sid]) => sid);
-
-    targetSocketIds.forEach(socketId => {
-      this.server.to(socketId).emit(event, payload);
-    });
+  /** Broadcast to all clients of a tenant */
+  broadcastToTenant(tenantId: string, event: NotificationEvent, payload: any) {
+    for (const [socketId, meta] of this.clients.entries()) {
+      if (meta.tenantId === tenantId) {
+        this.server.to(socketId).emit(event, payload);
+      }
+    }
   }
 
-  // Broadcast to all connected clients
+  /** Send to a specific user (all their sockets) */
+  sendToUser(userId: string, event: NotificationEvent, payload: any) {
+    for (const [socketId, meta] of this.clients.entries()) {
+      if (meta.userId === userId) {
+        this.server.to(socketId).emit(event, payload);
+      }
+    }
+  }
+
+  /** Broadcast to all connected clients (admin use) */
   broadcast(event: string, payload: any) {
     this.server.emit(event, payload);
+  }
+
+  /** Client subscribes to a room (e.g. tenant room) */
+  @SubscribeMessage('join')
+  handleJoin(
+    @MessageBody() data: { room: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    client.join(data.room);
   }
 }
