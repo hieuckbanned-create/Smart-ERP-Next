@@ -158,7 +158,7 @@ export default function CustomerDetailPage() {
                 </button>
               </div>
               {recentOrders.length === 0 ? (
-                <div className="px-5 py-8 text-center text-gray-400 text-sm">Chưa có đơn hàng</div>
+                <div className="px-5 py-8 text-center text-gray-400 text-sm">{t('orders.empty')}</div>
               ) : (
                 <div className="divide-y divide-gray-100 dark:divide-gray-700">
                   {recentOrders.map((order) => (
@@ -231,7 +231,7 @@ export default function CustomerDetailPage() {
               className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition flex items-center justify-center gap-2"
             >
               <ShoppingBag className="w-4 h-4" />
-              Tạo đơn hàng
+              {t('orders.createButton')}
             </button>
           </div>
         </div>

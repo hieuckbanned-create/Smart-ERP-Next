@@ -180,6 +180,8 @@
     "tax": "Tax",
     "shippingFee": "Shipping Fee",
     "notes": "Notes",
+    "empty": "No orders yet",
+    "createButton": "Create order",
     "searchPlaceholder": "Search by order code, customer...",
     "confirmDelete": "Are you sure you want to cancel this order?",
     "channels": {

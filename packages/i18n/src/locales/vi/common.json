@@ -180,6 +180,8 @@
     "tax": "Thuế",
     "shippingFee": "Phí vận chuyển",
     "notes": "Ghi chú",
+    "empty": "Chưa có đơn hàng",
+    "createButton": "Tạo đơn hàng",
     "searchPlaceholder": "Tìm theo mã đơn, khách hàng...",
     "confirmDelete": "Bạn có chắc muốn hủy đơn hàng này?",
     "channels": {
