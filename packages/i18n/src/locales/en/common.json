@@ -495,5 +495,18 @@
     "duplicateSku": "SKU already exists",
     "duplicateEmail": "Email already in use",
     "duplicateCode": "Code already exists"
+  },
+  "currencies": {
+    "title": "Currencies",
+    "code": "Code",
+    "name": "Name",
+    "symbol": "Symbol",
+    "decimalPlaces": "Decimal places",
+    "isBaseCurrency": "Base currency",
+    "createSuccess": "Currency created successfully",
+    "updateSuccess": "Currency updated successfully",
+    "deleteSuccess": "Currency deleted successfully",
+    "confirmDelete": "Are you sure you want to delete this currency?",
+    "cannotDeleteBase": "Cannot delete the base currency of the tenant"
   }
 }

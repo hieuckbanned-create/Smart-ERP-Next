@@ -495,5 +495,18 @@
     "duplicateSku": "Mã SKU đã tồn tại",
     "duplicateEmail": "Email đã được sử dụng",
     "duplicateCode": "Mã đã tồn tại"
+  },
+  "currencies": {
+    "title": "Tiền tệ",
+    "code": "Mã",
+    "name": "Tên",
+    "symbol": "Ký hiệu",
+    "decimalPlaces": "Số thập phân",
+    "isBaseCurrency": "Tiền tệ cơ sở",
+    "createSuccess": "Tạo tiền tệ thành công",
+    "updateSuccess": "Cập nhật tiền tệ thành công",
+    "deleteSuccess": "Xóa tiền tệ thành công",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa tiền tệ này?",
+    "cannotDeleteBase": "Không thể xóa tiền tệ cơ sở của tổ chức"
   }
 }

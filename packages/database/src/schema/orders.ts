@@ -3,6 +3,7 @@ import { tenants } from './tenants';
 import { customers } from './customers';
 import { users } from './users';
 import { warehouses } from './warehouses';
+import { currencies } from './currencies';
 
 // Đơn bán hàng
 export const orders = pgTable(
@@ -16,6 +17,7 @@ export const orders = pgTable(
     customerId: uuid('customer_id').references(() => customers.id, { onDelete: 'set null' }),
     warehouseId: uuid('warehouse_id').references(() => warehouses.id, { onDelete: 'set null' }),
     assignedTo: uuid('assigned_to').references(() => users.id, { onDelete: 'set null' }),
+    currencyId: uuid('currency_id').references(() => currencies.id),
     // Trạng thái: draft, confirmed, processing, shipped, delivered, cancelled, returned
     status: text('status').notNull().default('draft'),
     // Kênh bán: pos, online, phone, wholesale

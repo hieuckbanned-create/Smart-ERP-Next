@@ -13,6 +13,7 @@ import { CustomersModule } from './customers/customers.module';
 import { OrdersModule } from './orders/orders.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { CurrenciesModule } from './currencies/currencies.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { PaymentsModule } from './payments/payments.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
@@ -34,6 +35,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     OrdersModule,
     SuppliersModule,
     InventoryModule,
+    CurrenciesModule,
     PurchasingModule,
     PaymentsModule,
     WarehousesModule,
