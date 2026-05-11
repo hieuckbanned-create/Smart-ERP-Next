@@ -21,6 +21,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { ActivityFeed } from './components/ActivityFeed';
 
 interface DashboardStats {
   todayRevenue: number;
@@ -185,7 +186,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Revenue chart + Recent orders */}
+        {/* Revenue chart + Recent orders + Activity feed */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           {/* Revenue chart */}
           <div className="xl:col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -203,7 +204,7 @@ export default function DashboardPage() {
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    <stop offset="95%" stopColor="#3b82ff" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -226,6 +227,14 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
 
+          {/* Activity feed (new) */}
+          <div className="xl:col-span-1">
+            <ActivityFeed />
+          </div>
+        </div>
+
+        {/* Top products & Recent orders row */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* Top products */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
@@ -246,6 +255,48 @@ export default function DashboardPage() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Recent orders (keep existing) */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+            <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+                {t('dashboard.recentOrders')}
+              </h2>
+              <a href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</a>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-700">
+                  <tr>
+                    <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.orderCode')}</th>
+                    <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.customer')}</th>
+                    <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.total')}</th>
+                    <th className="px-5 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.status')}</th>
+                    <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.time')}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                  {stats.recentOrders.map((order) => (
+                    <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                      <td className="px-5 py-3 font-medium text-blue-600">{order.code}</td>
+                      <td className="px-5 py-3 text-gray-900 dark:text-white">{order.customerName}</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-900 dark:text-white">
+                        {formatVND(order.total)}
+                      </td>
+                      <td className="px-5 py-3 text-center">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}>
+                          {statusLabels[order.status] || order.status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-right text-gray-400 text-xs">
+                        {new Date(order.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

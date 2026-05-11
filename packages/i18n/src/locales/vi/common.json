@@ -117,7 +117,9 @@
     "time": "Thời gian",
     "welcome": "Xin chào,",
     "sectionTitle": "Tổng quan hôm nay",
-    "insights": "Nhận xét"
+    "insights": "Nhận xét",
+    "recentActivities": "Hoạt động gần đây",
+    "noActivities": "Chưa có hoạt động nào"
   },
 
   "products": {
@@ -550,5 +552,20 @@
     "order_count": "Số đơn hàng",
     "total_revenue": "Tổng doanh thu",
     "avg_order_value": "Giá trị đơn hàng TB"
+  },
+  "activity": {
+    "created": "đã tạo",
+    "updated": "đã cập nhật",
+    "deleted": "đã xóa",
+    "approved": "đã duyệt",
+    "rejected": "đã từ chối",
+    "stock_adjusted": "đã điều chỉnh tồn kho",
+    "entityTypes": {
+      "order": "đơn hàng",
+      "product": "sản phẩm",
+      "customer": "khách hàng",
+      "supplier": "nhà cung cấp",
+      "inventory": "kho hàng"
+    }
   }
 }

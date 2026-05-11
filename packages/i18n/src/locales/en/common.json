@@ -117,7 +117,9 @@
     "time": "Time",
     "welcome": "Welcome,",
     "sectionTitle": "Today's Overview",
-    "insights": "Insights"
+    "insights": "Insights",
+    "recentActivities": "Recent Activities",
+    "noActivities": "No recent activities"
   },
 
   "products": {
@@ -550,5 +552,20 @@
     "order_count": "Order count",
     "total_revenue": "Total revenue",
     "avg_order_value": "Avg order value"
+  },
+  "activity": {
+    "created": "created",
+    "updated": "updated",
+    "deleted": "deleted",
+    "approved": "approved",
+    "rejected": "rejected",
+    "stock_adjusted": "adjusted stock",
+    "entityTypes": {
+      "order": "order",
+      "product": "product",
+      "customer": "customer",
+      "supplier": "supplier",
+      "inventory": "inventory"
+    }
   }
 }

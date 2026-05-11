@@ -135,3 +135,14 @@ Transform tasks into verifiable goals:
 **Encoding check (Linux/macOS):** `file -bi <file>`
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and no hardcoded Vietnamese strings remain.
+
+## Activity Logging Convention
+
+All user operations that affect business data (create, update, delete, approve, reject, stock adjustments) MUST log an entry via `ActivityService.log(...)` with:
+- `tenantId`, `userId`
+- `action` (one of: created, updated, deleted, approved, rejected, stock_adjusted)
+- `entityType` (order, product, customer, supplier, inventory)
+- `entityId`
+- `details` (optional, JSON)
+
+The frontend displays these in the "Recent Activities" dashboard widget.
