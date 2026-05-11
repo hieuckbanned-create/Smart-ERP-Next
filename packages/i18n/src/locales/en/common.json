@@ -154,6 +154,8 @@
     "createSuccess": "Product created",
     "updateSuccess": "Product updated",
     "translations": "Translations",
+    "translations": "Translations",
+    "translations": "Translations",
     "units": {
       "piece": "Piece",
       "kg": "Kg",
