@@ -452,6 +452,13 @@
     "billing": "Billing & Plans"
   },
 
+  "sync": {
+    "conflictTitle": "Sync Conflict Detected",
+    "localVersion": "Local version",
+    "remoteVersion": "Server version",
+    "keepLocal": "Keep local",
+    "keepRemote": "Keep server"
+  },
   "common": {
     "noNotifications": "No notifications",
     "loading": "Loading...",

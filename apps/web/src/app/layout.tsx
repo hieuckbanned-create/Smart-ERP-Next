@@ -64,7 +64,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </ToastProvider>
         </I18nProvider>
-      </body>
+      <SyncConflictModal />
+</body>
     </html>
   );
 }

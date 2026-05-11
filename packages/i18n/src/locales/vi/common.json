@@ -452,6 +452,13 @@
     "billing": "Thanh toán & Gói dịch vụ"
   },
 
+  "sync": {
+    "conflictTitle": "Phát hiện xung đột đồng bộ",
+    "localVersion": "Bản cục bộ",
+    "remoteVersion": "Bản máy chủ",
+    "keepLocal": "Giữ bản cục bộ",
+    "keepRemote": "Giữ bản máy chủ"
+  },
   "common": {
     "noNotifications": "Không có thông báo nào",
     "loading": "Đang tải...",
