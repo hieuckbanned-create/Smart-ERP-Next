@@ -11,6 +11,7 @@ export default function EcommerceSettingsPage() {
   const [shopeeConfig, setShopeeConfig] = useState({ partnerId: '', partnerKey: '', shopId: '' });
   const [tiktokConfig, setTiktokConfig] = useState({ appKey: '', appSecret: '', shopId: '' });
   const [amazonConfig, setAmazonConfig] = useState({ clientId: '', clientSecret: '', refreshToken: '', sellerId: '', region: 'na' });
+  const [ebayConfig, setEbayConfig] = useState({ appId: '', certId: '', devId: '', userToken: '', siteId: '0' });
 
   const saveTikTok = async () => {
     try {
@@ -30,6 +31,7 @@ export default function EcommerceSettingsPage() {
         <Tab value="shopee" label="Shopee" />
         <Tab value="tiktokshop" label="TikTok Shop" />
         <Tab value="amazon" label="Amazon" />
+        <Tab value="ebay" label="eBay" />
       </Tabs>
 
       {activeTab === 'tiktokshop' && (
@@ -58,6 +60,22 @@ export default function EcommerceSettingsPage() {
             <Button onClick={async () => {
               await apiClient.post('/ecommerce/stores', { platform: 'amazon', name: 'Amazon Store', configJson: JSON.stringify(amazonConfig) });
               toast.success(t('ecommerce.amazonSaved'));
+            }}>{t('actions.save')}</Button>
+          </div>
+        </Card>
+      )}
+
+      {activeTab === 'ebay' && (
+        <Card className="mt-4 p-4">
+          <div className="space-y-4">
+            <Input label={t('ecommerce.ebayAppId')} value={ebayConfig.appId} onChange={e => setEbayConfig({ ...ebayConfig, appId: e.target.value })} />
+            <Input label={t('ecommerce.ebayCertId')} type="password" value={ebayConfig.certId} onChange={e => setEbayConfig({ ...ebayConfig, certId: e.target.value })} />
+            <Input label={t('ecommerce.ebayDevId')} type="password" value={ebayConfig.devId} onChange={e => setEbayConfig({ ...ebayConfig, devId: e.target.value })} />
+            <Input label={t('ecommerce.ebayUserToken')} type="password" value={ebayConfig.userToken} onChange={e => setEbayConfig({ ...ebayConfig, userToken: e.target.value })} />
+            <Input label={t('ecommerce.ebaySiteId')} value={ebayConfig.siteId} onChange={e => setEbayConfig({ ...ebayConfig, siteId: e.target.value })} />
+            <Button onClick={async () => {
+              await apiClient.post('/ecommerce/stores', { platform: 'ebay', name: 'eBay Store', configJson: JSON.stringify(ebayConfig) });
+              toast.success(t('ecommerce.ebaySaved'));
             }}>{t('actions.save')}</Button>
           </div>
         </Card>

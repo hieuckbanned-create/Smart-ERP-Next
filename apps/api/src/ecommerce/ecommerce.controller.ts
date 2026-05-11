@@ -23,4 +23,11 @@ export class EcommerceController {
     await this.ecommerceService.syncAmazonOrders(storeId);
     return { message: 'Amazon sync completed' };
   }
+
+  @Post('stores/:storeId/sync/ebay')
+  async syncEbay(@Param('storeId') storeId: string, @CurrentUser() user: any) {
+    await this.ecommerceService.syncEbayProducts(storeId);
+    await this.ecommerceService.syncEbayOrders(storeId);
+    return { message: 'eBay sync completed' };
+  }
 }
