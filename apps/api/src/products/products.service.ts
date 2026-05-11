@@ -27,7 +27,7 @@ export class ProductsService {
       .from(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.sku, dto.sku)));
     if (existing.length > 0) {
-      throw new ConflictException("Mã SKU đã tồn tại");
+      throw new ConflictException("SKU already exists");
     }
     const [product] = await db
       .insert(products)
@@ -152,7 +152,7 @@ export class ProductsService {
 
     if (newStock < 0) {
       throw new ConflictException(
-        `Tồn kho không đủ. Hiện có: ${previousStock}, yêu cầu xuất: ${quantity}`,
+        `Insufficient stock. Available: ${previousStock}, requested: ${quantity}`,
       );
     }
 
