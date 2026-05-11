@@ -161,6 +161,50 @@ export class OrdersService {
     return { ...order, items };
   }
 
+  async generateEInvoiceXml(tenantId: string, id: string): Promise<string> {
+    const order = await this.findOne(tenantId, id);
+    const companyName = 'Smart ERP Next';
+    const taxCode = '0123456789';
+    const date = new Date().toISOString().slice(0,10);
+    const total = parseFloat(order.total);
+    const vatRate = 10; // 10% VAT
+    const vatAmount = total * vatRate / 100;
+    const totalWithVat = total + vatAmount;
+
+    // Simple Vietnamese e-invoice XML (mock)
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="http://www.gdt.gov.vn/invoice" version="2.0.1">
+  <Header>
+    <InvNo>${order.code}</InvNo>
+    <InvDate>${date}</InvDate>
+    <SupplierName>${companyName}</SupplierName>
+    <SupplierTaxCode>${taxCode}</SupplierTaxCode>
+    <BuyerName>${order.customerName || 'Khách lẻ'}</BuyerName>
+    <BuyerAddress>${order.shippingAddress || ''}</BuyerAddress>
+  </Header>
+  <Details>
+    ${order.items.map((item, idx) => `
+    <Item>
+      <LineNumber>${idx+1}</LineNumber>
+      <ItemName>${escapeXml(item.productName)}</ItemName>
+      <Quantity>${item.quantity}</Quantity>
+      <Unit>${item.unit}</Unit>
+      <UnitPrice>${parseFloat(item.unitPrice)}</UnitPrice>
+      <Amount>${parseFloat(item.lineTotal)}</Amount>
+    </Item>
+    `).join('')}
+  </Details>
+  <Summary>
+    <TotalAmount>${total}</TotalAmount>
+    <VATRate>${vatRate}</VATRate>
+    <VATAmount>${vatAmount}</VATAmount>
+    <TotalAmountWithVAT>${totalWithVat}</TotalAmountWithVAT>
+    <PaymentMethod>${order.paymentMethod || 'Cash'}</PaymentMethod>
+  </Summary>
+</Invoice>`;
+    return xml;
+  }
+
   async updateStatus(tenantId: string, id: string, status: string, cancelReason?: string) {
     const validTransitions: Record<string, string[]> = {
       draft: ['confirmed', 'cancelled'],

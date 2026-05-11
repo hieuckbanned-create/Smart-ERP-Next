@@ -49,6 +49,18 @@ export class OrdersController {
     return this.ordersService.findOne(req.user.tenantId, id);
   }
 
+  @Get(':id/einvoice')
+  async generateEInvoice(
+    @Request() req: any,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Res() res: Response,
+  ) {
+    const xml = await this.ordersService.generateEInvoiceXml(req.user.tenantId, id);
+    res.setHeader('Content-Type', 'application/xml');
+    res.setHeader('Content-Disposition', `attachment; filename=invoice-${id}.xml`);
+    res.send(xml);
+  }
+
   @Patch(':id/status')
   updateStatus(
     @Request() req: any,

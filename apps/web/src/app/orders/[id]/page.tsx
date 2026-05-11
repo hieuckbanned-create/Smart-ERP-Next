@@ -7,7 +7,7 @@ import { ordersApi, type Order } from '@/lib/api-orders';
 import AuthGuard from '@/components/layout/AuthGuard';
 import {
   ArrowLeft, ShoppingBag, User, CreditCard,
-  Package, CheckCircle, XCircle, Truck,
+  Package, CheckCircle, XCircle, Truck, FileText,
 } from 'lucide-react';
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
@@ -166,6 +166,27 @@ export default function OrderDetailPage() {
                   {action.label}
                 </button>
               ))}
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await apiClient.get(`/orders/${order.id}/einvoice`, { responseType: 'blob' });
+                    const url = window.URL.createObjectURL(new Blob([res.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `invoice-${order.code}.xml`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                    window.URL.revokeObjectURL(url);
+                  } catch (err) {
+                    alert('Failed to generate e-invoice');
+                  }
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-600 text-white hover:bg-green-700"
+              >
+                <FileText className="w-4 h-4" />
+                {t('orders.einvoice')}
+              </button>
             </div>
           )}
         </div>
