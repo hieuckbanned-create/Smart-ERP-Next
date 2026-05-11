@@ -452,7 +452,14 @@
     "billing": "Thanh toán & Gói dịch vụ"
   },
 
-  "sync": {
+  "profile": {
+    "title": "Hồ sơ",
+    "name": "Họ tên",
+    "phone": "Số điện thoại",
+    "avatarHelp": "Nhấn vào biểu tượng máy ảnh để đổi ảnh đại diện",
+    "theme": "Giao diện",
+    "language": "Ngôn ngữ"
+  },
     "conflictTitle": "Phát hiện xung đột đồng bộ",
     "localVersion": "Bản cục bộ",
     "remoteVersion": "Bản máy chủ",

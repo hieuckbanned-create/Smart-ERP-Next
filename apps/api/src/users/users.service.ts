@@ -97,6 +97,17 @@ export class UsersService {
     return user;
   }
 
+  async updateProfile(tenantId: string, userId: string, dto: UpdateUserDto) {
+    const [user] = await db
+      .update(users)
+      .set({ ...dto, updatedAt: new Date() })
+      .where(and(eq(users.tenantId, tenantId), eq(users.id, userId)))
+      .returning();
+
+    if (!user) throw new NotFoundException("User not found");
+    return user;
+  }
+
   async remove(tenantId: string, id: string) {
     const [user] = await db
       .delete(users)

@@ -23,6 +23,11 @@ export class UsersController {
     return this.usersService.findAll(req.user.tenantId, search);
   }
 
+  @Get('me')
+  getMe(@Request() req: any) {
+    return this.usersService.findOne(req.user.tenantId, req.user.sub);
+  }
+
   @Get('stats')
   getStats(@Request() req: any) {
     return this.usersService.getStats(req.user.tenantId);
@@ -45,5 +50,10 @@ export class UsersController {
   @Delete(':id')
   remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.remove(req.user.tenantId, id);
+  }
+
+  @Patch('profile')
+  async updateProfile(@Request() req: any, @Body() dto: UpdateUserDto) {
+    return this.usersService.updateProfile(req.user.tenantId, req.user.sub, dto);
   }
 }

@@ -452,7 +452,14 @@
     "billing": "Billing & Plans"
   },
 
-  "sync": {
+  "profile": {
+    "title": "Profile",
+    "name": "Full name",
+    "phone": "Phone number",
+    "avatarHelp": "Click the camera icon to change your avatar",
+    "theme": "Theme",
+    "language": "Language"
+  },
     "conflictTitle": "Sync Conflict Detected",
     "localVersion": "Local version",
     "remoteVersion": "Server version",
