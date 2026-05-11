@@ -17,7 +17,7 @@ export class WarehousesService {
       .select()
       .from(warehouses)
       .where(and(eq(warehouses.tenantId, tenantId), eq(warehouses.code, dto.code)));
-    if (existing.length > 0) throw new ConflictException('Mã kho đã tồn tại');
+    if (existing.length > 0) throw new ConflictException('Warehouse code already exists');
 
     // If this is the first warehouse or isDefault=true, ensure only one default
     if (dto.isDefault) {
@@ -47,7 +47,7 @@ export class WarehousesService {
       .select()
       .from(warehouses)
       .where(and(eq(warehouses.tenantId, tenantId), eq(warehouses.id, id)));
-    if (!warehouse) throw new NotFoundException('Không tìm thấy kho');
+    if (!warehouse) throw new NotFoundException('Warehouse not found');
     return warehouse;
   }
 
@@ -71,7 +71,7 @@ export class WarehousesService {
       .set({ ...dto, updatedAt: new Date() })
       .where(and(eq(warehouses.tenantId, tenantId), eq(warehouses.id, id)))
       .returning();
-    if (!warehouse) throw new NotFoundException('Không tìm thấy kho');
+    if (!warehouse) throw new NotFoundException('Warehouse not found');
     return warehouse;
   }
 
@@ -80,7 +80,7 @@ export class WarehousesService {
       .delete(warehouses)
       .where(and(eq(warehouses.tenantId, tenantId), eq(warehouses.id, id)))
       .returning();
-    if (!warehouse) throw new NotFoundException('Không tìm thấy kho');
+    if (!warehouse) throw new NotFoundException('Warehouse not found');
     return warehouse;
   }
 }
