@@ -240,7 +240,7 @@ export default function InventoryPage() {
                       </thead>
                       <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                         {transactions.length === 0 ? (
-                          <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">Chưa có giao dịch</td></tr>
+                          <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">{t('inventory.noTransactions')}</td></tr>
                         ) : transactions.map((tx) => {
                           const typeInfo = TYPE_LABELS[tx.type] ?? { label: tx.type, color: 'text-gray-600 bg-gray-50' };
                           return (
