@@ -18,7 +18,7 @@ export class UsersService {
     }
 
     const existing = await this.findByEmail(createUserDto.email);
-    if (existing) throw new ConflictException("Email đã được sử dụng");
+    if (existing) throw new ConflictException("Email already in use");
 
     const [user] = await db
       .insert(users)
@@ -77,7 +77,7 @@ export class UsersService {
       .from(users)
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)));
 
-    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
+    if (!user) throw new NotFoundException("User not found");
     return user;
   }
 
@@ -93,7 +93,7 @@ export class UsersService {
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)))
       .returning();
 
-    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
+    if (!user) throw new NotFoundException("User not found");
     return user;
   }
 
@@ -103,7 +103,7 @@ export class UsersService {
       .where(and(eq(users.tenantId, tenantId), eq(users.id, id)))
       .returning();
 
-    if (!user) throw new NotFoundException("Không tìm thấy người dùng");
+    if (!user) throw new NotFoundException("User not found");
     return user;
   }
 
