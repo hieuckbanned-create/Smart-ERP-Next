@@ -539,6 +539,21 @@
       "needApproval": "Cần phê duyệt của bạn"
     }
   },
+  "activity": {
+    "created": "đã tạo",
+    "updated": "đã cập nhật",
+    "deleted": "đã xóa",
+    "approved": "đã duyệt",
+    "rejected": "đã từ chối",
+    "stock_adjusted": "đã điều chỉnh tồn kho",
+    "entityTypes": {
+      "order": "đơn hàng",
+      "product": "sản phẩm",
+      "customer": "khách hàng",
+      "supplier": "nhà cung cấp",
+      "inventory": "kho hàng"
+    }
+  },
   "advanced_reports": {
     "title": "Báo cáo nâng cao",
     "templates": "Mẫu báo cáo",

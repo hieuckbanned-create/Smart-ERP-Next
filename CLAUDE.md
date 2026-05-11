@@ -146,3 +146,14 @@ All user operations that affect business data (create, update, delete, approve, 
 - `details` (optional, JSON)
 
 The frontend displays these in the "Recent Activities" dashboard widget.
+
+## Activity Logging Convention
+
+All user operations that affect business data (create, update, delete, approve, reject, stock adjustments) MUST log an entry via `ActivityService.log(...)` with:
+- `tenantId`, `userId`
+- `action` (one of: created, updated, deleted, approved, rejected, stock_adjusted)
+- `entityType` (order, product, customer, supplier, inventory)
+- `entityId`
+- `details` (optional, JSON)
+
+The frontend displays these in the "Recent Activities" dashboard widget.

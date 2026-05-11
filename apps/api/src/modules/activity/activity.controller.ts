@@ -9,9 +9,7 @@ export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
   @Get('recent')
-  async getRecentActivities(
-    @CurrentUser('tenantId') tenantId: string,
-  ) {
+  async getRecentActivities(@CurrentUser('tenantId') tenantId: string) {
     const items = await this.activityService.getRecentActivities(tenantId, 10);
     return { items };
   }

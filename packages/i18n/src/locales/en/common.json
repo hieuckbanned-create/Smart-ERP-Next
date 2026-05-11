@@ -539,6 +539,21 @@
       "needApproval": "Your approval is needed"
     }
   },
+  "activity": {
+    "created": "created",
+    "updated": "updated",
+    "deleted": "deleted",
+    "approved": "approved",
+    "rejected": "rejected",
+    "stock_adjusted": "adjusted stock",
+    "entityTypes": {
+      "order": "order",
+      "product": "product",
+      "customer": "customer",
+      "supplier": "supplier",
+      "inventory": "inventory"
+    }
+  },
   "advanced_reports": {
     "title": "Advanced Reports",
     "templates": "Report Templates",

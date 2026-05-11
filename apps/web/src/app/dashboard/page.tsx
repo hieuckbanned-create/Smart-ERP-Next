@@ -22,6 +22,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { ActivityFeed } from './components/ActivityFeed';
+import { ActivityFeed } from './components/ActivityFeed';
 
 interface DashboardStats {
   todayRevenue: number;
