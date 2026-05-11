@@ -326,7 +326,7 @@ export default function ReportsPage() {
                   {[
                     { label: 'Tổng sản phẩm', value: inventory.totalProducts },
                     { label: 'Giá trị tồn kho', value: formatVND(inventory.totalStockValue) },
-                    { label: 'Sắp hết hàng', value: inventory.lowStockCount, danger: inventory.lowStockCount > 0 },
+                    { label: t('inventory.lowStock'), value: inventory.lowStockCount, danger: inventory.lowStockCount > 0 },
                     { label: 'Hết hàng', value: inventory.outOfStockCount, danger: inventory.outOfStockCount > 0 },
                   ].map((card) => (
                     <div key={card.label} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
