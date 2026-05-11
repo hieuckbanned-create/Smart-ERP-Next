@@ -179,7 +179,7 @@ export default function InventoryPage() {
               { label: 'Tổng sản phẩm', value: summary.totalProducts, color: 'text-gray-900 dark:text-white' },
               { label: 'Tổng đơn vị', value: summary.totalUnits.toLocaleString('vi-VN'), color: 'text-gray-900 dark:text-white' },
               { label: 'Giá trị tồn kho', value: formatVND(summary.totalValue), color: 'text-blue-600' },
-              { label: 'Sắp hết hàng', value: summary.lowStock, color: summary.lowStock > 0 ? 'text-yellow-600' : 'text-gray-900 dark:text-white' },
+              { label: t('inventory.lowStock'), value: summary.lowStock, color: summary.lowStock > 0 ? 'text-yellow-600' : 'text-gray-900 dark:text-white' },
               { label: 'Hết hàng', value: summary.outOfStock, color: summary.outOfStock > 0 ? 'text-red-600' : 'text-gray-900 dark:text-white' },
             ].map((card) => (
               <div key={card.label} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
