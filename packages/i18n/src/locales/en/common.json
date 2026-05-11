@@ -264,7 +264,11 @@
     "serialNumber": "Serial Number",
     "stockValue": "Stock Value",
     "lowStock": "Low Stock",
-    "normal": "Normal"
+    "normal": "Normal",
+    "updateFailed": "Update failed",
+    "adjustFailed": "Adjustment failed",
+    "noTransactions": "No transactions",
+    "allInStock": "All products are in stock ✓"
   },
 
   "purchasing": {

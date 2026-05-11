@@ -36,7 +36,7 @@ const formatVND = (v: number) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(v);
 
 const TYPE_LABELS: Record<string, { label: string; color: string }> = {
-  IN: { label: 'Nhập kho', color: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
+  IN: { label: '{t('inventory.stockIn')}', color: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
   OUT: { label: 'Xuất kho', color: 'text-red-600 bg-red-50 dark:bg-red-900/20' },
   ADJUSTMENT: { label: 'Điều chỉnh', color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' },
 };
@@ -112,7 +112,7 @@ export default function InventoryPage() {
       });
       fetchData(); // refresh to get updated suggestions
     } catch (err: any) {
-      alert(err.response?.data?.message ?? 'Cập nhật thất bại');
+      alert(err.response?.data?.message ?? t('inventory.updateFailed'));
     }
   };
 
@@ -124,7 +124,7 @@ export default function InventoryPage() {
       });
       fetchData(); // refresh to get updated suggestions
     } catch (err: any) {
-      alert(err.response?.data?.message ?? 'Cập nhật thất bại');
+      alert(err.response?.data?.message ?? t('inventory.updateFailed'));
     }
   };
 
@@ -143,7 +143,7 @@ export default function InventoryPage() {
       setAdjustForm({ productSearch: '', productId: '', productName: '', quantity: 1, type: 'IN', notes: '', reference: '' });
       fetchData();
     } catch (err: any) {
-      alert(err.response?.data?.message ?? 'Điều chỉnh thất bại');
+      alert(err.response?.data?.message ?? t('inventory.adjustFailed'));
     } finally {
       setAdjusting(false);
     }
@@ -300,7 +300,7 @@ export default function InventoryPage() {
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                       {lowStockItems.length === 0 ? (
-                        <tr><td colSpan={5} className="px-4 py-12 text-center text-gray-400">Tất cả sản phẩm đều đủ hàng ✓</td></tr>
+                        <tr><td colSpan={5} className="px-4 py-12 text-center text-gray-400">{t('inventory.allInStock')}</td></tr>
                       ) : lowStockItems.map((p) => (
                         <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                           <td className="px-4 py-3">
@@ -323,7 +323,7 @@ export default function InventoryPage() {
                               }}
                               className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                             >
-                              Nhập kho
+                              {t('inventory.stockIn')}
                             </button>
                           </td>
                         </tr>
@@ -393,7 +393,7 @@ export default function InventoryPage() {
                               }}
                               className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                             >
-                              Nhập kho
+                              {t('inventory.stockIn')}
                             </button>
                           </td>
                         </tr>
@@ -463,7 +463,7 @@ export default function InventoryPage() {
                               }}
                               className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
                             >
-                              Nhập kho
+                              {t('inventory.stockIn')}
                             </button>
                           </td>
                         </tr>

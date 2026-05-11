@@ -264,7 +264,11 @@
     "serialNumber": "Số serial",
     "stockValue": "Giá trị tồn kho",
     "lowStock": "Sắp hết hàng",
-    "normal": "Bình thường"
+    "normal": "Bình thường",
+    "updateFailed": "Cập nhật thất bại",
+    "adjustFailed": "Điều chỉnh thất bại",
+    "noTransactions": "Chưa có giao dịch",
+    "allInStock": "Tất cả sản phẩm đều đủ hàng ✓"
   },
 
   "purchasing": {
