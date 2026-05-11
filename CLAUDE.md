@@ -22,7 +22,41 @@ Behavioral guidelines for AI-assisted development on this project.
 - Match existing style, even if you'd do it differently.
 - Remove imports/variables/functions that YOUR changes made unused.
 
-## 4. Project-Specific Rules
+## 4. Project Structure (CRITICAL)
+
+```
+smart-erp-next/
+├── apps/
+│   ├── api/          ← NestJS backend (src/ is at apps/api/src/)
+│   ├── web/          ← Next.js frontend (src/ is at apps/web/src/)
+│   ├── mobile/       ← Expo app (src/ is at apps/mobile/src/)
+│   └── desktop/      ← Tauri app (src/ is at apps/desktop/src/)
+├── packages/
+│   ├── database/
+│   ├── i18n/
+│   ├── ui/
+│   ├── shared/
+│   ├── types/
+│   ├── utils/
+│   ├── hooks/
+│   └── validation/
+```
+
+### ⚠️ NEVER create nested app directories or misplace app code in packages/
+
+- **WRONG**: `apps/api/apps/api/src/...` — never nest an app inside itself
+- **WRONG**: `apps/web/apps/desktop/...` — never nest one app inside another
+- **WRONG**: `apps/web/app/...` — Next.js App Router lives at `apps/web/src/app/`
+- **WRONG**: `packages/api/src/...` — NestJS backend code belongs in `apps/api/src/`, not `packages/`
+- **RIGHT**: All source files for `api` go under `apps/api/src/`
+- **RIGHT**: All source files for `web` go under `apps/web/src/`
+- **RIGHT**: `packages/` is only for shared libraries consumed by multiple apps (ui, i18n, utils, types, hooks, validation, database, sync, shared)
+
+If you find yourself writing a path like `apps/X/apps/...` or `packages/api/...`, **stop and fix the path**.
+
+> This structure can be extended (new apps, new packages) — the rule is about **nesting**, not about limiting growth.
+
+## 5. Project-Specific Rules
 
 ### Tech Stack
 
@@ -41,6 +75,13 @@ Behavioral guidelines for AI-assisted development on this project.
 - Vietnamese is the default language (`fallbackLng: 'vi'`)
 - Key pattern: `module.key` e.g. `products.title`, `orders.status`
 - For mobile and desktop apps, import from `@smart-erp/i18n` – the same keys are shared across all platforms
+
+### Encoding & File Format Rules (Critical for Vietnamese)
+
+- **All source files MUST be saved as UTF-8 without BOM**. This ensures Vietnamese characters (ă, â, đ, ê, ô, ơ, ư, etc.) display correctly in all environments.
+- **Use LF line endings** (not CRLF) for all source code files to avoid cross‑platform formatting issues.
+- **Never hardcode user‑facing Vietnamese text** outside of i18n translation files (`packages/i18n/src/locales/vi/`). If you see Vietnamese characters in a component or service file, it should be using `t()`.
+- When writing console logs or error messages in the backend, prefer English or use parameterized i18n messages.
 
 ### API Rules
 
@@ -72,7 +113,7 @@ Types: feat, fix, docs, style, refactor, test, chore
 Scopes: api, web, mobile, desktop, db, i18n, ui, sync, types, validation, hooks, utils, docs
 ```
 
-## 5. Goal-Driven Execution
+## 6. Goal-Driven Execution
 
 Transform tasks into verifiable goals:
 
