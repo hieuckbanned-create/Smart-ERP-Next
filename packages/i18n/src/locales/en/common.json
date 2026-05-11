@@ -239,6 +239,12 @@
   },
 
   "inventory": {
+    "fetchProductsError": "Failed to load products",
+    "forecastError": "Failed to run AI forecast",
+    "suggestedOrder": "Suggested order",
+    "dailyDemand": "Daily demand forecast",
+    "date": "Date",
+    "predicted": "Predicted",
     "title": "Inventory",
     "warehouses": "Warehouses",
     "addWarehouse": "Add Warehouse",

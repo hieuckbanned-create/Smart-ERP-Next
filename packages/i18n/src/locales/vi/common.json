@@ -239,6 +239,12 @@
   },
 
   "inventory": {
+    "fetchProductsError": "Không thể tải danh sách sản phẩm",
+    "forecastError": "Không thể chạy dự báo AI",
+    "suggestedOrder": "Đề xuất đặt hàng",
+    "dailyDemand": "Dự báo nhu cầu hàng ngày",
+    "date": "Ngày",
+    "predicted": "Dự báo",
     "title": "Kho hàng",
     "warehouses": "Kho",
     "addWarehouse": "Thêm kho",
