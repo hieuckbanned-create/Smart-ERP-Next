@@ -50,6 +50,8 @@ export const orders = pgTable(
     customerIdx: index('orders_customer_idx').on(table.customerId),
     statusIdx: index('orders_status_idx').on(table.status),
     createdAtIdx: index('orders_created_at_idx').on(table.createdAt),
+    // Composite index for tenant+status (common in order list queries)
+    tenantStatusIdx: index('orders_tenant_status_idx').on(table.tenantId, table.status),
   })
 );
 
