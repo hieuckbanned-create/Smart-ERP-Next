@@ -85,6 +85,8 @@ export const orderItems = pgTable(
   (table) => ({
     orderIdx: index('order_items_order_idx').on(table.orderId),
     productIdx: index('order_items_product_idx').on(table.productId),
+    // Composite index for product_id+order_id (common in product sales analysis)
+    productOrderIdx: index('order_items_product_order_idx').on(table.productId, table.orderId),
   })
 );
 
