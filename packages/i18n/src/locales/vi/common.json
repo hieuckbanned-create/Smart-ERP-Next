@@ -311,6 +311,13 @@
   },
 
   "reports": {
+    "cashflow": {
+      "title": "Dự báo dòng tiền",
+      "inflow": "Dòng tiền vào",
+      "outflow": "Dòng tiền ra",
+      "net_cashflow": "Dòng tiền ròng",
+      "period": "Kỳ"
+    },
     "title": "Báo cáo",
     "revenue": "Doanh thu",
     "profit": "Lợi nhuận",

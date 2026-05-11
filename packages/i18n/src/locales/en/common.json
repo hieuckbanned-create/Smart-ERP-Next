@@ -311,6 +311,13 @@
   },
 
   "reports": {
+    "cashflow": {
+      "title": "Cashflow Forecast",
+      "inflow": "Inflow",
+      "outflow": "Outflow",
+      "net_cashflow": "Net Cashflow",
+      "period": "Period"
+    },
     "title": "Reports",
     "revenue": "Revenue",
     "profit": "Profit",
