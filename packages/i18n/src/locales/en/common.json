@@ -223,6 +223,7 @@
     "add": "Add Supplier",
     "code": "Supplier Code",
     "name": "Supplier Name",
+    "empty": "No suppliers found",
     "contact": "Contact",
     "phone": "Phone",
     "email": "Email",

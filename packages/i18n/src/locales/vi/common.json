@@ -223,6 +223,7 @@
     "add": "Thêm nhà cung cấp",
     "code": "Mã NCC",
     "name": "Tên nhà cung cấp",
+    "empty": "Không có nhà cung cấp nào",
     "contact": "Liên hệ",
     "phone": "Số điện thoại",
     "email": "Email",

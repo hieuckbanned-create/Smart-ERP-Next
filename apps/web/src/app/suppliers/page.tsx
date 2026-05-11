@@ -129,7 +129,7 @@ export default function SuppliersPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                     {suppliers.length === 0 ? (
-                      <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">Không có nhà cung cấp nào</td></tr>
+                      <tr><td colSpan={7} className="px-4 py-12 text-center text-gray-400">{t('suppliers.empty')}</td></tr>
                     ) : suppliers.map((s) => (
                       <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <td className="px-4 py-3 font-mono text-xs text-gray-500">{s.code}</td>
