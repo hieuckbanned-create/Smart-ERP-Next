@@ -141,6 +141,16 @@ export default function EditProductPage() {
                 <textarea name="description" value={form.description ?? ''} onChange={handleChange}
                   rows={3} className={inputClass} />
               </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {t('products.translations')}
+                </label>
+                <ProductTranslationsEditor
+                  value={form.translations}
+                  onChange={(translations) => setForm(prev => ({ ...prev, translations }))}
+                />
+              </div>
             </div>
           </div>
 

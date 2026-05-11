@@ -38,8 +38,12 @@ export class ProductsController {
   }
 
   @Get(':id')
-  findOne(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
-    return this.productsService.findOne(req.user.tenantId, id);
+  findOne(
+    @Request() req: any,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query('lang') lang?: string,
+  ) {
+    return this.productsService.findOne(req.user.tenantId, id, lang);
   }
 
   @Patch(':id')

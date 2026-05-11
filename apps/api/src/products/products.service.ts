@@ -92,12 +92,15 @@ export class ProductsService {
     };
   }
 
-  async findOne(tenantId: string, id: string) {
+  async findOne(tenantId: string, id: string, lang?: string) {
     const [product] = await db
       .select()
       .from(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.id, id)));
     if (!product) throw new NotFoundException("Product not found");
+    if (lang && product.translations && product.translations[lang]) {
+      product.description = product.translations[lang].description;
+    }
     return product;
   }
 
