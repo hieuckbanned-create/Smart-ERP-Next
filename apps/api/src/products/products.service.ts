@@ -43,6 +43,15 @@ export class ProductsService {
     return product;
   }
 
+  async findAllForExport(tenantId: string, query: QueryProductDto) {
+    const conditions = [eq(products.tenantId, tenantId)];
+    if (query.search) conditions.push(or(ilike(products.name, `%${query.search}%`), ilike(products.sku, `%${query.search}%`))!);
+    if (query.minPrice) conditions.push(gte(products.price, query.minPrice.toString()));
+    if (query.maxPrice) conditions.push(lte(products.price, query.maxPrice.toString()));
+    if (query.isActive !== undefined) conditions.push(eq(products.isActive, query.isActive));
+    return db.select().from(products).where(and(...conditions)).orderBy(products.name);
+  }
+
   async findAll(tenantId: string, query: QueryProductDto) {
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 20, 100);

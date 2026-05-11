@@ -37,6 +37,12 @@ export class ProductsController {
     return this.productsService.findBySku(req.user.tenantId, sku);
   }
 
+  @Get('export')
+  async exportProducts(@Request() req: any, @Query() query: QueryProductDto) {
+    const items = await this.productsService.findAllForExport(req.user.tenantId, query);
+    return { items };
+  }
+
   @Get(':id')
   findOne(
     @Request() req: any,
