@@ -16,6 +16,7 @@ interface DashboardData {
   todayOrders: number;
   totalCustomers: number;
   lowStockCount: number;
+  pendingApprovals: number;
   recentOrders: {
     id: string;
     code: string;
@@ -55,7 +56,13 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
   const fetchDashboard = useCallback(async () => {
     try {
       const json = await api.get<DashboardData>('/insights/dashboard');
-      setData(json);
+      // Also fetch pending approvals count (fallback to /approvals if needed)
+      let pendingCount = 0;
+      try {
+        const pendingRes = await api.get<{ total: number }>('/approvals?status=pending&limit=1');
+        pendingCount = pendingRes.total ?? 0;
+      } catch (err) { /* ignore */ }
+      setData({ ...json, pendingApprovals: pendingCount });
       await fetchLastSync();
     } catch (err) {
       console.error('Dashboard fetch error:', err);
@@ -79,7 +86,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
   }
 
   const stats = data ?? {
-    todayRevenue: 0, todayOrders: 0, totalCustomers: 0, lowStockCount: 0,
+    todayRevenue: 0, todayOrders: 0, totalCustomers: 0, lowStockCount: 0, pendingApprovals: 0,
     recentOrders: [], insights: [],
   };
 
@@ -108,7 +115,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
         {[
           { label: t('dashboard.todayRevenue'), value: formatVND(stats.todayRevenue), color: '#3b82f6' },
           { label: t('dashboard.todayOrders'), value: stats.todayOrders.toString(), color: '#10b981' },
-          { label: t('dashboard.newCustomers'), value: stats.totalCustomers.toLocaleString('vi-VN'), color: '#8b5cf6' },
+          { label: t('dashboard.pendingApprovals'), value: stats.pendingApprovals.toString(), color: '#f59e0b', danger: stats.pendingApprovals > 0 },
           {
             label: t('dashboard.lowStock'),
             value: stats.lowStockCount.toString(),
