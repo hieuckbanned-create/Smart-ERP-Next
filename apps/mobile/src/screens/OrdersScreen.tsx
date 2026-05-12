@@ -3,6 +3,7 @@ import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native';
+import { useTranslation } from '@smart-erp/i18n';
 import { api, type PaginatedResponse } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 
@@ -18,28 +19,30 @@ interface Order {
   createdAt: string;
 }
 
-const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  draft:     { label: t('orders.status.draft'),      color: '#6b7280', bg: '#f3f4f6' },
-  confirmed: { label: t('orders.status.confirmed'),  color: '#2563eb', bg: '#dbeafe' },
-  processing:{ label: t('orders.status.processing'), color: '#d97706', bg: '#fef3c7' },
-  shipped:   { label: t('orders.status.shipped'),    color: '#7c3aed', bg: '#ede9fe' },
-  delivered: { label: t('orders.status.delivered'),  color: '#059669', bg: '#d1fae5' },
-  cancelled: { label: t('orders.status.cancelled'),  color: '#dc2626', bg: '#fee2e2' },
-};
-
-const CHANNEL_LABELS: Record<string, string> = {
-  pos: t('orders.channels.pos'), online: t('orders.channels.online'), phone: t('orders.channels.phone'), wholesale: t('orders.channels.wholesale'),
-};
-
-const STATUS_FILTERS = [
-  { key: '', label: t('orders.statusAll') },
-  { key: 'confirmed', label: t('orders.status.confirmed') },
-  { key: 'processing', label: t('orders.status.processing') },
-  { key: 'delivered', label: t('orders.status.delivered') },
-  { key: 'cancelled', label: t('orders.status.cancelled') },
-];
-
 export default function OrdersScreen() {
+  const { t } = useTranslation();
+
+  const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
+    draft:     { label: 'Nháp',      color: '#6b7280', bg: '#f3f4f6' },
+    confirmed: { label: 'Xác nhận',  color: '#2563eb', bg: '#dbeafe' },
+    processing:{ label: 'Xử lý',     color: '#d97706', bg: '#fef3c7' },
+    shipped:   { label: 'Giao vận',  color: '#7c3aed', bg: '#ede9fe' },
+    delivered: { label: 'Đã giao',   color: '#059669', bg: '#d1fae5' },
+    cancelled: { label: 'Đã hủy',   color: '#dc2626', bg: '#fee2e2' },
+  };
+
+  const CHANNEL_LABELS: Record<string, string> = {
+    pos: 'POS', online: 'Online', phone: 'Điện thoại', wholesale: 'Sỉ',
+  };
+
+  const STATUS_FILTERS = [
+    { key: '', label: 'Tất cả' },
+    { key: 'confirmed', label: 'Xác nhận' },
+    { key: 'processing', label: 'Xử lý' },
+    { key: 'delivered', label: 'Đã giao' },
+    { key: 'cancelled', label: 'Đã hủy' },
+  ];
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,7 +69,7 @@ export default function OrdersScreen() {
     setLoading(true);
     setPage(1);
     fetchOrders(1, statusFilter);
-  }, [statusFilter]);
+  }, [statusFilter, fetchOrders]);
 
   const handleRefresh = () => { setRefreshing(true); setPage(1); fetchOrders(1, statusFilter); };
   const handleLoadMore = () => {
@@ -95,12 +98,12 @@ export default function OrdersScreen() {
         </View>
         <View style={styles.cardBottom}>
           <View>
-            <Text style={styles.totalLabel}>{t('orders.total')}</Text>
+            <Text style={styles.totalLabel}>Tổng</Text>
             <Text style={styles.total}>{formatVND(item.total)}</Text>
           </View>
           {hasDebt && (
             <View style={styles.debtBadge}>
-              <Text style={styles.debtText}>{t('orders.debt')}: {formatVND(item.debtAmount)}</Text>
+              <Text style={styles.debtText}>Công nợ: {formatVND(item.debtAmount)}</Text>
             </View>
           )}
         </View>
@@ -122,7 +125,7 @@ export default function OrdersScreen() {
       {loading && !refreshing ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color="#3b82f6" />
-          <Text style={styles.loadingText}>{t('common.loading')}</Text>
+          <Text style={styles.loadingText}>Đang tải...</Text>
         </View>
       ) : (
         <FlatList
@@ -133,7 +136,7 @@ export default function OrdersScreen() {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#3b82f6" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.3}
-          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>{t('common.noData')}</Text></View>}
+          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>Không có đơn hàng</Text></View>}
           ListFooterComponent={hasMore ? <ActivityIndicator style={{ marginVertical: 16 }} color="#3b82f6" /> : null}
         />
       )}

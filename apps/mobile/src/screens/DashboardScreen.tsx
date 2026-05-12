@@ -8,8 +8,6 @@ import { formatVND } from '@smart-erp/utils';
 import { ActivityList } from '../components/ActivityList';
 import { QuickActions } from '../components/QuickActions';
 import { syncService } from '../lib/sync-service';
-import { ActivityList } from '../components/ActivityList';
-import { QuickActions } from '../components/QuickActions';
 
 interface DashboardData {
   todayRevenue: number;
@@ -46,7 +44,6 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
-  const [lastSync, setLastSync] = useState<Date | null>(null);
 
   const fetchLastSync = async () => {
     const ts = await syncService.getLastSyncTime();
@@ -56,7 +53,6 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
   const fetchDashboard = useCallback(async () => {
     try {
       const json = await api.get<DashboardData>('/insights/dashboard');
-      // Also fetch pending approvals count (fallback to /approvals if needed)
       let pendingCount = 0;
       try {
         const pendingRes = await api.get<{ total: number }>('/approvals?status=pending&limit=1');
@@ -96,7 +92,6 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
       showsVerticalScrollIndicator={false}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#3b82f6" />}
     >
-      {/* Welcome */}
       <View style={styles.welcomeRow}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>
@@ -104,24 +99,19 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
           </Text>
         </View>
         <View>
-          <Text style={styles.welcomeText}>{t('dashboard.welcome')}</Text>
+          <Text style={styles.welcomeText}>Chào mừng</Text>
           <Text style={styles.userName} numberOfLines={1}>{user?.name ?? user?.email}</Text>
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>{t('dashboard.sectionTitle')}</Text>
+      <Text style={styles.sectionTitle}>Tổng quan hôm nay</Text>
 
       <View style={styles.statsGrid}>
         {[
-          { label: t('dashboard.todayRevenue'), value: formatVND(stats.todayRevenue), color: '#3b82f6' },
-          { label: t('dashboard.todayOrders'), value: stats.todayOrders.toString(), color: '#10b981' },
-          { label: t('dashboard.pendingApprovals'), value: stats.pendingApprovals.toString(), color: '#f59e0b', danger: stats.pendingApprovals > 0 },
-          {
-            label: t('dashboard.lowStock'),
-            value: stats.lowStockCount.toString(),
-            color: stats.lowStockCount > 0 ? '#ef4444' : '#10b981',
-            danger: stats.lowStockCount > 0,
-          },
+          { label: 'Doanh thu', value: formatVND(stats.todayRevenue), color: '#3b82f6' },
+          { label: 'Đơn hàng', value: stats.todayOrders.toString(), color: '#10b981' },
+          { label: 'Chờ duyệt', value: stats.pendingApprovals.toString(), color: '#f59e0b', danger: stats.pendingApprovals > 0 },
+          { label: 'Sắp hết hàng', value: stats.lowStockCount.toString(), color: stats.lowStockCount > 0 ? '#ef4444' : '#10b981', danger: stats.lowStockCount > 0 },
         ].map((card) => (
           <View key={card.label} style={[styles.statCard, { borderLeftColor: card.color }]}>
             <Text style={styles.statLabel}>{card.label}</Text>
@@ -132,7 +122,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
 
       {stats.insights.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>{t('dashboard.insights')}</Text>
+          <Text style={styles.sectionTitle}>Gợi ý</Text>
           <View style={styles.insightsContainer}>
             {stats.insights.map((insight, i) => (
               <View key={i} style={[
@@ -149,7 +139,7 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
 
       {stats.recentOrders.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>{t('dashboard.recentOrders')}</Text>
+          <Text style={styles.sectionTitle}>Đơn hàng gần đây</Text>
           <View style={styles.ordersContainer}>
             {stats.recentOrders.map((order) => (
               <View key={order.id} style={styles.orderRow}>
@@ -176,23 +166,12 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
       )}
 
       <QuickActions />
-
       <ActivityList />
 
       {lastSync && (
         <View style={styles.lastSyncContainer}>
           <Text style={styles.lastSyncText}>
-            {t('dashboard.lastSync')}: {lastSync.toLocaleString()}
-          </Text>
-        </View>
-      )}
-
-      <ActivityList />
-
-      {lastSync && (
-        <View style={styles.lastSyncContainer}>
-          <Text style={styles.lastSyncText}>
-            {t('dashboard.lastSync')}: {lastSync.toLocaleString()}
+            Đồng bộ lúc: {lastSync.toLocaleString('vi-VN')}
           </Text>
         </View>
       )}
@@ -229,13 +208,6 @@ const styles = StyleSheet.create({
   orderTotal: { fontSize: 14, fontWeight: '700', color: '#111827' },
   statusBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
   statusText: { fontSize: 10, fontWeight: '600' },
-  lastSyncContainer: {
-    marginTop: 12,
-    paddingHorizontal: 16,
-    alignItems: 'flex-end',
-  },
-  lastSyncText: {
-    fontSize: 11,
-    color: '#9ca3af',
-  },
+  lastSyncContainer: { marginTop: 12, paddingHorizontal: 16, alignItems: 'flex-end' },
+  lastSyncText: { fontSize: 11, color: '#9ca3af' },
 });

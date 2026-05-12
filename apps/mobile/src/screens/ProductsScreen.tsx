@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, FlatList, TextInput, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl,
@@ -20,35 +20,20 @@ interface Product {
 }
 
 export default function ProductsScreen() {
-  const { t } = useTranslation('common');
-  const { socket } = useSocket();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
-  // Real‑time stock updates
-  useEffect(() => {
-    if (!socket) return;
-    const handleStockUpdate = (data: { productId: string; newStock: number }) => {
-      setProducts(prev =>
-        prev.map(p => (p.id === data.productId ? { ...p, stock: data.newStock } : p))
-      );
-    };
-    socket.on('stock-updated', handleStockUpdate);
-    return () => {
-      socket.off('stock-updated', handleStockUpdate);
-    };
-  }, [socket]);
   const [isOffline, setIsOffline] = useState(false);
 
   const fetchProducts = async (p = 1, s = search, append = false) => {
     try {
-      const data = await getProducts(p, s, 20);
-      setProducts((prev) => append ? [...prev, ...data] : data);
-      setHasMore(data.length === 20);
+      const params = new URLSearchParams({ page: p.toString(), limit: '20', search: s });
+      const data = await api.get<PaginatedResponse<Product>>(`/products?${params}`);
+      setProducts((prev) => append ? [...prev, ...data.items] : data.items);
+      setHasMore(p < data.totalPages);
       setIsOffline(false);
     } catch (err) {
       setIsOffline(true);
@@ -81,7 +66,7 @@ export default function ProductsScreen() {
           <View style={styles.cardRight}>
             <Text style={styles.price}>{formatVND(item.price)}</Text>
             <Text style={[styles.stock, isLow && styles.stockLow]}>
-              {isLow ? t('inventory.lowStock') : ''} {t('products.stock')}: {item.stock}
+              {isLow ? 'Sắp hết! ' : ''}Tồn: {item.stock}
             </Text>
           </View>
         </View>
@@ -98,7 +83,7 @@ export default function ProductsScreen() {
     <View style={styles.container}>
       {isOffline && (
         <View style={{ backgroundColor: '#fef3c7', padding: 8 }}>
-          <Text style={{ color: '#92400e', textAlign: 'center' }}>{t('common.offline_mode')}</Text>
+          <Text style={{ color: '#92400e', textAlign: 'center' }}>Chế độ offline</Text>
         </View>
       )}
       <View style={styles.searchRow}>
@@ -106,20 +91,20 @@ export default function ProductsScreen() {
           style={styles.searchInput}
           value={search}
           onChangeText={setSearch}
-          placeholder={t('products.searchPlaceholder')}
+          placeholder="Tìm sản phẩm..."
           placeholderTextColor="#9ca3af"
           returnKeyType="search"
           onSubmitEditing={handleSearch}
         />
         <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
-          <Text style={styles.searchBtnText}>{t('actions.search')}</Text>
+          <Text style={styles.searchBtnText}>Tìm</Text>
         </TouchableOpacity>
       </View>
 
       {loading && !refreshing ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color="#3b82f6" />
-          <Text style={styles.loadingText}>{t('common.loading')}</Text>
+          <Text style={styles.loadingText}>Đang tải...</Text>
         </View>
       ) : (
         <FlatList
@@ -130,7 +115,7 @@ export default function ProductsScreen() {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#3b82f6" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.3}
-          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>{t('common.noData')}</Text></View>}
+          ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>Không có sản phẩm</Text></View>}
           ListFooterComponent={hasMore ? <ActivityIndicator style={{ marginVertical: 16 }} color="#3b82f6" /> : null}
         />
       )}
