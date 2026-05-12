@@ -28,6 +28,11 @@
 - **Sync status indicator** with pending changes count and manual/auto retry
 - **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
 
+## Offline‑First & Real‑Time
+- **Real‑time activity notifications** via WebSockets (tenant‑scoped)
+- **Sync status indicator** with pending changes count and manual/auto retry
+- **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
+
 ## Tech Stack
 
 | Thành phần   | Công nghệ                               |

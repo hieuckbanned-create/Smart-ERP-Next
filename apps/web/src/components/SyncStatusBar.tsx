@@ -13,7 +13,6 @@ export function SyncStatusBar() {
   const handleManualSync = async () => {
     emitSyncEvent({ type: 'start' });
     try {
-      // Trigger sync via existing sync service
       const { syncAll } = await import('@/lib/sync-service');
       await syncAll();
       emitSyncEvent({ type: 'success' });
@@ -22,7 +21,6 @@ export function SyncStatusBar() {
     }
   };
 
-  // Listen for network status
   useEffect(() => {
     const handleOnline = () => emitSyncEvent({ type: 'online' });
     const handleOffline = () => emitSyncEvent({ type: 'offline' });
