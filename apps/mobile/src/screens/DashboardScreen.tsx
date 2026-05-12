@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { api } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
+import { ActivityList } from '../components/ActivityList';
 import { syncService } from '../lib/sync-service';
 import { ActivityList } from '../components/ActivityList';
 import { QuickActions } from '../components/QuickActions';
@@ -176,6 +177,8 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
           </Text>
         </View>
       )}
+
+      <ActivityList />
 
       <View style={{ height: 24 }} />
     </ScrollView>
