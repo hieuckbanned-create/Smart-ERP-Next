@@ -6,6 +6,7 @@ import {
 import { api } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 import { ActivityList } from '../components/ActivityList';
+import { QuickActions } from '../components/QuickActions';
 
 interface DashboardData {
   todayRevenue: number;
@@ -155,6 +156,8 @@ export default function DashboardScreen({ user }: DashboardScreenProps) {
           </View>
         </>
       )}
+
+      <QuickActions />
 
       <ActivityList />
 
