@@ -20,6 +20,8 @@ import ProductsScreen from "./src/screens/ProductsScreen";
 import OrdersScreen from "./src/screens/OrdersScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import InventoryScreen from "./src/screens/InventoryScreen";
+import LeadsScreen from "./src/screens/LeadsScreen";
+import LeadsScreen from "./src/screens/LeadsScreen";
 
 initI18n("vi");
 
@@ -28,7 +30,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "products" | "orders" | "customers" | "inventory";
+type Screen = "dashboard" | "products" | "orders" | "customers" | "inventory" | "leads";
 
 const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: "dashboard", label: "Tổng quan", icon: "📊" },
@@ -36,6 +38,7 @@ const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: "orders", label: "Đơn hàng", icon: "🛒" },
   { key: "customers", label: "Khách hàng", icon: "👥" },
   { key: "inventory", label: "Kho hàng", icon: "🏭" },
+  { key: "leads", label: "Leads", icon: "🎯" },
 ];
 
 export default function App() {
@@ -107,6 +110,10 @@ export default function App() {
         return <CustomersScreen />;
       case "inventory":
         return <InventoryScreen />;
+      case "leads":
+        return <LeadsScreen />;
+      case "leads":
+        return <LeadsScreen />;
     }
   };
 
