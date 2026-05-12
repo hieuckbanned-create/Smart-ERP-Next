@@ -6,6 +6,7 @@ import {
 import { api } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 import { ActivityList } from '../components/ActivityList';
+import { QuickActions } from '../components/QuickActions';
 import { syncService } from '../lib/sync-service';
 import { ActivityList } from '../components/ActivityList';
 import { QuickActions } from '../components/QuickActions';
