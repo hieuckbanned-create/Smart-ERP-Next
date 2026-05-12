@@ -135,7 +135,7 @@ export const ERP_MODULES: readonly ErpModuleDefinition[] = [
   {
     id: "accounting",
     i18nKey: "nav.accounting",
-    maturity: "planned",
+    maturity: "growth",
     offlineFirst: false,
     realtime: true,
     nativeTargets: ["api", "web", "mobile", "desktop"],
@@ -143,7 +143,7 @@ export const ERP_MODULES: readonly ErpModuleDefinition[] = [
   {
     id: "crm",
     i18nKey: "nav.crm",
-    maturity: "planned",
+    maturity: "growth",
     offlineFirst: true,
     realtime: true,
     nativeTargets: ["api", "web", "mobile", "desktop"],
