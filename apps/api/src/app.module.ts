@@ -20,6 +20,8 @@ import { PaymentsModule } from './payments/payments.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { CommentsModule } from './comments/comments.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { AccountingModule } from './accounting/accounting.module';
+import { AccountingModule } from './accounting/accounting.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -45,6 +47,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     WarehousesModule,
     CommentsModule,
     SchedulerModule,
+    AccountingModule,
   ],
   controllers: [AppController],
   providers: [
