@@ -394,6 +394,82 @@
     "exportExcel": "Export Excel"
   },
 
+  "accounting": {
+    "title": "Accounting",
+    "chartOfAccounts": "Chart of Accounts",
+    "accountCode": "Account Code",
+    "accountName": "Account Name",
+    "accountType": "Account Type",
+    "accountTypes": {
+      "asset": "Asset",
+      "liability": "Liability",
+      "equity": "Equity",
+      "revenue": "Revenue",
+      "expense": "Expense"
+    },
+    "journalEntries": "Journal Entries",
+    "voucherNumber": "Voucher Number",
+    "voucherDate": "Voucher Date",
+    "debit": "Debit",
+    "credit": "Credit",
+    "balance": "Balance",
+    "totalDebit": "Total Debit",
+    "totalCredit": "Total Credit",
+    "postEntry": "Post Entry",
+    "reverseEntry": "Reverse Entry",
+    "unbalancedEntry": "Unbalanced Entry",
+    "vouchers": {
+      "payment": "Payment Voucher",
+      "receipt": "Receipt Voucher",
+      "journal": "Journal Entry",
+      "invoice": "Invoice"
+    },
+    "vat": {
+      "title": "VAT",
+      "rate": "Tax Rate",
+      "rates": {
+        "exempt": "Exempt",
+        "zero": "0%",
+        "five": "5%",
+        "ten": "10%"
+      },
+      "output": "Output VAT",
+      "input": "Input VAT",
+      "payable": "VAT Payable",
+      "declaration": "Tax Declaration"
+    },
+    "financialReports": {
+      "balanceSheet": "Balance Sheet",
+      "incomeStatement": "Income Statement",
+      "cashFlow": "Cash Flow",
+      "trialBalance": "Trial Balance"
+    },
+    "tax": {
+      "title": "Tax",
+      "incomeTax": "Income Tax",
+      "withholding": "Withholding Tax",
+      "declaration": "Tax Declaration",
+      "payment": "Tax Payment",
+      "dueDate": "Due Date"
+    },
+    "depreciation": {
+      "title": "Depreciation",
+      "fixedAssets": "Fixed Assets",
+      "purchaseCost": "Purchase Cost",
+      "usefulLife": "Useful Life",
+      "residualValue": "Residual Value",
+      "accumulatedDepreciation": "Accumulated Depreciation",
+      "currentValue": "Current Value",
+      "monthlyDepreciation": "Monthly Depreciation"
+    },
+    "currency": {
+      "title": "Currency",
+      "exchangeRate": "Exchange Rate",
+      "baseCurrency": "Base Currency",
+      "convertedAmount": "Converted Amount"
+    }
+  },
+
   "auth": {
     "login": "Login",
     "logout": "Logout",

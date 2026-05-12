@@ -394,6 +394,82 @@
     "exportExcel": "Xuất Excel"
   },
 
+  "accounting": {
+    "title": "Kế toán",
+    "chartOfAccounts": "Danh mục tài khoản",
+    "accountCode": "Mã tài khoản",
+    "accountName": "Tên tài khoản",
+    "accountType": "Loại tài khoản",
+    "accountTypes": {
+      "asset": "Tài sản",
+      "liability": "Nợ phải trả",
+      "equity": "Vốn chủ sở hữu",
+      "revenue": "Doanh thu",
+      "expense": "Chi phí"
+    },
+    "journalEntries": "Bút toán",
+    "voucherNumber": "Số chứng từ",
+    "voucherDate": "Ngày chứng từ",
+    "debit": "Nợ",
+    "credit": "Có",
+    "balance": "Số dư",
+    "totalDebit": "Tổng Nợ",
+    "totalCredit": "Tổng Có",
+    "postEntry": "Ghi sổ",
+    "reverseEntry": "Đảo bút toán",
+    "unbalancedEntry": "Bút toán không cân đối",
+    "vouchers": {
+      "payment": "Phiếu chi",
+      "receipt": "Phiếu thu",
+      "journal": "Bút toán",
+      "invoice": "Hóa đơn"
+    },
+    "vat": {
+      "title": "Thuế GTGT",
+      "rate": "Thuế suất",
+      "rates": {
+        "exempt": "Không chịu thuế",
+        "zero": "0%",
+        "five": "5%",
+        "ten": "10%"
+      },
+      "output": "Thuế GTGT đầu ra",
+      "input": "Thuế GTGT đầu vào",
+      "payable": "Thuế phải nộp",
+      "declaration": "Kê khai thuế"
+    },
+    "financialReports": {
+      "balanceSheet": "Bảng cân đối kế toán",
+      "incomeStatement": "Báo cáo lãi lỗ",
+      "cashFlow": "Lưu chuyển tiền tệ",
+      "trialBalance": "Bảng thử số dư"
+    },
+    "tax": {
+      "title": "Thuế",
+      "incomeTax": "Thuế TNCN",
+      "withholding": "Thuế khấu trừ",
+      "declaration": "Khai thuế",
+      "payment": "Nộp thuế",
+      "dueDate": "Hạn nộp"
+    },
+    "depreciation": {
+      "title": "Khấu hao",
+      "fixedAssets": "Tài sản cố định",
+      "purchaseCost": "Nguyên giá",
+      "usefulLife": "Thời gian sử dụng",
+      "residualValue": "Giá trị thu hồi",
+      "accumulatedDepreciation": "Khấu hao lũy kế",
+      "currentValue": "Giá trị còn lại",
+      "monthlyDepreciation": "Khấu hao tháng"
+    },
+    "currency": {
+      "title": "Tiền tệ",
+      "exchangeRate": "Tỷ giá",
+      "baseCurrency": "Tiền tệ cơ sở",
+      "convertedAmount": "Số tiền quy đổi"
+    }
+  },
+
   "auth": {
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
