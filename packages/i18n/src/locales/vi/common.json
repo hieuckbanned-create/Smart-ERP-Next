@@ -513,7 +513,18 @@
     "na": "N/A",
     "online": "Trực tuyến",
     "offline": "Ngoại tuyến",
-    "sync": "Đồng bộ",
+    "sync": {
+    "status": {
+      "idle": "Đã đồng bộ",
+      "syncing": "Đang đồng bộ...",
+      "error": "Lỗi đồng bộ",
+      "offline": "Ngoại tuyến"
+    },
+    "lastSync": "Đồng bộ lúc",
+    "pendingChanges": "{{count}} thay đổi đang chờ",
+    "pendingChanges_plural": "{{count}} thay đổi đang chờ",
+    "syncNow": "Đồng bộ ngay"
+  },
     "lastSync": "Đồng bộ lần cuối",
     "pendingChanges": "Thay đổi đang chờ",
     "conflictResolved": "Xung đột đã được giải quyết",

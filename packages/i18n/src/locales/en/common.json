@@ -513,7 +513,18 @@
     "na": "N/A",
     "online": "Online",
     "offline": "Offline",
-    "sync": "Sync",
+    "sync": {
+    "status": {
+      "idle": "Up to date",
+      "syncing": "Syncing...",
+      "error": "Sync error",
+      "offline": "Offline"
+    },
+    "lastSync": "Last sync",
+    "pendingChanges": "{{count}} pending change",
+    "pendingChanges_plural": "{{count}} pending changes",
+    "syncNow": "Sync now"
+  },
     "lastSync": "Last Sync",
     "pendingChanges": "Pending Changes",
     "conflictResolved": "Conflict Resolved",
