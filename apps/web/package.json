@@ -1,11 +1,13 @@
 {
   "dependencies": {
+    "socket.io-client": "^4.7.2",
     "@smart-erp/hooks": "workspace:*",
     "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
     "@smart-erp/sync": "workspace:*",
     "@smart-erp/types": "workspace:*",
     "@smart-erp/ui": "workspace:*",
+    "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/utils": "workspace:*",
     "@smart-erp/validation": "workspace:*",
     "axios": "^1.7.2",
