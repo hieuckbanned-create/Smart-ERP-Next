@@ -50,14 +50,6 @@ const TRANSFER_STATUS_CONFIG = {
   cancelled: { label: 'inventory.transfers.cancelled', color: 'text-red-600 bg-red-50' },
 } as const;
 
-const TRANSFER_STATUS_CONFIG = {
-  draft: { label: 'inventory.transfers.draft', color: 'text-gray-600 bg-gray-50' },
-  approved: { label: 'inventory.transfers.approved', color: 'text-blue-600 bg-blue-50' },
-  shipped: { label: 'inventory.transfers.shipped', color: 'text-orange-600 bg-orange-50' },
-  received: { label: 'inventory.transfers.received', color: 'text-green-600 bg-green-50' },
-  cancelled: { label: 'inventory.transfers.cancelled', color: 'text-red-600 bg-red-50' },
-} as const;
-
 export default function InventoryPage() {
   const { t } = useTranslation('common');
   const [summary, setSummary] = useState<InventorySummary | null>(null);
@@ -103,6 +95,12 @@ export default function InventoryPage() {
   });
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [adjusting, setAdjusting] = useState(false);
+
+  const [showCreatePoModal, setShowCreatePoModal] = useState(false);
+  const [supplierSearch, setSupplierSearch] = useState('');
+  const [suppliers, setSuppliers] = useState<any[]>([]);
+  const [selectedSupplier, setSelectedSupplier] = useState<any | null>(null);
+  const [creatingReorderPo, setCreatingReorderPo] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -228,54 +226,34 @@ export default function InventoryPage() {
     }
   };
 
-  // Lot search
-  useEffect(() => {
-    if (!lotForm.productSearch.trim()) { setLotSearchResults([]); return; }
-    const t = setTimeout(async () => {
-      const res = await productsApi.getAll({ search: lotForm.productSearch, limit: 6 });
-      setLotSearchResults(res.items);
-    }, 250);
-    return () => clearTimeout(t);
-  }, [lotForm.productSearch]);
-
-  const handleCreateLot = async () => {
-    if (!lotForm.productId || !lotForm.lotNumber || lotForm.quantity <= 0) return;
-    setCreatingLot(true);
+  const openCreatePoModal = async () => {
+    setSelectedSupplier(null);
+    setSupplierSearch('');
+    setShowCreatePoModal(true);
     try {
-      await apiClient.post('/inventory/lots', {
-        productId: lotForm.productId,
-        lotNumber: lotForm.lotNumber,
-        expiryDate: lotForm.expiryDate || undefined,
-        quantity: lotForm.quantity,
-        warehouseId: lotForm.warehouseId || undefined,
-      });
-      setShowLotModal(false);
-      setLotForm({ productSearch: '', productId: '', productName: '', lotNumber: '', expiryDate: '', quantity: 1, warehouseId: '' });
-      fetchData();
-    } catch (err: any) {
-      alert(err.response?.data?.message ?? 'Failed to create lot');
-    } finally {
-      setCreatingLot(false);
+      const res = await apiClient.get('/suppliers', { params: { limit: 20, search: supplierSearch || undefined } });
+      setSuppliers(res.data.items ?? []);
+    } catch {
+      setSuppliers([]);
     }
   };
 
-  const handleCreateTransfer = async () => {
-    if (!transferForm.fromWarehouseId || !transferForm.toWarehouseId || transferForm.items.length === 0) return;
-    setCreatingTransfer(true);
+  const handleCreatePoFromSuggestions = async () => {
+    if (!selectedSupplier) return;
+    setCreatingReorderPo(true);
     try {
-      await apiClient.post('/inventory/transfers', {
-        fromWarehouseId: transferForm.fromWarehouseId,
-        toWarehouseId: transferForm.toWarehouseId,
-        notes: transferForm.notes || undefined,
-        items: transferForm.items.filter(i => i.productId && i.quantityRequested > 0),
+      await apiClient.post('/purchasing/from-reorder-suggestions', {
+        supplierId: selectedSupplier.id,
+        items: reorderSuggestions
+          .filter((s: any) => s.suggestedOrderQuantity > 0)
+          .map((s: any) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
       });
-      setShowTransferModal(false);
-      setTransferForm({ fromWarehouseId: '', toWarehouseId: '', notes: '', items: [{ productId: '', quantityRequested: 1 }] });
-      fetchData();
+      setShowCreatePoModal(false);
+      alert(t('purchasing.createSuccess'));
     } catch (err: any) {
-      alert(err.response?.data?.message ?? 'Failed to create transfer');
+      alert(err.response?.data?.message ?? t('purchasing.createError'));
     } finally {
-      setCreatingTransfer(false);
+      setCreatingReorderPo(false);
     }
   };
 
@@ -490,7 +468,18 @@ export default function InventoryPage() {
             )}
 
             {activeTab === 'reorder' && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="space-y-3">
+                {reorderSuggestions.length > 0 && (
+                  <div className="flex justify-end">
+                    <button
+                      onClick={openCreatePoModal}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                    >
+                      {t('purchasing.add')}
+                    </button>
+                  </div>
+                )}
+                <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-gray-50 dark:bg-gray-700">
@@ -793,6 +782,57 @@ export default function InventoryPage() {
               <button onClick={handleCreateLot} disabled={!lotForm.productId || !lotForm.lotNumber || creatingLot}
                 className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-bold rounded-xl text-sm">
                 {creatingLot ? t('common.processing') : t('common.save')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create PO Modal */}
+      {showCreatePoModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{t('purchasing.supplier')}</h2>
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={supplierSearch}
+                onChange={(e) => setSupplierSearch(e.target.value)}
+                placeholder={t('suppliers.searchPlaceholder')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
+              />
+              <div className="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg">
+                {suppliers
+                  .filter((s) => !supplierSearch || (s.name ?? '').toLowerCase().includes(supplierSearch.toLowerCase()))
+                  .map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setSelectedSupplier(s)}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${selectedSupplier?.id === s.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                    >
+                      <div className="font-medium">{s.name}</div>
+                      <div className="text-xs text-gray-400">{s.code}</div>
+                    </button>
+                  ))}
+                {suppliers.length === 0 && (
+                  <div className="px-3 py-6 text-center text-sm text-gray-400">{t('common.noData')}</div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowCreatePoModal(false)}
+                className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm"
+              >
+                {t('common.cancel')}
+              </button>
+              <button
+                onClick={handleCreatePoFromSuggestions}
+                disabled={!selectedSupplier || creatingReorderPo}
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-bold rounded-xl transition text-sm"
+              >
+                {creatingReorderPo ? t('common.processing') : t('purchasing.add')}
               </button>
             </div>
           </div>
