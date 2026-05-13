@@ -8,9 +8,14 @@ import { crmLeads } from "@smart-erp/database/schema";
 import { eq, and, ilike, or, sql, desc } from "@smart-erp/database/drizzle";
 import { CreateLeadDto } from "./dto/create-lead.dto";
 import { UpdateLeadDto } from "./dto/update-lead.dto";
+import { NotificationsGateway } from "../../notifications/notifications.gateway";
 
 @Injectable()
 export class LeadsService {
+  constructor(
+    private activityService: ActivityService,
+    private notificationsGateway: NotificationsGateway,
+  ) {}
   async create(tenantId: string, userId: string, dto: CreateLeadDto) {
     const [lead] = await db
       .insert(crmLeads)
@@ -30,6 +35,20 @@ export class LeadsService {
         createdBy: userId,
       })
       .returning();
+
+    // Log activity
+    await this.activityService.log(tenantId, userId, 'created', 'lead', lead.id, {
+      name: `${dto.firstName} ${dto.lastName}`,
+      company: dto.company,
+    });
+
+    // Send real-time notification
+    this.notificationsGateway.broadcastToTenant(tenantId, 'lead.created', {
+      leadId: lead.id,
+      name: `${dto.firstName} ${dto.lastName}`,
+      createdBy: userId,
+    });
+
     return lead;
   }
 
@@ -119,15 +138,25 @@ export class LeadsService {
       .where(and(eq(crmLeads.tenantId, tenantId), eq(crmLeads.id, id)))
       .returning();
 
+    // Log activity
+    await this.activityService.log(tenantId, '', 'updated', 'lead', id, {
+      changes: Object.keys(dto),
+    });
+
     return lead;
   }
 
   async remove(tenantId: string, id: string) {
-    await this.findOne(tenantId, id);
+    const lead = await this.findOne(tenantId, id);
 
     await db
       .delete(crmLeads)
       .where(and(eq(crmLeads.tenantId, tenantId), eq(crmLeads.id, id)));
+
+    // Log activity
+    await this.activityService.log(tenantId, '', 'deleted', 'lead', id, {
+      name: `${lead.firstName} ${lead.lastName}`,
+    });
 
     return { success: true };
   }
@@ -168,6 +197,18 @@ export class LeadsService {
       })
       .where(and(eq(crmLeads.tenantId, tenantId), eq(crmLeads.id, leadId)))
       .returning();
+
+    // Log activity
+    await this.activityService.log(tenantId, '', 'updated', 'lead', leadId, {
+      action: 'converted_to_customer',
+      name: `${lead.firstName} ${lead.lastName}`,
+    });
+
+    // Send real-time notification
+    this.notificationsGateway.broadcastToTenant(tenantId, 'lead.converted', {
+      leadId: leadId,
+      name: `${lead.firstName} ${lead.lastName}`,
+    });
 
     return updatedLead;
   }
