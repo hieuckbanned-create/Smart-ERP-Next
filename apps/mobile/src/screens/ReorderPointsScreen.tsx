@@ -35,7 +35,7 @@ interface Warehouse {
   isDefault?: boolean;
 }
 
-export default function ReorderPointsScreen() {
+export default function ReorderPointsScreen({ onNavigateToPurchasing }: { onNavigateToPurchasing?: () => void }) {
   const { t } = useTranslation();
   const [suggestions, setSuggestions] = useState<ReorderSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -135,7 +135,17 @@ export default function ReorderPointsScreen() {
           .map((i) => ({ productId: i.productId, quantity: i.quantity })),
       });
       setShowCreatePo(false);
-      Alert.alert(t('pos.success'), t('purchasing.createSuccess', 'Đã tạo đơn nhập'));
+      Alert.alert(
+        t('pos.success'),
+        t('purchasing.createSuccess', 'Đã tạo đơn nhập'),
+        [
+          { text: t('common.close'), style: 'cancel' },
+          {
+            text: t('purchasing.title'),
+            onPress: () => onNavigateToPurchasing?.(),
+          },
+        ],
+      );
     } catch (err: any) {
       Alert.alert(t('common.error'), err.message || t('purchasing.createError'));
     } finally {

@@ -272,6 +272,7 @@ export default function InventoryPage() {
       });
       setShowCreatePoModal(false);
       alert(t('purchasing.createSuccess'));
+      window.location.href = '/purchasing';
     } catch (err: any) {
       alert(err.response?.data?.message ?? t('purchasing.createError'));
     } finally {
