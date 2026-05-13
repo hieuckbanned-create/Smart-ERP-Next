@@ -701,5 +701,38 @@
       "lot": "lô hàng",
       "transfer": "chuyển kho"
     }
+  },
+  "ecommerce": {
+    "title": "Tích hợp thương mại điện tử",
+    "stores": {
+      "title": "Kết nối cửa hàng",
+      "platform": "Nền tảng",
+      "name": "Tên store",
+      "active": "Kích hoạt",
+      "lastSyncAt": "Lần sync gần nhất",
+      "lastSyncStatus": "Trạng thái sync"
+    },
+    "create": {
+      "title": "Tạo kết nối",
+      "platform": "Nền tảng",
+      "name": "Tên",
+      "configJson": "Cấu hình (JSON)"
+    },
+    "logs": {
+      "title": "Lịch sử đồng bộ",
+      "empty": "Chưa có bản ghi đồng bộ",
+      "status": "Trạng thái",
+      "syncType": "Loại đồng bộ",
+      "itemsProcessed": "Đã xử lý",
+      "error": "Lỗi",
+      "startedAt": "Bắt đầu",
+      "completedAt": "Hoàn tất"
+    },
+    "actions": {
+      "createStore": "Tạo store",
+      "syncAll": "Sync tất cả",
+      "syncStore": "Sync store",
+      "viewLogs": "Xem logs"
+    }
   }
 }

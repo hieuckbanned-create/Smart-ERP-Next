@@ -752,6 +752,39 @@
     "profile": "Profile",
     "version": "Version"
   },
+  "ecommerce": {
+    "title": "E-commerce Integrations",
+    "stores": {
+      "title": "Stores",
+      "platform": "Platform",
+      "name": "Store name",
+      "active": "Active",
+      "lastSyncAt": "Last sync",
+      "lastSyncStatus": "Last status"
+    },
+    "create": {
+      "title": "Create store",
+      "platform": "Platform",
+      "name": "Name",
+      "configJson": "Config (JSON)"
+    },
+    "logs": {
+      "title": "Sync logs",
+      "empty": "No sync logs yet",
+      "status": "Status",
+      "syncType": "Sync type",
+      "itemsProcessed": "Processed",
+      "error": "Error",
+      "startedAt": "Started",
+      "completedAt": "Completed"
+    },
+    "actions": {
+      "createStore": "Create store",
+      "syncAll": "Sync all",
+      "syncStore": "Sync store",
+      "viewLogs": "View logs"
+    }
+  },
   "validation": {
     "required": "{{field}} is required",
     "email": "Invalid email address",

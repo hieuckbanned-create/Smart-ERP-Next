@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Input, Button, Tabs, Tab, useToast } from '@smart-erp/ui';
+import { Card, Input, Button, Tabs, Tab, useToast, Select } from '@smart-erp/ui';
 import { apiClient } from '@/lib/api-client';
 
 export default function EcommerceSettingsPage() {
