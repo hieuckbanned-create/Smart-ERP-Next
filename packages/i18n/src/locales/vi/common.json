@@ -409,7 +409,9 @@
     "selectWarehouseOptional": "Chọn kho (tùy chọn)",
     "expectedDatePlaceholder": "Ngày dự kiến (YYYY-MM-DD)",
     "preview": "Sẽ tạo {{items}} mặt hàng (tổng SL: {{quantity}})",
-    "notes": "Ghi chú"
+    "notes": "Ghi chú",
+    "include": "Bao gồm",
+    "orderQty": "SL đặt"
   },
   "pos": {
     "title": "Bán hàng (POS)",

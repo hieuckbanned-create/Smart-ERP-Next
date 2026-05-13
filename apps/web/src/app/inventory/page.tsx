@@ -104,6 +104,7 @@ export default function InventoryPage() {
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<string>('');
   const [expectedDate, setExpectedDate] = useState<string>('');
   const [reorderPoNotes, setReorderPoNotes] = useState<string>('');
+  const [reorderPoItems, setReorderPoItems] = useState<{ productId: string; name: string; sku: string; quantity: number; included: boolean }[]>([]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -237,6 +238,17 @@ export default function InventoryPage() {
     setSelectedWarehouseId(defaultWh?.id ?? '');
     setExpectedDate('');
     setReorderPoNotes('');
+    setReorderPoItems(
+      reorderSuggestions
+        .filter((s: any) => s.suggestedOrderQuantity > 0)
+        .map((s: any) => ({
+          productId: s.id,
+          name: s.name,
+          sku: s.sku,
+          quantity: s.suggestedOrderQuantity,
+          included: true,
+        })),
+    );
     try {
       const res = await apiClient.get('/suppliers', { params: { limit: 20 } });
       setSuppliers(res.data.items ?? []);
@@ -254,9 +266,9 @@ export default function InventoryPage() {
         warehouseId: selectedWarehouseId || undefined,
         expectedDate: expectedDate || undefined,
         notes: reorderPoNotes || undefined,
-        items: reorderSuggestions
-          .filter((s: any) => s.suggestedOrderQuantity > 0)
-          .map((s: any) => ({ productId: s.id, quantity: s.suggestedOrderQuantity })),
+        items: reorderPoItems
+          .filter((i) => i.included && i.quantity > 0)
+          .map((i) => ({ productId: i.productId, quantity: i.quantity })),
       });
       setShowCreatePoModal(false);
       alert(t('purchasing.createSuccess'));
@@ -826,8 +838,46 @@ export default function InventoryPage() {
                 placeholder={t('purchasing.notes')}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
               />
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                {t('purchasing.preview', { items: reorderSuggestions.filter((s: any) => s.suggestedOrderQuantity > 0).length, quantity: reorderSuggestions.reduce((sum: number, s: any) => sum + (s.suggestedOrderQuantity > 0 ? s.suggestedOrderQuantity : 0), 0) })}
+              <div className="space-y-2">
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {t('purchasing.preview', {
+                    items: reorderPoItems.filter((i) => i.included && i.quantity > 0).length,
+                    quantity: reorderPoItems.reduce((sum, i) => sum + (i.included ? i.quantity : 0), 0),
+                  })}
+                </div>
+                <div className="max-h-40 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg">
+                  {reorderPoItems.map((it) => (
+                    <div key={it.productId} className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                      <input
+                        type="checkbox"
+                        checked={it.included}
+                        onChange={(e) =>
+                          setReorderPoItems((prev) =>
+                            prev.map((p) =>
+                              p.productId === it.productId ? { ...p, included: e.target.checked } : p,
+                            ),
+                          )
+                        }
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-gray-900 dark:text-white truncate">{it.name}</div>
+                        <div className="text-xs text-gray-400 font-mono">{it.sku}</div>
+                      </div>
+                      <input
+                        type="number"
+                        min={0}
+                        value={it.quantity}
+                        onChange={(e) => {
+                          const v = parseInt(e.target.value) || 0;
+                          setReorderPoItems((prev) =>
+                            prev.map((p) => (p.productId === it.productId ? { ...p, quantity: v } : p)),
+                          );
+                        }}
+                        className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-right text-sm dark:bg-gray-700 dark:text-white"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
               <input
                 type="text"
@@ -864,7 +914,7 @@ export default function InventoryPage() {
               </button>
               <button
                 onClick={handleCreatePoFromSuggestions}
-                disabled={!selectedSupplier || creatingReorderPo}
+                disabled={!selectedSupplier || creatingReorderPo || reorderPoItems.filter((i) => i.included && i.quantity > 0).length === 0}
                 className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-bold rounded-xl transition text-sm"
               >
                 {creatingReorderPo ? t('common.processing') : t('purchasing.add')}

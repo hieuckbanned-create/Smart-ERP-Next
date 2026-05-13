@@ -409,7 +409,9 @@
     "selectWarehouseOptional": "Select warehouse (optional)",
     "expectedDatePlaceholder": "Expected date (YYYY-MM-DD)",
     "preview": "Will create {{items}} items (total qty: {{quantity}})",
-    "notes": "Notes"
+    "notes": "Notes",
+    "include": "Include",
+    "orderQty": "Order qty"
   },
   "pos": {
     "createOrderFailed": "Create order failed. Please try again.",
