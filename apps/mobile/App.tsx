@@ -37,8 +37,11 @@ const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: "dashboard", label: "Tổng quan", icon: "📊" },
   { key: "pos", label: "POS", icon: "🛒" },
   { key: "orders", label: "Đơn hàng", icon: "📋" },
-  { key: "accounting", label: "Kế toán", icon: "💰" },
+  { key: "products", label: "Sản phẩm", icon: "📦" },
+  { key: "inventory", label: "Kho hàng", icon: "🏭" },
+  { key: "customers", label: "Khách hàng", icon: "👥" },
   { key: "leads", label: "Leads", icon: "🎯" },
+  { key: "accounting", label: "Kế toán", icon: "💰" },
 ];
 
 export default function App() {
@@ -116,6 +119,12 @@ export default function App() {
         return <POSScreen />;
       case "accounting":
         return <AccountingScreen />;
+      case "products":
+        return <ProductsScreen />;
+      case "inventory":
+        return <InventoryScreen />;
+      case "customers":
+        return <CustomersScreen />;
     }
   };
 
