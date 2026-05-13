@@ -41,7 +41,7 @@ export class TransfersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { items: { itemId: string; quantityShipped: number }[] },
   ) {
-    return this.transfersService.ship(req.user.tenantId, id, body.items);
+    return this.transfersService.ship(req.user.tenantId, req.user.sub, id, body.items);
   }
 
   @Patch(':id/receive')
@@ -50,11 +50,11 @@ export class TransfersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { items: { itemId: string; quantityReceived: number }[] },
   ) {
-    return this.transfersService.receive(req.user.tenantId, id, body.items);
+    return this.transfersService.receive(req.user.tenantId, req.user.sub, id, body.items);
   }
 
   @Patch(':id/cancel')
   cancel(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
-    return this.transfersService.cancel(req.user.tenantId, id);
+    return this.transfersService.cancel(req.user.tenantId, req.user.sub, id);
   }
 }

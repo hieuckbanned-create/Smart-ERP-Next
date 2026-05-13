@@ -800,7 +800,9 @@
       "payment": "payment",
       "journalEntry": "journal entry",
       "comment": "comment",
-      "chat": "chat"
+      "chat": "chat",
+      "lot": "lot",
+      "transfer": "transfer"
     }
   },
   "advanced_reports": {

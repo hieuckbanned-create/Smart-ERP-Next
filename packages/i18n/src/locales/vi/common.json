@@ -670,7 +670,9 @@
       "payment": "phiếu thu/chi",
       "journalEntry": "bút toán",
       "comment": "bình luận",
-      "chat": "chat"
+      "chat": "chat",
+      "lot": "lô hàng",
+      "transfer": "chuyển kho"
     }
   }
 }

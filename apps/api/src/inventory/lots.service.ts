@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { db } from '@smart-erp/database';
 import { productLots } from '@smart-erp/database/schema';
 import { eq, and, desc, lte, sql } from '@smart-erp/database/drizzle';
+import { ActivityService } from '../modules/activity/activity.service';
 
 export interface CreateLotDto {
   productId: string;
@@ -20,7 +21,9 @@ export interface UpdateLotDto {
 
 @Injectable()
 export class LotsService {
-  async create(tenantId: string, dto: CreateLotDto) {
+  constructor(private readonly activityService: ActivityService) {}
+
+  async create(tenantId: string, userId: string, dto: CreateLotDto) {
     const existing = await db
       .select()
       .from(productLots)
@@ -46,6 +49,12 @@ export class LotsService {
         receivedDate: dto.receivedDate ? new Date(dto.receivedDate) : new Date(),
       })
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'created', 'lot', lot.id, {
+      lotNumber: lot.lotNumber,
+      quantity: lot.quantity,
+    });
+
     return lot;
   }
 
@@ -78,7 +87,7 @@ export class LotsService {
     return lot;
   }
 
-  async update(tenantId: string, id: string, dto: UpdateLotDto) {
+  async update(tenantId: string, userId: string, id: string, dto: UpdateLotDto) {
     const [lot] = await db
       .update(productLots)
       .set({
@@ -89,15 +98,26 @@ export class LotsService {
       .where(and(eq(productLots.tenantId, tenantId), eq(productLots.id, id)))
       .returning();
     if (!lot) throw new NotFoundException('Lot not found');
+
+    await this.activityService.log(tenantId, userId, 'updated', 'lot', lot.id, {
+      lotNumber: lot.lotNumber,
+      changes: dto,
+    });
+
     return lot;
   }
 
-  async remove(tenantId: string, id: string) {
+  async remove(tenantId: string, userId: string, id: string) {
     const [lot] = await db
       .delete(productLots)
       .where(and(eq(productLots.tenantId, tenantId), eq(productLots.id, id)))
       .returning();
     if (!lot) throw new NotFoundException('Lot not found');
+
+    await this.activityService.log(tenantId, userId, 'deleted', 'lot', lot.id, {
+      lotNumber: lot.lotNumber,
+    });
+
     return lot;
   }
 

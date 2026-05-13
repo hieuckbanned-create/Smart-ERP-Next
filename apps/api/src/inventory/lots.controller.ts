@@ -12,7 +12,7 @@ export class LotsController {
 
   @Post()
   create(@Request() req: any, @Body() body: any) {
-    return this.lotsService.create(req.user.tenantId, body);
+    return this.lotsService.create(req.user.tenantId, req.user.sub, body);
   }
 
   @Get()
@@ -48,11 +48,11 @@ export class LotsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: any,
   ) {
-    return this.lotsService.update(req.user.tenantId, id, body);
+    return this.lotsService.update(req.user.tenantId, req.user.sub, id, body);
   }
 
   @Delete(':id')
   remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
-    return this.lotsService.remove(req.user.tenantId, id);
+    return this.lotsService.remove(req.user.tenantId, req.user.sub, id);
   }
 }

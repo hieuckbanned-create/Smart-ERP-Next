@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { warehouseTransfers, warehouseTransferItems, products } from '@smart-erp/database/schema';
+import { warehouseTransfers, warehouseTransferItems } from '@smart-erp/database/schema';
 import { eq, and, desc } from '@smart-erp/database/drizzle';
 import { randomBytes } from 'crypto';
+import { ActivityService } from '../modules/activity/activity.service';
 
 export interface CreateTransferDto {
   fromWarehouseId: string;
@@ -13,6 +14,8 @@ export interface CreateTransferDto {
 
 @Injectable()
 export class TransfersService {
+  constructor(private readonly activityService: ActivityService) {}
+
   private generateCode(): string {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = randomBytes(2).toString('hex').toUpperCase();
@@ -44,6 +47,13 @@ export class TransfersService {
         quantityRequested: item.quantityRequested,
       });
     }
+
+    await this.activityService.log(tenantId, userId, 'created', 'transfer', transfer.id, {
+      transferCode: transfer.transferCode,
+      fromWarehouseId: dto.fromWarehouseId,
+      toWarehouseId: dto.toWarehouseId,
+      itemsCount: dto.items.length,
+    });
 
     return this.findOne(tenantId, transfer.id);
   }
@@ -91,10 +101,15 @@ export class TransfersService {
       .set({ status: 'approved', approvedBy: userId, updatedAt: new Date() })
       .where(and(eq(warehouseTransfers.tenantId, tenantId), eq(warehouseTransfers.id, id)))
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'approved', 'transfer', id, {
+      transferCode: transfer.transferCode,
+    });
+
     return updated;
   }
 
-  async ship(tenantId: string, id: string, shippedItems: { itemId: string; quantityShipped: number }[]) {
+  async ship(tenantId: string, userId: string, id: string, shippedItems: { itemId: string; quantityShipped: number }[]) {
     const transfer = await this.findOne(tenantId, id);
     if (transfer.status !== 'approved')
       throw new BadRequestException('Can only ship approved transfers');
@@ -111,10 +126,16 @@ export class TransfersService {
       .set({ status: 'shipped', shippedAt: new Date(), updatedAt: new Date() })
       .where(and(eq(warehouseTransfers.tenantId, tenantId), eq(warehouseTransfers.id, id)))
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'updated', 'transfer', id, {
+      action: 'shipped',
+      transferCode: transfer.transferCode,
+    });
+
     return updated;
   }
 
-  async receive(tenantId: string, id: string, receivedItems: { itemId: string; quantityReceived: number }[]) {
+  async receive(tenantId: string, userId: string, id: string, receivedItems: { itemId: string; quantityReceived: number }[]) {
     const transfer = await this.findOne(tenantId, id);
     if (transfer.status !== 'shipped')
       throw new BadRequestException('Can only receive shipped transfers');
@@ -131,10 +152,15 @@ export class TransfersService {
       .set({ status: 'received', receivedAt: new Date(), updatedAt: new Date() })
       .where(and(eq(warehouseTransfers.tenantId, tenantId), eq(warehouseTransfers.id, id)))
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'completed', 'transfer', id, {
+      transferCode: transfer.transferCode,
+    });
+
     return updated;
   }
 
-  async cancel(tenantId: string, id: string) {
+  async cancel(tenantId: string, userId: string, id: string) {
     const transfer = await this.findOne(tenantId, id);
     if (['received', 'cancelled'].includes(transfer.status))
       throw new BadRequestException('Cannot cancel this transfer');
@@ -144,6 +170,11 @@ export class TransfersService {
       .set({ status: 'cancelled', updatedAt: new Date() })
       .where(and(eq(warehouseTransfers.tenantId, tenantId), eq(warehouseTransfers.id, id)))
       .returning();
+
+    await this.activityService.log(tenantId, userId, 'cancelled', 'transfer', id, {
+      transferCode: transfer.transferCode,
+    });
+
     return updated;
   }
 }
