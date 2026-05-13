@@ -8,6 +8,7 @@ import AuthGuard from '@/components/layout/AuthGuard';
 import {
   Warehouse, AlertTriangle, ArrowDown, ArrowUp,
   RefreshCw, Search, ChevronLeft, ChevronRight,
+  Package, ArrowRightLeft, Clock, AlertCircle,
 } from 'lucide-react';
 
 type AdjustType = 'IN' | 'OUT' | 'ADJUSTMENT';
@@ -41,6 +42,22 @@ const TYPE_CONFIG = {
   ADJUSTMENT: { color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' },
 } as const;
 
+const TRANSFER_STATUS_CONFIG = {
+  draft: { label: 'inventory.transfers.draft', color: 'text-gray-600 bg-gray-50' },
+  approved: { label: 'inventory.transfers.approved', color: 'text-blue-600 bg-blue-50' },
+  shipped: { label: 'inventory.transfers.shipped', color: 'text-orange-600 bg-orange-50' },
+  received: { label: 'inventory.transfers.received', color: 'text-green-600 bg-green-50' },
+  cancelled: { label: 'inventory.transfers.cancelled', color: 'text-red-600 bg-red-50' },
+} as const;
+
+const TRANSFER_STATUS_CONFIG = {
+  draft: { label: 'inventory.transfers.draft', color: 'text-gray-600 bg-gray-50' },
+  approved: { label: 'inventory.transfers.approved', color: 'text-blue-600 bg-blue-50' },
+  shipped: { label: 'inventory.transfers.shipped', color: 'text-orange-600 bg-orange-50' },
+  received: { label: 'inventory.transfers.received', color: 'text-green-600 bg-green-50' },
+  cancelled: { label: 'inventory.transfers.cancelled', color: 'text-red-600 bg-red-50' },
+} as const;
+
 export default function InventoryPage() {
   const { t } = useTranslation('common');
   const [summary, setSummary] = useState<InventorySummary | null>(null);
@@ -50,8 +67,28 @@ export default function InventoryPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
-  const [activeTab, setActiveTab] = useState<'transactions' | 'lowstock' | 'reorder'>('transactions');
+  const [activeTab, setActiveTab] = useState<'transactions' | 'lowstock' | 'reorder' | 'lots' | 'transfers'>('transactions');
   const [reorderSuggestions, setReorderSuggestions] = useState<any[]>([]);
+
+  // Lots state
+  const [lots, setLots] = useState<any[]>([]);
+  const [showLotModal, setShowLotModal] = useState(false);
+  const [lotForm, setLotForm] = useState({
+    productSearch: '', productId: '', productName: '',
+    lotNumber: '', expiryDate: '', quantity: 1, warehouseId: '',
+  });
+  const [lotSearchResults, setLotSearchResults] = useState<Product[]>([]);
+  const [creatingLot, setCreatingLot] = useState(false);
+
+  // Transfers state
+  const [transfers, setTransfers] = useState<any[]>([]);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [transferForm, setTransferForm] = useState({
+    fromWarehouseId: '', toWarehouseId: '', notes: '',
+    items: [{ productId: '', quantityRequested: 1 }],
+  });
+  const [warehouses, setWarehouses] = useState<any[]>([]);
+  const [creatingTransfer, setCreatingTransfer] = useState(false);
 
   // Adjust modal
   const [showAdjust, setShowAdjust] = useState(false);
@@ -70,11 +107,14 @@ export default function InventoryPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [summaryRes, txRes, lowRes, reorderRes] = await Promise.allSettled([
+      const [summaryRes, txRes, lowRes, reorderRes, lotsRes, transfersRes, whRes] = await Promise.allSettled([
         apiClient.get('/inventory/summary'),
         apiClient.get('/inventory/transactions', { params: { page, limit: 30 } }),
         apiClient.get('/inventory/low-stock'),
         apiClient.get('/inventory/reorder-suggestions'),
+        apiClient.get('/inventory/lots'),
+        apiClient.get('/inventory/transfers'),
+        apiClient.get('/warehouses'),
       ]);
       if (summaryRes.status === 'fulfilled') setSummary(summaryRes.value.data);
       if (txRes.status === 'fulfilled') {
@@ -83,7 +123,10 @@ export default function InventoryPage() {
         setTotal(txRes.value.data.total ?? 0);
       }
       if (lowRes.status === 'fulfilled') setLowStockItems(lowRes.value.data ?? []);
-      if (reorderRes.status === 'fulfilled') setReorderSuggestions(reorderRes.value.data);
+      if (reorderRes.status === 'fulfilled') setReorderSuggestions(reorderRes.value.data ?? []);
+      if (lotsRes.status === 'fulfilled') setLots(lotsRes.value.data ?? []);
+      if (transfersRes.status === 'fulfilled') setTransfers(transfersRes.value.data ?? []);
+      if (whRes.status === 'fulfilled') setWarehouses(whRes.value.data ?? []);
     } finally {
       setLoading(false);
     }
@@ -134,6 +177,108 @@ export default function InventoryPage() {
     }
   };
 
+  // Lot search
+  useEffect(() => {
+    if (!lotForm.productSearch.trim()) { setLotSearchResults([]); return; }
+    const t = setTimeout(async () => {
+      const res = await productsApi.getAll({ search: lotForm.productSearch, limit: 6 });
+      setLotSearchResults(res.items);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [lotForm.productSearch]);
+
+  const handleCreateLot = async () => {
+    if (!lotForm.productId || !lotForm.lotNumber || lotForm.quantity <= 0) return;
+    setCreatingLot(true);
+    try {
+      await apiClient.post('/inventory/lots', {
+        productId: lotForm.productId,
+        lotNumber: lotForm.lotNumber,
+        expiryDate: lotForm.expiryDate || undefined,
+        quantity: lotForm.quantity,
+        warehouseId: lotForm.warehouseId || undefined,
+      });
+      setShowLotModal(false);
+      setLotForm({ productSearch: '', productId: '', productName: '', lotNumber: '', expiryDate: '', quantity: 1, warehouseId: '' });
+      fetchData();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Failed to create lot');
+    } finally {
+      setCreatingLot(false);
+    }
+  };
+
+  const handleCreateTransfer = async () => {
+    if (!transferForm.fromWarehouseId || !transferForm.toWarehouseId || transferForm.items.length === 0) return;
+    setCreatingTransfer(true);
+    try {
+      await apiClient.post('/inventory/transfers', {
+        fromWarehouseId: transferForm.fromWarehouseId,
+        toWarehouseId: transferForm.toWarehouseId,
+        notes: transferForm.notes || undefined,
+        items: transferForm.items.filter(i => i.productId && i.quantityRequested > 0),
+      });
+      setShowTransferModal(false);
+      setTransferForm({ fromWarehouseId: '', toWarehouseId: '', notes: '', items: [{ productId: '', quantityRequested: 1 }] });
+      fetchData();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Failed to create transfer');
+    } finally {
+      setCreatingTransfer(false);
+    }
+  };
+
+  // Lot search
+  useEffect(() => {
+    if (!lotForm.productSearch.trim()) { setLotSearchResults([]); return; }
+    const t = setTimeout(async () => {
+      const res = await productsApi.getAll({ search: lotForm.productSearch, limit: 6 });
+      setLotSearchResults(res.items);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [lotForm.productSearch]);
+
+  const handleCreateLot = async () => {
+    if (!lotForm.productId || !lotForm.lotNumber || lotForm.quantity <= 0) return;
+    setCreatingLot(true);
+    try {
+      await apiClient.post('/inventory/lots', {
+        productId: lotForm.productId,
+        lotNumber: lotForm.lotNumber,
+        expiryDate: lotForm.expiryDate || undefined,
+        quantity: lotForm.quantity,
+        warehouseId: lotForm.warehouseId || undefined,
+      });
+      setShowLotModal(false);
+      setLotForm({ productSearch: '', productId: '', productName: '', lotNumber: '', expiryDate: '', quantity: 1, warehouseId: '' });
+      fetchData();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Failed to create lot');
+    } finally {
+      setCreatingLot(false);
+    }
+  };
+
+  const handleCreateTransfer = async () => {
+    if (!transferForm.fromWarehouseId || !transferForm.toWarehouseId || transferForm.items.length === 0) return;
+    setCreatingTransfer(true);
+    try {
+      await apiClient.post('/inventory/transfers', {
+        fromWarehouseId: transferForm.fromWarehouseId,
+        toWarehouseId: transferForm.toWarehouseId,
+        notes: transferForm.notes || undefined,
+        items: transferForm.items.filter(i => i.productId && i.quantityRequested > 0),
+      });
+      setShowTransferModal(false);
+      setTransferForm({ fromWarehouseId: '', toWarehouseId: '', notes: '', items: [{ productId: '', quantityRequested: 1 }] });
+      fetchData();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Failed to create transfer');
+    } finally {
+      setCreatingTransfer(false);
+    }
+  };
+
   return (
     <AuthGuard>
       <div className="p-6 space-y-6">
@@ -176,24 +321,50 @@ export default function InventoryPage() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl w-fit">
+        <div className="flex items-center justify-between">
+          <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
           {[
-            { key: 'transactions' as const, label: `${t('inventory.transactions')} (${total})` },
-            { key: 'lowstock' as const, label: `${t('inventory.lowStock')} (${lowStockItems.length})` },
-            { key: 'reorder' as const, label: `${t('inventory.reorderPoints')} (${reorderSuggestions.length})` },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition ${
-                activeTab === tab.key
-                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+            { key: 'transactions' as const, label: `${t('inventory.transactions')} (${total})`, icon: Clock },
+            { key: 'lowstock' as const, label: `${t('inventory.lowStock')} (${lowStockItems.length})`, icon: AlertTriangle },
+            { key: 'reorder' as const, label: `${t('inventory.reorderPoints')} (${reorderSuggestions.length})`, icon: RefreshCw },
+            { key: 'lots' as const, label: `${t('inventory.lots.title')} (${lots.length})`, icon: Package },
+            { key: 'transfers' as const, label: `${t('inventory.transfers.title')} (${transfers.length})`, icon: ArrowRightLeft },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium transition ${
+                  activeTab === tab.key
+                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            );
+          })}
+          </div>
+          {(activeTab === 'lots' || activeTab === 'transfers') && (
+            <div className="flex gap-2">
+              {activeTab === 'lots' && (
+                <button onClick={() => setShowLotModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                  <Package className="w-4 h-4" />
+                  {t('inventory.lots.add')}
+                </button>
+              )}
+              {activeTab === 'transfers' && (
+                <button onClick={() => setShowTransferModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                  <ArrowRightLeft className="w-4 h-4" />
+                  {t('inventory.transfers.add')}
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {loading ? (
@@ -387,6 +558,85 @@ export default function InventoryPage() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'lots' && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50 dark:bg-gray-700">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.lots.lotNumber')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('nav.products')}</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('inventory.lots.quantity')}</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('inventory.lots.remainingQuantity')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.lots.expiryDate')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.lots.warehouse')}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                      {lots.length === 0 ? (
+                        <tr><td colSpan={6} className="px-4 py-12 text-center text-gray-400">{t('inventory.noTransactions')}</td></tr>
+                      ) : lots.map((lot) => (
+                        <tr key={lot.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                          <td className="px-4 py-3 font-mono font-medium">{lot.lotNumber}</td>
+                          <td className="px-4 py-3 text-gray-500 text-xs">{lot.productId?.slice(0, 8)}…</td>
+                          <td className="px-4 py-3 text-right font-medium">{lot.quantity}</td>
+                          <td className="px-4 py-3 text-right text-gray-600">{lot.remainingQuantity}</td>
+                          <td className="px-4 py-3">
+                            {lot.expiryDate ? (
+                              <span className={`text-sm ${new Date(lot.expiryDate) < new Date() ? 'text-red-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
+                                {new Date(lot.expiryDate).toLocaleDateString('vi-VN')}
+                              </span>
+                            ) : '—'}
+                          </td>
+                          <td className="px-4 py-3 text-gray-500 text-xs">{lot.warehouseId ? lot.warehouseId.slice(0, 8) : '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'transfers' && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50 dark:bg-gray-700">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.transfers.code')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.transfers.fromWarehouse')}</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">{t('inventory.transfers.toWarehouse')}</th>
+                        <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">{t('inventory.transfers.status')}</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase">{t('common.time')}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                      {transfers.length === 0 ? (
+                        <tr><td colSpan={5} className="px-4 py-12 text-center text-gray-400">{t('inventory.noTransactions')}</td></tr>
+                      ) : transfers.map((transfer) => {
+                        const statusCfg = TRANSFER_STATUS_CONFIG[transfer.status as keyof typeof TRANSFER_STATUS_CONFIG] ?? TRANSFER_STATUS_CONFIG.draft;
+                        return (
+                          <tr key={transfer.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td className="px-4 py-3 font-mono font-medium text-blue-600">{transfer.transferCode}</td>
+                            <td className="px-4 py-3 text-gray-600 text-xs">{transfer.fromWarehouseId?.slice(0, 8)}…</td>
+                            <td className="px-4 py-3 text-gray-600 text-xs">{transfer.toWarehouseId?.slice(0, 8)}…</td>
+                            <td className="px-4 py-3 text-center">
+                              <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${statusCfg.color}`}>
+                                {t(statusCfg.label)}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right text-xs text-gray-400">
+                              {new Date(transfer.createdAt).toLocaleDateString('vi-VN')}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -483,6 +733,108 @@ export default function InventoryPage() {
                 className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-bold rounded-xl transition text-sm"
               >
                 {adjusting ? t('common.processing') : t('common.confirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Lot Modal */}
+      {showLotModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{t('inventory.lots.add')}</h2>
+            <div className="space-y-4">
+              {/* Product search */}
+              {!lotForm.productId ? (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="text" value={lotForm.productSearch}
+                    onChange={(e) => setLotForm((f) => ({ ...f, productSearch: e.target.value }))}
+                    placeholder={t('products.searchPlaceholder')}
+                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white" />
+                  {lotSearchResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+                      {lotSearchResults.map((p) => (
+                        <button key={p.id}
+                          onClick={() => setLotForm((f) => ({ ...f, productId: p.id, productName: p.name, productSearch: '' }))}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-700 text-sm">
+                          <span className="font-medium">{p.name}</span>
+                          <span className="text-gray-400 ml-2 text-xs">{p.sku}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-blue-50 dark:bg-blue-900/20 px-3 py-2 rounded-lg">
+                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{lotForm.productName}</span>
+                  <button onClick={() => setLotForm((f) => ({ ...f, productId: '', productName: '' }))} className="text-blue-400 hover:text-blue-600 text-xs">{t('common.change')}</button>
+                </div>
+              )}
+              <input type="text" value={lotForm.lotNumber}
+                onChange={(e) => setLotForm((f) => ({ ...f, lotNumber: e.target.value }))}
+                placeholder={t('inventory.lots.lotNumber')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white" />
+              <input type="date" value={lotForm.expiryDate}
+                onChange={(e) => setLotForm((f) => ({ ...f, expiryDate: e.target.value }))}
+                placeholder={t('inventory.lots.expiryDate')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white" />
+              <input type="number" value={lotForm.quantity}
+                onChange={(e) => setLotForm((f) => ({ ...f, quantity: parseInt(e.target.value) || 1 }))}
+                placeholder={t('inventory.lots.quantity')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => setShowLotModal(false)}
+                className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm">
+                {t('common.cancel')}
+              </button>
+              <button onClick={handleCreateLot} disabled={!lotForm.productId || !lotForm.lotNumber || creatingLot}
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-bold rounded-xl text-sm">
+                {creatingLot ? t('common.processing') : t('common.save')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transfer Modal */}
+      {showTransferModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">{t('inventory.transfers.add')}</h2>
+            <div className="space-y-4">
+              <select value={transferForm.fromWarehouseId}
+                onChange={(e) => setTransferForm((f) => ({ ...f, fromWarehouseId: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white">
+                <option value="">{t('inventory.transfers.fromWarehouse')}</option>
+                {warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>{wh.name}</option>
+                ))}
+              </select>
+              <select value={transferForm.toWarehouseId}
+                onChange={(e) => setTransferForm((f) => ({ ...f, toWarehouseId: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white">
+                <option value="">{t('inventory.transfers.toWarehouse')}</option>
+                {warehouses.filter((wh) => wh.id !== transferForm.fromWarehouseId).map((wh) => (
+                  <option key={wh.id} value={wh.id}>{wh.name}</option>
+                ))}
+              </select>
+              <textarea value={transferForm.notes}
+                onChange={(e) => setTransferForm((f) => ({ ...f, notes: e.target.value }))}
+                placeholder={t('inventory.reason')}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white" />
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => setShowTransferModal(false)}
+                className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm">
+                {t('common.cancel')}
+              </button>
+              <button onClick={handleCreateTransfer}
+                disabled={!transferForm.fromWarehouseId || !transferForm.toWarehouseId || creatingTransfer}
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-bold rounded-xl text-sm">
+                {creatingTransfer ? t('common.processing') : t('common.save')}
               </button>
             </div>
           </div>
