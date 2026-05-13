@@ -1,20 +1,37 @@
 {
-  "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0"
-  },
   "name": "@smart-erp/desktop",
+  "version": "0.3.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "tauri build",
-    "dev": "tauri dev",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "tauri": "tauri",
-    "test:e2e": "playwright test"
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
-  "version": "0.1.0",
   "dependencies": {
+    "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
+    "@smart-erp/sync": "workspace:*",
+    "@smart-erp/ui": "workspace:*",
+    "@smart-erp/utils": "workspace:*",
+    "@tauri-apps/api": "^2.0.0",
     "@tauri-apps/plugin-updater": "2.10.1",
-    "dexie": "4.4.2",
-    "dexie-react-hooks": "4.4.0"
+    "dexie": "^4.0.10",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
   }
 }
