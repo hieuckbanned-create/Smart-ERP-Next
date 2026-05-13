@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { apiClient } from '@/lib/api-client';
+import { leadsApi } from '@/lib/api-crm';
 import { X } from 'lucide-react';
 
 interface LeadFormProps {
@@ -28,7 +28,6 @@ const STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
 
 export default function LeadForm({ lead, onSuccess, onClose }: LeadFormProps) {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     firstName: lead?.firstName || '',
     lastName: lead?.lastName || '',
@@ -44,19 +43,16 @@ export default function LeadForm({ lead, onSuccess, onClose }: LeadFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     try {
       if (lead?.id) {
-        await apiClient.patch(`/crm/leads/${lead.id}`, form);
+        await leadsApi.update(lead.id, form);
       } else {
-        await apiClient.post('/crm/leads', form);
+        await leadsApi.create(form);
       }
       onSuccess();
       onClose();
     } catch (err) {
       console.error('Failed to save lead:', err);
-    } finally {
-      setLoading(false);
     }
   };
 

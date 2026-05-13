@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { apiClient } from '@/lib/api-client';
+import { leadsApi, type Lead } from '@/lib/api-crm';
 import {
   Target,
   Phone,
@@ -13,30 +13,9 @@ import {
   Plus,
   Pencil,
   Trash2,
-  X,
 } from 'lucide-react';
 import LeadForm from '@/components/crm/LeadForm';
-
-interface Lead {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  company: string;
-  source: string;
-  status: string;
-  leadScore: number;
-  createdAt: string;
-  industry?: string;
-  description?: string;
-}
-
-interface NextBestAction {
-  action: string;
-  priority: number;
-  reason: string;
-}
+import type { NextBestAction, LeadStats } from '@/lib/api-crm';
 
 const STATUS_COLORS: Record<string, { label: string; color: string; bg: string }> = {
   new: { label: 'Mới', color: '#3b82f6', bg: '#dbeafe' },
@@ -102,11 +81,8 @@ export default function CRMPage() {
 
   const fetchLeads = useCallback(async () => {
     try {
-      const params = new URLSearchParams();
-      if (search) params.append('search', search);
-      if (statusFilter) params.append('status', statusFilter);
-      const res = await apiClient.get<{ items: Lead[] }>(`/crm/leads?${params}`);
-      setLeads(res.items || res.data?.items || []);
+      const res = await leadsApi.getAll({ search, status: statusFilter });
+      setLeads(res.items);
     } catch (err) {
       console.error('Failed to fetch leads:', err);
     } finally {
@@ -116,31 +92,19 @@ export default function CRMPage() {
 
   const fetchStats = async () => {
     try {
-      const res = await apiClient.get<{ total: number; byStatus: { status: string; count: number }[]; winRate: number }>('/crm/leads/stats');
+      const res = await leadsApi.getStats();
       setStats(res);
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }
   };
 
-  const fetchNBA = async (leadId: string) => {
-    try {
-      setNbaLoading(true);
-      const res = await apiClient.get<NextBestAction>(`/crm/next-best-action/lead/${leadId}`);
-      setNba(res.data || res);
-    } catch (err) {
-      console.error('Failed to fetch NBA:', err);
-    } finally {
-      setNbaLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchLeads(); fetchStats(); }, [fetchLeads]);
-
   const handleLeadSelect = (lead: Lead) => {
     setSelectedLead(lead);
     setNba(null);
-    fetchNBA(lead.id);
+    leadsApi.getNextBestAction(lead.id)
+      .then(setNba)
+      .catch(console.error);
   };
 
   const handleEditLead = (lead: Lead) => {
@@ -151,7 +115,7 @@ export default function CRMPage() {
   const handleDeleteLead = async (leadId: string) => {
     if (!confirm(t('crm.confirmDelete', 'Bạn có chắc muốn xóa lead này?'))) return;
     try {
-      await apiClient.delete(`/crm/leads/${leadId}`);
+      await leadsApi.delete(leadId);
       fetchLeads();
       fetchStats();
       if (selectedLead?.id === leadId) setSelectedLead(null);
