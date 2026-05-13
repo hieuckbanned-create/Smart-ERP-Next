@@ -50,8 +50,8 @@ export default function AccountingScreen() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchStats(); }} />}
     >
       <View style={styles.header}>
-        <h1 style={styles.title}>{t('nav.accounting')}</h1>
-        <Text style={styles.subtitle}>Tổng quan tình hình tài chính</Text>
+        <Text style={styles.title}>{t('nav.accounting')}</Text>
+        <Text style={styles.subtitle}>{t('accounting.financeOverview', 'Tổng quan tài chính')}</Text>
       </View>
 
       <View style={styles.statsGrid}>
