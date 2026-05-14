@@ -901,6 +901,34 @@
       "transfer": "transfer"
     }
   },
+  "crm": {
+    "title": "CRM",
+    "statuses": {
+      "new": "New",
+      "contacted": "Contacted",
+      "qualified": "Qualified",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "actions": {
+      "call": "Call",
+      "email": "Email",
+      "meeting": "Meeting",
+      "proposal": "Proposal",
+      "follow_up": "Follow Up"
+    },
+    "editLead": "Edit Lead",
+    "addLead": "Add New Lead",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "company": "Company",
+    "source": "Source",
+    "status": "Status",
+    "leadScore": "Lead Score",
+    "industry": "Industry",
+    "notes": "Notes"
+  },
   "advanced_reports": {
     "title": "Advanced Reports",
     "templates": "Report Templates",

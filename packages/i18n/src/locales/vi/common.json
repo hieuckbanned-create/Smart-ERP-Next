@@ -241,12 +241,65 @@
     "themeSystem": "Theo hệ thống",
     "language": "Ngôn ngữ"
   },
-  "sync": {
-    "conflictTitle": "Phát hiện xung đột đồng bộ",
+  "crm": {
+    "title": "CRM",
+    "statuses": {
+      "new": "Mới",
+      "contacted": "Đã liên hệ",
+      "qualified": "Tiềm năng",
+      "won": "Thành công",
+      "lost": "Thất bại"
+    },
+    "actions": {
+      "call": "Gọi điện",
+      "email": "Gửi email",
+      "meeting": "Hẹn gặp",
+      "proposal": "Đề xuất",
+      "follow_up": "Theo dõi"
+    },
+    "editLead": "Sửa Lead",
+    "addLead": "Thêm Lead mới",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "phone": "Số điện thoại",
+    "company": "Công ty",
+    "source": "Nguồn",
+    "status": "Trạng thái",
+    "leadScore": "Điểm Lead",
+    "industry": "Ngành",
+    "notes": "Ghi chú"
+  },
+  "activity": {
+    "created": "đã tạo",
+    "updated": "đã cập nhật",
+    "deleted": "đã xóa",
+    "approved": "đã duyệt",
+    "rejected": "đã từ chối",
+    "stock_adjusted": "điều chỉnh tồn kho",
+    "entityTypes": {
+      "order": "đơn hàng",
+      "product": "sản phẩm",
+      "customer": "khách hàng",
+      "supplier": "nhà cung cấp",
+      "inventory": "kho",
+      "lead": "lead",
+      "payment": "phiếu thu/chi",
+      "journalEntry": "bút toán",
+      "comment": "bình luận",
+      "chat": "chat",
+      "lot": "lô hàng",
+      "transfer": "chuyển kho"
+    }
+  },
+  "ecommerce": {
     "localVersion": "Bản cục bộ",
     "remoteVersion": "Bản máy chủ",
     "keepLocal": "Giữ bản cục bộ",
     "keepRemote": "Giữ bản máy chủ"
+  },
+  "accounting": {
+    "posted": "Đã ghi",
+    "unposted": "Chưa ghi"
   },
   "activity": {
     "created": "đã tạo",

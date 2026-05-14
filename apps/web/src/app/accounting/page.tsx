@@ -285,7 +285,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
                           : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                       }`}
                     >
-                      {entry.isPosted ? 'Đã ghi' : 'Chưa ghi'}
+                      {entry.isPosted ? t('accounting.posted') : t('accounting.unposted')}
                     </span>
                   </td>
                 </tr>
