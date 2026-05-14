@@ -27,6 +27,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
+import { ExportModule } from './exports/export.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -62,6 +63,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     CrmModule,
     ActivityModule,
     HealthModule,
+    ExportModule,
   ],
   controllers: [AppController],
   providers: [
