@@ -335,18 +335,21 @@
       "bankAccount": "Account number",
       "bankName": "Bank name",
       "notes": "Notes about supplier..."
+    },
+    "portal": {
+      "title": "Supplier Portal",
+      "myOrders": "My Orders",
+      "performance": "Performance",
+      "totalOrders": "Total Orders",
+      "totalAmount": "Total Value",
+      "onTimeRate": "On-time Delivery Rate",
+      "leadTime": "Avg Lead Time (days)",
+      "qualityScore": "Quality Score",
+      "confirmDelivery": "Confirm Delivery",
+      "deliveryConfirmed": "Delivery confirmed"
     }
   },
   "inventory": {
-    "fetchProductsError": "Failed to load products",
-    "forecastError": "Failed to run AI forecast",
-    "recommendationTitle": "Smart Reorder Suggestion",
-    "productId": "Product ID",
-    "suggestedReorder": "Suggested Reorder Qty",
-    "recommendationMessage": "Consider reordering to meet forecasted demand.",
-    "noReorderNeeded": "Current stock is sufficient to meet demand.",
-    "recommendationTitle": "Smart Reorder Suggestion",
-    "productId": "Product ID",
     "suggestedReorder": "Suggested Reorder Qty",
     "recommendationMessage": "Consider reordering to meet forecasted demand.",
     "noReorderNeeded": "Current stock is sufficient to meet demand.",

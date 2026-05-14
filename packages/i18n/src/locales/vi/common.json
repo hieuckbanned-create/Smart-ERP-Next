@@ -231,6 +231,18 @@
       "bankAccount": "Số tài khoản",
       "bankName": "Tên ngân hàng",
       "notes": "Ghi chú về nhà cung cấp..."
+    },
+    "portal": {
+      "title": "Cổng nhà cung cấp",
+      "myOrders": "Đơn hàng của tôi",
+      "performance": "Hiệu suất",
+      "totalOrders": "Tổng đơn hàng",
+      "totalAmount": "Tổng giá trị",
+      "onTimeRate": "Tỷ lệ giao đúng hạn",
+      "leadTime": "Lead time TB (ngày)",
+      "qualityScore": "Điểm chất lượng",
+      "confirmDelivery": "Xác nhận giao hàng",
+      "deliveryConfirmed": "Đã xác nhận giao hàng"
     }
   },
   "customers": {
