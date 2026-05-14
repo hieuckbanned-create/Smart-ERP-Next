@@ -23,7 +23,7 @@
 | Lot tracking + Expiry    |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 | Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 | AI Business Intelligence | ✅ Predictive Stock   |    ❌    |   ❌    |  ❌  | Partial |
-| Omnichannel Hub          | ✅ Shopee/Lazada/TikTok| Partial  | ✅       |  ❌  | Partial |
+| Omnichannel Hub          | ✅ Shopee/TikTok/Amazon/eBay | Partial  | ✅       |  ❌  | Partial |
 
 ---
 
@@ -45,11 +45,7 @@
 - **Sync status indicator** with pending changes count and manual/auto retry
 - **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
 
-## Offline‑First & Real‑Time
-- **Real‑time activity notifications** via WebSockets (tenant‑scoped)
-- **Real‑time approval requests** – approvers get instant notifications and can approve/reject directly from the web UI
-- **Sync status indicator** with pending changes count and manual/auto retry
-- **Conflict resolution** UI for offline edits (powered by Dexie + background sync)
+## 🛒 Omnichannel E-commerce Integration
 
 ## Tech Stack
 
