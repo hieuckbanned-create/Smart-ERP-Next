@@ -281,6 +281,7 @@
   "suppliers": {
     "title": "Suppliers",
     "add": "Add Supplier",
+    "edit": "Edit Supplier",
     "code": "Supplier Code",
     "name": "Supplier Name",
     "empty": "No suppliers found",
@@ -296,7 +297,29 @@
     "currentDebt": "Current Debt",
     "totalPurchased": "Total Purchased",
     "notes": "Notes",
-    "searchPlaceholder": "Search by name, phone, code..."
+    "basicInfo": "Basic Information",
+    "addressTitle": "Address",
+    "bankInfo": "Bank Information",
+    "ward": "Ward",
+    "district": "District",
+    "province": "Province/City",
+    "active": "Active",
+    "searchPlaceholder": "Search by name, phone, code...",
+    "placeholders": {
+      "code": "SUP-001",
+      "name": "Company ABC",
+      "phone": "028 1234 5678",
+      "email": "supplier@example.com",
+      "taxCode": "0123456789",
+      "contactPerson": "Contact person",
+      "address": "Address",
+      "ward": "Ward",
+      "district": "District",
+      "province": "Province/City",
+      "bankAccount": "Account number",
+      "bankName": "Bank name",
+      "notes": "Notes about supplier..."
+    }
   },
   "inventory": {
     "fetchProductsError": "Failed to load products",

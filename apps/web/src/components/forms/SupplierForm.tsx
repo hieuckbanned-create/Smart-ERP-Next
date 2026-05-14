@@ -57,7 +57,7 @@ export default function SupplierForm({ initial = {}, mode, id }: SupplierFormPro
       }
       router.push('/suppliers');
     } catch (err: any) {
-      setError(err.response?.data?.message ?? 'Lưu thất bại');
+      setError(err.response?.data?.message ?? t('common.error'));
     } finally {
       setSaving(false);
     }
@@ -103,43 +103,43 @@ export default function SupplierForm({ initial = {}, mode, id }: SupplierFormPro
         )}
 
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Thông tin cơ bản</h2>
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('suppliers.basicInfo')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label={t('suppliers.code')} name="code" required placeholder="NCC-001" />
-            <Field label={t('suppliers.name')} name="name" required placeholder="Công ty ABC" />
-            <Field label={t('suppliers.phone')} name="phone" type="tel" placeholder="028 1234 5678" />
-            <Field label={t('suppliers.email')} name="email" type="email" placeholder="ncc@example.com" />
-            <Field label={t('suppliers.taxCode')} name="taxCode" placeholder="0123456789" />
-            <Field label={t('suppliers.contactPerson')} name="contactPerson" placeholder="Người liên hệ" />
+            <Field label={t('suppliers.code')} name="code" required placeholder={t('suppliers.placeholders.code')} />
+            <Field label={t('suppliers.name')} name="name" required placeholder={t('suppliers.placeholders.name')} />
+            <Field label={t('suppliers.phone')} name="phone" type="tel" placeholder={t('suppliers.placeholders.phone')} />
+            <Field label={t('suppliers.email')} name="email" type="email" placeholder={t('suppliers.placeholders.email')} />
+            <Field label={t('suppliers.taxCode')} name="taxCode" placeholder={t('suppliers.placeholders.taxCode')} />
+            <Field label={t('suppliers.contactPerson')} name="contactPerson" placeholder={t('suppliers.placeholders.contactPerson')} />
           </div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Địa chỉ</h2>
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('suppliers.addressTitle')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <Field label={t('suppliers.address')} name="address" placeholder="Địa chỉ" />
+              <Field label={t('suppliers.address')} name="address" placeholder={t('suppliers.placeholders.address')} />
             </div>
-            <Field label="Phường/Xã" name="ward" placeholder="Phường/Xã" />
-            <Field label="Quận/Huyện" name="district" placeholder="Quận/Huyện" />
-            <Field label="Tỉnh/Thành phố" name="province" placeholder="Tỉnh/Thành phố" />
+            <Field label={t('suppliers.ward')} name="ward" placeholder={t('suppliers.placeholders.ward')} />
+            <Field label={t('suppliers.district')} name="district" placeholder={t('suppliers.placeholders.district')} />
+            <Field label={t('suppliers.province')} name="province" placeholder={t('suppliers.placeholders.province')} />
           </div>
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Thông tin ngân hàng</h2>
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('suppliers.bankInfo')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label={t('suppliers.bankAccount')} name="bankAccount" placeholder="Số tài khoản" />
-            <Field label={t('suppliers.bankName')} name="bankName" placeholder="Tên ngân hàng" />
+            <Field label={t('suppliers.bankAccount')} name="bankAccount" placeholder={t('suppliers.placeholders.bankAccount')} />
+            <Field label={t('suppliers.bankName')} name="bankName" placeholder={t('suppliers.placeholders.bankName')} />
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ghi chú</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('suppliers.notes')}</label>
               <textarea
                 name="notes"
                 value={form.notes}
                 onChange={handleChange}
                 rows={3}
                 className={inputClass}
-                placeholder="Ghi chú về nhà cung cấp..."
+                placeholder={t('suppliers.placeholders.notes')}
               />
             </div>
             <div className="flex items-center gap-2">
@@ -151,7 +151,7 @@ export default function SupplierForm({ initial = {}, mode, id }: SupplierFormPro
                 onChange={handleChange}
                 className="w-4 h-4 text-blue-600 rounded"
               />
-              <label htmlFor="isActive" className="text-sm text-gray-700 dark:text-gray-300">Đang hoạt động</label>
+              <label htmlFor="isActive" className="text-sm text-gray-700 dark:text-gray-300">{t('suppliers.active')}</label>
             </div>
           </div>
         </div>
