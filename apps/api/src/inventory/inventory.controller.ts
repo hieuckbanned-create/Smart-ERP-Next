@@ -68,4 +68,69 @@ export class InventoryController {
   getReorderSuggestions(@Request() req: any) {
     return this.inventoryService.getReorderSuggestions(req.user.tenantId);
   }
+
+  // ---------- Omnichannel Inventory Sync ----------
+
+  /** Lấy tồn kho khả dụng (đã trừ reservation + buffer) */
+  @Get('available-stock/:productId')
+  getAvailableStock(
+    @Request() req: any,
+    @Param('productId') productId: string,
+    @Query('storeId') storeId?: string,
+  ) {
+    return this.inventoryService.getAvailableStock(req.user.tenantId, productId, storeId);
+  }
+
+  /** Tạo reservation cho đơn marketplace */
+  @Post('reservations')
+  createReservation(
+    @Request() req: any,
+    @Body()
+    body: {
+      storeId: string;
+      externalOrderId: string;
+      productId: string;
+      quantity: number;
+    },
+  ) {
+    return this.inventoryService.createReservation(
+      req.user.tenantId,
+      body.storeId,
+      body.externalOrderId,
+      body.productId,
+      body.quantity,
+    );
+  }
+
+  /** Huỷ reservation (khi đơn huỷ) */
+  @Post('reservations/release')
+  releaseReservation(
+    @Request() req: any,
+    @Body()
+    body: { externalOrderId: string },
+  ) {
+    return this.inventoryService.releaseReservation(req.user.tenantId, body.externalOrderId);
+  }
+
+  /** Xác nhận reservation (khi đơn fulfilled) */
+  @Post('reservations/consume')
+  consumeReservation(
+    @Request() req: any,
+    @Body()
+    body: { externalOrderId: string },
+  ) {
+    return this.inventoryService.consumeReservation(req.user.tenantId, body.externalOrderId);
+  }
+
+  /** Push tồn kho khả dụng lên marketplace */
+  @Post('sync-channel-stock/:storeId')
+  pushStockToMarketplace(@Request() req: any, @Param('storeId') storeId: string) {
+    return this.inventoryService.pushStockToMarketplace(req.user.tenantId, storeId);
+  }
+
+  /** Sync tồn kho cho tất cả stores */
+  @Post('sync-all-stores-stock')
+  syncAllStoresStock(@Request() req: any) {
+    return this.inventoryService.syncAllStoresStock(req.user.tenantId);
+  }
 }

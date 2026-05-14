@@ -1,7 +1,7 @@
 import { Injectable, ConflictException } from "@nestjs/common";
 import { db } from "@smart-erp/database";
-import { products, inventoryTransactions } from "@smart-erp/database/schema";
-import { eq, and, sql, desc } from "@smart-erp/database/drizzle";
+import { products, inventoryTransactions, inventoryReservations, ecommerceStores } from "@smart-erp/database/schema";
+import { eq, and, sql, desc, gte, lte } from "@smart-erp/database/drizzle";
 
 @Injectable()
 export class InventoryService {
@@ -155,5 +155,228 @@ export class InventoryService {
       outOfStock: r.out_of_stock ?? 0,
       lowStock: r.low_stock ?? 0,
     };
+  }
+
+  // ---------- Omnichannel Inventory Sync ----------
+
+  /**
+   * Get available stock for a product (considering reservations and safety buffer).
+   * available = stock - safetyStockBuffer - reservedQuantity
+   */
+  async getAvailableStock(
+    tenantId: string,
+    productId: string,
+    storeId?: string,
+  ): Promise<number> {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(and(eq(products.tenantId, tenantId), eq(products.id, productId)));
+
+    if (!product) return 0;
+
+    // Get safety stock buffer from store settings (default 0)
+    let safetyStock = 0;
+    if (storeId) {
+      const [store] = await db
+        .select()
+        .from(ecommerceStores)
+        .where(and(eq(ecommerceStores.tenantId, tenantId), eq(ecommerceStores.id, storeId)));
+      if (store) {
+        const config = JSON.parse(store.configJson || '{}');
+        safetyStock = config.safetyStockBuffer ?? 0;
+      }
+    }
+
+    // Get reserved quantity
+    const reservedRes = await db
+      .select({ sum: sql<number>`sum(${inventoryReservations.quantityReserved})` })
+      .from(inventoryReservations)
+      .where(
+        and(
+          eq(inventoryReservations.tenantId, tenantId),
+          eq(inventoryReservations.productId, productId),
+          eq(inventoryReservations.status, 'reserved'),
+          storeId ? eq(inventoryReservations.storeId, storeId) : undefined,
+        ),
+      );
+
+    const reserved = reservedRes[0]?.sum ?? 0;
+
+    return Math.max(0, product.stock - safetyStock - reserved);
+  }
+
+  /**
+   * Create a reservation for an external order (from marketplace).
+   * Reduces available stock until fulfilled/cancelled.
+   */
+  async createReservation(
+    tenantId: string,
+    storeId: string,
+    externalOrderId: string,
+    productId: string,
+    quantity: number,
+  ) {
+    // Check if reservation already exists for this order
+    const existing = await db
+      .select()
+      .from(inventoryReservations)
+      .where(
+        and(
+          eq(inventoryReservations.tenantId, tenantId),
+          eq(inventoryReservations.externalOrderId, externalOrderId),
+        ),
+      );
+
+    if (existing.length > 0) {
+      // Update existing reservation
+      return db
+        .update(inventoryReservations)
+        .set({
+          quantityReserved: quantity,
+          updatedAt: new Date(),
+        })
+        .where(eq(inventoryReservations.id, existing[0].id))
+        .returning();
+    }
+
+    // Create new reservation
+    return db
+      .insert(inventoryReservations)
+      .values({
+        tenantId,
+        storeId,
+        externalOrderId,
+        productId,
+        quantityReserved: quantity,
+        status: 'reserved',
+      })
+      .returning();
+  }
+
+  /**
+   * Release a reservation (when order is cancelled).
+   */
+  async releaseReservation(
+    tenantId: string,
+    externalOrderId: string,
+  ) {
+    return db
+      .update(inventoryReservations)
+      .set({
+        status: 'released',
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(inventoryReservations.tenantId, tenantId),
+          eq(inventoryReservations.externalOrderId, externalOrderId),
+        ),
+      );
+  }
+
+  /**
+   * Consume a reservation (when order is fulfilled).
+   * Also reduces actual stock.
+   */
+  async consumeReservation(
+    tenantId: string,
+    externalOrderId: string,
+  ) {
+    const [reservation] = await db
+      .select()
+      .from(inventoryReservations)
+      .where(
+        and(
+          eq(inventoryReservations.tenantId, tenantId),
+          eq(inventoryReservations.externalOrderId, externalOrderId),
+        ),
+      );
+
+    if (!reservation) return null;
+
+    // Reduce product stock
+    await db
+      .update(products)
+      .set({
+        stock: sql`stock - ${reservation.quantityReserved}`,
+        updatedAt: new Date(),
+      })
+      .where(eq(products.id, reservation.productId));
+
+    // Mark reservation as consumed
+    await db
+      .update(inventoryReservations)
+      .set({
+        status: 'consumed',
+        updatedAt: new Date(),
+      })
+      .where(eq(inventoryReservations.id, reservation.id));
+
+    return reservation;
+  }
+
+  /**
+   * Push available stock to marketplace for a specific store.
+   */
+  async pushStockToMarketplace(
+    tenantId: string,
+    storeId: string,
+  ) {
+    const [store] = await db
+      .select()
+      .from(ecommerceStores)
+      .where(and(eq(ecommerceStores.tenantId, tenantId), eq(ecommerceStores.id, storeId)));
+
+    if (!store) throw new Error('Store not found');
+
+    // Get all products with their available stock
+    const productsWithStock = await db.execute(
+      sql`
+        SELECT
+          p.id as product_id,
+          p.external_id,
+          p.stock,
+          COALESCE(SUM(ir.quantity_reserved), 0) as reserved_qty,
+          COALESCE(JSON_EXTRACT_PATH_TEXT(es.config_json, 'safetyStockBuffer')::int, 0) as safety_buffer
+        FROM products p
+        LEFT JOIN inventory_reservations ir ON p.id = ir.product_id AND ir.store_id = ${storeId} AND ir.status = 'reserved'
+        LEFT JOIN ecommerce_stores es ON es.id = ${storeId}
+        WHERE p.tenant_id = ${tenantId} AND p.is_active = true
+        GROUP BY p.id, p.stock, p.external_id, es.config_json
+      `,
+    );
+
+    const items = (productsWithStock.rows as any[]).map((r) => ({
+      productId: r.product_id,
+      externalId: r.external_id,
+      available: Math.max(0, r.stock - r.safety_buffer - r.reserved_qty),
+    }));
+
+    // TODO: Call actual marketplace API here
+    // For now, return the data to be pushed
+    return { storeId, items, pushedAt: new Date() };
+  }
+
+  /**
+   * Sync all stores' stock to their marketplaces.
+   */
+  async syncAllStoresStock(tenantId: string) {
+    const stores = await db
+      .select()
+      .from(ecommerceStores)
+      .where(and(eq(ecommerceStores.tenantId, tenantId), eq(ecommerceStores.isActive, true)));
+
+    const results = [];
+    for (const store of stores) {
+      try {
+        const result = await this.pushStockToMarketplace(tenantId, store.id);
+        results.push({ storeId: store.id, status: 'success', ...result });
+      } catch (err) {
+        results.push({ storeId: store.id, status: 'error', error: err.message });
+      }
+    }
+
+    return results;
   }
 }

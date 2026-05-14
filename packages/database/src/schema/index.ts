@@ -25,3 +25,4 @@ export * from './product_lots';
 export * from './product_serials';
 export * from './warehouse_transfers';
 export * from './ecommerce_stores';
+export * from './inventory_reservations';
