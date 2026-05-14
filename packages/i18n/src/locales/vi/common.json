@@ -287,6 +287,12 @@
     "timezone": "Múi giờ",
     "dateFormat": "Định dạng ngày",
     "notifications": "Thông báo",
+    "notifications.newApproval": "Yêu cầu phê duyệt mới",
+    "notifications.newApprovalBody": "Có yêu cầu phê duyệt mới: {{documentType}} - {{amount}} VND",
+    "notifications.lowStock": "Cảnh báo tồn kho thấp",
+    "notifications.lowStockBody": "{{productName}} chỉ còn {{currentStock}} trong kho",
+    "notifications.orderReceived": "Đơn hàng đã nhận",
+    "notifications.orderReceivedBody": "Đơn hàng {{orderCode}} đã được nhận thành công",
     "security": "Bảo mật",
     "integrations": "Tích hợp",
     "billing": "Thanh toán & Gói dịch vụ"

@@ -727,6 +727,12 @@
     "timezone": "Timezone",
     "dateFormat": "Date Format",
     "notifications": "Notifications",
+    "notifications.newApproval": "New Approval Request",
+    "notifications.newApprovalBody": "New approval request: {{documentType}} - {{amount}} VND",
+    "notifications.lowStock": "Low Stock Alert",
+    "notifications.lowStockBody": "{{productName}} only has {{currentStock}} left in stock",
+    "notifications.orderReceived": "Order Received",
+    "notifications.orderReceivedBody": "Order {{orderCode}} has been received successfully",
     "security": "Security",
     "integrations": "Integrations",
     "billing": "Billing & Plans"
