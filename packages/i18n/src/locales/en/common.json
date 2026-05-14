@@ -156,7 +156,37 @@
     "currencies.amount": "Amount",
     "currencies.converted": "Converted Amount",
     "currencies.exchangeRate": "Exchange Rate",
-    "warehouses": "Warehouses",
+    "manufacturing": {
+      "title": "Manufacturing",
+      "bom": "Bill of Materials (BOM)",
+      "bomItem": "BOM Item",
+      "productionOrder": "Production Order",
+      "productionOrders": "Production Orders",
+      "createOrder": "Create Production Order",
+      "startOrder": "Start Production",
+      "completeOrder": "Complete Production",
+      "status": {
+        "draft": "Draft",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "qc": {
+        "title": "Quality Control",
+        "checkpoints": "Checkpoints",
+        "passed": "Passed",
+        "failed": "Failed",
+        "pending": "Pending"
+      },
+      "cost": {
+        "title": "Production Cost",
+        "totalCost": "Total Cost",
+        "unitCost": "Unit Cost",
+        "materialCost": "Material Cost"
+      }
+    }
+  },
+  "ecommerce": {
     "reports": "Reports",
     "reports.title": "Advanced Reports",
     "reports.dateRange": "Date Range",

@@ -71,6 +71,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     AutomationModule,
     SearchModule,
     ExchangeRateModule,
+    ManufacturingModule,
   ],
   controllers: [AppController],
   providers: [

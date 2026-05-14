@@ -159,7 +159,6 @@
     "currencies.to": "Đến",
     "currencies.amount": "Số tiền",
     "currencies.converted": "Số tiền sau chuyển đổi",
-    "currencies.exchangeRate": "Tỷ giá hối đoái",
     "currencies": "Tiền tệ",
     "currencies.rate": "Tỷ giá",
     "currencies.convert": "Chuyển đổi",
@@ -169,6 +168,35 @@
     "currencies.amount": "Số tiền",
     "currencies.converted": "Số tiền sau chuyển đổi",
     "currencies.exchangeRate": "Tỷ giá hối đoái",
+    "manufacturing": {
+      "title": "Sản xuất",
+      "bom": "Danh sách nguyên liệu (BOM)",
+      "bomItem": "Nguyên liệu",
+      "productionOrder": "Lệnh sản xuất",
+      "productionOrders": "Lệnh sản xuất",
+      "createOrder": "Tạo lệnh sản xuất",
+      "startOrder": "Bắt đầu sản xuất",
+      "completeOrder": "Hoàn thành sản xuất",
+      "status": {
+        "draft": "Nháp",
+        "inProgress": "Đang sản xuất",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy"
+      },
+      "qc": {
+        "title": "Kiểm soát chất lượng",
+        "checkpoints": "Trạm kiểm tra",
+        "passed": "Đạt",
+        "failed": "Không đạt",
+        "pending": "Chờ kiểm tra"
+      },
+      "cost": {
+        "title": "Chi phí sản xuất",
+        "totalCost": "Tổng chi phí",
+        "unitCost": "Chi phí đơn vị",
+        "materialCost": "Chi phí nguyên liệu"
+      }
+    },
     "warehouses": "Quản lý kho",
     "reports": "Báo cáo",
     "reports.title": "Báo cáo nâng cao",
