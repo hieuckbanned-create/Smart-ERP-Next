@@ -259,6 +259,12 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 - Composite index on `inventory_transactions(tenant_id, created_at)` for faster daily and monthly inventory reports
 - `.gitattributes` enforces LF line endings across all text files (no CRLF formatting errors)
 
+## Testing
+
+- **Unit Tests**: Powered by Jest. Located at `apps/api/src/**/*.spec.ts`.
+- **Coverage**: Includes critical services (Orders, Customers, Inventory, Ecommerce, Accounting, Insights).
+- **Run Tests**: `pnpm --filter @smart-erp/api test`
+
 ## Commit Convention
 
 ```
