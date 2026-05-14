@@ -27,6 +27,7 @@ import LeadsScreen from "./src/screens/LeadsScreen";
 import POSScreen from "./src/screens/POSScreen";
 import ReportsScreen from "./src/screens/ReportsScreen";
 import AccountingScreen from "./src/screens/AccountingScreen";
+import OmnichannelScreen from "./src/screens/OmnichannelScreen";
 
 initI18n("vi");
 
@@ -35,7 +36,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel";
 
 const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: "dashboard", label: "Tổng quan", icon: "📊" },
@@ -50,6 +51,7 @@ const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
   { key: "leads", label: "Leads", icon: "🎯" },
   { key: "accounting", label: "Kế toán", icon: "💰" },
   { key: "reports", label: "Báo cáo", icon: "📈" },
+  { key: "omnichannel", label: "Omnichannel", icon: "🔄" },
 ];
 
 export default function App() {
@@ -135,6 +137,8 @@ export default function App() {
         return <PurchasingScreen />;
       case "reports":
         return <ReportsScreen />;
+      case "omnichannel":
+        return <OmnichannelScreen />;
     }
   };
 
