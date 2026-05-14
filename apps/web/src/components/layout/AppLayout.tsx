@@ -178,7 +178,7 @@ export default function AppLayout({
     },
     {
       key: "forecast",
-      label: "Dự báo",
+      label: t("nav.forecast"),
       icon: <TrendingUp className="w-5 h-5" />,
       href: "/reports/forecast",
     },
@@ -374,7 +374,7 @@ export default function AppLayout({
               aria-label={
                 isDark ? "Switch to light mode" : "Switch to dark mode"
               }
-              title={isDark ? "Chế độ sáng" : "Chế độ tối"}
+              title={isDark ? t("theme.lightMode") : t("theme.darkMode")}
             >
               {isDark ? (
                 <Sun className="w-4 h-4" />

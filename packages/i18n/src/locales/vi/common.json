@@ -87,6 +87,10 @@
     "reports": "Báo cáo",
     "accounting": "Kế toán",
     "crm": "CRM",
+    "forecast": "Dự báo",
+    "benchmarks": "Sync Benchmarks",
+    "forecast": "Dự báo",
+    "benchmarks": "Sync Benchmarks",
     "financeOverview": "Tổng quan tài chính",
     "totalRevenue": "Tổng doanh thu",
     "totalExpense": "Tổng chi phí",
@@ -213,6 +217,8 @@
     "theme": "Giao diện",
     "themeLight": "Sáng",
     "themeDark": "Tối",
+    "lightMode": "Chế độ sáng",
+    "darkMode": "Chế độ tối"
     "themeSystem": "Theo hệ thống",
     "language": "Ngôn ngữ"
   },

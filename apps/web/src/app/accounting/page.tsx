@@ -128,7 +128,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Revenue */}
         <StatisticCard
-          title="Doanh thu"
+          title={t('accounting.totalRevenue')}
           value={formatVND(data.totalRevenue)}
           icon={<TrendingUp className="w-5 h-5" />}
           color={CURRENCY_COLORS.revenue}
@@ -137,7 +137,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
         />
         {/* Expenses */}
         <StatisticCard
-          title="Chi phí"
+          title={t('accounting.totalExpense')}
           value={formatVND(data.totalExpense)}
           icon={<TrendingDown className="w-5 h-5" />}
           color={CURRENCY_COLORS.expense}
@@ -146,7 +146,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
         />
         {/* Net Income */}
         <StatisticCard
-          title="Lợi nhuận ròng"
+          title={t('accounting.netIncome')}
           value={formatVND(data.netIncome)}
           icon={<Wallet className="w-5 h-5" />}
           color={CURRENCY_COLORS.netIncome}
@@ -155,7 +155,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
         />
         {/* Net Assets */}
         <StatisticCard
-          title="Tài sản ròng"
+          title={t('accounting.equity')}
           value={formatVND(data.netAssets)}
           icon={<Activity className="w-5 h-5" />}
           color={CURRENCY_COLORS.assets}
@@ -164,10 +164,10 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
 
       {/* Cash Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <CashCard title="Tiền mặt" value={formatVND(data.cashBalance)} icon={<Wallet />} color="#06b6d4" />
-        <CashCard title="Ngân hàng" value={formatVND(data.bankBalance)} icon={<CreditCard />} color="#3b82f6" />
-        <CashCard title="Phải thu" value={formatVND(data.accountsReceivable)} icon={<TrendingUp />} color="#8b5cf6" />
-        <CashCard title="Phải trả" value={formatVND(data.accountsPayable)} icon={<TrendingDown />} color="#f59e0b" />
+        <CashCard title={t('accounting.cashBalance')} value={formatVND(data.cashBalance)} icon={<Wallet />} color="#06b6d4" />
+        <CashCard title={t('accounting.bankBalance')} value={formatVND(data.bankBalance)} icon={<CreditCard />} color="#3b82f6" />
+        <CashCard title={t('accounting.accountsReceivable')} value={formatVND(data.accountsReceivable)} icon={<TrendingUp />} color="#8b5cf6" />
+        <CashCard title={t('accounting.accountsPayable')} value={formatVND(data.accountsPayable)} icon={<TrendingDown />} color="#f59e0b" />
       </div>
 
       {/* Charts Row */}
