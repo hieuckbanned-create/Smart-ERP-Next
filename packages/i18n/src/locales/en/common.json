@@ -8,24 +8,15 @@
     "save": "Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "search": "Search",
+    "search": {
+      "title": "Search",
+      "placeholder": "Search products, orders, customers...",
+      "noResults": "No results found",
+      "results": "Search Results",
+      "viewAll": "View All",
+      "searching": "Searching..."
+    },
     "filter": "Filter",
-    "search": {
-      "title": "Search",
-      "placeholder": "Search products, orders, customers...",
-      "noResults": "No results found",
-      "results": "Search Results",
-      "viewAll": "View All",
-      "searching": "Searching..."
-    },
-    "search": {
-      "title": "Search",
-      "placeholder": "Search products, orders, customers...",
-      "noResults": "No results found",
-      "results": "Search Results",
-      "viewAll": "View All",
-      "searching": "Searching..."
-    },
     "automation": {
       "title": "Automation",
       "workflow": "Workflow",
@@ -40,15 +31,6 @@
       "addWorkflow": "Add Workflow",
       "description": "Description"
     },
-    "webhooks": "Webhooks",
-    "webhooks.title": "Webhooks & Integrations",
-    "webhooks.subscribe": "Subscribe Webhook",
-    "webhooks.url": "Webhook URL",
-    "webhooks.events": "Events",
-    "webhooks.secret": "Secret",
-    "webhooks.unsubscribe": "Unsubscribe",
-    "webhooks.deliveryLogs": "Delivery Logs",
-    "webhooks.active": "Active",
     "webhooks": "Webhooks",
     "webhooks.title": "Webhooks & Integrations",
     "webhooks.subscribe": "Subscribe Webhook",
@@ -147,15 +129,6 @@
     "currencies.amount": "Amount",
     "currencies.converted": "Converted Amount",
     "currencies.exchangeRate": "Exchange Rate",
-    "currencies": "Currencies",
-    "currencies.rate": "Exchange Rate",
-    "currencies.convert": "Convert",
-    "currencies.supported": "Supported Currencies",
-    "currencies.from": "From",
-    "currencies.to": "To",
-    "currencies.amount": "Amount",
-    "currencies.converted": "Converted Amount",
-    "currencies.exchangeRate": "Exchange Rate",
     "manufacturing": {
       "title": "Manufacturing",
       "bom": "Bill of Materials (BOM)",
@@ -187,65 +160,38 @@
     }
   },
   "ecommerce": {
-    "reports": "Reports",
-    "reports.title": "Advanced Reports",
-    "reports.dateRange": "Date Range",
-    "reports.generatedAt": "Generated at",
-    "accounting": "Accounting",
-    "crm": "CRM",
-    "forecast": "Forecast",
-    "forecast.title": "Demand Forecast Dashboard",
-    "forecast.month": "Month",
-    "forecast.demand": "Demand",
-    "forecast.description": "AI‑powered demand forecasting to aid purchase planning.",
-    "benchmarks": "Sync Benchmarks",
-    "approvals": "Approvals",
-    "financeOverview": "Financial Overview",
-    "totalRevenue": "Total Revenue",
-    "totalExpense": "Total Expense",
-    "netIncome": "Net Income",
-    "cashBalance": "Cash Balance",
-    "bankBalance": "Bank Balance",
-    "accountsReceivable": "Accounts Receivable",
-    "accountsPayable": "Accounts Payable",
-    "assets": "Assets",
-    "liabilities": "Liabilities",
-    "equity": "Equity",
-    "chartOfAccounts": "Chart of Accounts",
-    "journalEntries": "Journal Entries",
-    "voucherNumber": "Voucher No.",
-    "voucherDate": "Voucher Date",
-    "totalDebit": "Total Debit",
-    "totalCredit": "Total Credit",
-    "isPosted": "Posted",
-    "accountCode": "Acc. Code",
-    "accountName": "Account Name",
-    "accountType": "Account Type",
-    "balance": "Balance",
-    "parentAccount": "Parent Account",
-    "transactionDetails": "Transaction Details",
-    "description": "Description",
-    "amount": "Amount",
-    "addEntry": "Add Journal Entry",
-    "editEntry": "Edit Journal Entry",
-    "confirmDeleteEntry": "Are you sure you want to delete this journal entry?",
-    "selectAccount": "Select account",
-    "creditAccount": "Credit Account",
-    "debitAccount": "Debit Account",
-    "memo": "Memo",
-    "entityTypes": {
-      "order": "Order",
-      "product": "Product",
-      "customer": "Customer",
-      "supplier": "Supplier",
-      "inventory": "Inventory",
-      "lead": "Lead",
-      "payment": "Payment",
-      "journalEntry": "Journal Entry"
+    "title": "E-commerce Integrations",
+    "stores": {
+      "empty": "No stores connected yet. Go to Settings → E-commerce to add."
     },
-    "settings": "Settings",
-    "users": "Users",
-    "tenants": "Tenants"
+    "create": {
+      "title": "Create store",
+      "platform": "Platform",
+      "name": "Name",
+      "configJson": "Config (JSON)"
+    },
+    "logs": {
+      "title": "Sync logs",
+      "empty": "No sync logs yet",
+      "status": "Status",
+      "syncType": "Sync type",
+      "itemsProcessed": "Processed",
+      "error": "Error",
+      "startedAt": "Started",
+      "completedAt": "Completed"
+    },
+    "actions": {
+      "createStore": "Create store",
+      "syncAll": "Sync all",
+      "syncStore": "Sync store",
+      "viewLogs": "View logs",
+      "pushStock": "Push Stock"
+    },
+    "sync": {
+      "success": "Sync successful",
+      "allSuccess": "All stores synced successfully",
+      "failed": "Sync failed"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -458,6 +404,22 @@
       "qualityScore": "Quality Score",
       "confirmDelivery": "Confirm Delivery",
       "deliveryConfirmed": "Delivery confirmed"
+    },
+    "customerPortal": {
+      "title": "Customer Portal",
+      "orders": "Orders",
+      "invoices": "Invoices",
+      "payments": "Payment History",
+      "tickets": "Support Tickets",
+      "profile": "Profile",
+      "orderCode": "Order Code",
+      "status": "Status",
+      "total": "Total",
+      "items": "Items",
+      "invoiceCode": "Invoice No.",
+      "dueDate": "Due Date",
+      "paidAt": "Paid At",
+      "method": "Method"
     }
   },
   "inventory": {
@@ -951,48 +913,6 @@
     "profile": "Profile",
     "version": "Version"
   },
-  "ecommerce": {
-    "title": "E-commerce Integrations",
-    "stores": {
-      "title": "Stores",
-      "platform": "Platform",
-      "name": "Store name",
-      "active": "Active",
-      "lastSyncAt": "Last sync",
-      "lastSyncStatus": "Last status"
-    },
-    "create": {
-      "title": "Create store",
-      "platform": "Platform",
-      "name": "Name",
-      "configJson": "Config (JSON)"
-    },
-    "logs": {
-      "title": "Sync logs",
-      "empty": "No sync logs yet",
-      "status": "Status",
-      "syncType": "Sync type",
-      "itemsProcessed": "Processed",
-      "error": "Error",
-      "startedAt": "Started",
-      "completedAt": "Completed"
-    },
-    "actions": {
-      "createStore": "Create store",
-      "syncAll": "Sync all",
-      "syncStore": "Sync store",
-      "viewLogs": "View logs",
-      "pushStock": "Push Stock"
-    },
-    "stores": {
-      "empty": "No stores connected yet. Go to Settings → E-commerce to add."
-    },
-    "sync": {
-      "success": "Sync successful",
-      "allSuccess": "All stores synced successfully",
-      "failed": "Sync failed"
-    }
-  },
   "validation": {
     "required": "{{field}} is required",
     "email": "Invalid email address",
@@ -1142,5 +1062,82 @@
       "avgLatency": "Avg Latency",
       "activeConnections": "Active Connections"
     }
-  }
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products, orders, customers...",
+    "noResults": "No results found",
+    "results": "Search Results",
+    "searching": "Searching..."
+  },
+  "automation": {
+    "title": "Automation",
+    "workflow": "Workflow",
+    "trigger": "Trigger",
+    "action": "Action",
+    "addStep": "Add Step",
+    "saveWorkflow": "Save Workflow",
+    "enable": "Enable",
+    "disable": "Disable",
+    "triggerEvent": "Trigger Event",
+    "schedule": "Schedule",
+    "addWorkflow": "Add Workflow",
+    "description": "Description"
+  },
+  "customerPortal": {
+    "title": "Customer Portal",
+    "orders": "Orders",
+    "invoices": "Invoices",
+    "payments": "Payment History",
+    "tickets": "Support Tickets",
+    "profile": "Profile"
+  },
+  "manufacturing": {
+    "title": "Manufacturing",
+    "bom": "BOM",
+    "productionOrder": "Production Order",
+    "createOrder": "Create Order",
+    "startOrder": "Start",
+    "completeOrder": "Complete",
+    "status": {
+      "draft": "Draft",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "qc": {
+      "title": "Quality Control",
+      "checkpoints": "Checkpoints",
+      "passed": "Passed",
+      "failed": "Failed",
+      "pending": "Pending"
+    },
+    "cost": {
+      "title": "Production Cost",
+      "totalCost": "Total Cost",
+      "unitCost": "Unit Cost",
+      "materialCost": "Material Cost"
+    }
+  },
+  "export": {
+    "title": "Data Export",
+    "backup": "Backup",
+    "restore": "Restore",
+    "fullBackup": "Full Backup",
+    "partialBackup": "Partial Backup",
+    "download": "Download",
+    "status": "Status",
+    "pending": "Pending",
+    "running": "Running",
+    "completed": "Completed",
+    "failed": "Failed",
+    "fileSize": "File Size",
+    "createdAt": "Created At"
+  },
+  "brandColor": "Brand Color",
+  "brandColorBlue": "Blue",
+  "brandColorGreen": "Green",
+  "brandColorPurple": "Purple",
+  "brandColorOrange": "Orange",
+  "brandColorRed": "Red"
 }

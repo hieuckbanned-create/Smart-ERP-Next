@@ -31,6 +31,10 @@ import { WebhooksModule } from './webhooks/webhooks.module';
 import { SearchModule } from './search/search.module';
 import { AutomationModule } from './automation/automation.module';
 import { ExchangeRateModule } from './currencies/exchange-rate.module';
+import { ManufacturingModule } from './manufacturing/manufacturing.module';
+import { CustomerPortalModule } from './customers/customer-portal.module';
+import { ManufacturingModule } from './manufacturing/manufacturing.module';
+import { CustomerPortalModule } from './customers/customer-portal.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -72,6 +76,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     SearchModule,
     ExchangeRateModule,
     ManufacturingModule,
+    CustomerPortalModule,
   ],
   controllers: [AppController],
   providers: [

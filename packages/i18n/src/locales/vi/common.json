@@ -11,24 +11,15 @@
     "change": "Đổi",
     "processing": "Đang xử lý",
     "notes": "Ghi chú",
-    "search": "Tìm kiếm",
+    "search": {
+      "title": "Tìm kiếm",
+      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+      "noResults": "Không tìm thấy kết quả",
+      "results": "Kết quả tìm kiếm",
+      "viewAll": "Xem tất cả",
+      "searching": "Đang tìm kiếm..."
+    },
     "filter": "Lọc",
-    "search": {
-      "title": "Tìm kiếm",
-      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
-      "noResults": "Không tìm thấy kết quả",
-      "results": "Kết quả tìm kiếm",
-      "viewAll": "Xem tất cả",
-      "searching": "Đang tìm kiếm..."
-    },
-    "search": {
-      "title": "Tìm kiếm",
-      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
-      "noResults": "Không tìm thấy kết quả",
-      "results": "Kết quả tìm kiếm",
-      "viewAll": "Xem tất cả",
-      "searching": "Đang tìm kiếm..."
-    },
     "automation": {
       "title": "Tự động hóa",
       "workflow": "Workflow",
@@ -43,15 +34,6 @@
       "addWorkflow": "Thêm workflow",
       "description": "Mô tả"
     },
-    "webhooks": "Webhooks",
-    "webhooks.title": "Webhooks & Tích hợp",
-    "webhooks.subscribe": "Đăng ký Webhook",
-    "webhooks.url": "URL Webhook",
-    "webhooks.events": "Sự kiện",
-    "webhooks.secret": "Bí mật (Secret)",
-    "webhooks.unsubscribe": "Xóa đăng ký",
-    "webhooks.deliveryLogs": "Nhật ký giao",
-    "webhooks.active": "Đang hoạt động",
     "webhooks": "Webhooks",
     "webhooks.title": "Webhooks & Tích hợp",
     "webhooks.subscribe": "Đăng ký Webhook",
@@ -151,14 +133,6 @@
     "suppliers": "Nhà cung cấp",
     "purchasing": "Mua hàng",
     "payments": "Thu chi",
-    "currencies": "Tiền tệ",
-    "currencies.rate": "Tỷ giá",
-    "currencies.convert": "Chuyển đổi",
-    "currencies.supported": "Tiền tệ hỗ trợ",
-    "currencies.from": "Từ",
-    "currencies.to": "Đến",
-    "currencies.amount": "Số tiền",
-    "currencies.converted": "Số tiền sau chuyển đổi",
     "currencies": "Tiền tệ",
     "currencies.rate": "Tỷ giá",
     "currencies.convert": "Chuyển đổi",
@@ -596,5 +570,97 @@
       "avgLatency": "Độ trễ trung bình",
       "activeConnections": "Kết nối hoạt động"
     }
+  },
+  "webhooks": "Webhooks",
+  "search": {
+    "title": "Tìm kiếm",
+    "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+    "noResults": "Không tìm thấy kết quả",
+    "results": "Kết quả tìm kiếm",
+    "searching": "Đang tìm kiếm..."
+  },
+  "automation": {
+    "title": "Tự động hóa",
+    "workflow": "Workflow",
+    "trigger": "Điều kiện kích hoạt",
+    "action": "Hành động",
+    "addStep": "Thêm bước",
+    "saveWorkflow": "Lưu workflow",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "triggerEvent": "Sự kiện kích hoạt",
+    "schedule": "Lịch biểu",
+    "addWorkflow": "Thêm workflow",
+    "description": "Mô tả"
+  },
+  "customerPortal": {
+    "title": "Cổng khách hàng",
+    "orders": "Đơn hàng",
+    "invoices": "Hóa đơn",
+    "payments": "Lịch sử thanh toán",
+    "tickets": "Phiếu hỗ trợ",
+    "profile": "Hồ sơ"
+  },
+  "manufacturing": {
+    "title": "Sản xuất",
+    "bom": "BOM",
+    "productionOrder": "Lệnh sản xuất",
+    "createOrder": "Tạo lệnh",
+    "startOrder": "Bắt đầu",
+    "completeOrder": "Hoàn thành",
+    "status": {
+      "draft": "Nháp",
+      "inProgress": "Đang sản xuất",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "qc": {
+      "title": "Kiểm soát chất lượng",
+      "checkpoints": "Trạm kiểm tra",
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "pending": "Chờ kiểm tra"
+    },
+    "cost": {
+      "title": "Chi phí sản xuất",
+      "totalCost": "Tổng chi phí",
+      "unitCost": "Chi phí đơn vị",
+      "materialCost": "Chi phí nguyên liệu"
+    }
+  },
+  "export": {
+    "title": "Xuất dữ liệu",
+    "backup": "Sao lưu",
+    "restore": "Khôi phục",
+    "fullBackup": "Sao lưu toàn bộ",
+    "partialBackup": "Sao lưu một phần",
+    "download": "Tải xuống",
+    "status": "Trạng thái",
+    "pending": "Đang chờ",
+    "running": "Đang chạy",
+    "completed": "Hoàn thành",
+    "failed": "Thất bại",
+    "fileSize": "Kích thước file",
+    "createdAt": "Thời gian tạo"
+  },
+  "pos": {
+    "cameraPermissionRequired": "Cần quyền camera",
+    "cameraPermissionMessage": "Vui lòng cấp quyền camera để quét mã vạch",
+    "scanInstruction": "Đặt mã vạch trong khung",
+    "scanBarcode": "Quét mã vạch",
+    "offlineMode": "Chế độ ngoại tuyến",
+    "offlineModeActive": "Đang hoạt động ngoại tuyến",
+    "printReceipt": "In hóa đơn",
+    "cashDrawer": "Ngăn kéo tiền"
+  },
+  "brandColor": "Màu thương hiệu",
+  "brandColorBlue": "Xanh dương",
+  "brandColorGreen": "Xanh lá",
+  "brandColorPurple": "Tím",
+  "brandColorOrange": "Cam",
+  "brandColorRed": "Đỏ",
+  "chat": {
+    "mention": "đã nhắn đến bạn",
+    "newMessage": "Tin nhắn mới"
   }
 }
