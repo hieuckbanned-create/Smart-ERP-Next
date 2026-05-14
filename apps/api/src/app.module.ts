@@ -20,6 +20,8 @@ import { ApprovalsModule } from './approvals/approvals.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { PaymentsModule } from './payments/payments.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
+import { HealthModule } from './health/health.module';
+import { HealthModule } from './health/health.module';
 import { CommentsModule } from './comments/comments.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { AccountingModule } from './accounting/accounting.module';
@@ -59,6 +61,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     AccountingModule,
     CrmModule,
     ActivityModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [

@@ -464,5 +464,25 @@
     "topCustomers": "Khách hàng hàng đầu",
     "predictive.title": "Phân tích dự đoán",
     "predictive.subtitle": "Dự báo xu hướng và hành vi khách hàng"
+  },
+  "system": {
+    "health": "Trạng thái hệ thống",
+    "uptime": "Thời gian hoạt động",
+    "status": {
+      "healthy": "Sẵn sàng",
+      "degraded": "Giảm hiệu suất",
+      "down": "Ngừng hoạt động"
+    },
+    "services": {
+      "api": "API Server",
+      "database": "Cơ sở dữ liệu",
+      "cache": "Bộ nhớ đệm"
+    },
+    "metrics": {
+      "requestsPerMinute": "Yêu cầu/phút",
+      "errorRate": "Tỷ lệ lỗi",
+      "avgLatency": "Độ trễ trung bình",
+      "activeConnections": "Kết nối hoạt động"
+    }
   }
 }

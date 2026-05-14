@@ -1008,5 +1008,25 @@
     "order_count": "Order count",
     "total_revenue": "Total revenue",
     "avg_order_value": "Avg order value"
+  },
+  "system": {
+    "health": "System Health",
+    "uptime": "Uptime",
+    "status": {
+      "healthy": "Healthy",
+      "degraded": "Degraded",
+      "down": "Down"
+    },
+    "services": {
+      "api": "API Server",
+      "database": "Database",
+      "cache": "Cache"
+    },
+    "metrics": {
+      "requestsPerMinute": "Requests/min",
+      "errorRate": "Error Rate",
+      "avgLatency": "Avg Latency",
+      "activeConnections": "Active Connections"
+    }
   }
 }
