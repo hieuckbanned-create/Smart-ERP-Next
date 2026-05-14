@@ -511,7 +511,15 @@
     "remove": "Remove",
     "inStock": "In stock: {{stock}}",
     "product": "Product",
-    "discount": "Discount"
+    "discount": "Discount",
+    "cameraPermissionRequired": "Camera Permission Required",
+    "cameraPermissionMessage": "Please grant camera access to scan barcodes",
+    "scanInstruction": "Place barcode within the frame",
+    "scanBarcode": "Scan Barcode",
+    "offlineMode": "Offline Mode",
+    "offlineModeActive": "Offline mode active",
+    "printReceipt": "Print Receipt",
+    "cashDrawer": "Cash Drawer"
   },
   "payments": {
     "title": "Payments",
