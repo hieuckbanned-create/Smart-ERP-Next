@@ -28,6 +28,8 @@ import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { ExportModule } from './exports/export.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { SearchModule } from './search/search.module';
+import { AutomationModule } from './automation/automation.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -66,6 +68,8 @@ import { DRIZZLE } from './common/drizzle.decorator';
     ExportModule,
     WebhooksModule,
     AutomationModule,
+    SearchModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [

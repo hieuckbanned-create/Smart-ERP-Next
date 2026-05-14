@@ -13,6 +13,22 @@
     "notes": "Ghi chú",
     "search": "Tìm kiếm",
     "filter": "Lọc",
+    "search": {
+      "title": "Tìm kiếm",
+      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+      "noResults": "Không tìm thấy kết quả",
+      "results": "Kết quả tìm kiếm",
+      "viewAll": "Xem tất cả",
+      "searching": "Đang tìm kiếm..."
+    },
+    "search": {
+      "title": "Tìm kiếm",
+      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+      "noResults": "Không tìm thấy kết quả",
+      "results": "Kết quả tìm kiếm",
+      "viewAll": "Xem tất cả",
+      "searching": "Đang tìm kiếm..."
+    },
     "automation": {
       "title": "Tự động hóa",
       "workflow": "Workflow",

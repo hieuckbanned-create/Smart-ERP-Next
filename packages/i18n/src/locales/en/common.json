@@ -10,6 +10,22 @@
     "confirm": "Confirm",
     "search": "Search",
     "filter": "Filter",
+    "search": {
+      "title": "Search",
+      "placeholder": "Search products, orders, customers...",
+      "noResults": "No results found",
+      "results": "Search Results",
+      "viewAll": "View All",
+      "searching": "Searching..."
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search products, orders, customers...",
+      "noResults": "No results found",
+      "results": "Search Results",
+      "viewAll": "View All",
+      "searching": "Searching..."
+    },
     "automation": {
       "title": "Automation",
       "workflow": "Workflow",
