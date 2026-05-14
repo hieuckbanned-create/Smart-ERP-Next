@@ -61,12 +61,12 @@ interface Product {
   stock: number;
 }
 
-const TRANSFER_STATUS_MAP: Record<string, { label: string; color: string }> = {
-  draft: { label: "Nháp", color: "#6b7280" },
-  approved: { label: "Đã duyệt", color: "#3b82f6" },
-  shipped: { label: "Đã giao", color: "#f59e0b" },
-  received: { label: "Đã nhận", color: "#10b981" },
-  cancelled: { label: "Đã hủy", color: "#ef4444" },
+const TRANSFER_STATUS_MAP: Record<string, { color: string }> = {
+  draft: { color: "#6b7280" },
+  approved: { color: "#3b82f6" },
+  shipped: { color: "#f59e0b" },
+  received: { color: "#10b981" },
+  cancelled: { color: "#ef4444" },
 };
 
 export default function InventoryScreen() {
@@ -379,7 +379,7 @@ export default function InventoryScreen() {
                 <View style={styles.transferHeader}>
                   <Text style={styles.transferCode}>{item.transferCode}</Text>
                   <View style={[styles.statusBadge, { backgroundColor: statusCfg.color }]}>
-                    <Text style={styles.statusText}>{t(statusCfg.label)}</Text>
+                    <Text style={styles.statusText}>{t(`inventory.transfers.${item.status}`)}</Text>
                   </View>
                 </View>
                 <View style={styles.transferRow}>

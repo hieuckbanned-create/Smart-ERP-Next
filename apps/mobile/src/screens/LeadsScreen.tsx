@@ -28,13 +28,13 @@ const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   lost: { bg: '#fee2e2', text: '#991b1b' },
 };
 
-const SOURCE_LABELS: Record<string, string> = {
-  website: 'Website',
-  referral: 'Giới thiệu',
-  trade_show: 'Hội chợ',
-  social_media: 'Mạng xã hội',
-  email_campaign: 'Email marketing',
-  other: 'Khác',
+const SOURCE_COLORS: Record<string, { bg: string; text: string }> = {
+  website: { bg: '#e0f2fe', text: '#0369a1' },
+  referral: { bg: '#dcfce7', text: '#15803d' },
+  trade_show: { bg: '#fef3c7', text: '#b45309' },
+  social_media: { bg: '#f3e8ff', text: '#7e22ce' },
+  email_campaign: { bg: '#ffedd5', text: '#c2410c' },
+  other: { bg: '#f1f5f9', text: '#475569' },
 };
 
 export default function LeadsScreen() {
@@ -181,7 +181,7 @@ export default function LeadsScreen() {
                     {t(`crm.statuses.${lead.status}`) || lead.status}
                   </Text>
                 </View>
-                <Text style={styles.leadSource}>{SOURCE_LABELS[lead.source] || lead.source}</Text>
+                <Text style={styles.leadSource}>{t(`crm.sources.${lead.source}`)}</Text>
               </View>
             </View>
           ))

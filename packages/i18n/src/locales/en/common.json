@@ -927,7 +927,15 @@
     "status": "Status",
     "leadScore": "Lead Score",
     "industry": "Industry",
-    "notes": "Notes"
+    "notes": "Notes",
+    "sources": {
+      "website": "Website",
+      "referral": "Referral",
+      "trade_show": "Trade Show",
+      "social_media": "Social Media",
+      "email_campaign": "Email Campaign",
+      "other": "Other"
+    }
   },
   "advanced_reports": {
     "title": "Advanced Reports",

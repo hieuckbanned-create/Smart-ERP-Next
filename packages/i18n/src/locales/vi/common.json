@@ -267,7 +267,15 @@
     "status": "Trạng thái",
     "leadScore": "Điểm Lead",
     "industry": "Ngành",
-    "notes": "Ghi chú"
+    "notes": "Ghi chú",
+    "sources": {
+      "website": "Website",
+      "referral": "Giới thiệu",
+      "trade_show": "Hội chợ",
+      "social_media": "Mạng xã hội",
+      "email_campaign": "Email marketing",
+      "other": "Khác"
+    }
   },
   "activity": {
     "created": "đã tạo",
