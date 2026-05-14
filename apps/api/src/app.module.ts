@@ -1,4 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { ForecastModule } from './forecast/forecast.module';
+import { ForecastModule } from './forecast/forecast.module';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -29,6 +31,10 @@ import { DRIZZLE } from './common/drizzle.decorator';
 
 @Module({
   imports: [
+    // Forecast feature
+    ForecastModule,
+    // Forecast feature
+    ForecastModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     AuthModule,
     UsersModule,

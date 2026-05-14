@@ -88,6 +88,14 @@
     "accounting": "Kế toán",
     "crm": "CRM",
     "forecast": "Dự báo",
+    "forecast.title": "Bảng dự báo nhu cầu",
+    "forecast.month": "Tháng",
+    "forecast.demand": "Nhu cầu",
+    "forecast.description": "Dự báo nhu cầu dựa trên AI, hỗ trợ quyết định nhập hàng."
+    "forecast.title": "Bảng dự báo nhu cầu",
+    "forecast.month": "Tháng",
+    "forecast.demand": "Nhu cầu",
+    "forecast.description": "Dự báo nhu cầu dựa trên AI, hỗ trợ quyết định nhập hàng."
     "benchmarks": "Sync Benchmarks"
   },
   "common": {
