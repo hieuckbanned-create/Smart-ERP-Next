@@ -1,4 +1,4 @@
-{
+﻿{
   "dependencies": {
     "@nestjs/common": "^10.3.0",
     "@nestjs/config": "^3.1.1",
@@ -20,6 +20,7 @@
     "@smart-erp/utils": "workspace:*",
     "@smart-erp/validation": "workspace:*",
     "@types/socket.io": "3.0.2",
+    "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

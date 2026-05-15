@@ -1,36 +1,106 @@
 import { Injectable, CACHE_MANAGER } from '@nestjs/common';
 import { Inject, ConfigService } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import axios from 'axios';
 
 /**
- * AI forecasting service with caching layer.
- * Results are cached for 60 seconds to reduce redundant computation.
+ * AI Forecasting Service - integrates with Python Prophet ML model.
+ * Provides demand forecasting with confidence intervals and reorder suggestions.
  */
 @Injectable()
 export class ForecastService {
+  private readonly aiServiceUrl: string;
+
   constructor(
     private readonly config: ConfigService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-  ) {}
+  ) {
+    this.aiServiceUrl = this.config.get('AI_FORECAST_URL', 'http://localhost:8000');
+  }
 
   /**
-   * Return dummy monthly demand data for a product.
-   * @param productId ID of the product to forecast
-   * @returns Array of { month: string, demand: number }
+   * Get monthly demand forecast for a product.
+   * Uses Python AI service for ML-based predictions.
+   * @param productId ID of the product
+   * @returns Forecast data with predictions and confidence intervals
    */
   async getMonthlyDemand(productId: string) {
     const cacheKey = `forecast:${productId}`;
-    const cached = await this.cacheManager.get<{ month: string; demand: number }[]>(cacheKey);
-    if (cached) return { productId, data: cached };
+    const cached = await this.cacheManager.get<MonthlyForecastCache>(cacheKey);
+    if (cached) return cached;
 
-    // Placeholder: generate a simple linear growth pattern.
+    try {
+      // Generate historical data for AI service
+      const salesHistory = this.generateSalesHistory(productId);
+
+      const response = await axios.post(
+        `${this.aiServiceUrl}/forecast`,
+        {
+          product_id: productId,
+          sales_history: salesHistory,
+          lookahead_days: 30,
+        },
+        { timeout: 10000 }
+      );
+
+      const result = {
+        productId,
+        predictions: response.data.predicted_daily_demand,
+        suggestedOrder: response.data.suggested_order_quantity,
+        confidenceLower: response.data.confidence_lower,
+        confidenceUpper: response.data.confidence_upper,
+        generatedAt: new Date().toISOString(),
+      };
+
+      await this.cacheManager.set(cacheKey, result, { ttl: 300 }); // 5 min cache
+      return result;
+    } catch (error) {
+      // Fallback to simple linear growth pattern if AI service unavailable
+      return this.getFallbackForecast(productId);
+    }
+  }
+
+  /**
+   * Generate synthetic sales history for forecasting.
+   * In production, this would fetch real sales data from database.
+   */
+  private generateSalesHistory(productId: string): { date: string; quantity: number }[] {
+    const history = [];
+    const today = new Date();
+    for (let i = 60; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      history.push({
+        date: date.toISOString().split('T')[0],
+        quantity: Math.floor(10 + Math.random() * 20),
+      });
+    }
+    return history;
+  }
+
+  /**
+   * Fallback forecast when AI service is unavailable.
+   */
+  private async getFallbackForecast(productId: string) {
     const base = 100;
     const result = Array.from({ length: 6 }, (_, i) => ({
       month: new Date(Date.now() + i * 30 * 24 * 60 * 60 * 1000).toLocaleString('en-US', { month: 'short' }),
       demand: base + i * 20,
     }));
 
-    await this.cacheManager.set(cacheKey, result, { ttl: 60 });
-    return { productId, data: result };
+    return {
+      productId,
+      data: result,
+      isFallback: true,
+    };
   }
+}
+
+interface MonthlyForecastCache {
+  productId: string;
+  predictions: { date: string; quantity: number }[];
+  suggestedOrder: number;
+  confidenceLower: { date: string; quantity: number }[];
+  confidenceUpper: { date: string; quantity: number }[];
+  generatedAt: string;
 }
