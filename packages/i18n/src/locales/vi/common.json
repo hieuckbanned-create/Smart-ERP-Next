@@ -705,7 +705,11 @@
     "capas": "CAPAs",
     "corrective": "Khắc phục",
     "preventive": "Phòng ngừa",
-    "qualityReport": "Báo cáo chất lượng"
+    "qualityReport": "Báo cáo chất lượng",
+    "supplierQuality": "Chất lượng nhà cung cấp",
+    "supplierScore": "Điểm nhà cung cấp",
+    "supplierGrade": "Xếp hạng",
+    "supplierReport": "Báo cáo chất lượng NCC"
   },
   "mrp": {
     "title": "Hoạch định nhu cầu vật tư (MRP)",

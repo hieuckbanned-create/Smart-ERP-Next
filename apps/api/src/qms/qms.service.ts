@@ -154,4 +154,81 @@ export class QmsService {
       passRate: total > 0 ? Math.round((passed / total) * 10000) / 100 : 0,
     };
   }
+
+  // ── Supplier Quality Scoring ──
+
+  async getSupplierQualityScore(tenantId: string, supplierId: string) {
+    // Get all inspections for this supplier
+    const inspections = await this.drizzle.db.execute(sql`
+      SELECT verdict, inspection_date
+      FROM qms_inspections
+      WHERE tenant_id = ${tenantId}
+        AND reference_type = 'supplier'
+        AND reference_id = ${supplierId}
+      ORDER BY inspection_date DESC
+      LIMIT 100`
+    );
+    const inspData = inspections as any[];
+    const total = inspData.length;
+    const passed = inspData.filter((i: any) => i.verdict === 'pass').length;
+    const failed = inspData.filter((i: any) => i.verdict === 'fail').length;
+
+    // Get NCRs for this supplier
+    const ncrs = await this.drizzle.db.execute(sql`
+      SELECT severity, status FROM qms_ncrs
+      WHERE tenant_id = ${tenantId} AND reference_id = ${supplierId}
+      ORDER BY reported_at DESC LIMIT 50`
+    );
+    const ncrData = ncrs as any[];
+    const openNCRs = ncrData.filter((n: any) => n.status === 'open').length;
+    const criticalNCRs = ncrData.filter((n: any) => n.severity === 'critical').length;
+
+    // Calculate score (0-100)
+    const passRate = total > 0 ? (passed / total) * 100 : 0;
+    const ncrPenalty = (openNCRs * 5) + (criticalNCRs * 15);
+    const score = Math.max(0, Math.round(passRate - ncrPenalty));
+
+    // Grade
+    let grade = 'F';
+    if (score >= 90) grade = 'A';
+    else if (score >= 80) grade = 'B';
+    else if (score >= 70) grade = 'C';
+    else if (score >= 60) grade = 'D';
+
+    return {
+      supplierId,
+      score,
+      grade,
+      totalInspections: total,
+      passRate: Math.round(passRate * 100) / 100,
+      failed,
+      openNCRs,
+      criticalNCRs,
+      trend: inspData.slice(0, 10).map((i: any) => ({ date: i.inspection_date, verdict: i.verdict })),
+    };
+  }
+
+  async getSupplierQualityReport(tenantId: string) {
+    // Get all suppliers with inspections
+    const suppliers = await this.drizzle.db.execute(sql`
+      SELECT DISTINCT reference_id as supplier_id
+      FROM qms_inspections
+      WHERE tenant_id = ${tenantId} AND reference_type = 'supplier'`
+    );
+    const supplierIds = (suppliers as any[]).map((s: any) => s.supplier_id);
+
+    const scores = [];
+    for (const sid of supplierIds) {
+      try {
+        const score = await this.getSupplierQualityScore(tenantId, sid);
+        scores.push(score);
+      } catch (e) {
+        // skip failed calculations
+      }
+    }
+
+    // Sort by score descending
+    scores.sort((a, b) => b.score - a.score);
+    return scores;
+  }
 }

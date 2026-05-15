@@ -88,4 +88,17 @@ export class QmsController {
   async getQualityReport(@Request() req: any, @Query('startDate') startDate: string, @Query('endDate') endDate: string) {
     return this.qmsService.getQualityReport(req.user.tenantId, new Date(startDate), new Date(endDate));
   }
+
+  // ── Supplier Quality ──
+  @ApiOperation({ summary: 'Get supplier quality score' })
+  @Get('suppliers/:supplierId/score')
+  async getSupplierScore(@Request() req: any, @Param('supplierId') supplierId: string) {
+    return this.qmsService.getSupplierQualityScore(req.user.tenantId, supplierId);
+  }
+
+  @ApiOperation({ summary: 'Get supplier quality report' })
+  @Get('suppliers/quality-report')
+  async getSupplierReport(@Request() req: any) {
+    return this.qmsService.getSupplierQualityReport(req.user.tenantId);
+  }
 }

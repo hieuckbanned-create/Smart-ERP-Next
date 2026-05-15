@@ -1178,7 +1178,11 @@
     "capas": "CAPAs",
     "corrective": "Corrective",
     "preventive": "Preventive",
-    "qualityReport": "Quality Report"
+    "qualityReport": "Quality Report",
+    "supplierQuality": "Supplier Quality",
+    "supplierScore": "Supplier Score",
+    "supplierGrade": "Grade",
+    "supplierReport": "Supplier Quality Report"
   },
   "mrp": {
     "title": "Material Requirements Planning",
