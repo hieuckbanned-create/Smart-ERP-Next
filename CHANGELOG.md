@@ -8,6 +8,36 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **HR/Payroll Module**:
+  - Employee management (CRUD) with code, name, email, phone, position, salary
+  - Payroll processing with base salary, allowances, deductions, net salary
+  - Web pages: employees list, payroll management
+  - Mobile screen: EmployeesScreen
+  - i18n support (vi/en)
+- **Loyalty Program Module**:
+  - Loyalty cards with points, tiers (bronze/silver/gold/platinum)
+  - Points earn/redeem system
+  - Rewards catalog
+  - Transaction history tracking
+  - Web pages: loyalty cards, rewards
+  - Mobile screen: LoyaltyScreen
+  - i18n support (vi/en)
+- **Fixed Assets Module**:
+  - Asset management (CRUD) with code, name, category, purchase cost
+  - Depreciation calculation (straight-line method)
+  - Asset disposal workflow
+  - Web page: fixed assets list
+  - Mobile screen: FixedAssetsScreen
+  - i18n support (vi/en)
+- **Project Management Module**:
+  - Project CRUD with status, priority, budget, manager
+  - Task management with assignee, due dates, status tracking
+  - Milestone tracking
+  - Time entry logging per project/task
+  - Project statistics (completion rate, total hours)
+  - Web page: projects list with stats
+  - Mobile screen: ProjectsScreen
+  - i18n support (vi/en)
 - **Omnichannel Inventory Hub (Full Stack)**:
   - Backend: `inventory_reservations` schema and APIs for oversell prevention
   - API: Stock push to marketplaces (Shopee/Lazada/TikTok/Amazon/eBay)
