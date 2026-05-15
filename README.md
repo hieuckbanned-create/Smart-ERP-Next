@@ -24,6 +24,10 @@
 | Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 | AI Business Intelligence | ✅ Predictive Stock   |    ❌    |   ❌    |  ❌  | Partial |
 | Omnichannel Hub          | ✅ Shopee/TikTok/Amazon/eBay | Partial  | ✅       |  ❌  | Partial |
+| HR/Payroll               | ✅ Full Module        |    ❌    |   ❌    |  ✅  |   ✅    |
+| Loyalty Program          | ✅ Points/Tiers/Rewards|   ❌    |   ✅    |  ❌  |   ❌    |
+| Fixed Assets             | ✅ Depreciation       |    ❌    |   ❌    |  ✅  |   ✅    |
+| Project Management       | ✅ Tasks/Milestones   |    ❌    |   ❌    |  ❌  |   ✅    |
 
 ---
 
@@ -120,6 +124,14 @@ smart-erp-next/
 | Người dùng     | ✅  | ✅  |   🔜   |
 | Báo cáo        | ✅  | ✅  |   🔜   |
 | Cài đặt        |  —  | ✅  |   🔜   |
+| **HR/Payroll** | ✅  | ✅  |   ✅   |
+| **Loyalty**    | ✅  | ✅  |   ✅   |
+| **Fixed Assets**| ✅  | ✅  |   ✅   |
+| **Projects**   | ✅  | ✅  |   ✅   |
+| **HR/Payroll** | ✅  | ✅  |   ✅   |
+| **Loyalty**    | ✅  | ✅  |   ✅   |
+| **Fixed Assets**| ✅  | ✅  |   ✅   |
+| **Projects**   | ✅  | ✅  |   ✅   |
 
 ---
 
@@ -131,13 +143,17 @@ tenants
   ├── products → product_categories, inventory_transactions
   ├── product_lots (batch tracking, expiry dates, FEFO)
   ├── product_serials (individual item tracking, warranty)
-  ├── customers
+  ├── customers → loyalty_cards → loyalty_transactions
   ├── suppliers
   ├── warehouses
   ├── warehouse_transfers (draft→approved→shipped→received)
   ├── orders → order_items
   ├── purchase_orders → purchase_order_items
-  └── payments
+  ├── payments
+  ├── employees → payrolls
+  ├── fixed_assets (depreciation tracking)
+  ├── projects → project_tasks → project_milestones → project_time_entries
+  └── loyalty_rewards
 ```
 
 ---
