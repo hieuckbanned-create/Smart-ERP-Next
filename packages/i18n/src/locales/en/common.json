@@ -1184,6 +1184,32 @@
     "supplierGrade": "Grade",
     "supplierReport": "Supplier Quality Report"
   },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "avgOrder": "Avg Order Value",
+    "customers": "Customers",
+    "lowStock": "Low Stock Items",
+    "inProduction": "In Production",
+    "qualityPass": "Quality Pass Rate",
+    "topProducts": "Top Products",
+    "revenueChart": "Revenue (30 days)",
+    "period": "Period"
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "avgOrder": "Avg Order Value",
+    "customers": "Customers",
+    "lowStock": "Low Stock Items",
+    "inProduction": "In Production",
+    "qualityPass": "Quality Pass Rate",
+    "topProducts": "Top Products",
+    "revenueChart": "Revenue (30 days)",
+    "period": "Period"
+  },
   "mrp": {
     "title": "Material Requirements Planning",
     "netRequirement": "Net Requirement",

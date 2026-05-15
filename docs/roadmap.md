@@ -1,63 +1,61 @@
-# Smart ERP Next – Roadmap
+# Smart ERP Next — Roadmap
 
 ## ✅ AI-Powered Demand Forecasting & Inventory Optimization — COMPLETED
-
-| Phase | Components | Status |
-|-------|-----------|--------|
-| 1 - Prophet Model | Data pipeline + baseline Prophet ML | ✅ Done |
-| 2 - Inventory Optimization | Reorder suggestions, safety stock, stockout prediction | ✅ Done |
-| 3 - API + Full UI | Web dashboard, Mobile screens, Desktop app | ✅ Done |
-| 4 - Infra | Docker, tests, i18n, docs | ✅ Done |
+- Python Prophet ML microservice
+- Inventory-aware reorder suggestions
+- Full UI across Web, Mobile, Desktop
+- Docker deployment, tests, i18n, docs
 
 ## ✅ Manufacturing Module — Advanced Production Planning — COMPLETED
+- Multi-level BOM with wastage tracking
+- Production orders (draft → in_progress → completed)
+- QC checkpoints
+- MRP engine (net requirements from forecast + sales orders)
+- Cost roll-up (material + labor + overhead)
+- Variance analysis (standard vs actual)
+- Full UI across Web, Mobile, Desktop
 
-| Phase | Components | Status |
-|-------|-----------|--------|
-| 1 | Multi-level BOM schema + CRUD API | ✅ Done |
-| 2 | Production orders + scheduling | ✅ Done |
-| 3 | MRP calculation engine | ✅ Done |
-| 4 | UI: Web + Mobile + Desktop | ✅ Done |
-| 5 | Cost roll-up + variance analysis | ✅ Done |
+## ✅ Quality Management System (QMS) — COMPLETED
+- Inspection plans with AQL sampling rules
+- NCR (Non-Conformance Reports) with severity tracking
+- CAPA (Corrective/Preventive Actions) workflow
+- Supplier quality scoring (A-F grade)
+- Quality reports with pass rate statistics
+- Full UI with tabs (Inspections, NCRs, SPC)
 
-## Next Feature: Quality Management System (QMS)
+## Next Feature: Advanced Analytics Dashboard
 
-**Goal:** Build production-grade QMS vượt trội ERPNext/Odoo in:
-- Inspection plans with sampling rules
-- Non-conformance tracking and CAPA (Corrective/Preventive Actions)
-- SPC (Statistical Process Control) charts
-- Supplier quality scoring
+**Goal:** Build real-time analytics dashboard vượt trội ERPNext/Odoo with:
+- Real-time KPI monitoring with drill-down capability
+- AI-powered business insights and anomaly detection
+- Custom report builder with drag-and-drop
+- Export to PDF/Excel/CSV
 
 ### Key Components
 
-1. **Inspection Plans**
-   - Define inspection criteria per product/BOM stage
-   - Sampling rules (AQL-based)
-   - Pass/fail criteria with measurement tolerances
+1. **Real-time KPI Dashboard**
+   - Revenue, orders, inventory, production metrics
+   - Real-time WebSocket updates
+   - Drill-down from summary to detail
 
-2. **Non-Conformance Reports (NCR)**
-   - Track defects by production order, supplier, or product
-   - Root cause analysis (5-Why, Fishbone)
-   - CAPA workflow (Corrective/Preventive Actions)
+2. **AI-Powered Insights**
+   - Anomaly detection (unusual patterns)
+   - Trend analysis with forecasting
+   - Natural language query interface
 
-3. **SPC Charts**
-   - Control charts (X-bar, R-chart, p-chart)
-   - Process capability (Cp, Cpk)
-   - Real-time alerts for out-of-control conditions
-
-4. **Supplier Quality Scoring**
-   - Score suppliers by defect rate, on-time delivery
-   - Quality certificates and compliance tracking
-   - Supplier audit management
+3. **Custom Report Builder**
+   - Drag-and-drop field selection
+   - Chart types: bar, line, pie, funnel, heatmap
+   - Save and schedule reports
 
 ### Implementation Phases
 
 | Phase | Duration | Deliverables |
 |-------|----------|--------------|
-| 1 | 1 week | Inspection plans + NCR schema + CRUD API |
-| 2 | 1 week | CAPA workflow + root cause analysis |
-| 3 | 1 week | SPC charts + process capability |
-| 4 | 1 week | UI: Web + Mobile + Desktop |
-| 5 | 3 days | Supplier quality scoring + audit management |
+| 1 | 1 week | KPI service + real-time WebSocket |
+| 2 | 1 week | AI insights + anomaly detection |
+| 3 | 1 week | Report builder UI |
+| 4 | 3 days | Export (PDF/Excel/CSV) |
 
 ---
 *Roadmap reviewed: 2026-05-15*

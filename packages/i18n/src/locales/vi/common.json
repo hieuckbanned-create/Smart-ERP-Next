@@ -711,6 +711,32 @@
     "supplierGrade": "Xếp hạng",
     "supplierReport": "Báo cáo chất lượng NCC"
   },
+  "analytics": {
+    "title": "Bảng phân tích",
+    "revenue": "Doanh thu",
+    "orders": "Đơn hàng",
+    "avgOrder": "Giá trị TB",
+    "customers": "Khách hàng",
+    "lowStock": "Sắp hết hàng",
+    "inProduction": "Đang sản xuất",
+    "qualityPass": "Tỷ lệ đạt QC",
+    "topProducts": "Sản phẩm bán chạy",
+    "revenueChart": "Doanh thu (30 ngày)",
+    "period": "Kỳ"
+  },
+  "analytics": {
+    "title": "Bảng phân tích",
+    "revenue": "Doanh thu",
+    "orders": "Đơn hàng",
+    "avgOrder": "Giá trị TB",
+    "customers": "Khách hàng",
+    "lowStock": "Sắp hết hàng",
+    "inProduction": "Đang sản xuất",
+    "qualityPass": "Tỷ lệ đạt QC",
+    "topProducts": "Sản phẩm bán chạy",
+    "revenueChart": "Doanh thu (30 ngày)",
+    "period": "Kỳ"
+  },
   "mrp": {
     "title": "Hoạch định nhu cầu vật tư (MRP)",
     "netRequirement": "Nhu cầu ròng",
