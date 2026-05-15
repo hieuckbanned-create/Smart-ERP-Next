@@ -132,10 +132,35 @@ smart-erp-next/
 | **Loyalty**    | ✅  | ✅  |   ✅   |
 | **Fixed Assets**| ✅  | ✅  |   ✅   |
 | **Projects**   | ✅  | ✅  |   ✅   |
+| **Helpdesk**   | ✅  | ✅  |   ✅   |
+| **AI Forecast**| ✅  | ✅  |   ✅   |
 
 ---
 
-## Database Schema
+## Docker
+
+### Chạy AI Forecasting Service
+
+```bash
+# Chạy Python AI service (Prophet ML)
+docker-compose up -d ai-forecast
+
+# Kiểm tra health
+curl http://localhost:8000/health
+
+# Xem logs
+docker-compose logs -f ai-forecast
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `AI_FORECAST_PORT` | 8000 | AI service port |
+| `DATABASE_URL` | - | PostgreSQL connection string |
+| `JWT_SECRET` | - | JWT signing secret |
+
+---
 
 ```
 tenants
