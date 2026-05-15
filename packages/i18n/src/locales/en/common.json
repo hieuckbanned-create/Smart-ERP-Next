@@ -1204,5 +1204,52 @@
       "maintenance": "Under Maintenance"
     },
     "dispose": "Dispose Asset"
+  },
+  "projects": {
+    "title": "Project Management",
+    "project": "Project",
+    "add": "Create Project",
+    "edit": "Edit Project",
+    "code": "Project Code",
+    "name": "Project Name",
+    "description": "Description",
+    "status": "Status",
+    "statuses": {
+      "planning": "Planning",
+      "in_progress": "In Progress",
+      "on_hold": "On Hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "priority": "Priority",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "budget": "Budget",
+    "manager": "Manager",
+    "tasks": "Tasks",
+    "task": "Task",
+    "addTask": "Add Task",
+    "assignee": "Assignee",
+    "dueDate": "Due Date",
+    "completedAt": "Completed At",
+    "milestones": "Milestones",
+    "milestone": "Milestone",
+    "addMilestone": "Add Milestone",
+    "timeEntries": "Time Entries",
+    "timeEntry": "Time Entry",
+    "hours": "Hours",
+    "entryDate": "Entry Date",
+    "stats": "Project Stats",
+    "totalTasks": "Total Tasks",
+    "completedTasks": "Completed Tasks",
+    "inProgressTasks": "In Progress Tasks",
+    "totalHours": "Total Hours",
+    "completionRate": "Completion Rate"
   }
 }

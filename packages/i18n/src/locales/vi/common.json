@@ -724,6 +724,53 @@
     },
     "dispose": "Thanh lý tài sản"
   },
+  "projects": {
+    "title": "Quản lý dự án",
+    "project": "Dự án",
+    "add": "Tạo dự án",
+    "edit": "Sửa dự án",
+    "code": "Mã dự án",
+    "name": "Tên dự án",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "statuses": {
+      "planning": "Lập kế hoạch",
+      "in_progress": "Đang thực hiện",
+      "on_hold": "Tạm dừng",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "priority": "Ưu tiên",
+    "priorities": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "urgent": "Khẩn cấp"
+    },
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "budget": "Ngân sách",
+    "manager": "Quản lý",
+    "tasks": "Công việc",
+    "task": "Công việc",
+    "addTask": "Thêm công việc",
+    "assignee": "Người thực hiện",
+    "dueDate": "Hạn chót",
+    "completedAt": "Hoàn thành lúc",
+    "milestones": "Cột mốc",
+    "milestone": "Cột mốc",
+    "addMilestone": "Thêm cột mốc",
+    "timeEntries": "Nhật ký thời gian",
+    "timeEntry": "Nhật ký",
+    "hours": "Giờ",
+    "entryDate": "Ngày nhập",
+    "stats": "Thống kê dự án",
+    "totalTasks": "Tổng công việc",
+    "completedTasks": "Đã hoàn thành",
+    "inProgressTasks": "Đang thực hiện",
+    "totalHours": "Tổng giờ",
+    "completionRate": "Tỷ lệ hoàn thành"
+  },
   "chat": {
     "mention": "đã nhắn đến bạn",
     "newMessage": "Tin nhắn mới"
