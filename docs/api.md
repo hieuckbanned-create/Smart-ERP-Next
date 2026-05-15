@@ -293,3 +293,320 @@ Response: `{ "access_token": "...", "user": { "id", "email", "name", "tenantId",
 ```json
 { "statusCode": 400, "message": "Mã SKU đã tồn tại", "error": "Conflict" }
 ```
+
+---
+
+## Forecast `/forecast`
+
+| Method | Path                  | Description                        |
+| ------ | --------------------- | ---------------------------------- |
+| GET    | `/forecast/product/:id` | Get monthly demand forecast        |
+
+**Response:**
+```json
+{
+  "productId": "uuid",
+  "data": [{ "month": "Jun", "demand": 180 }]
+}
+```
+
+---
+
+## Inventory Recommendation `/inventory-recommendation`
+
+| Method | Path                              | Description                          |
+| ------ | --------------------------------- | ------------------------------------ |
+| GET    | `/inventory-recommendation/suggest` | Get AI-driven reorder suggestion   |
+
+**Query Parameters:** `productId`, `stock`
+
+**Response:**
+```json
+{ "productId": "uuid", "suggestedReorder": 50 }
+```
+
+**Requires:** JWT authentication. Logs activity on each request.
+
+---
+
+## Approvals `/approvals`
+
+| Method | Path                     | Description                      |
+| ------ | ------------------------ | -------------------------------- |
+| GET    | `/approvals`             | List all approval requests       |
+| POST   | `/approvals/:id/approve` | Approve a pending request        |
+| POST   | `/approvals/:id/reject`  | Reject a pending request         |
+
+**Auto-Approve:** Orders ≤ 5,000,000 VND with no approvers are automatically approved.
+
+---
+
+## AI `/ai`
+
+| Method | Path         | Description                    |
+| ------ | ------------ | ------------------------------ |
+| POST   | `/ai/forecast` | Request AI demand forecast   |
+
+**Body:** `{ "product_id": "uuid", "lookahead_days": 14 }`
+
+Returns daily predicted demand with confidence intervals.
+
+---
+
+## HR `/hr`
+
+### Employees
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/hr/employees`   | Create employee                |
+| GET    | `/hr/employees`   | List employees (paginated)     |
+| GET    | `/hr/employees/:id` | Get employee by ID           |
+| PATCH  | `/hr/employees/:id` | Update employee              |
+| DELETE | `/hr/employees/:id` | Delete employee              |
+
+**Create Body:**
+```json
+{
+  "code": "EMP-001",
+  "name": "Nguyễn Văn A",
+  "email": "a@example.com",
+  "phone": "0901234567",
+  "position": "Developer",
+  "salary": 15000000
+}
+```
+
+### Payroll
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/hr/payroll/process` | Process payroll for current month |
+| GET    | `/hr/payroll`     | List payroll records (paginated) |
+
+---
+
+## Loyalty `/loyalty`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/loyalty/cards`            | Create loyalty card            |
+| GET    | `/loyalty/cards/:customerId` | Get customer loyalty card     |
+| POST   | `/loyalty/earn`             | Earn points                    |
+| POST   | `/loyalty/redeem`           | Redeem points                  |
+| GET    | `/loyalty/rewards`          | List available rewards         |
+| GET    | `/loyalty/transactions/:customerId` | Transaction history    |
+
+**Earn Points Body:**
+```json
+{
+  "customer_id": 1,
+  "points": 100,
+  "reference_id": "ORDER-001",
+  "description": "Purchase reward"
+}
+```
+
+**Redeem Points Body:**
+```json
+{
+  "customer_id": 1,
+  "points": 50,
+  "reference_id": "REWARD-001",
+  "description": "Redeemed: Discount 50k"
+}
+```
+
+---
+
+## Fixed Assets `/fixed-assets`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/fixed-assets`             | Create asset                   |
+| GET    | `/fixed-assets`             | List assets (paginated)        |
+| GET    | `/fixed-assets/:id`         | Get asset by ID                |
+| GET    | `/fixed-assets/:id/depreciation` | Get monthly depreciation |
+| POST   | `/fixed-assets/:id/dispose` | Dispose asset                  |
+
+**Create Body:**
+```json
+{
+  "code": "FA-001",
+  "name": "Máy tính Dell XPS",
+  "category": "IT Equipment",
+  "purchase_cost": 25000000,
+  "residual_value": 2500000,
+  "useful_life_months": 36,
+  "start_date": "2026-01-01"
+}
+```
+
+---
+
+## Projects `/projects`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/projects`                 | Create project                 |
+| GET    | `/projects`                 | List projects (paginated)      |
+| GET    | `/projects/:id`             | Get project by ID              |
+| PATCH  | `/projects/:id`             | Update project                 |
+| DELETE | `/projects/:id`             | Delete project                 |
+| GET    | `/projects/:id/stats`       | Get project statistics         |
+
+**Create Body:**
+```json
+{
+  "code": "PRJ-001",
+  "name": "Website Redesign",
+  "description": "Redesign company website",
+  "priority": "high",
+  "status": "planning",
+  "start_date": "2026-06-01",
+  "end_date": "2026-08-31",
+  "budget": 50000000
+}
+```
+
+**Stats Response:**
+```json
+{
+  "project": { ... },
+  "total_tasks": 12,
+  "completed_tasks": 5,
+  "in_progress_tasks": 3,
+  "total_hours": 156.5,
+  "completion_rate": 42
+}
+```
+
+---
+
+## HR `/hr`
+
+### Employees
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/hr/employees`   | Create employee                |
+| GET    | `/hr/employees`   | List employees (paginated)     |
+| GET    | `/hr/employees/:id` | Get employee by ID           |
+| PATCH  | `/hr/employees/:id` | Update employee              |
+| DELETE | `/hr/employees/:id` | Delete employee              |
+
+**Create Body:**
+```json
+{
+  "code": "EMP-001",
+  "name": "Nguyễn Văn A",
+  "email": "a@example.com",
+  "phone": "0901234567",
+  "position": "Developer",
+  "salary": 15000000
+}
+```
+
+### Payroll
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/hr/payroll/process` | Process payroll for current month |
+| GET    | `/hr/payroll`     | List payroll records (paginated) |
+
+---
+
+## Loyalty `/loyalty`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/loyalty/cards`            | Create loyalty card            |
+| GET    | `/loyalty/cards/:customerId` | Get customer loyalty card     |
+| POST   | `/loyalty/earn`             | Earn points                    |
+| POST   | `/loyalty/redeem`           | Redeem points                  |
+| GET    | `/loyalty/rewards`          | List available rewards         |
+| GET    | `/loyalty/transactions/:customerId` | Transaction history    |
+
+**Earn Points Body:**
+```json
+{
+  "customer_id": 1,
+  "points": 100,
+  "reference_id": "ORDER-001",
+  "description": "Purchase reward"
+}
+```
+
+**Redeem Points Body:**
+```json
+{
+  "customer_id": 1,
+  "points": 50,
+  "reference_id": "REWARD-001",
+  "description": "Redeemed: Discount 50k"
+}
+```
+
+---
+
+## Fixed Assets `/fixed-assets`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/fixed-assets`             | Create asset                   |
+| GET    | `/fixed-assets`             | List assets (paginated)        |
+| GET    | `/fixed-assets/:id`         | Get asset by ID                |
+| GET    | `/fixed-assets/:id/depreciation` | Get monthly depreciation |
+| POST   | `/fixed-assets/:id/dispose` | Dispose asset                  |
+
+**Create Body:**
+```json
+{
+  "code": "FA-001",
+  "name": "Máy tính Dell XPS",
+  "category": "IT Equipment",
+  "purchase_cost": 25000000,
+  "residual_value": 2500000,
+  "useful_life_months": 36,
+  "start_date": "2026-01-01"
+}
+```
+
+---
+
+## Projects `/projects`
+
+| Method | Path                        | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| POST   | `/projects`                 | Create project                 |
+| GET    | `/projects`                 | List projects (paginated)      |
+| GET    | `/projects/:id`             | Get project by ID              |
+| PATCH  | `/projects/:id`             | Update project                 |
+| DELETE | `/projects/:id`             | Delete project                 |
+| GET    | `/projects/:id/stats`       | Get project statistics         |
+
+**Create Body:**
+```json
+{
+  "code": "PRJ-001",
+  "name": "Website Redesign",
+  "description": "Redesign company website",
+  "priority": "high",
+  "status": "planning",
+  "start_date": "2026-06-01",
+  "end_date": "2026-08-31",
+  "budget": 50000000
+}
+```
+
+**Stats Response:**
+```json
+{
+  "project": { ... },
+  "total_tasks": 12,
+  "completed_tasks": 5,
+  "in_progress_tasks": 3,
+  "total_hours": 156.5,
+  "completion_rate": 42
+}
+```

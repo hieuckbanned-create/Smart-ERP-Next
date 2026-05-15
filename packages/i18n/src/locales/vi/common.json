@@ -11,9 +11,51 @@
     "change": "Đổi",
     "processing": "Đang xử lý",
     "notes": "Ghi chú",
-    "search": "Tìm kiếm",
+    "search": {
+      "title": "Tìm kiếm",
+      "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+      "noResults": "Không tìm thấy kết quả",
+      "results": "Kết quả tìm kiếm",
+      "viewAll": "Xem tất cả",
+      "searching": "Đang tìm kiếm..."
+    },
     "filter": "Lọc",
-    "export": "Xuất",
+    "automation": {
+      "title": "Tự động hóa",
+      "workflow": "Workflow",
+      "trigger": "Điều kiện kích hoạt",
+      "action": "Hành động",
+      "addStep": "Thêm bước",
+      "saveWorkflow": "Lưu workflow",
+      "enable": "Bật",
+      "disable": "Tắt",
+      "triggerEvent": "Sự kiện kích hoạt",
+      "schedule": "Lịch biểu",
+      "addWorkflow": "Thêm workflow",
+      "description": "Mô tả"
+    },
+    "webhooks": "Webhooks",
+    "webhooks.title": "Webhooks & Tích hợp",
+    "webhooks.subscribe": "Đăng ký Webhook",
+    "webhooks.url": "URL Webhook",
+    "webhooks.events": "Sự kiện",
+    "webhooks.secret": "Bí mật (Secret)",
+    "webhooks.unsubscribe": "Xóa đăng ký",
+    "webhooks.deliveryLogs": "Nhật ký giao",
+    "webhooks.active": "Đang hoạt động",
+    "export.title": "Xuất dữ liệu",
+    "export.backup": "Sao lưu",
+    "export.restore": "Khôi phục",
+    "export.fullBackup": "Sao lưu toàn bộ",
+    "export.partialBackup": "Sao lưu một phần",
+    "export.download": "Tải xuống",
+    "export.status": "Trạng thái xuất",
+    "export.pending": "Đang chờ",
+    "export.running": "Đang chạy",
+    "export.completed": "Hoàn thành",
+    "export.failed": "Thất bại",
+    "export.fileSize": "Kích thước file",
+    "export.createdAt": "Thời gian tạo",
     "import": "Nhập",
     "print": "In",
     "refresh": "Làm mới",
@@ -76,6 +118,14 @@
   "nav": {
     "dashboard": "Bảng điều khiển",
     "pos": "Bán hàng (POS)",
+    "pos.cameraPermissionRequired": "Cần quyền camera",
+    "pos.cameraPermissionMessage": "Vui lòng cấp quyền camera để quét mã vạch",
+    "pos.scanInstruction": "Đặt mã vạch trong khung",
+    "pos.scanBarcode": "Quét mã vạch",
+    "pos.offlineMode": "Chế độ ngoại tuyến",
+    "pos.offlineModeActive": "Đang hoạt động ngoại tuyến",
+    "pos.printReceipt": "In hóa đơn",
+    "pos.cashDrawer": "Ngăn kéo tiền",
     "orders": "Đơn hàng",
     "products": "Sản phẩm",
     "inventory": "Kho hàng",
@@ -83,12 +133,58 @@
     "suppliers": "Nhà cung cấp",
     "purchasing": "Mua hàng",
     "payments": "Thu chi",
+    "currencies": "Tiền tệ",
+    "currencies.rate": "Tỷ giá",
+    "currencies.convert": "Chuyển đổi",
+    "currencies.supported": "Tiền tệ hỗ trợ",
+    "currencies.from": "Từ",
+    "currencies.to": "Đến",
+    "currencies.amount": "Số tiền",
+    "currencies.converted": "Số tiền sau chuyển đổi",
+    "currencies.exchangeRate": "Tỷ giá hối đoái",
+    "manufacturing": {
+      "title": "Sản xuất",
+      "bom": "Danh sách nguyên liệu (BOM)",
+      "bomItem": "Nguyên liệu",
+      "productionOrder": "Lệnh sản xuất",
+      "productionOrders": "Lệnh sản xuất",
+      "createOrder": "Tạo lệnh sản xuất",
+      "startOrder": "Bắt đầu sản xuất",
+      "completeOrder": "Hoàn thành sản xuất",
+      "status": {
+        "draft": "Nháp",
+        "inProgress": "Đang sản xuất",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy"
+      },
+      "qc": {
+        "title": "Kiểm soát chất lượng",
+        "checkpoints": "Trạm kiểm tra",
+        "passed": "Đạt",
+        "failed": "Không đạt",
+        "pending": "Chờ kiểm tra"
+      },
+      "cost": {
+        "title": "Chi phí sản xuất",
+        "totalCost": "Tổng chi phí",
+        "unitCost": "Chi phí đơn vị",
+        "materialCost": "Chi phí nguyên liệu"
+      }
+    },
     "warehouses": "Quản lý kho",
     "reports": "Báo cáo",
+    "reports.title": "Báo cáo nâng cao",
+    "reports.dateRange": "Khoảng ngày",
+    "reports.generatedAt": "Tạo lúc",
     "accounting": "Kế toán",
     "crm": "CRM",
     "forecast": "Dự báo",
-    "benchmarks": "Sync Benchmarks"
+    "forecast.title": "Bảng dự báo nhu cầu",
+    "forecast.month": "Tháng",
+    "forecast.demand": "Nhu cầu",
+    "forecast.description": "Dự báo nhu cầu dựa trên AI, hỗ trợ quyết định nhập hàng.",
+    "benchmarks": "Sync Benchmarks",
+    "approvals": "Phê duyệt"
   },
   "common": {
     "loading": "Đang tải...",
@@ -132,6 +228,34 @@
     "total30d": "Dự kiến 30 ngày",
     "reorderSuggestion": "Gợi ý nhập hàng",
     "demandForecast": "Dự báo nhu cầu (AI)",
+    "recommendationTitle": "Gợi ý nhập hàng thông minh",
+    "productId": "Mã sản phẩm",
+    "currentStock": "Tồn kho hiện tại",
+    "suggestedReorder": "Số lượng gợi ý",
+    "recommendationMessage": "Nên nhập hàng để đáp ứng nhu cầu dự báo.",
+    "noReorderNeeded": "Tồn kho hiện tại đủ để đáp ứng nhu cầu.",
+    "shouldReorder": "Cần nhập hàng ngay",
+    "stockOk": "Tồn kho ổn định",
+    "daysUntilStockout": "ngày đến khi hết hàng",
+    "sufficientStock": "Đủ hàng trong 30+ ngày",
+    "selectProductToForecast": "Chọn sản phẩm để xem dự báo",
+    "generatingForecast": "Đang tạo dự báo...",
+    "reorderPoint": "Điểm đặt hàng",
+    "safetyStock": "Tồn kho an toàn",
+    "suggestedOrderQuantity": "Số lượng đề xuất",
+    "predictedDemand7d": "Nhu cầu 7 ngày",
+    "predictedDemand30d": "Nhu cầu 30 ngày",
+    "shouldReorder": "Cần nhập hàng ngay",
+    "stockOk": "Tồn kho ổn định",
+    "daysUntilStockout": "ngày đến khi hết hàng",
+    "sufficientStock": "Đủ hàng trong 30+ ngày",
+    "selectProductToForecast": "Chọn sản phẩm để xem dự báo",
+    "generatingForecast": "Đang tạo dự báo...",
+    "reorderPoint": "Điểm đặt hàng",
+    "safetyStock": "Tồn kho an toàn",
+    "suggestedOrderQuantity": "Số lượng đề xuất",
+    "predictedDemand7d": "Nhu cầu 7 ngày",
+    "predictedDemand30d": "Nhu cầu 30 ngày",
     "lots": {
       "title": "Quản lý lô hàng",
       "add": "Thêm lô hàng",
@@ -150,9 +274,21 @@
       "status": "Trạng thái",
       "draft": "Nháp",
       "approved": "Đã duyệt",
+      "inTransit": "Đang vận chuyển",
       "shipped": "Đang giao",
       "received": "Đã nhận",
-      "cancelled": "Đã hủy"
+      "cancelled": "Đã hủy",
+      "confirm": "Xác nhận chuyển",
+      "receive": "Nhận hàng",
+      "notes": "Ghi chú",
+      "items": "Danh sách sản phẩm",
+      "createSuccess": "Tạo phiếu chuyển kho thành công",
+      "receiveSuccess": "Nhận hàng thành công"
+    },
+    "metrics": {
+      "totalProducts": "Tổng sản phẩm",
+      "transfersInTransit": "Đơn đang vận chuyển",
+      "warehousePerformance": "Hiệu suất kho"
     }
   },
   "products": {
@@ -208,6 +344,18 @@
       "bankAccount": "Số tài khoản",
       "bankName": "Tên ngân hàng",
       "notes": "Ghi chú về nhà cung cấp..."
+    },
+    "portal": {
+      "title": "Cổng nhà cung cấp",
+      "myOrders": "Đơn hàng của tôi",
+      "performance": "Hiệu suất",
+      "totalOrders": "Tổng đơn hàng",
+      "totalAmount": "Tổng giá trị",
+      "onTimeRate": "Tỷ lệ giao đúng hạn",
+      "leadTime": "Lead time TB (ngày)",
+      "qualityScore": "Điểm chất lượng",
+      "confirmDelivery": "Xác nhận giao hàng",
+      "deliveryConfirmed": "Đã xác nhận giao hàng"
     }
   },
   "customers": {
@@ -264,6 +412,12 @@
     "timezone": "Múi giờ",
     "dateFormat": "Định dạng ngày",
     "notifications": "Thông báo",
+    "notifications.newApproval": "Yêu cầu phê duyệt mới",
+    "notifications.newApprovalBody": "Có yêu cầu phê duyệt mới: {{documentType}} - {{amount}} VND",
+    "notifications.lowStock": "Cảnh báo tồn kho thấp",
+    "notifications.lowStockBody": "{{productName}} chỉ còn {{currentStock}} trong kho",
+    "notifications.orderReceived": "Đơn hàng đã nhận",
+    "notifications.orderReceivedBody": "Đơn hàng {{orderCode}} đã được nhận thành công",
     "security": "Bảo mật",
     "integrations": "Tích hợp",
     "billing": "Thanh toán & Gói dịch vụ"
@@ -279,6 +433,12 @@
     "lightMode": "Chế độ sáng",
     "darkMode": "Chế độ tối",
     "themeSystem": "Theo hệ thống",
+    "brandColor": "Màu thương hiệu",
+    "brandColorBlue": "Xanh dương",
+    "brandColorGreen": "Xanh lá",
+    "brandColorPurple": "Tím",
+    "brandColorOrange": "Cam",
+    "brandColorRed": "Đỏ",
     "language": "Ngôn ngữ"
   },
   "sync": {
@@ -347,7 +507,9 @@
       "payment": "phiếu thu/chi",
       "journalEntry": "bút toán",
       "comment": "bình luận",
-      "chat": "chat",
+      "chat": "Tin nhắn",
+      "chat.mention": "đã nhắn đến bạn",
+      "chat.newMessage": "Tin nhắn mới",
       "lot": "lô hàng",
       "transfer": "chuyển kho"
     }
@@ -393,5 +555,340 @@
       "allSuccess": "Đồng bộ tất cả các kênh thành công",
       "failed": "Đồng bộ thất bại"
     }
+  },
+  "analytics": {
+    "title": "Phân tích dự đoán",
+    "clv": "Giá trị vòng đời khách hàng",
+    "clvScore": "Điểm CLV",
+    "churnRisk": "Rủi ro rời bỏ",
+    "churnRisk.low": "Thấp",
+    "churnRisk.medium": "Trung bình",
+    "churnRisk.high": "Cao",
+    "salesTrend": "Xu hướng bán hàng",
+    "growthRate": "Tăng trưởng",
+    "atRisk": "Khách hàng có nguy cơ rời bỏ",
+    "totalRevenue": "Tổng doanh thu",
+    "avgOrderValue": "Giá trị đơn hàng TB",
+    "topCustomers": "Khách hàng hàng đầu",
+    "predictive.title": "Phân tích dự đoán",
+    "predictive.subtitle": "Dự báo xu hướng và hành vi khách hàng",
+    "forecast": {
+      "title": "Dự báo nhu cầu",
+      "subtitle": "Dự báo nhu cầu sản phẩm trong 30 ngày tới",
+      "productId": "Mã sản phẩm",
+      "table": {
+        "date": "Ngày",
+        "predicted": "Dự báo",
+        "lower": "Cận dưới",
+        "upper": "Cận trên"
+      },
+      "metrics": {
+        "mape": "MAPE",
+        "reorder": "Đề xuất đặt hàng",
+        "confidence": "Độ tin cậy"
+      }
+    }
+  },
+  "system": {
+    "health": "Trạng thái hệ thống",
+    "uptime": "Thời gian hoạt động",
+    "status": {
+      "healthy": "Sẵn sàng",
+      "degraded": "Giảm hiệu suất",
+      "down": "Ngừng hoạt động"
+    },
+    "services": {
+      "api": "API Server",
+      "database": "Cơ sở dữ liệu",
+      "cache": "Bộ nhớ đệm"
+    },
+    "metrics": {
+      "requestsPerMinute": "Yêu cầu/phút",
+      "errorRate": "Tỷ lệ lỗi",
+      "avgLatency": "Độ trễ trung bình",
+      "activeConnections": "Kết nối hoạt động"
+    }
+  },
+  "webhooks": "Webhooks",
+  "search": {
+    "title": "Tìm kiếm",
+    "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
+    "noResults": "Không tìm thấy kết quả",
+    "results": "Kết quả tìm kiếm",
+    "searching": "Đang tìm kiếm..."
+  },
+  "automation": {
+    "title": "Tự động hóa",
+    "workflow": "Workflow",
+    "trigger": "Điều kiện kích hoạt",
+    "action": "Hành động",
+    "addStep": "Thêm bước",
+    "saveWorkflow": "Lưu workflow",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "triggerEvent": "Sự kiện kích hoạt",
+    "schedule": "Lịch biểu",
+    "addWorkflow": "Thêm workflow",
+    "description": "Mô tả"
+  },
+  "customerPortal": {
+    "title": "Cổng khách hàng",
+    "orders": "Đơn hàng",
+    "invoices": "Hóa đơn",
+    "payments": "Lịch sử thanh toán",
+    "tickets": "Phiếu hỗ trợ",
+    "profile": "Hồ sơ"
+  },
+  "manufacturing": {
+    "title": "Sản xuất",
+    "bom": "BOM",
+    "productionOrder": "Lệnh sản xuất",
+    "createOrder": "Tạo lệnh",
+    "startOrder": "Bắt đầu",
+    "completeOrder": "Hoàn thành",
+    "status": {
+      "draft": "Nháp",
+      "inProgress": "Đang sản xuất",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "qc": {
+      "title": "Kiểm soát chất lượng",
+      "checkpoints": "Trạm kiểm tra",
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "pending": "Chờ kiểm tra"
+    },
+    "cost": {
+      "title": "Chi phí sản xuất",
+      "totalCost": "Tổng chi phí",
+      "unitCost": "Chi phí đơn vị",
+      "materialCost": "Chi phí nguyên liệu"
+    }
+  },
+  "export": {
+    "title": "Xuất dữ liệu",
+    "backup": "Sao lưu",
+    "restore": "Khôi phục",
+    "fullBackup": "Sao lưu toàn bộ",
+    "partialBackup": "Sao lưu một phần",
+    "download": "Tải xuống",
+    "status": "Trạng thái",
+    "pending": "Đang chờ",
+    "running": "Đang chạy",
+    "completed": "Hoàn thành",
+    "failed": "Thất bại",
+    "fileSize": "Kích thước file",
+    "createdAt": "Thời gian tạo"
+  },
+  "pos": {
+    "cameraPermissionRequired": "Cần quyền camera",
+    "cameraPermissionMessage": "Vui lòng cấp quyền camera để quét mã vạch",
+    "scanInstruction": "Đặt mã vạch trong khung",
+    "scanBarcode": "Quét mã vạch",
+    "offlineMode": "Chế độ ngoại tuyến",
+    "offlineModeActive": "Đang hoạt động ngoại tuyến",
+    "printReceipt": "In hóa đơn",
+    "cashDrawer": "Ngăn kéo tiền"
+  },
+  "brandColor": "Màu thương hiệu",
+  "brandColorBlue": "Xanh dương",
+  "brandColorGreen": "Xanh lá",
+  "brandColorPurple": "Tím",
+  "brandColorOrange": "Cam",
+  "brandColorRed": "Đỏ",
+  "hr": {
+    "title": "Nhân sự",
+    "payroll": {
+      "title": "Quản lý lương",
+      "processing": "Đang xử lý lương",
+      "employee": "Nhân viên",
+      "salary": "Lương",
+      "tax": "Thuế",
+      "deduction": "Khấu trừ",
+      "netSalary": "Lương ròng",
+      "baseSalary": "Lương cơ bản",
+      "allowances": "Phụ cấp",
+      "deductions": "Khấu trừ",
+      "status": {
+        "draft": "Nháp",
+        "processing": "Đang xử lý",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã hủy"
+      }
+    },
+    "employee": {
+      "title": "Quản lý nhân viên",
+      "add": "Thêm nhân viên",
+      "edit": "Sửa nhân viên",
+      "delete": "Xóa nhân viên"
+    }
+  },
+  "loyalty": {
+    "title": "Chương trình khách hàng thân thiết",
+    "card": "Thẻ tích điểm",
+    "points": "Điểm",
+    "earnPoints": "Tích điểm",
+    "redeemPoints": "Đổi điểm",
+    "rewards": "Phần thưởng",
+    "tier": "Hạng",
+    "tiers": {
+      "bronze": "Đồng",
+      "silver": "Bạc",
+      "gold": "Vàng",
+      "platinum": "Bạch kim"
+    },
+    "transactions": "Lịch sử giao dịch",
+    "insufficientPoints": "Không đủ điểm"
+  },
+  "helpdesk": {
+    "title": "Hỗ trợ & Phiếu yêu cầu",
+    "ticket": "Phiếu hỗ trợ",
+    "tickets": "Phiếu hỗ trợ",
+    "createTicket": "Tạo phiếu mới",
+    "ticketNumber": "Mã phiếu",
+    "status": "Trạng thái",
+    "statuses": {
+      "open": "Mở",
+      "in_progress": "Đang xử lý",
+      "resolved": "Đã giải quyết",
+      "closed": "Đã đóng",
+      "reopened": "Mở lại"
+    },
+    "priority": "Ưu tiên",
+    "priorities": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "urgent": "Khẩn cấp"
+    },
+    "category": "Danh mục",
+    "requester": "Người yêu cầu",
+    "assignee": "Người xử lý",
+    "dueDate": "Hạn xử lý",
+    "resolvedAt": "Giải quyết lúc",
+    "closedAt": "Đóng lúc",
+    "comments": "Bình luận",
+    "addComment": "Thêm bình luận",
+    "internalNote": "Ghi chú nội bộ",
+    "attachments": "Tệp đính kèm",
+    "history": "Lịch sử",
+    "stats": "Thống kê",
+    "totalTickets": "Tổng phiếu",
+    "openTickets": "Phiếu mở",
+    "urgentTickets": "Phiếu khẩn cấp",
+    "myTickets": "Phiếu của tôi",
+    "unassigned": "Chưa phân công"
+  },
+  "helpdesk": {
+    "title": "Hỗ trợ & Phiếu yêu cầu",
+    "ticket": "Phiếu hỗ trợ",
+    "tickets": "Phiếu hỗ trợ",
+    "createTicket": "Tạo phiếu mới",
+    "ticketNumber": "Mã phiếu",
+    "status": "Trạng thái",
+    "statuses": {
+      "open": "Mở",
+      "in_progress": "Đang xử lý",
+      "resolved": "Đã giải quyết",
+      "closed": "Đã đóng",
+      "reopened": "Mở lại"
+    },
+    "priority": "Ưu tiên",
+    "priorities": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "urgent": "Khẩn cấp"
+    },
+    "category": "Danh mục",
+    "requester": "Người yêu cầu",
+    "assignee": "Người xử lý",
+    "dueDate": "Hạn xử lý",
+    "resolvedAt": "Giải quyết lúc",
+    "closedAt": "Đóng lúc",
+    "comments": "Bình luận",
+    "addComment": "Thêm bình luận",
+    "internalNote": "Ghi chú nội bộ",
+    "attachments": "Tệp đính kèm",
+    "history": "Lịch sử",
+    "stats": "Thống kê",
+    "totalTickets": "Tổng phiếu",
+    "openTickets": "Phiếu mở",
+    "urgentTickets": "Phiếu khẩn cấp",
+    "myTickets": "Phiếu của tôi",
+    "unassigned": "Chưa phân công"
+  },
+  "fixedAssets": {
+    "title": "Tài sản cố định",
+    "asset": "Tài sản",
+    "add": "Thêm tài sản",
+    "edit": "Sửa tài sản",
+    "code": "Mã tài sản",
+    "name": "Tên tài sản",
+    "category": "Danh mục",
+    "purchaseCost": "Giá mua",
+    "residualValue": "Giá trị còn lại",
+    "usefulLife": "Thời hạn sử dụng (tháng)",
+    "accumulatedDepreciation": "Hao mòn lũy kế",
+    "monthlyDepreciation": "Hao mòn hàng tháng",
+    "status": "Trạng thái",
+    "statuses": {
+      "active": "Đang sử dụng",
+      "disposed": "Đã thanh lý",
+      "maintenance": "Đang bảo trì"
+    },
+    "dispose": "Thanh lý tài sản"
+  },
+  "projects": {
+    "title": "Quản lý dự án",
+    "project": "Dự án",
+    "add": "Tạo dự án",
+    "edit": "Sửa dự án",
+    "code": "Mã dự án",
+    "name": "Tên dự án",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "statuses": {
+      "planning": "Lập kế hoạch",
+      "in_progress": "Đang thực hiện",
+      "on_hold": "Tạm dừng",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "priority": "Ưu tiên",
+    "priorities": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "urgent": "Khẩn cấp"
+    },
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "budget": "Ngân sách",
+    "manager": "Quản lý",
+    "tasks": "Công việc",
+    "task": "Công việc",
+    "addTask": "Thêm công việc",
+    "assignee": "Người thực hiện",
+    "dueDate": "Hạn chót",
+    "completedAt": "Hoàn thành lúc",
+    "milestones": "Cột mốc",
+    "milestone": "Cột mốc",
+    "addMilestone": "Thêm cột mốc",
+    "timeEntries": "Nhật ký thời gian",
+    "timeEntry": "Nhật ký",
+    "hours": "Giờ",
+    "entryDate": "Ngày nhập",
+    "stats": "Thống kê dự án",
+    "totalTasks": "Tổng công việc",
+    "completedTasks": "Đã hoàn thành",
+    "inProgressTasks": "Đang thực hiện",
+    "totalHours": "Tổng giờ",
+    "completionRate": "Tỷ lệ hoàn thành"
+  },
+  "chat": {
+    "mention": "đã nhắn đến bạn",
+    "newMessage": "Tin nhắn mới"
   }
 }

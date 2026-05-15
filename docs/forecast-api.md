@@ -1,60 +1,183 @@
-# Demand Forecasting API
+# AI Demand Forecasting API
 
-**Purpose:** Enable AI‑powered inventory demand prediction to reduce stockouts and overstock.
+**Purpose:** AI-powered inventory demand prediction using Facebook Prophet ML model to reduce stockouts and overstock situations.
 
-## Endpoint Design
+## Architecture Overview
 
-### 1. `GET /analytics/forecast/demand`
+```
+┌─────────────────┐    HTTP POST    ┌──────────────────────┐
+│  NestJS API     │ ──────────────► │  Python AI Service   │
+│  /forecast/*    │                 │  (apps/ai-forecast)  │
+└─────────────────┘                 └──────────────────────┘
+      │                                      │
+      │                                      │
+      ▼                                      ▼
+┌─────────────────┐                 ┌──────────────────────┐
+│  Frontend Web   │                 │  Facebook Prophet    │
+│  Mobile App     │                 │  ML Model            │
+└─────────────────┘                 └──────────────────────┘
+```
 
-**Query parameters:**
-- `productId` (optional) – if omitted, returns forecast for all active products
-- `days` – forecast horizon in days (default 30, max 90)
-- `interval` – granularity: `day`, `week`, `month` (default `day`)
+## Endpoints
+
+### 1. `GET /forecast/product/:id`
+
+Get demand forecast for a specific product.
+
+**Parameters:**
+- `id` (path) – Product ID
 
 **Response:**
 ```json
 {
-  "productId": "uuid",
-  "sku": "PRD-001",
-  "forecast": [
-    {"date": "2026-05-12", "predictedDemand": 42, "lowerBound": 38, "upperBound": 47},
-    ...
-  ],
-  "metrics": {
-    "mape": 12.4,
-    "recommendedReorderQuantity": 120,
-    "confidence": "high"
+  "productId": "PROD-001",
+  "data": {
+    "predictions": [
+      {"date": "2026-05-16", "quantity": 25},
+      {"date": "2026-05-17", "quantity": 28}
+    ],
+    "suggestedOrder": 150,
+    "confidenceLower": [
+      {"date": "2026-05-16", "quantity": 20}
+    ],
+    "confidenceUpper": [
+      {"date": "2026-05-16", "quantity": 32}
+    ],
+    "generatedAt": "2026-05-15T10:00:00Z",
+    "isFallback": false
   }
 }
 ```
 
-### 2. `POST /analytics/forecast/train`
+### 2. `POST /inventory-recommendation/suggest`
 
-Triggers model retraining using historical sales data (last 365 days). Returns training job ID.
+Get AI-powered reorder suggestions based on current inventory levels.
+
+**Request Body:**
+```json
+{
+  "productId": "PROD-001",
+  "currentStock": 50
+}
+```
 
 **Response:**
 ```json
-{ "jobId": "uuid", "status": "started" }
+{
+  "productId": "PROD-001",
+  "shouldReorder": true,
+  "currentStock": 50,
+  "predictedDemandNext7d": 175,
+  "predictedDemandNext30d": 720,
+  "suggestedOrderQuantity": 845,
+  "safetyStock": 75,
+  "reorderPoint": 200,
+  "daysUntilStockout": 3,
+  "reasons": [
+    "Current stock (50) is at or below reorder point (200)",
+    "Stock will run out in 3 days (supplier lead time: 7 days)"
+  ]
+}
 ```
 
-### 3. `GET /analytics/forecast/train/{jobId}`
+### 3. Python AI Service Endpoints (apps/ai-forecast/main.py)
 
-Check training status and download model metadata.
-
-**Response:**
+**POST /forecast**
 ```json
-{ "status": "completed", "modelVersion": "v2", "trainingDate": "2026-05-11T10:00:00Z" }
+{
+  "product_id": "PROD-001",
+  "sales_history": [
+    {"date": "2026-05-01", "quantity": 20},
+    {"date": "2026-05-02", "quantity": 25}
+  ],
+  "lookahead_days": 30
+}
 ```
 
-## Implementation Phases
+**POST /reorder-suggestion**
+```json
+{
+  "product_id": "PROD-001",
+  "sales_history": [...],
+  "inventory": {
+    "product_id": "PROD-001",
+    "current_stock": 50,
+    "supplier_lead_days": 7
+  }
+}
+```
 
-| Phase | Components | Est. effort |
-|-------|------------|-------------|
-| 1 | Data pipeline + baseline Prophet model | 2 weeks |
-| 2 | XGBoost feature engineering | 2 weeks |
-| 3 | API integration + dashboard | 1 week |
-| 4 | Automated reorder triggers | 1 week |
+**GET /health**
+```json
+{
+  "status": "healthy",
+  "model_version": "prophet-v1",
+  "timestamp": "2026-05-15T10:00:00Z"
+}
+```
 
-**Next action:** Create `apps/api/src/analytics/forecast` module and `apps/web/src/app/analytics/forecast` page.
+## Configuration
 
-*Last updated: 2026-05-11* – follows roadmap in `docs/roadmap.md`.
+**Environment Variables:**
+- `AI_FORECAST_URL` – Python AI service URL (default: `http://localhost:8000`)
+- `PORT` – Python service port (default: `8000`)
+
+**AI Service Configuration (apps/ai-forecast/main.py):**
+```python
+AI_FORECAST_CONFIG = {
+    "min_history_days": 7,
+    "default_lookahead_days": 30,
+    "reorder_lead_days": 7,
+    "safety_stock_days": 3,
+}
+```
+
+## Running the AI Service
+
+```bash
+cd apps/ai-forecast
+pip install -r requirements.txt
+python main.py
+```
+
+**requirements.txt dependencies:**
+- fastapi
+- uvicorn
+- pandas
+- prophet
+- pydantic
+
+## Response Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 400 | Insufficient data (< 7 days of history) |
+| 404 | Product not found |
+| 500 | AI service error / fallback mode |
+
+## Fallback Behavior
+
+When the Python AI service is unavailable, the NestJS API returns a simple linear growth pattern with `isFallback: true`. This ensures the application remains functional even when AI services are down.
+
+## i18n Keys
+
+All user-facing text uses i18n keys:
+- `analytics.forecast.title` – "Dự báo nhu cầu" / "Demand Forecast"
+- `analytics.forecast.table.predicted` – "Dự báo" / "Forecast"
+- `inventory.shouldReorder` – "Cần nhập hàng ngay" / "Needs Immediate Reorder"
+- `inventory.daysUntilStockout` – "ngày đến khi hết hàng" / "days until stockout"
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `apps/api/src/forecast/` | NestJS forecast service and controller |
+| `apps/api/src/inventory-recommendation/` | Reorder suggestion service |
+| `apps/ai-forecast/main.py` | Python FastAPI Prophet ML service |
+| `apps/web/src/app/analytics/forecast/page.tsx` | Web analytics dashboard |
+| `apps/web/src/app/forecast/dashboard/page.tsx` | Web forecast dashboard |
+| `apps/mobile/src/screens/ForecastScreen.tsx` | Mobile forecast screen |
+| `apps/mobile/src/screens/ForecastAndRecommendationScreen.tsx` | Mobile reorder UI |
+
+*Last updated: 2026-05-15*

@@ -8,9 +8,10 @@ import { CRMScreen } from './components/CRMScreen';
 import { POSScreen } from './components/POSScreen';
 import { AccountingScreen } from './components/AccountingScreen';
 import { InventoryScreen } from './components/InventoryScreen';
+import { ForecastScreen } from './components/ForecastScreen';
 import { syncService } from './lib/sync-service';
 
-type Screen = 'dashboard' | 'pos' | 'crm' | 'products' | 'orders' | 'inventory' | 'accounting';
+type Screen = 'dashboard' | 'pos' | 'crm' | 'products' | 'orders' | 'inventory' | 'accounting' | 'forecast';
 
 export default function DesktopApp() {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ export default function DesktopApp() {
     { key: 'inventory', label: t('nav.inventory'), href: '/inventory' },
     { key: 'crm', label: t('nav.crm'), href: '/crm' },
     { key: 'accounting', label: t('nav.accounting'), href: '/accounting' },
+    { key: 'forecast', label: t('nav.forecast'), href: '/forecast' },
   ];
 
 export default function DesktopApp() {
@@ -61,6 +63,8 @@ export default function DesktopApp() {
         return <div className="p-8 text-gray-500">{t('nav.orders')}</div>;
       case 'inventory':
         return <InventoryScreen />;
+      case 'forecast':
+        return <ForecastScreen />;
       default:
         return <Dashboard />;
     }

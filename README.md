@@ -24,6 +24,10 @@
 | Multi-warehouse transfer |          ✅           |    ❌    |   ❌    |  ❌  |   ❌    |
 | AI Business Intelligence | ✅ Predictive Stock   |    ❌    |   ❌    |  ❌  | Partial |
 | Omnichannel Hub          | ✅ Shopee/TikTok/Amazon/eBay | Partial  | ✅       |  ❌  | Partial |
+| HR/Payroll               | ✅ Full Module        |    ❌    |   ❌    |  ✅  |   ✅    |
+| Loyalty Program          | ✅ Points/Tiers/Rewards|   ❌    |   ✅    |  ❌  |   ❌    |
+| Fixed Assets             | ✅ Depreciation       |    ❌    |   ❌    |  ✅  |   ✅    |
+| Project Management       | ✅ Tasks/Milestones   |    ❌    |   ❌    |  ❌  |   ✅    |
 
 ---
 
@@ -32,6 +36,8 @@
 ### 🧠 AI-Powered Business Intelligence
 - **Dự báo nhu cầu (Demand Forecasting)**: Sử dụng lịch sử bán hàng thực tế để dự báo tồn kho cần thiết.
 - **Gợi ý nhập hàng tự động**: Tính toán số lượng đặt hàng tối ưu dựa trên tốc độ bán và lead time.
+- **Inventory Recommendation Service**: AI‑driven reorder suggestions via `/inventory-recommendation/suggest` endpoint.
+- **Forecast Dashboard**: Visual demand forecast UI with i18n support.
 
 ### 🌐 E-commerce Integration Hub (Omnichannel)
 - **Đồng bộ đa sàn**: Kết nối Shopee, Lazada, TikTok Shop, Amazon, eBay, Shopify.
@@ -118,10 +124,43 @@ smart-erp-next/
 | Người dùng     | ✅  | ✅  |   🔜   |
 | Báo cáo        | ✅  | ✅  |   🔜   |
 | Cài đặt        |  —  | ✅  |   🔜   |
+| **HR/Payroll** | ✅  | ✅  |   ✅   |
+| **Loyalty**    | ✅  | ✅  |   ✅   |
+| **Fixed Assets**| ✅  | ✅  |   ✅   |
+| **Projects**   | ✅  | ✅  |   ✅   |
+| **HR/Payroll** | ✅  | ✅  |   ✅   |
+| **Loyalty**    | ✅  | ✅  |   ✅   |
+| **Fixed Assets**| ✅  | ✅  |   ✅   |
+| **Projects**   | ✅  | ✅  |   ✅   |
+| **Helpdesk**   | ✅  | ✅  |   ✅   |
+| **AI Forecast**| ✅  | ✅  |   ✅   |
 
 ---
 
-## Database Schema
+## Docker
+
+### Chạy AI Forecasting Service
+
+```bash
+# Chạy Python AI service (Prophet ML)
+docker-compose up -d ai-forecast
+
+# Kiểm tra health
+curl http://localhost:8000/health
+
+# Xem logs
+docker-compose logs -f ai-forecast
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `AI_FORECAST_PORT` | 8000 | AI service port |
+| `DATABASE_URL` | - | PostgreSQL connection string |
+| `JWT_SECRET` | - | JWT signing secret |
+
+---
 
 ```
 tenants
@@ -129,13 +168,17 @@ tenants
   ├── products → product_categories, inventory_transactions
   ├── product_lots (batch tracking, expiry dates, FEFO)
   ├── product_serials (individual item tracking, warranty)
-  ├── customers
+  ├── customers → loyalty_cards → loyalty_transactions
   ├── suppliers
   ├── warehouses
   ├── warehouse_transfers (draft→approved→shipped→received)
   ├── orders → order_items
   ├── purchase_orders → purchase_order_items
-  └── payments
+  ├── payments
+  ├── employees → payrolls
+  ├── fixed_assets (depreciation tracking)
+  ├── projects → project_tasks → project_milestones → project_time_entries
+  └── loyalty_rewards
 ```
 
 ---
