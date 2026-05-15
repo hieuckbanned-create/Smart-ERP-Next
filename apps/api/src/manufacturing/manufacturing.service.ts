@@ -278,26 +278,83 @@ export class ManufacturingService {
     return { id: checkpointId, status, notes, checkedAt: new Date().toISOString() };
   }
 
-  /** Calculate production cost */
+  /** Calculate standard production cost (material + labor + overhead) */
   async calculateProductionCost(tenantId: string, productId: string, quantity: number) {
     const boms = await this.getBOM(productId, tenantId);
     let totalMaterialCost = 0;
+    const materialBreakdown: any[] = [];
 
     for (const bom of boms) {
       const requiredQty = bom.quantity * quantity * (1 + (bom.wastagePercent || 0) / 100);
       const costPerUnit = bom.unitCost || 0;
-      totalMaterialCost += requiredQty * costPerUnit;
+      const subtotal = requiredQty * costPerUnit;
+      totalMaterialCost += subtotal;
+      materialBreakdown.push({
+        component: bom.componentProductName,
+        quantity: Math.ceil(requiredQty * 100) / 100,
+        unitCost: bom.unitCost,
+        subtotal: Math.round(subtotal),
+      });
     }
 
+    // Estimate labor cost (configurable per product, default 15% of material)
+    const laborRate = 0.15;
+    const totalLaborCost = Math.round(totalMaterialCost * laborRate);
+
+    // Estimate overhead (default 10% of material + labor)
+    const overheadRate = 0.10;
+    const totalOverheadCost = Math.round((totalMaterialCost + totalLaborCost) * overheadRate);
+
+    const totalCost = totalMaterialCost + totalLaborCost + totalOverheadCost;
+    const unitCost = quantity > 0 ? Math.round(totalCost / quantity) : 0;
+
     return {
-      totalMaterialCost,
-      unitCost: Math.round(totalMaterialCost / quantity),
-      breakdown: boms.map((bom) => ({
-        component: bom.componentProductName,
-        quantity: bom.quantity * quantity * (1 + (bom.wastagePercent || 0) / 100),
-        unitCost: bom.unitCost,
-        subtotal: (bom.quantity * quantity * (1 + (bom.wastagePercent || 0) / 100)) * (bom.unitCost || 0),
-      })),
+      totalMaterialCost: Math.round(totalMaterialCost),
+      totalLaborCost,
+      totalOverheadCost,
+      totalCost,
+      unitCost,
+      quantity,
+      materialBreakdown,
+    };
+  }
+
+  /** Calculate variance analysis for a completed production order */
+  async calculateVarianceAnalysis(tenantId: string, orderId: string) {
+    const order = await this.getProductionOrderById(tenantId, orderId);
+    if (!order) throw new NotFoundException('Production order not found');
+
+    // Standard cost
+    const standardCost = await this.calculateProductionCost(tenantId, order.productId, order.quantity);
+
+    // Actual cost from inventory transactions
+    const actualTxns = await this.drizzle.db.execute(
+      sql`SELECT SUM(quantity * unit_cost) as actual_cost
+          FROM inventory_transactions
+          WHERE tenant_id = ${tenantId}
+            AND reference_type = 'production_order'
+            AND reference_id = ${orderId}
+            AND type = 'production_consumption'`
+    );
+    const actualMaterialCost = Number((actualTxns as any[])?.[0]?.actual_cost || 0);
+
+    // Variances
+    const materialVariance = actualMaterialCost - standardCost.totalMaterialCost;
+    const materialVariancePercent = standardCost.totalMaterialCost > 0
+      ? Math.round((materialVariance / standardCost.totalMaterialCost) * 10000) / 100
+      : 0;
+
+    return {
+      orderId: order.id,
+      orderCode: order.orderCode,
+      productName: order.productName,
+      quantity: order.quantity,
+      status: order.status,
+      standardCost,
+      actualMaterialCost,
+      materialVariance,
+      materialVariancePercent,
+      isOverBudget: materialVariance > 0,
     };
   }
 }

@@ -71,4 +71,10 @@ export class ManufacturingController {
   async calculateCost(@Request() req: any, @Param('productId') productId: string, @Query('quantity') quantity: string) {
     return this.service.calculateProductionCost(req.user.tenantId, productId, Number(quantity));
   }
+
+  @ApiOperation({ summary: 'Calculate variance analysis for a production order' })
+  @Get('orders/:id/variance')
+  async calculateVariance(@Request() req: any, @Param('id') id: string) {
+    return this.service.calculateVarianceAnalysis(req.user.tenantId, id);
+  }
 }

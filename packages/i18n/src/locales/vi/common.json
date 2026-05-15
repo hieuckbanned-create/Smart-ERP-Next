@@ -667,7 +667,17 @@
       "unitCost": "Chi phí đơn vị",
       "materialCost": "Chi phí nguyên liệu"
     },
-    "insufficientMaterials": "Không đủ nguyên liệu {{component}}: cần {{required}}, tồn kho hiện tại {{available}}"
+    "insufficientMaterials": "Không đủ nguyên liệu {{component}}: cần {{required}}, tồn kho hiện tại {{available}}",
+    "costVariance": "Chênh lệch chi phí",
+    "standardCost": "Chi phí tiêu chuẩn",
+    "actualCost": "Chi phí thực tế",
+    "variance": "Chênh lệch",
+    "variancePercent": "% Chênh lệch",
+    "overBudget": "Vượt ngân sách",
+    "underBudget": "Dưới ngân sách",
+    "laborCost": "Chi phí nhân công",
+    "overheadCost": "Chi phí chung",
+    "totalCost": "Tổng chi phí"
   },
   "mrp": {
     "title": "Hoạch định nhu cầu vật tư (MRP)",

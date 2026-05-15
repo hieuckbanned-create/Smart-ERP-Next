@@ -1140,7 +1140,17 @@
       "unitCost": "Unit Cost",
       "materialCost": "Material Cost"
     },
-    "insufficientMaterials": "Insufficient materials for {{component}}: need {{required}}, current stock {{available}}"
+    "insufficientMaterials": "Insufficient materials for {{component}}: need {{required}}, current stock {{available}}",
+    "costVariance": "Cost Variance",
+    "standardCost": "Standard Cost",
+    "actualCost": "Actual Cost",
+    "variance": "Variance",
+    "variancePercent": "Variance %",
+    "overBudget": "Over Budget",
+    "underBudget": "Under Budget",
+    "laborCost": "Labor Cost",
+    "overheadCost": "Overhead Cost",
+    "totalCost": "Total Cost"
   },
   "mrp": {
     "title": "Material Requirements Planning",
