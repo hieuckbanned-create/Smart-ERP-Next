@@ -28,6 +28,7 @@ import { HrModule } from './hr/hr.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
 import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 import { ProjectsModule } from './projects/projects.module';
+import { HelpdeskModule } from './helpdesk/helpdesk.module';
 import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { ExportModule } from './exports/export.module';
@@ -75,6 +76,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     LoyaltyModule,
     FixedAssetsModule,
     ProjectsModule,
+    HelpdeskModule,
     CrmModule,
     ActivityModule,
     HealthModule,
