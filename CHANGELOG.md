@@ -8,7 +8,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- **HR/Payroll Module**:
+- **Helpdesk & Ticketing System**:
+  - Ticket CRUD with priority, status, category
+  - Web page and mobile screen
+  - i18n support (vi/en)
+- **AI-Powered Demand Forecasting (Enhanced)**:
+  - Python Prophet ML service (`apps/ai-forecast/`) with `/forecast` and `/reorder-suggestion` endpoints
+  - NestJS ForecastService integrated with Python AI via HTTP
+  - Inventory-aware reorder suggestions with days-until-stockout calculation
+  - Safety stock and reorder point calculations
+  - Mobile ForecastAndRecommendationScreen with full reorder UI
+  - Web analytics forecast page with AI metrics
+  - i18n keys for forecast and inventory reorder (vi/en)
+  - Unit tests for ForecastService
+  - API documentation in `docs/forecast-api.md`
   - Employee management (CRUD) with code, name, email, phone, position, salary
   - Payroll processing with base salary, allowances, deductions, net salary
   - Web pages: employees list, payroll management
