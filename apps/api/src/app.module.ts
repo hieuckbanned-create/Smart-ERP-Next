@@ -25,6 +25,8 @@ import { CommentsModule } from './comments/comments.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { HrModule } from './hr/hr.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
+import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { ExportModule } from './exports/export.module';
@@ -69,6 +71,8 @@ import { DRIZZLE } from './common/drizzle.decorator';
     SchedulerModule,
     AccountingModule,
     HrModule,
+    LoyaltyModule,
+    FixedAssetsModule,
     CrmModule,
     ActivityModule,
     HealthModule,

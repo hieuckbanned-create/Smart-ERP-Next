@@ -1166,5 +1166,43 @@
       "edit": "Edit Employee",
       "delete": "Delete Employee"
     }
+  },
+  "loyalty": {
+    "title": "Loyalty Program",
+    "card": "Loyalty Card",
+    "points": "Points",
+    "earnPoints": "Earn Points",
+    "redeemPoints": "Redeem Points",
+    "rewards": "Rewards",
+    "tier": "Tier",
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum"
+    },
+    "transactions": "Transaction History",
+    "insufficientPoints": "Insufficient points"
+  },
+  "fixedAssets": {
+    "title": "Fixed Assets",
+    "asset": "Asset",
+    "add": "Add Asset",
+    "edit": "Edit Asset",
+    "code": "Asset Code",
+    "name": "Asset Name",
+    "category": "Category",
+    "purchaseCost": "Purchase Cost",
+    "residualValue": "Residual Value",
+    "usefulLife": "Useful Life (months)",
+    "accumulatedDepreciation": "Accumulated Depreciation",
+    "monthlyDepreciation": "Monthly Depreciation",
+    "status": "Status",
+    "statuses": {
+      "active": "Active",
+      "disposed": "Disposed",
+      "maintenance": "Under Maintenance"
+    },
+    "dispose": "Dispose Asset"
   }
 }

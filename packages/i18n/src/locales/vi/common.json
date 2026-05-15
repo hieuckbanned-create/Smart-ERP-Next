@@ -686,6 +686,44 @@
       "delete": "Xóa nhân viên"
     }
   },
+  "loyalty": {
+    "title": "Chương trình khách hàng thân thiết",
+    "card": "Thẻ tích điểm",
+    "points": "Điểm",
+    "earnPoints": "Tích điểm",
+    "redeemPoints": "Đổi điểm",
+    "rewards": "Phần thưởng",
+    "tier": "Hạng",
+    "tiers": {
+      "bronze": "Đồng",
+      "silver": "Bạc",
+      "gold": "Vàng",
+      "platinum": "Bạch kim"
+    },
+    "transactions": "Lịch sử giao dịch",
+    "insufficientPoints": "Không đủ điểm"
+  },
+  "fixedAssets": {
+    "title": "Tài sản cố định",
+    "asset": "Tài sản",
+    "add": "Thêm tài sản",
+    "edit": "Sửa tài sản",
+    "code": "Mã tài sản",
+    "name": "Tên tài sản",
+    "category": "Danh mục",
+    "purchaseCost": "Giá mua",
+    "residualValue": "Giá trị còn lại",
+    "usefulLife": "Thời hạn sử dụng (tháng)",
+    "accumulatedDepreciation": "Hao mòn lũy kế",
+    "monthlyDepreciation": "Hao mòn hàng tháng",
+    "status": "Trạng thái",
+    "statuses": {
+      "active": "Đang sử dụng",
+      "disposed": "Đã thanh lý",
+      "maintenance": "Đang bảo trì"
+    },
+    "dispose": "Thanh lý tài sản"
+  },
   "chat": {
     "mention": "đã nhắn đến bạn",
     "newMessage": "Tin nhắn mới"
