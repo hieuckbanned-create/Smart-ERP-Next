@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chart } from '@smart-erp/ui';
-import { useApiClient } from '@/lib/api-client';
+import { apiClient } from '@/lib/api-client';
 
 interface ForecastData {
   productId: string;
@@ -20,7 +20,7 @@ interface ApiResponse {
 
 export default function ForecastDashboard() {
   const { t } = useTranslation('common');
-  const api = useApiClient();
+  const api = apiClient;
   const [data, setData] = useState<ForecastData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
