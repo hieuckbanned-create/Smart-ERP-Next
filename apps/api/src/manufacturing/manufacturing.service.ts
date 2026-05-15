@@ -129,7 +129,7 @@ export class ManufacturingService {
       const currentStock = (invResult as any[])?.[0]?.current_stock ?? 0;
       if (currentStock < requiredQty) {
         throw new Error(
-          `Không đủ nguyên liệu cho ${bom.componentProductName}: cần ${requiredQty}, tồn kho ${currentStock}`,
+          `Insufficient materials for ${bom.componentProductName}: need ${requiredQty.toFixed(2)}, current stock ${currentStock}`,
         );
       }
 
@@ -152,7 +152,7 @@ export class ManufacturingService {
         referenceType: 'production_order',
         referenceId: orderId,
         performedBy: userId,
-        notes: `Sản xuất ${order.orderCode}`,
+        notes: `Production consumption for ${order.orderCode}`,
       });
     }
 
@@ -197,7 +197,7 @@ export class ManufacturingService {
       referenceType: 'production_order',
       referenceId: orderId,
       performedBy: userId,
-      notes: `Hoàn thành sản xuất ${order.orderCode}`,
+      notes: `Production completed for ${order.orderCode}`,
     });
 
     return this.getProductionOrderById(tenantId, orderId);

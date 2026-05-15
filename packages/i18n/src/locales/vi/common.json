@@ -641,11 +641,13 @@
   },
   "manufacturing": {
     "title": "Sản xuất",
-    "bom": "BOM",
+    "bom": "Danh sách nguyên liệu (BOM)",
+    "bomItem": "Nguyên liệu",
     "productionOrder": "Lệnh sản xuất",
-    "createOrder": "Tạo lệnh",
-    "startOrder": "Bắt đầu",
-    "completeOrder": "Hoàn thành",
+    "productionOrders": "Lệnh sản xuất",
+    "createOrder": "Tạo lệnh sản xuất",
+    "startOrder": "Bắt đầu sản xuất",
+    "completeOrder": "Hoàn thành sản xuất",
     "status": {
       "draft": "Nháp",
       "inProgress": "Đang sản xuất",
@@ -654,6 +656,19 @@
     },
     "qc": {
       "title": "Kiểm soát chất lượng",
+      "checkpoints": "Trạm kiểm tra",
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "pending": "Chờ kiểm tra"
+    },
+    "cost": {
+      "title": "Chi phí sản xuất",
+      "totalCost": "Tổng chi phí",
+      "unitCost": "Chi phí đơn vị",
+      "materialCost": "Chi phí nguyên liệu"
+    },
+    "insufficientMaterials": "Không đủ nguyên liệu {{component}}: cần {{required}}, tồn kho hiện tại {{available}}"
+  },
       "checkpoints": "Trạm kiểm tra",
       "passed": "Đạt",
       "failed": "Không đạt",

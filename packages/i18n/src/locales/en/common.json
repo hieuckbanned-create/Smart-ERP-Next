@@ -1114,11 +1114,13 @@
   },
   "manufacturing": {
     "title": "Manufacturing",
-    "bom": "BOM",
+    "bom": "Bill of Materials (BOM)",
+    "bomItem": "BOM Item",
     "productionOrder": "Production Order",
-    "createOrder": "Create Order",
-    "startOrder": "Start",
-    "completeOrder": "Complete",
+    "productionOrders": "Production Orders",
+    "createOrder": "Create Production Order",
+    "startOrder": "Start Production",
+    "completeOrder": "Complete Production",
     "status": {
       "draft": "Draft",
       "inProgress": "In Progress",
@@ -1137,7 +1139,8 @@
       "totalCost": "Total Cost",
       "unitCost": "Unit Cost",
       "materialCost": "Material Cost"
-    }
+    },
+    "insufficientMaterials": "Insufficient materials for {{component}}: need {{required}}, current stock {{available}}"
   },
   "export": {
     "title": "Data Export",
