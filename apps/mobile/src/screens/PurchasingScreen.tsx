@@ -239,7 +239,7 @@ export default function PurchasingScreen() {
           contentContainerStyle={styles.list}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchOrders} tintColor="#3b82f6" />}
           ListEmptyComponent={<View style={styles.center}><Text style={styles.emptyText}>{t('purchasing.empty')}</Text></View>}
-          ListFooterComponent={orders.length > 0 && <Text style={styles.footerText}>{orders.length} {t('purchasing.orders')}</Text>}
+          ListFooterComponent={orders.length > 0 ? <Text style={styles.footerText}>{orders.length} {t('purchasing.orders')}</Text> : null}
         />
       )}
 

@@ -9,6 +9,7 @@ import {
   StatusBar,
   Platform,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
@@ -30,6 +31,7 @@ import ReportsScreen from "./src/screens/ReportsScreen";
 import AccountingScreen from "./src/screens/AccountingScreen";
 import OmnichannelScreen from "./src/screens/OmnichannelScreen";
 import ForecastScreen from "./src/screens/ForecastScreen";
+import QualityScreen from "./src/screens/QualityScreen";
 
 initI18n("vi");
 
@@ -38,7 +40,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality";
 
 export default function App() {
   const { t } = useTranslation();
@@ -50,20 +52,17 @@ export default function App() {
   const [isOnline, setIsOnline] = useState(true);
 
   const NAV_ITEMS: { key: Screen; label: string; icon: string }[] = [
-    { key: "dashboard", label: t("nav.dashboard"), icon: "📊" },
-    { key: "pos", label: t("nav.pos"), icon: "🛒" },
-    { key: "orders", label: t("nav.orders"), icon: "📋" },
-    { key: "products", label: t("nav.products"), icon: "📦" },
-    { key: "inventory", label: t("nav.inventory"), icon: "🏭" },
-    { key: "suppliers", label: t("nav.suppliers"), icon: "🏢" },
-    { key: "warehouses", label: t("nav.warehouses"), icon: "🏬" },
-    { key: "customers", label: t("nav.customers"), icon: "👥" },
-    { key: "purchasing", label: t("nav.purchasing"), icon: "🛒" },
-    { key: "leads", label: t("nav.crm"), icon: "🎯" },
-    { key: "accounting", label: t("nav.accounting"), icon: "💰" },
-    { key: "reports", label: t("nav.reports"), icon: "📈" },
-    { key: "omnichannel", label: "Omnichannel", icon: "🔄" },
-    { key: "forecast", label: t("nav.forecast"), icon: "📈" },
+    { key: "dashboard", label: t("nav.dashboard") || "Tổng quan", icon: "📊" },
+    { key: "pos", label: t("nav.pos") || "POS", icon: "🛒" },
+    { key: "orders", label: t("nav.orders") || "Đơn hàng", icon: "📋" },
+    { key: "products", label: t("nav.products") || "Sản phẩm", icon: "📦" },
+    { key: "inventory", label: t("nav.inventory") || "Kho", icon: "🏭" },
+    { key: "quality", label: t("nav.quality") || "Chất lượng", icon: "✅" },
+    { key: "suppliers", label: t("nav.suppliers") || "Nhà CC", icon: "🏢" },
+    { key: "purchasing", label: t("nav.purchasing") || "Mua hàng", icon: "🛒" },
+    { key: "leads", label: t("nav.crm") || "CRM", icon: "🎯" },
+    { key: "accounting", label: t("nav.accounting") || "Kế toán", icon: "💰" },
+    { key: "reports", label: t("nav.reports") || "Báo cáo", icon: "📈" },
   ];
 
   useEffect(() => {
@@ -116,32 +115,22 @@ export default function App() {
 
   const renderScreen = () => {
     switch (activeScreen) {
-      case "dashboard":
-        return <DashboardScreen user={user} />;
-      case "products":
-        return <ProductsScreen />;
-      case "orders":
-        return <OrdersScreen />;
-      case "customers":
-        return <CustomersScreen />;
-      case "inventory":
-        return <InventoryScreen onNavigateToPurchasing={() => setActiveScreen('purchasing')} />;
-      case "leads":
-        return <LeadsScreen />;
-      case "pos":
-        return <POSScreen />;
-      case "accounting":
-        return <AccountingScreen />;
-      case "suppliers":
-        return <SuppliersScreen />;
-      case "warehouses":
-        return <WarehousesScreen />;
-      case "purchasing":
-        return <PurchasingScreen />;
-      case "reports":
-        return <ReportsScreen />;
-      case "omnichannel":
-        return <OmnichannelScreen />;
+      case "dashboard": return <DashboardScreen user={user} />;
+      case "products": return <ProductsScreen />;
+      case "orders": return <OrdersScreen />;
+      case "customers": return <CustomersScreen />;
+      case "inventory": return <InventoryScreen onNavigateToPurchasing={() => setActiveScreen('purchasing')} />;
+      case "quality": return <QualityScreen />;
+      case "leads": return <LeadsScreen />;
+      case "pos": return <POSScreen />;
+      case "accounting": return <AccountingScreen />;
+      case "suppliers": return <SuppliersScreen />;
+      case "warehouses": return <WarehousesScreen />;
+      case "purchasing": return <PurchasingScreen />;
+      case "reports": return <ReportsScreen />;
+      case "omnichannel": return <OmnichannelScreen />;
+      case "forecast": return <ForecastScreen />;
+      default: return <DashboardScreen user={user} />;
     }
   };
 
@@ -153,7 +142,7 @@ export default function App() {
         <View>
           <Text style={styles.headerTitle}>Smart ERP</Text>
           <Text style={styles.headerSubtitle}>
-            {NAV_ITEMS.find((n) => n.key === activeScreen)?.label}
+            {NAV_ITEMS.find((n) => n.key === activeScreen)?.label || "Menu"}
           </Text>
         </View>
         <View style={styles.headerRight}>
@@ -180,26 +169,28 @@ export default function App() {
 
       <View style={styles.content}>{renderScreen()}</View>
 
-      <View style={styles.bottomNav}>
-        {NAV_ITEMS.map((item) => (
-          <TouchableOpacity
-            key={item.key}
-            style={styles.navItem}
-            onPress={() => setActiveScreen(item.key)}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.navIcon}>{item.icon}</Text>
-            <Text
-              style={[
-                styles.navLabel,
-                activeScreen === item.key && styles.navLabelActive,
-              ]}
+      <View style={styles.bottomNavWrapper}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bottomNav}>
+          {NAV_ITEMS.map((item) => (
+            <TouchableOpacity
+              key={item.key}
+              style={styles.navItem}
+              onPress={() => setActiveScreen(item.key)}
+              activeOpacity={0.7}
             >
-              {item.label}
-            </Text>
-            {activeScreen === item.key && <View style={styles.navIndicator} />}
-          </TouchableOpacity>
-        ))}
+              <Text style={styles.navIcon}>{item.icon}</Text>
+              <Text
+                style={[
+                  styles.navLabel,
+                  activeScreen === item.key && styles.navLabelActive,
+                ]}
+              >
+                {item.label}
+              </Text>
+              {activeScreen === item.key ? <View style={styles.navIndicator} /> : null}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -250,22 +241,27 @@ const styles = StyleSheet.create({
   logoutBtn: { padding: 6 },
   logoutText: { fontSize: 18, color: "#6b7280" },
   content: { flex: 1 },
-  bottomNav: {
-    flexDirection: "row",
+  bottomNavWrapper: {
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
     paddingBottom: Platform.OS === "ios" ? 20 : 8,
   },
+  bottomNav: {
+    flexDirection: "row",
+    paddingHorizontal: 8,
+  },
   navItem: {
-    flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     paddingTop: 10,
     paddingBottom: 4,
+    paddingHorizontal: 16,
+    minWidth: 70,
     position: "relative",
   },
   navIcon: { fontSize: 22, marginBottom: 3 },
-  navLabel: { fontSize: 10, color: "#9ca3af", fontWeight: "500" },
+  navLabel: { fontSize: 10, color: "#9ca3af", fontWeight: "500", textAlign: 'center' },
   navLabelActive: { color: "#3b82f6", fontWeight: "700" },
   navIndicator: {
     position: "absolute",

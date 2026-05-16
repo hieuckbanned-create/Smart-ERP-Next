@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, StyleSheet,
   ActivityIndicator, RefreshControl, Dimensions,
+  TouchableOpacity
 } from 'react-native';
 import { useTranslation } from '@smart-erp/i18n';
 import { api } from '../lib/api';
