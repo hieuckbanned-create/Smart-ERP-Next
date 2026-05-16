@@ -54,6 +54,7 @@ import { MarketingModule } from './marketing/marketing.module';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { WmsModule } from './wms/wms.module';
 import { TmsModule } from './tms/tms.module';
+import { FinanceModule } from './finance/finance.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { TmsModule } from './tms/tms.module';
     MaintenanceModule,
     WmsModule,
     TmsModule,
+    FinanceModule,
     // Cache layer for performance
     CacheModule.register({ isGlobal: true, ttl: 60, max: 100 }),
     // Forecast feature

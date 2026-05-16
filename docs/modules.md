@@ -366,3 +366,19 @@ Hệ thống quản trị doanh thu, tự động hóa quy trình bán hàng và
 - **Custom Multi-Pipelines**: Cho phép định nghĩa nhiều quy trình bán hàng khác nhau (Bán hàng trực tiếp, Bán qua đại lý, Tư vấn giải pháp), mỗi quy trình có các giai đoạn và tỷ lệ thành công riêng.
 - **Weighted Revenue Forecasting**: Tự động tính toán doanh thu dự kiến (Forecasted Revenue) dựa trên giá trị Deal và xác suất thành công của từng giai đoạn trong Pipeline.
 - **Kanban-first Mobile UX**: Giao diện dạng thẻ trực quan trên Mobile giúp nhân viên kinh doanh dễ dàng điều chuyển trạng thái Deal bằng thao tác kéo thả, đảm bảo dữ liệu luôn được cập nhật thời gian thực.
+
+---
+
+## Tài chính Chiến lược (Advanced Finance) `/finance`
+Quản trị dòng tiền, kiểm soát ngân sách và hỗ trợ ra quyết định tài chính dựa trên dữ liệu thời gian thực.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/finance/cashflow/forecast` | **Cashflow Intelligence**: Dự báo dòng tiền dựa trên dữ liệu AR/AP thực tế |
+| GET    | `/finance/budgets` | Danh sách ngân sách theo phòng ban/dự án |
+| GET    | `/finance/budgets/:id/variance` | **Budget Control**: Phân tích chênh lệch giữa kế hoạch và thực tế chi |
+
+**Tính năng vượt trội:**
+- **Predictive Cashflow**: Không chỉ là kế toán quá khứ, hệ thống tự động tổng hợp dữ liệu từ Đơn hàng (AR) và Mua hàng (AP) để dự báo dòng tiền trong tương lai, giúp doanh nghiệp chủ động về thanh khoản.
+- **Tight Budget Control**: Thiết lập ngân sách chi tiết cho từng hạng mục và theo dõi mức độ giải ngân theo thời gian thực. Hệ thống cảnh báo ngay lập tức nếu chi phí thực tế vượt định mức.
+- **Executive Finance Dashboard**: Cung cấp các chỉ số sức khỏe tài chính (KPIs) trực quan trên ứng dụng di động, giúp CFO và Chủ doanh nghiệp nắm bắt tình hình tài chính mọi lúc, mọi nơi.

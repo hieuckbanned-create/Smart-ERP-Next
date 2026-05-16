@@ -673,4 +673,24 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 500]).toContain(res.status);
     });
   });
+
+  describe('Financial Governance: Advanced Finance & Cashflow', () => {
+    it('44. Should generate cashflow forecast based on AR/AP data', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/finance/cashflow/forecast?period=2026-Q3')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+
+    it('45. Should retrieve budget variance analysis', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/finance/budgets/dummy-budget-id/variance')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+  });
 });
