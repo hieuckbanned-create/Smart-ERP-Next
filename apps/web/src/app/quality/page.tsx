@@ -121,7 +121,7 @@ export default function QualityPage() {
                 ))}
               </tbody>
             </table>
-            {inspections.length === 0 && <div className="text-center text-gray-500 py-8">No inspections recorded</div>}
+            {inspections.length === 0 && <div className="text-center text-gray-500 py-8">{t('qms.noInspections')}</div>}
           </div>
         ) : activeTab === 'ncrs' ? (
           <div className="grid gap-4">
@@ -149,7 +149,7 @@ export default function QualityPage() {
                 </div>
               </div>
             ))}
-            {ncrs.length === 0 && <div className="text-center text-gray-500 py-8">No NCRs reported</div>}
+            {ncrs.length === 0 && <div className="text-center text-gray-500 py-8">{t('qms.noNCRs')}</div>}
           </div>
         ) : (
           /* SPC Charts placeholder */
