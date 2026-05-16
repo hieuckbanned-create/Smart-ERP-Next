@@ -1,11 +1,17 @@
 {
   "dependencies": {
+    "@react-native-async-storage/async-storage": "3.0.2",
+    "@react-native-picker/picker": "2.11.4",
+    "@react-navigation/native": "7.2.4",
     "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
     "@smart-erp/sync": "workspace:*",
     "@smart-erp/types": "workspace:*",
     "@smart-erp/utils": "workspace:*",
+    "detox": "20.50.4",
     "expo": "~52.0.0",
+    "expo-camera": "55.0.18",
+    "expo-notifications": "55.0.23",
     "expo-secure-store": "~14.0.0",
     "expo-sqlite": "~15.0.0",
     "expo-status-bar": "~2.0.0",

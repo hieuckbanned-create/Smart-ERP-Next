@@ -127,7 +127,7 @@ export default function App() {
       case "products": return <ProductsScreen />;
       case "orders": return <OrdersScreen />;
       case "customers": return <CustomersScreen />;
-      case "inventory": return <InventoryScreen onNavigateToPurchasing={() => setActiveScreen('purchasing')} />;
+      case "inventory": return <InventoryScreen />;
       case "quality": return <QualityScreen />;
       case "leads": return <LeadsScreen />;
       case "pos": return <POSScreen />;

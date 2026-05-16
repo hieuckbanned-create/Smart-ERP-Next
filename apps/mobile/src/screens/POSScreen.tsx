@@ -203,7 +203,7 @@ export default function POSScreen() {
         /* Checkout Mode */
         <ScrollView style={styles.checkoutContainer}>
           {/* Cart Items */}
-          <View style={styles.cartItems}>
+          <View style={styles.cartItemsList}>
             <Text style={styles.sectionTitle}>{t('pos.cart')}</Text>
             {cart.map((item) => (
               <View key={item.product.id} style={styles.cartItem}>
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
   },
   checkoutButtonText: { color: '#fff', fontWeight: '700', fontSize: 16 },
   checkoutContainer: { flex: 1 },
-  cartItems: { padding: 16 },
+  cartItemsList: { padding: 16 },
   sectionTitle: { fontSize: 16, fontWeight: '600', color: '#111827', marginBottom: 12 },
   cartItem: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',

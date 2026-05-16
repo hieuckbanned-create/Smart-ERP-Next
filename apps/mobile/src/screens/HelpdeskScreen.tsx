@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useTranslation } from '@smart-erp/i18n';
-import { useApi } from '../lib/api';
+import { api } from '../lib/api';
 
 export default function HelpdeskScreen() {
   const { t } = useTranslation('common');
-  const api = useApi();
+  
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
