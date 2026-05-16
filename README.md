@@ -129,9 +129,10 @@ smart-erp-next/
 | **Loyalty**    | ✅  | ✅  |   ✅   |   🔜    |
 | **Fixed Assets**| ✅  | ✅  |   ✅   |   🔜    |
 | **Projects**   | ✅  | ✅  |   ✅   |   🔜    |
-| **Sản xuất (MRP)**| ✅  | ✅  |   ✅   |   ✅    |
-| **Chất lượng (QMS)**| ✅  | ✅  |   ✅   |   ✅    |
-| **Đa kênh (Omnichannel)**| ✅  | ✅  |   ✅   |   ✅    |
+| **Quản lý Sản xuất (MRP)**| ✅  | ❌  |   ✅   |   ✅    |
+| **Quản lý Chất lượng**    | ✅  | ❌  |   ❌   |   🔜    |
+| **CRM (Sales Pipeline)**  | ✅  | ✅  |   ✅   |   ✅    |
+| **Đa kênh (Omnichannel)** | ✅  | ✅  |   ✅   |   ✅    |
 | **Hóa đơn điện tử**| ✅  | ✅  |   ✅   |   🔜    |
 | **Chấm công (HR)**  | ✅  | 🔜  |   🔜   |   🔜    |
 | **Tính lương (Payroll)**| ✅  | ❌  |   ✅   |   ✅    |

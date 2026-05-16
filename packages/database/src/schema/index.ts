@@ -31,3 +31,4 @@ export * from './production_orders';
 export * from './e_invoices';
 export * from './attendance';
 export * from './payroll';
+export * from './crm';

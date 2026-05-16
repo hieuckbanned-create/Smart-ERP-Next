@@ -29,6 +29,7 @@ import {
   FileText,
   Clock,
   DollarSign,
+  Target,
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
 import { syncService } from "../../lib/sync-service";
@@ -202,6 +203,12 @@ export default function AppLayout({
       label: "Tính lương (Payroll)",
       icon: <DollarSign className="w-5 h-5" />,
       href: "/hr/payroll",
+    },
+    {
+      key: "crm",
+      label: "CRM & Bán hàng",
+      icon: <Target className="w-5 h-5" />,
+      href: "/crm",
     },
     {
       key: "users",
