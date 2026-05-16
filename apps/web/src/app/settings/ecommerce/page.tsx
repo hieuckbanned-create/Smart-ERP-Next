@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Input, Button, Tabs, Tab, useToast, Select } from '@smart-erp/ui';
+import { Card, Input, Button, Tabs, Tab, useToast, Select } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
 
 type EcommerceStore = {

@@ -6,7 +6,7 @@ import { usersApi } from "@/lib/api-client";
 import AuthGuard from "@/components/layout/AuthGuard";
 import { useToast } from "@/components/providers/ToastProvider";
 import { useConfirm } from "@smart-erp/hooks";
-import { ConfirmDialog } from "@smart-erp/ui";
+import { ConfirmDialog } from "@smart-erp/shared";
 import { Users, Plus, Edit, Trash2, Search, Shield } from "lucide-react";
 
 interface User {

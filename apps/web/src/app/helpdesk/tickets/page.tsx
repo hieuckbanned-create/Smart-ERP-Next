@@ -1,12 +1,8 @@
 'use client';
 
 import { useTranslation } from '@smart-erp/i18n';
-import { AuthGuard } from '@/components/auth/AuthGuard';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { DataTable } from '@/components/ui/DataTable';
-import { Button } from '@/components/ui/Button';
-import { StatCard } from '@/components/ui/StatCard';
-import { Badge } from '@/components/ui/Badge';
+import AuthGuard from '@/components/layout/AuthGuard';
+import { PageHeader, DataTable, Button, StatCard } from '@smart-erp/shared';
 
 export default function TicketsPage() {
   const { t } = useTranslation('common');

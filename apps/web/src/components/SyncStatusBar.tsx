@@ -2,7 +2,7 @@
 
 import { useSyncStore, emitSyncEvent } from '@smart-erp/sync-status';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@smart-erp/ui';
+import { Button } from '@smart-erp/shared';
 import { Wifi, WifiOff, RefreshCw, AlertCircle } from 'lucide-react';
 import { useEffect } from 'react';
 

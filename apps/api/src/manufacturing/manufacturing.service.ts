@@ -1,4 +1,4 @@
-﻿import { Injectable, NotFoundException } from; import { IsInt, IsOptional, Min, Max } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { products, billsOfMaterials, productionOrders, inventoryTransactions } from '@smart-erp/database';
 import { eq, and, desc, sql } from 'drizzle-orm';

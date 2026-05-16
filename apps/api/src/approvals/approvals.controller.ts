@@ -1,9 +1,16 @@
-﻿import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApprovalsService } from './approvals.service';
 import { ApprovalRulesService } from './approval-rules.service';
 import { CreateApprovalRuleDto } from './dto/create-approval-rule.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+
+class ApprovalRequestDto {
+  documentType: string;
+  documentId: string;
+  documentAmount: number;
+  approverIds: string[];
+}
 
 @Controller('approvals')
 @UseGuards(JwtAuthGuard)
@@ -61,7 +68,7 @@ export class ApprovalsController {
     @CurrentUser('tenantId') tenantId: string,
     @CurrentUser('sub') approverId: string,
     @Param('requestId') requestId: string,
-    @Body() body: comments?: string }
+    @Body() body: { comments?: string }
   ) {
     return this.approvalsService.approveStep(tenantId, requestId, approverId, body.comments);
   }
@@ -71,7 +78,7 @@ export class ApprovalsController {
     @CurrentUser('tenantId') tenantId: string,
     @CurrentUser('sub') approverId: string,
     @Param('requestId') requestId: string,
-    @Body() body: comments: string }
+    @Body() body: { comments: string }
   ) {
     return this.approvalsService.rejectStep(tenantId, requestId, approverId, body.comments);
   }

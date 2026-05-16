@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FiPlus, FiBox, FiPlay, FiCheckCircle, FiClock } from 'react-icons/fi';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
+import { DataTable, Card, Button, Badge, StatCard } from '@smart-erp/ui';
 
 interface ProductionOrder {
   id: string;
@@ -13,13 +15,6 @@ interface ProductionOrder {
   status: 'draft' | 'in_progress' | 'completed' | 'cancelled';
   createdAt: string;
 }
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-800',
-  in_progress: 'bg-blue-100 text-blue-800',
-  completed: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800',
-};
 
 export default function ProductionOrdersPage() {
   const { t } = useTranslation('common');
@@ -42,41 +37,96 @@ export default function ProductionOrdersPage() {
     }
   };
 
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'in_progress': return 'primary';
+      case 'completed': return 'success';
+      case 'cancelled': return 'danger';
+      case 'draft':
+      default: return 'secondary';
+    }
+  };
+
+  const columns = [
+    { header: t('manufacturing.transfers.code') || 'Mã Lệnh', accessor: 'orderCode' },
+    { header: t('products.title'), accessor: 'productName' },
+    { 
+      header: t('manufacturing.transfers.quantity') || 'Số Lượng', 
+      accessor: (row: ProductionOrder) => <span className="font-semibold">{row.quantity}</span> 
+    },
+    { 
+      header: t('manufacturing.transfers.status') || 'Trạng Thái', 
+      accessor: (row: ProductionOrder) => (
+        <Badge variant={getStatusBadgeVariant(row.status)}>
+          {t(`manufacturing.status.${row.status}`)}
+        </Badge>
+      )
+    },
+    { 
+      header: t('export.createdAt') || 'Ngày Tạo', 
+      accessor: (row: ProductionOrder) => new Date(row.createdAt).toLocaleDateString('vi-VN') 
+    },
+  ];
+
+  const inProgressCount = orders.filter(o => o.status === 'in_progress').length;
+  const completedCount = orders.filter(o => o.status === 'completed').length;
+  const pendingCount = orders.filter(o => o.status === 'draft').length;
+
   return (
     <AuthGuard>
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">{t('manufacturing.productionOrders')}</h2>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {t('manufacturing.productionOrders')}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Quản lý lệnh sản xuất, theo dõi tiến độ và kiểm soát chất lượng
+            </p>
+          </div>
+          <Button icon={<FiPlus />}>
             {t('manufacturing.createOrder')}
-          </button>
+          </Button>
         </div>
 
-        {loading ? (
-          <div className="text-center py-8">{t('common.loading')}</div>
-        ) : orders.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">No production orders</div>
-        ) : (
-          <div className="grid gap-4">
-            {orders.map((order) => (
-              <div key={order.id} className="bg-white rounded-xl shadow p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold">{order.orderCode}</h3>
-                    <p className="text-sm text-gray-500">{order.productName}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[order.status]}`}>
-                    {t(`manufacturing.status.${order.status}`)}
-                  </span>
-                </div>
-                <div className="mt-3 flex gap-4 text-sm text-gray-600">
-                  <span>Qty: {order.quantity}</span>
-                  <span>Created: {new Date(order.createdAt).toLocaleDateString('vi-VN')}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Dashboards / StatCards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <StatCard
+            title="Tổng số lệnh"
+            value={orders.length}
+            icon={<FiBox className="w-5 h-5" />}
+            trend={{ value: 12, isPositive: true }}
+            trendLabel="so với tháng trước"
+          />
+          <StatCard
+            title="Đang sản xuất"
+            value={inProgressCount}
+            icon={<FiPlay className="w-5 h-5 text-blue-500" />}
+            className="border-l-4 border-l-blue-500"
+          />
+          <StatCard
+            title="Hoàn thành"
+            value={completedCount}
+            icon={<FiCheckCircle className="w-5 h-5 text-green-500" />}
+            className="border-l-4 border-l-green-500"
+          />
+          <StatCard
+            title="Chờ xử lý (Nháp)"
+            value={pendingCount}
+            icon={<FiClock className="w-5 h-5 text-gray-500" />}
+            className="border-l-4 border-l-gray-500"
+          />
+        </div>
+
+        {/* Data Table */}
+        <Card className="shadow-sm border-gray-200 dark:border-gray-800">
+          <DataTable
+            data={orders}
+            columns={columns}
+            loading={loading}
+            emptyMessage={t('common.noData')}
+          />
+        </Card>
       </div>
     </AuthGuard>
   );

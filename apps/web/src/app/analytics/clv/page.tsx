@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Button, Spinner, DataTable, Badge } from '@smart-erp/ui';
+import { Card, Button, Spinner, DataTable, Badge } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
 import { useToast } from '@/components/providers/ToastProvider';
 

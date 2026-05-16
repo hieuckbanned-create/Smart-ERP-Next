@@ -1,10 +1,8 @@
 'use client';
 
 import { useTranslation } from '@smart-erp/i18n';
-import { AuthGuard } from '@/components/auth/AuthGuard';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { DataTable } from '@/components/ui/DataTable';
-import { Button } from '@/components/ui/Button';
+import AuthGuard from '@/components/layout/AuthGuard';
+import { PageHeader, DataTable, Button } from '@smart-erp/shared';
 
 export default function LoyaltyRewardsPage() {
   const { t } = useTranslation('common');

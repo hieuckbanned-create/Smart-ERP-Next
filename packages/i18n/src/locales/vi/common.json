@@ -761,7 +761,12 @@
     "spcComingSoon": "Biểu đồ Kiểm soát Quy trình Thống kê sắp ra mắt.",
     "spcDescription": "Biểu đồ kiểm soát (X-bar, R-chart), Năng lực quy trình (Cp, Cpk)",
     "noInspections": "Chưa có bản ghi kiểm tra nào",
-    "noNCRs": "Chưa có báo cáo không phù hợp nào"
+    "noNCRs": "Chưa có báo cáo không phù hợp nào",
+    "supplierScore": "Bảng điểm nhà cung cấp",
+    "openNCRs": "NCR đang mở",
+    "criticalNCRs": "NCR nghiêm trọng",
+    "noSupplierData": "Chưa có dữ liệu chất lượng nhà cung cấp",
+    "score": "Điểm"
   },
   "analytics": {
     "title": "Bảng phân tích",

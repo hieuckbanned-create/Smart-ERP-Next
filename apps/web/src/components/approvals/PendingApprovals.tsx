@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { apiClient } from '@/lib/api-client';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@smart-erp/ui';
+import { Button } from '@smart-erp/shared';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 interface ApprovalRequest {

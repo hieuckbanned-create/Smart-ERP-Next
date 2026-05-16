@@ -60,12 +60,12 @@ const statusColors: Record<string, string> = {
 };
 
 const statusLabels: Record<string, string> = {
-  draft: t('orders.status.draft'),
-  confirmed: t('orders.status.confirmed'),
-  processing: t('orders.status.processing'),
-  shipped: t('orders.status.shipped'),
-  delivered: t('orders.status.delivered'),
-  cancelled: t('orders.status.cancelled'),
+  draft: 'Draft',
+  confirmed: 'Confirmed',
+  processing: 'Processing',
+  shipped: 'Shipped',
+  delivered: 'Delivered',
+  cancelled: 'Cancelled',
 };
 
 // Mock data for when API is not ready
@@ -83,6 +83,7 @@ const mockStats: DashboardStats = {
     { date: 'T7', revenue: 16_800_000 },
     { date: 'CN', revenue: 12_500_000 },
   ],
+  recentOrders: [
     { id: '1', code: 'DH-001', customerName: 'Customer A', total: 1_250_000, status: 'delivered', createdAt: new Date().toISOString() },
     { id: '2', code: 'DH-002', customerName: 'Customer B', total: 850_000, status: 'processing', createdAt: new Date().toISOString() },
     { id: '3', code: 'DH-003', customerName: 'Customer C', total: 2_100_000, status: 'confirmed', createdAt: new Date().toISOString() },

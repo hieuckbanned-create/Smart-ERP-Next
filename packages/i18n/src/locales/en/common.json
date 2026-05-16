@@ -1234,7 +1234,12 @@
     "spcComingSoon": "Statistical Process Control charts coming soon.",
     "spcDescription": "Control charts (X-bar, R-chart), Process capability (Cp, Cpk)",
     "noInspections": "No inspections recorded",
-    "noNCRs": "No NCRs reported"
+    "noNCRs": "No NCRs reported",
+    "supplierScore": "Supplier Scorecard",
+    "openNCRs": "Open NCRs",
+    "criticalNCRs": "Critical NCRs",
+    "noSupplierData": "No supplier quality data available",
+    "score": "Score"
   },
   "analytics": {
     "title": "Analytics Dashboard",

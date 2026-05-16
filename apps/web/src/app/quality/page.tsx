@@ -11,6 +11,7 @@ export default function QualityPage() {
   const [inspections, setInspections] = useState([]);
   const [ncrs, setNCRs] = useState([]);
   const [report, setReport] = useState<any>(null);
+  const [supplierScores, setSupplierScores] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState('inspections');
 
   const fetchData = async () => {
@@ -29,6 +30,8 @@ export default function QualityPage() {
         params: { startDate: thirtyDaysAgo.toISOString(), endDate: today.toISOString() },
       });
       setReport(reportRes.data);
+      const supplierRes = await apiClient.get('/qms/suppliers/quality-report');
+      setSupplierScores(supplierRes.data || []);
     } catch {
       // ignore
     } finally {
@@ -80,7 +83,7 @@ export default function QualityPage() {
 
         {/* Tabs */}
         <div className="flex gap-2 border-b border-gray-200">
-          {['inspections', 'ncrs', 'spc'].map((tab) => (
+          {['inspections', 'ncrs', 'scorecard', 'spc'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -88,7 +91,7 @@ export default function QualityPage() {
                 activeTab === tab ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              {tab === 'inspections' ? t('qms.inspections') : tab === 'ncrs' ? t('qms.ncrs') : t('qms.spcCharts')}
+              {tab === 'inspections' ? t('qms.inspections') : tab === 'ncrs' ? t('qms.ncrs') : tab === 'scorecard' ? t('qms.supplierScore') : t('qms.spcCharts')}
             </button>
           ))}
         </div>
@@ -150,6 +153,92 @@ export default function QualityPage() {
               </div>
             ))}
             {ncrs.length === 0 && <div className="text-center text-gray-500 py-8">{t('qms.noNCRs')}</div>}
+          </div>
+        ) : activeTab === 'scorecard' ? (
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">{t('qms.supplierScore')}</h2>
+            <div className="grid gap-4">
+              {supplierScores.map((score: any) => (
+                <div key={score.supplierId} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold">{score.supplierId}</h3>
+                      <p className="text-sm text-gray-500">
+                        {t('qms.totalInspections')}: {score.totalInspections} · {t('qms.passRate')}: {score.passRate}%
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                        score.grade === 'A' ? 'bg-green-100 text-green-800' :
+                        score.grade === 'B' ? 'bg-blue-100 text-blue-800' :
+                        score.grade === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                        score.grade === 'D' ? 'bg-orange-100 text-orange-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {t('qms.supplierGrade')}: {score.grade}
+                      </span>
+                      <span className="text-2xl font-bold text-gray-900">{score.score}</span>
+                    </div>
+                  </div>
+                  {(score.openNCRs > 0 || score.criticalNCRs > 0) && (
+                    <div className="mt-2 flex gap-4 text-xs">
+                      {score.openNCRs > 0 && (
+                        <span className="text-orange-600">{t('qms.openNCRs')}: {score.openNCRs}</span>
+                      )}
+                      {score.criticalNCRs > 0 && (
+                        <span className="text-red-600">{t('qms.criticalNCRs')}: {score.criticalNCRs}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {supplierScores.length === 0 && (
+                <div className="text-center text-gray-500 py-8">{t('qms.noSupplierData')}</div>
+              )}
+            </div>
+          </div>
+        ) : activeTab === 'scorecard' ? (
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">{t('qms.supplierScore')}</h2>
+            <div className="grid gap-4">
+              {supplierScores.map((score: any) => (
+                <div key={score.supplierId} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold">{score.supplierId}</h3>
+                      <p className="text-sm text-gray-500">
+                        {t('qms.totalInspections')}: {score.totalInspections} · {t('qms.passRate')}: {score.passRate}%
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                        score.grade === 'A' ? 'bg-green-100 text-green-800' :
+                        score.grade === 'B' ? 'bg-blue-100 text-blue-800' :
+                        score.grade === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                        score.grade === 'D' ? 'bg-orange-100 text-orange-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {t('qms.supplierGrade')}: {score.grade}
+                      </span>
+                      <span className="text-2xl font-bold text-gray-900">{score.score}</span>
+                    </div>
+                  </div>
+                  {(score.openNCRs > 0 || score.criticalNCRs > 0) && (
+                    <div className="mt-2 flex gap-4 text-xs">
+                      {score.openNCRs > 0 && (
+                        <span className="text-orange-600">{t('qms.openNCRs')}: {score.openNCRs}</span>
+                      )}
+                      {score.criticalNCRs > 0 && (
+                        <span className="text-red-600">{t('qms.criticalNCRs')}: {score.criticalNCRs}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {supplierScores.length === 0 && (
+                <div className="text-center text-gray-500 py-8">{t('qms.noSupplierData')}</div>
+              )}
+            </div>
           </div>
         ) : (
           /* SPC Charts placeholder */

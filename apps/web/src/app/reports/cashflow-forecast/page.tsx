@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
-import { Card, Spinner } from '@smart-erp/ui';
+import { Card, Spinner } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
 
 interface ForecastData {

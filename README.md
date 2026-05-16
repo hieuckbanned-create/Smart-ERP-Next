@@ -132,6 +132,7 @@ smart-erp-next/
 | **Loyalty**    | ✅  | ✅  |   ✅   |
 | **Fixed Assets**| ✅  | ✅  |   ✅   |
 | **Projects**   | ✅  | ✅  |   ✅   |
+| **Sản xuất (MRP)**| ✅  | ✅  |   🔜   |
 | **Helpdesk**   | ✅  | ✅  |   ✅   |
 | **AI Forecast**| ✅  | ✅  |   ✅   |
 
