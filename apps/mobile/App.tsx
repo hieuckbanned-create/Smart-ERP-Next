@@ -32,6 +32,8 @@ import AccountingScreen from "./src/screens/AccountingScreen";
 import OmnichannelScreen from "./src/screens/OmnichannelScreen";
 import ForecastScreen from "./src/screens/ForecastScreen";
 import QualityScreen from "./src/screens/QualityScreen";
+import EInvoiceScreen from "./src/screens/EInvoiceScreen";
+import ManufacturingScreen from "./src/screens/ManufacturingScreen";
 
 initI18n("vi");
 
@@ -40,7 +42,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing";
 
 export default function App() {
   const { t } = useTranslation();
@@ -57,12 +59,14 @@ export default function App() {
     { key: "orders", label: t("nav.orders") || "Đơn hàng", icon: "📋" },
     { key: "products", label: t("nav.products") || "Sản phẩm", icon: "📦" },
     { key: "inventory", label: t("nav.inventory") || "Kho", icon: "🏭" },
-    { key: "quality", label: t("nav.quality") || "Chất lượng", icon: "✅" },
-    { key: "suppliers", label: t("nav.suppliers") || "Nhà CC", icon: "🏢" },
-    { key: "purchasing", label: t("nav.purchasing") || "Mua hàng", icon: "🛒" },
-    { key: "leads", label: t("nav.crm") || "CRM", icon: "🎯" },
-    { key: "accounting", label: t("nav.accounting") || "Kế toán", icon: "💰" },
-    { key: "reports", label: t("nav.reports") || "Báo cáo", icon: "📈" },
+    { key: "quality",        label: t("nav.quality")        || "Chất lượng",        icon: "✅" },
+    { key: "manufacturing",   label: t("nav.manufacturing")   || "Sản xuất",           icon: "🏭" },
+    { key: "einvoice",        label: t("nav.einvoice")        || "Hóa đơn ĐT",        icon: "🧾" },
+    { key: "suppliers",       label: t("nav.suppliers")       || "Nhà CC",            icon: "🏢" },
+    { key: "purchasing",      label: t("nav.purchasing")      || "Mua hàng",          icon: "🛒" },
+    { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
+    { key: "accounting",      label: t("nav.accounting")      || "Kế toán",           icon: "💰" },
+    { key: "reports",         label: t("nav.reports")         || "Báo cáo",           icon: "📈" },
   ];
 
   useEffect(() => {
@@ -128,8 +132,10 @@ export default function App() {
       case "warehouses": return <WarehousesScreen />;
       case "purchasing": return <PurchasingScreen />;
       case "reports": return <ReportsScreen />;
-      case "omnichannel": return <OmnichannelScreen />;
-      case "forecast": return <ForecastScreen />;
+      case "omnichannel":    return <OmnichannelScreen />;
+      case "forecast":       return <ForecastScreen />;
+      case "einvoice":       return <EInvoiceScreen />;
+      case "manufacturing":  return <ManufacturingScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };

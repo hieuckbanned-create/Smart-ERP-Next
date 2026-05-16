@@ -1166,5 +1166,65 @@
       "easy_invoice": "Easy Invoice",
       "bkav": "BKAV Invoice"
     }
+  },
+  "attendance": {
+    "title": "Chấm công",
+    "subtitle": "Quản lý giờ làm, ca làm việc và đơn nghỉ phép",
+    "checkIn": "Chấm vào",
+    "checkOut": "Chấm ra",
+    "checkedIn": "Đã chấm vào",
+    "notCheckedIn": "Chưa chấm công",
+    "workHours": "Giờ làm",
+    "overtime": "Làm thêm (OT)",
+    "absent": "Vắng",
+    "late": "Đi trễ",
+    "halfDay": "Nửa ngày",
+    "onLeave": "Nghỉ phép",
+    "shift": "Ca làm việc",
+    "shifts": {
+      "morning":   "Ca sáng",
+      "afternoon": "Ca chiều",
+      "night":     "Ca đêm",
+      "full":      "Cả ngày"
+    },
+    "today": "Hôm nay",
+    "monthly": "Tổng tháng",
+    "totalDays": "Ngày công",
+    "totalHours": "Tổng giờ",
+    "totalOT": "Giờ OT",
+    "absences": "Ngày vắng",
+    "lateCount": "Lần trễ",
+    "exportReport": "Xuất báo cáo",
+    "methods": {
+      "manual":    "Thủ công",
+      "biometric": "Vân tay / Khuôn mặt",
+      "qr":        "Quét mã QR",
+      "gps":       "GPS",
+      "app":       "Ứng dụng"
+    },
+    "leave": {
+      "title": "Đơn nghỉ phép",
+      "create": "Tạo đơn",
+      "types": {
+        "annual":       "Nghỉ phép năm",
+        "sick":         "Nghỉ ốm",
+        "unpaid":       "Nghỉ không lương",
+        "maternity":    "Thai sản",
+        "paternity":    "Nuôi con",
+        "compensatory": "Nghỉ bù"
+      },
+      "statuses": {
+        "pending":   "Chờ duyệt",
+        "approved":  "Đã duyệt",
+        "rejected":  "Từ chối",
+        "cancelled": "Đã hủy"
+      },
+      "startDate":       "Ngày bắt đầu",
+      "endDate":         "Ngày kết thúc",
+      "totalDays":       "Số ngày",
+      "reason":          "Lý do",
+      "approvedBy":      "Người duyệt",
+      "rejectionReason": "Lý do từ chối"
+    }
   }
 }

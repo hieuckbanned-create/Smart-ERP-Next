@@ -132,6 +132,8 @@ smart-erp-next/
 | **Sản xuất (MRP)**| ✅  | ✅  |   ✅   |   ✅    |
 | **Chất lượng (QMS)**| ✅  | ✅  |   ✅   |   ✅    |
 | **Đa kênh (Omnichannel)**| ✅  | ✅  |   ✅   |   ✅    |
+| **Hóa đơn điện tử**| ✅  | ✅  |   ✅   |   🔜    |
+| **Chấm công (HR)**  | ✅  | 🔜  |   🔜   |   🔜    |
 | **Helpdesk**   | ✅  | ✅  |   ✅   |   🔜    |
 | **AI Forecast**| ✅  | ✅  |   ✅   |   ✅    |
 
