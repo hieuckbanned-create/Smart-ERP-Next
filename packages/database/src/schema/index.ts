@@ -30,3 +30,4 @@ export * from './bills_of_materials'; // includes bomRoutings
 export * from './production_orders';
 export * from './e_invoices';
 export * from './attendance';
+export * from './payroll';

@@ -134,6 +134,7 @@ smart-erp-next/
 | **Đa kênh (Omnichannel)**| ✅  | ✅  |   ✅   |   ✅    |
 | **Hóa đơn điện tử**| ✅  | ✅  |   ✅   |   🔜    |
 | **Chấm công (HR)**  | ✅  | 🔜  |   🔜   |   🔜    |
+| **Tính lương (Payroll)**| ✅  | ❌  |   ✅   |   ✅    |
 | **Helpdesk**   | ✅  | ✅  |   ✅   |   🔜    |
 | **AI Forecast**| ✅  | ✅  |   ✅   |   ✅    |
 

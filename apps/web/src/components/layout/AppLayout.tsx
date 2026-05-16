@@ -28,6 +28,7 @@ import {
   TrendingUp,
   FileText,
   Clock,
+  DollarSign,
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
 import { syncService } from "../../lib/sync-service";
@@ -197,10 +198,16 @@ export default function AppLayout({
       href: "/hr/attendance",
     },
     {
+      key: "payroll",
+      label: "Tính lương (Payroll)",
+      icon: <DollarSign className="w-5 h-5" />,
+      href: "/hr/payroll",
+    },
+    {
       key: "users",
       label: t("nav.users"),
       icon: <Users className="w-5 h-5" />,
-      href: "/users",
+      href: "/hr/employees",
     },
     {
       key: "settings",
