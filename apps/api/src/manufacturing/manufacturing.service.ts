@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+﻿import { Injectable, NotFoundException } from; import { IsInt, IsOptional, Min, Max } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { products, billsOfMaterials, productionOrders, inventoryTransactions } from '@smart-erp/database';
 import { eq, and, desc, sql } from 'drizzle-orm';
@@ -262,11 +262,11 @@ export class ManufacturingService {
       .where(eq(productionOrders.id, orderId))
       .limit(1);
 
-    // Return default checkpoints
+    // Return default checkpoints (i18n keys for frontend translation)
     const defaultCheckpoints = [
-      { id: 'qc-1', productionOrderId: orderId, checkpoint: 'Kiểm tra nguyên liệu', status: 'pending' },
-      { id: 'qc-2', productionOrderId: orderId, checkpoint: 'Kiểm tra quy trình', status: 'pending' },
-      { id: 'qc-3', productionOrderId: orderId, checkpoint: 'Kiểm tra thành phẩm', status: 'pending' },
+      { id: 'qc-1', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint1', status: 'pending' },
+      { id: 'qc-2', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint2', status: 'pending' },
+      { id: 'qc-3', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint3', status: 'pending' },
     ];
 
     return defaultCheckpoints;
