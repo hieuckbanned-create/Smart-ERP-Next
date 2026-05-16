@@ -28,6 +28,8 @@ export default function AutomationBuilder({ mode = 'edit' }: AutomationBuilderPr
     { key: 'customer.created', label: 'New Customer', icon: '👤' },
     { key: 'scheduled.cron', label: 'Scheduled', icon: '⏰' },
     { key: 'sync.completed', label: 'Sync Completed', icon: '🔄' },
+    { key: 'invoice.issued', label: 'E-Invoice Issued', icon: '🧾' },
+    { key: 'employee.late', label: 'Employee Late', icon: '🏃' },
   ];
 
   const actions = [
@@ -36,6 +38,8 @@ export default function AutomationBuilder({ mode = 'edit' }: AutomationBuilderPr
     { key: 'update_field', label: 'Update Field', icon: '✏️' },
     { key: 'create_report', label: 'Generate Report', icon: '📊' },
     { key: 'call_webhook', label: 'Call Webhook', icon: '🔗' },
+    { key: 'update_lead_score', label: 'Update Lead Score', icon: '🎯' },
+    { key: 'issue_bonus', label: 'Issue Bonus/Penalty', icon: '💸' },
   ];
 
   const addStep = (action: typeof actions[0]) => {

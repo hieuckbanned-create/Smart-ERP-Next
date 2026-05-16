@@ -30,6 +30,7 @@ import {
   Clock,
   DollarSign,
   Target,
+  Zap,
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
 import { syncService } from "../../lib/sync-service";
@@ -209,6 +210,12 @@ export default function AppLayout({
       label: "CRM & Bán hàng",
       icon: <Target className="w-5 h-5" />,
       href: "/crm",
+    },
+    {
+      key: "automation",
+      label: "Tự động hóa",
+      icon: <Zap className="w-5 h-5 text-yellow-500" />,
+      href: "/automation",
     },
     {
       key: "users",
