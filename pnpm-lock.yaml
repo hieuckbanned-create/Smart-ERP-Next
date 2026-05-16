@@ -561,8 +561,11 @@ importers:
 
   packages/sync-status:
     dependencies:
+      expo-sqlite:
+        specifier: ~15.0.0
+        version: 15.0.6(expo@54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)
       zustand:
-        specifier: ^4.5.2
+        specifier: ^4.5.7
         version: 4.5.7(@types/react@19.2.14)(immer@11.1.8)(react@19.2.6)
     devDependencies:
       tsup:
@@ -15810,7 +15813,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-    optional: true
 
   '@expo/code-signing-certificates@0.0.6':
     dependencies:
@@ -15834,7 +15836,6 @@ snapshots:
       xml2js: 0.6.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@expo/config-plugins@9.0.17':
     dependencies:
@@ -15857,8 +15858,7 @@ snapshots:
 
   '@expo/config-types@52.0.5': {}
 
-  '@expo/config-types@54.0.10':
-    optional: true
+  '@expo/config-types@54.0.10': {}
 
   '@expo/config@10.0.11':
     dependencies:
@@ -15895,7 +15895,6 @@ snapshots:
       sucrase: 3.35.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@expo/devcert@1.2.1':
     dependencies:
@@ -15910,7 +15909,6 @@ snapshots:
     optionalDependencies:
       react: 19.2.6
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   '@expo/env@0.4.2':
     dependencies:
@@ -15931,7 +15929,6 @@ snapshots:
       getenv: 2.0.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@expo/env@2.1.2':
     dependencies:
@@ -15971,7 +15968,6 @@ snapshots:
       semver: 7.8.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@expo/image-utils@0.6.5':
     dependencies:
@@ -16067,7 +16063,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   '@expo/metro@54.2.0':
     dependencies:
@@ -16089,7 +16084,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   '@expo/osascript@2.4.3':
     dependencies:
@@ -16115,7 +16109,6 @@ snapshots:
       '@xmldom/xmldom': 0.8.13
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
-    optional: true
 
   '@expo/prebuild-config@54.0.8(expo@54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
@@ -16133,7 +16126,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
-    optional: true
 
   '@expo/prebuild-config@8.2.0':
     dependencies:
@@ -16173,8 +16165,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@expo/schema-utils@0.1.8':
-    optional: true
+  '@expo/schema-utils@0.1.8': {}
 
   '@expo/sdk-runtime-versions@1.0.0': {}
 
@@ -16193,7 +16184,6 @@ snapshots:
       expo-font: 14.0.11(expo@54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)
       react: 19.2.6
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   '@expo/ws-tunnel@1.0.6': {}
 
@@ -16310,7 +16300,6 @@ snapshots:
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
       minipass: 7.1.3
-    optional: true
 
   '@isaacs/ttlcache@1.4.1': {}
 
@@ -17131,8 +17120,7 @@ snapshots:
 
   '@react-native/assets-registry@0.76.0': {}
 
-  '@react-native/assets-registry@0.81.5':
-    optional: true
+  '@react-native/assets-registry@0.81.5': {}
 
   '@react-native/babel-plugin-codegen@0.76.0(@babel/preset-env@7.29.5(@babel/core@7.29.0))':
     dependencies:
@@ -17155,7 +17143,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   '@react-native/babel-preset@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))':
     dependencies:
@@ -17308,7 +17295,6 @@ snapshots:
       react-refresh: 0.14.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@react-native/codegen@0.76.0(@babel/preset-env@7.29.5(@babel/core@7.29.0))':
     dependencies:
@@ -17347,7 +17333,6 @@ snapshots:
       invariant: 2.2.4
       nullthrows: 1.1.1
       yargs: 17.7.2
-    optional: true
 
   '@react-native/community-cli-plugin@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))':
     dependencies:
@@ -17382,14 +17367,12 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   '@react-native/debugger-frontend@0.76.0': {}
 
   '@react-native/debugger-frontend@0.76.9': {}
 
-  '@react-native/debugger-frontend@0.81.5':
-    optional: true
+  '@react-native/debugger-frontend@0.81.5': {}
 
   '@react-native/dev-middleware@0.76.0':
     dependencies:
@@ -17445,17 +17428,14 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   '@react-native/gradle-plugin@0.76.0': {}
 
-  '@react-native/gradle-plugin@0.81.5':
-    optional: true
+  '@react-native/gradle-plugin@0.81.5': {}
 
   '@react-native/js-polyfills@0.76.0': {}
 
-  '@react-native/js-polyfills@0.81.5':
-    optional: true
+  '@react-native/js-polyfills@0.81.5': {}
 
   '@react-native/metro-babel-transformer@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))':
     dependencies:
@@ -17471,8 +17451,7 @@ snapshots:
 
   '@react-native/normalize-colors@0.76.9': {}
 
-  '@react-native/normalize-colors@0.81.5':
-    optional: true
+  '@react-native/normalize-colors@0.81.5': {}
 
   '@react-native/virtualized-lists@0.76.0(@types/react@19.2.14)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)':
     dependencies:
@@ -17491,7 +17470,6 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
     optionalDependencies:
       '@types/react': 19.2.14
-    optional: true
 
   '@react-navigation/core@7.17.4(react@19.2.6)':
     dependencies:
@@ -18750,8 +18728,7 @@ snapshots:
 
   '@xmldom/xmldom@0.7.13': {}
 
-  '@xmldom/xmldom@0.8.13':
-    optional: true
+  '@xmldom/xmldom@0.8.13': {}
 
   '@xmldom/xmldom@0.9.10': {}
 
@@ -18774,7 +18751,6 @@ snapshots:
     dependencies:
       mime-types: 3.0.2
       negotiator: 1.0.0
-    optional: true
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
@@ -18794,8 +18770,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  agent-base@7.1.4:
-    optional: true
+  agent-base@7.1.4: {}
 
   aggregate-error@3.1.0:
     dependencies:
@@ -19084,12 +19059,10 @@ snapshots:
   babel-plugin-react-compiler@1.0.0:
     dependencies:
       '@babel/types': 7.29.0
-    optional: true
 
   babel-plugin-react-native-web@0.19.13: {}
 
-  babel-plugin-react-native-web@0.21.2:
-    optional: true
+  babel-plugin-react-native-web@0.21.2: {}
 
   babel-plugin-syntax-hermes-parser@0.23.1:
     dependencies:
@@ -19102,7 +19075,6 @@ snapshots:
   babel-plugin-syntax-hermes-parser@0.29.1:
     dependencies:
       hermes-parser: 0.29.1
-    optional: true
 
   babel-plugin-transform-flow-enums@0.0.2(@babel/core@7.29.0):
     dependencies:
@@ -19178,7 +19150,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-    optional: true
 
   babel-preset-jest@29.6.3(@babel/core@7.29.0):
     dependencies:
@@ -19583,8 +19554,7 @@ snapshots:
 
   chownr@2.0.0: {}
 
-  chownr@3.0.0:
-    optional: true
+  chownr@3.0.0: {}
 
   chrome-launcher@0.15.2:
     dependencies:
@@ -21235,7 +21205,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
-    optional: true
 
   expo-camera@55.0.18(@types/emscripten@1.41.5)(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6):
     dependencies:
@@ -21263,7 +21232,6 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   expo-constants@55.0.16(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6)):
     dependencies:
@@ -21283,7 +21251,6 @@ snapshots:
     dependencies:
       expo: 54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3)
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   expo-font@13.0.4(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react@19.2.6):
     dependencies:
@@ -21297,7 +21264,6 @@ snapshots:
       fontfaceobserver: 2.3.0
       react: 19.2.6
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   expo-keep-awake@14.0.3(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react@19.2.6):
     dependencies:
@@ -21308,7 +21274,6 @@ snapshots:
     dependencies:
       expo: 54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3)
       react: 19.2.6
-    optional: true
 
   expo-modules-autolinking@2.0.8:
     dependencies:
@@ -21328,7 +21293,6 @@ snapshots:
       commander: 7.2.0
       require-from-string: 2.0.2
       resolve-from: 5.0.0
-    optional: true
 
   expo-modules-core@2.2.3:
     dependencies:
@@ -21339,7 +21303,6 @@ snapshots:
       invariant: 2.2.4
       react: 19.2.6
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   expo-notifications@55.0.23(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3):
     dependencies:
@@ -21359,8 +21322,7 @@ snapshots:
     dependencies:
       expo: 52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)
 
-  expo-server@1.0.6:
-    optional: true
+  expo-server@1.0.6: {}
 
   expo-sqlite@15.0.6(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(babel-plugin-react-compiler@1.0.0)(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6):
     dependencies:
@@ -21373,7 +21335,6 @@ snapshots:
       expo: 54.0.34(@babel/core@7.29.0)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)(typescript@5.9.3)
       react: 19.2.6
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6)
-    optional: true
 
   expo-status-bar@2.0.1(react-native@0.76.0(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.6))(react@19.2.6):
     dependencies:
@@ -21446,7 +21407,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-    optional: true
 
   exponential-backoff@3.1.3: {}
 
@@ -21900,7 +21860,6 @@ snapshots:
       minimatch: 10.2.5
       minipass: 7.1.3
       path-scurry: 2.0.2
-    optional: true
 
   glob@6.0.4:
     dependencies:
@@ -22138,14 +22097,11 @@ snapshots:
 
   hermes-estree@0.25.1: {}
 
-  hermes-estree@0.29.1:
-    optional: true
+  hermes-estree@0.29.1: {}
 
-  hermes-estree@0.32.0:
-    optional: true
+  hermes-estree@0.32.0: {}
 
-  hermes-estree@0.35.0:
-    optional: true
+  hermes-estree@0.35.0: {}
 
   hermes-parser@0.23.1:
     dependencies:
@@ -22158,17 +22114,14 @@ snapshots:
   hermes-parser@0.29.1:
     dependencies:
       hermes-estree: 0.29.1
-    optional: true
 
   hermes-parser@0.32.0:
     dependencies:
       hermes-estree: 0.32.0
-    optional: true
 
   hermes-parser@0.35.0:
     dependencies:
       hermes-estree: 0.35.0
-    optional: true
 
   history@4.10.1:
     dependencies:
@@ -22317,7 +22270,6 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   human-signals@2.1.0: {}
 
@@ -23263,8 +23215,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  lan-network@0.2.1:
-    optional: true
+  lan-network@0.2.1: {}
 
   latest-version@7.0.0:
     dependencies:
@@ -23483,8 +23434,7 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lru-cache@11.3.6:
-    optional: true
+  lru-cache@11.3.6: {}
 
   lru-cache@5.1.1:
     dependencies:
@@ -23799,7 +23749,6 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-babel-transformer@0.83.7:
     dependencies:
@@ -23810,7 +23759,6 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-cache-key@0.81.5:
     dependencies:
@@ -23819,12 +23767,10 @@ snapshots:
   metro-cache-key@0.83.3:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-cache-key@0.83.7:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-cache@0.81.5:
     dependencies:
@@ -23840,7 +23786,6 @@ snapshots:
       metro-core: 0.83.3
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-cache@0.83.7:
     dependencies:
@@ -23850,7 +23795,6 @@ snapshots:
       metro-core: 0.83.7
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-config@0.81.5:
     dependencies:
@@ -23881,7 +23825,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   metro-config@0.83.7:
     dependencies:
@@ -23897,7 +23840,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   metro-core@0.81.5:
     dependencies:
@@ -23910,14 +23852,12 @@ snapshots:
       flow-enums-runtime: 0.0.6
       lodash.throttle: 4.1.1
       metro-resolver: 0.83.3
-    optional: true
 
   metro-core@0.83.7:
     dependencies:
       flow-enums-runtime: 0.0.6
       lodash.throttle: 4.1.1
       metro-resolver: 0.83.7
-    optional: true
 
   metro-file-map@0.81.5:
     dependencies:
@@ -23946,7 +23886,6 @@ snapshots:
       walker: 1.0.8
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-file-map@0.83.7:
     dependencies:
@@ -23961,7 +23900,6 @@ snapshots:
       walker: 1.0.8
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-minify-terser@0.81.5:
     dependencies:
@@ -23972,13 +23910,11 @@ snapshots:
     dependencies:
       flow-enums-runtime: 0.0.6
       terser: 5.47.1
-    optional: true
 
   metro-minify-terser@0.83.7:
     dependencies:
       flow-enums-runtime: 0.0.6
       terser: 5.47.1
-    optional: true
 
   metro-resolver@0.81.5:
     dependencies:
@@ -23987,12 +23923,10 @@ snapshots:
   metro-resolver@0.83.3:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-resolver@0.83.7:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-runtime@0.81.5:
     dependencies:
@@ -24003,13 +23937,11 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.29.2
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-runtime@0.83.7:
     dependencies:
       '@babel/runtime': 7.29.2
       flow-enums-runtime: 0.0.6
-    optional: true
 
   metro-source-map@0.81.5:
     dependencies:
@@ -24040,7 +23972,6 @@ snapshots:
       vlq: 1.0.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-source-map@0.83.7:
     dependencies:
@@ -24055,7 +23986,6 @@ snapshots:
       vlq: 1.0.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-symbolicate@0.81.5:
     dependencies:
@@ -24078,7 +24008,6 @@ snapshots:
       vlq: 1.0.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-symbolicate@0.83.7:
     dependencies:
@@ -24090,7 +24019,6 @@ snapshots:
       vlq: 1.0.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-transform-plugins@0.81.5:
     dependencies:
@@ -24113,7 +24041,6 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-transform-plugins@0.83.7:
     dependencies:
@@ -24125,7 +24052,6 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   metro-transform-worker@0.81.5:
     dependencies:
@@ -24166,7 +24092,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   metro-transform-worker@0.83.7:
     dependencies:
@@ -24187,7 +24112,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   metro@0.81.5:
     dependencies:
@@ -24282,7 +24206,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   metro@0.83.7:
     dependencies:
@@ -24329,7 +24252,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   micromark-core-commonmark@2.0.3:
     dependencies:
@@ -24722,7 +24644,6 @@ snapshots:
   minizlib@3.1.0:
     dependencies:
       minipass: 7.1.3
-    optional: true
 
   mkdirp@0.5.6:
     dependencies:
@@ -24807,8 +24728,7 @@ snapshots:
 
   negotiator@0.6.4: {}
 
-  negotiator@1.0.0:
-    optional: true
+  negotiator@1.0.0: {}
 
   neo-async@2.6.2: {}
 
@@ -24961,12 +24881,10 @@ snapshots:
   ob1@0.83.3:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   ob1@0.83.7:
     dependencies:
       flow-enums-runtime: 0.0.6
-    optional: true
 
   object-assign@4.1.1: {}
 
@@ -25265,7 +25183,6 @@ snapshots:
     dependencies:
       lru-cache: 11.3.6
       minipass: 7.1.3
-    optional: true
 
   path-to-regexp@0.1.13: {}
 
@@ -26029,7 +25946,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    optional: true
 
   react-dom@19.2.6(react@19.2.6):
     dependencies:
@@ -26163,7 +26079,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   react-redux@9.2.0(@types/react@19.2.14)(react@19.2.6)(redux@5.0.1):
     dependencies:
@@ -26670,8 +26585,7 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
-  scheduler@0.26.0:
-    optional: true
+  scheduler@0.26.0: {}
 
   scheduler@0.27.0: {}
 
@@ -27333,7 +27247,6 @@ snapshots:
       minipass: 7.1.3
       minizlib: 3.1.0
       yallist: 5.0.0
-    optional: true
 
   telnet-client@1.2.8:
     dependencies:
@@ -28412,8 +28325,7 @@ snapshots:
 
   yallist@4.0.0: {}
 
-  yallist@5.0.0:
-    optional: true
+  yallist@5.0.0: {}
 
   yaml-eslint-parser@1.3.2:
     dependencies:
