@@ -126,3 +126,19 @@ Giải pháp quản lý đội ngũ kỹ thuật hiện trường, tối ưu hó
 - **GPS Verification**: Ngăn chặn gian lận check-in ảo bằng cách đối chiếu vị trí thực tế của kỹ thuật viên với địa chỉ khách hàng.
 - **Offline Mode Ready**: Kỹ thuật viên có thể xem thông tin phiếu và ghi chú ngay cả khi mất kết nối mạng (Native Mobile advantage).
 - **Integrated CRM**: Tự động lưu lịch sử sửa chữa vào hồ sơ khách hàng để hỗ trợ bảo hành và CSKH.
+
+---
+
+## Quản lý Tài sản Cố định & Khấu hao (Fixed Assets) `/fixed-assets`
+Phân hệ quản lý vòng đời tài sản, từ khâu mua sắm, theo dõi vị trí đến tự động tính toán khấu hao hàng tháng.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/fixed-assets` | Liệt kê và tìm kiếm tài sản cố định |
+| POST   | `/fixed-assets` | Khai báo tài sản mới (Giá mua, thời gian sử dụng, giá trị thanh lý) |
+| POST   | `/fixed-assets/run-depreciation` | **Hành động 1-click**: Tự động tính và hạch toán khấu hao cho toàn bộ tài sản trong tháng |
+| POST   | `/fixed-assets/:id/dispose` | Thanh lý tài sản |
+
+**Tính năng vượt trội:**
+- **Automated Depreciation Schedule**: Không còn phải tính toán thủ công trên Excel. Hệ thống tự động tạo các bút toán khấu hao hàng tháng dựa trên phương pháp đường thẳng.
+- **Asset Maintenance Link**: Tích hợp trực tiếp với phân hệ `Field Service` để quản lý lịch bảo trì định kỳ cho máy móc, thiết bị.

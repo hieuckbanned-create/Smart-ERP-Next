@@ -1,25 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { fixedAssets } from '@smart-erp/database/schema';
-import { eq, and, sql } from '@smart-erp/database/drizzle';
+import { fixedAssets, fixedAssetDepreciationLogs } from '@smart-erp/database/schema';
+import { eq, and, sql, desc, lt, or, isNull } from '@smart-erp/database/drizzle';
 
 @Injectable()
 export class FixedAssetsService {
   async create(tenantId: string, dto: any) {
-    const existing = await db
-      .select()
-      .from(fixedAssets)
-      .where(and(eq(fixedAssets.tenantId, tenantId), eq(fixedAssets.code, dto.code)));
-
-    if (existing.length > 0) {
-      throw new Error('Asset code already exists');
-    }
-
     const [asset] = await db
       .insert(fixedAssets)
       .values({ ...dto, tenantId })
       .returning();
-
     return asset;
   }
 
@@ -34,23 +24,18 @@ export class FixedAssetsService {
 
     const where = and(...conditions);
 
-    const [{ count }] = await db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(fixedAssets)
-      .where(where);
-
     const items = await db
       .select()
       .from(fixedAssets)
       .where(where)
-      .orderBy(fixedAssets.code)
+      .orderBy(desc(fixedAssets.createdAt))
       .limit(limit)
       .offset(offset);
 
-    return { items, total: count, page, limit, totalPages: Math.ceil(count / limit) };
+    return { items, page, limit };
   }
 
-  async findOne(tenantId: string, id: number) {
+  async findOne(tenantId: string, id: string) {
     const [asset] = await db
       .select()
       .from(fixedAssets)
@@ -60,13 +45,67 @@ export class FixedAssetsService {
     return asset;
   }
 
-  async calculateMonthlyDepreciation(tenantId: string, id: number) {
-    const asset = await this.findOne(tenantId, id);
-    const depreciableAmount = asset.purchaseCost - asset.residualValue;
-    return depreciableAmount / asset.usefulLifeMonths;
+  /**
+   * Run depreciation for all assets that haven't been depreciated this month
+   */
+  async runMonthlyDepreciation(tenantId: string) {
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // Find active assets not depreciated this month
+    const assetsToDepreciate = await db
+      .select()
+      .from(fixedAssets)
+      .where(
+        and(
+          eq(fixedAssets.tenantId, tenantId),
+          eq(fixedAssets.status, 'active'),
+          or(
+            isNull(fixedAssets.lastDepreciationDate),
+            lt(fixedAssets.lastDepreciationDate, firstDayOfMonth)
+          )
+        )
+      );
+
+    const logs = [];
+    for (const asset of assetsToDepreciate) {
+      const purchaseCost = parseFloat(asset.purchaseCost);
+      const residualValue = parseFloat(asset.residualValue);
+      const usefulLifeMonths = asset.usefulLifeMonths;
+
+      if (usefulLifeMonths <= 0) continue;
+
+      const monthlyAmount = (purchaseCost - residualValue) / usefulLifeMonths;
+      
+      // Update asset accumulated depreciation
+      await db
+        .update(fixedAssets)
+        .set({
+          accumulatedDepreciation: (parseFloat(asset.accumulatedDepreciation) + monthlyAmount).toString(),
+          lastDepreciationDate: today,
+          updatedAt: today,
+        })
+        .where(eq(fixedAssets.id, asset.id));
+
+      // Create log
+      const [log] = await db
+        .insert(fixedAssetDepreciationLogs)
+        .values({
+          tenantId,
+          assetId: asset.id,
+          amount: monthlyAmount.toString(),
+          depreciationDate: today,
+          notes: `Monthly depreciation for ${today.getMonth() + 1}/${today.getFullYear()}`,
+        })
+        .returning();
+      
+      logs.push(log);
+    }
+
+    return { processed: logs.length, logs };
   }
 
-  async dispose(tenantId: string, id: number) {
+  async dispose(tenantId: string, id: string) {
     const [asset] = await db
       .update(fixedAssets)
       .set({ status: 'disposed', updatedAt: new Date() })

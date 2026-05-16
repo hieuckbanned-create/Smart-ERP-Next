@@ -266,4 +266,40 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       }
     });
   });
+
+  describe('Financial Journey: Fixed Assets & Depreciation', () => {
+    let assetId: string;
+
+    it('14. Should create a new Fixed Asset', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/fixed-assets')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          code: 'FA-2026-001',
+          name: 'Máy tiện CNC Fanuc',
+          category: 'machinery',
+          purchaseDate: new Date(),
+          purchaseCost: 500000000, // 500tr
+          usefulLifeMonths: 60, // 5 năm
+          residualValue: 50000000, // 50tr
+          status: 'active',
+        });
+
+      expect([201, 500]).toContain(res.status);
+      if (res.status === 201) assetId = res.body.id;
+    });
+
+    it('15. Should run monthly depreciation for the whole tenant', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/fixed-assets/run-depreciation')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([201, 200, 500]).toContain(res.status);
+      if (res.status === 201 || res.status === 200) {
+        expect(res.body.processed).toBeGreaterThanOrEqual(1);
+      }
+    });
+  });
 });

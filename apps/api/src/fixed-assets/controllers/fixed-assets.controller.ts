@@ -29,17 +29,17 @@ export class FixedAssetsController {
   }
 
   @Get(':id')
-  findOne(@Request() req: any, @Param('id', ParseIntPipe) id: number) {
+  findOne(@Request() req: any, @Param('id') id: string) {
     return this.fixedAssetsService.findOne(req.user.tenantId, id);
   }
 
-  @Get(':id/depreciation')
-  getDepreciation(@Request() req: any, @Param('id', ParseIntPipe) id: number) {
-    return this.fixedAssetsService.calculateMonthlyDepreciation(req.user.tenantId, id);
+  @Post('run-depreciation')
+  runDepreciation(@Request() req: any) {
+    return this.fixedAssetsService.runMonthlyDepreciation(req.user.tenantId);
   }
 
   @Post(':id/dispose')
-  dispose(@Request() req: any, @Param('id', ParseIntPipe) id: number) {
+  dispose(@Request() req: any, @Param('id') id: string) {
     return this.fixedAssetsService.dispose(req.user.tenantId, id);
   }
 }

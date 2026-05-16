@@ -36,3 +36,4 @@ export * from './automations';
 export * from './e_contracts';
 export * from './omnichannel_messages';
 export * from './field_service';
+export * from './fixed_assets';
