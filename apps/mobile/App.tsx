@@ -43,6 +43,7 @@ import TimesheetScreen from "./src/screens/TimesheetScreen";
 import PerformanceScreen from "./src/screens/PerformanceScreen";
 import ScmScreen from "./src/screens/ScmScreen";
 import CustomerPortalScreen from "./src/screens/CustomerPortalScreen";
+import MarketingScreen from "./src/screens/MarketingScreen";
 
 initI18n("vi");
 
@@ -51,7 +52,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing";
 
 export default function App() {
   const { t } = useTranslation();
@@ -83,6 +84,7 @@ export default function App() {
     { key: "scm",             label: "Gợi ý nhập hàng (AI)",   icon: "🤖" },
     { key: "customer_portal", label: "Cổng thông tin Khách",   icon: "🏠" },
     { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
+    { key: "marketing",       label: "Tiếp thị & Camp",       icon: "📢" },
     { key: "accounting",      label: t("nav.accounting")      || "Kế toán",           icon: "💰" },
     { key: "reports",         label: t("nav.reports")         || "Báo cáo",           icon: "📈" },
   ];
@@ -163,6 +165,7 @@ export default function App() {
       case "performance":    return <PerformanceScreen />;
       case "scm":            return <ScmScreen />;
       case "customer_portal": return <CustomerPortalScreen />;
+      case "marketing":      return <MarketingScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };

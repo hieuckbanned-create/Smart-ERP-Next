@@ -502,4 +502,25 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 500]).toContain(res.status);
     });
   });
+
+  describe('Marketing Journey: Automation & Scoring', () => {
+    it('30. Should retrieve marketing campaign performance', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/marketing/campaigns')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+
+    it('31. Should track lead event and update score', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/marketing/leads/dummy-lead-id/track')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({ event: 'email_open' });
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });

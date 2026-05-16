@@ -254,3 +254,19 @@ Trải nghiệm khách hàng (Customer Experience - CX) hiện đại, cho phép
 - **Closed-loop Quality**: Khi một đợt kiểm tra thất bại, hệ thống tự động khởi tạo Báo cáo sự không phù hợp (NCR), đảm bảo mọi lỗi đều được xử lý và khắc phục.
 - **Supplier Quality Scoring**: Thuật toán tự động chấm điểm và xếp hạng nhà cung cấp (Grade A, B, C) dựa trên tỷ lệ lỗi và thời gian xử lý sự cố.
 - **Mobile QC App**: Nhân viên kiểm soát chất lượng có thể chụp ảnh và ghi nhận kết quả ngay tại xưởng, giúp dữ liệu luôn được cập nhật tức thì.
+
+---
+
+## Tự động hóa Tiếp thị (Marketing Automation) `/marketing`
+Tăng trưởng doanh thu thông qua các chiến dịch tiếp thị đa kênh và hệ thống tự động chấm điểm khách hàng tiềm năng.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/marketing/campaigns` | Theo dõi hiệu quả các chiến dịch (Email, SMS, Social) |
+| GET    | `/marketing/segments` | Quản lý các phân khúc khách hàng mục tiêu |
+| POST   | `/marketing/leads/:id/track` | **Behavioral Tracking**: Ghi nhận hành động của lead để tự động chấm điểm |
+
+**Tính năng vượt trội:**
+- **AI-Powered Lead Scoring**: Tự động chấm điểm tiềm năng dựa trên hành vi (mở email, click link, xem báo giá). Đội ngũ sales chỉ tập trung vào các "Hot Leads" có điểm số cao nhất.
+- **Multi-channel ROI Tracking**: Đo lường chính xác hiệu quả đầu tư (ROI) của từng chiến dịch dựa trên dữ liệu doanh thu thực tế từ phân hệ Bán hàng.
+- **Dynamic Segmentation**: Tự động nhóm khách hàng vào các phân khúc khác nhau dựa trên thói quen mua sắm và giá trị vòng đời khách hàng (CLV).

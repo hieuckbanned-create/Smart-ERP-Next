@@ -41,3 +41,4 @@ export * from './projects';
 export * from './hr_performance';
 export * from './scm';
 export * from './qms';
+export * from './marketing';

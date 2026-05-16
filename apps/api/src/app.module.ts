@@ -50,9 +50,11 @@ import { FieldServiceModule } from './field-service/field-service.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
+import { MarketingModule } from './marketing/marketing.module';
 
 @Module({
   imports: [
+    MarketingModule,
     // Cache layer for performance
     CacheModule.register({ isGlobal: true, ttl: 60, max: 100 }),
     // Forecast feature
