@@ -189,3 +189,19 @@ Giải pháp quản lý dự án tập trung, kết hợp giữa theo dõi tiế
 - **Financial Project Tracking**: Không chỉ quản lý Task, hệ thống tự động tính toán giá trị giờ công để báo cáo lợi nhuận gộp (Gross Profit) của từng dự án theo thời gian thực.
 - **Native Timesheet App**: Giao diện Mobile tối ưu giúp nhân viên hiện trường ghi nhận giờ làm việc chỉ trong 30 giây, tăng độ chính xác cho việc tính lương và hóa đơn khách hàng.
 - **AI Task Summarizer Ready**: Sẵn sàng tích hợp AI để tóm tắt các cuộc thảo luận dài trong Task thành các gạch đầu dòng hành động.
+
+---
+
+## Quản lý Hiệu suất & KPI (HR Performance) `/hr/performance`
+Giải pháp quản trị nguồn nhân lực hiện đại theo mục tiêu (MBO), tích hợp KPI và đánh giá 360 độ.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/hr/performance/my-kpis` | Nhân viên xem danh sách mục tiêu và tiến độ KPI cá nhân |
+| PATCH  | `/hr/performance/kpis/:id` | **KPI Update**: Cập nhật giá trị thực tế của chỉ số KPI từ Mobile |
+| POST   | `/hr/performance/reviews` | Khởi tạo đợt đánh giá hiệu suất nhân viên |
+
+**Tính năng vượt trội:**
+- **Goal-Driven Culture**: Tự động hóa việc theo dõi mục tiêu (KPI/OKR), giúp nhân viên luôn nắm rõ trọng tâm công việc và manager theo dõi hiệu suất tức thì.
+- **Mobile-First Review**: Thực hiện tự đánh giá (Self-assessment) và phản hồi của quản lý ngay trên ứng dụng di động, loại bỏ quy trình giấy tờ phiền hà.
+- **Dynamic Scoring**: Thuật toán tự động tính điểm hiệu suất dựa trên trọng số (Weight) và kết quả thực tế, sẵn sàng kết nối với phân hệ tính lương để thưởng hiệu quả.

@@ -40,6 +40,7 @@ import EContractScreen from "./src/screens/EContractScreen";
 import ApprovalsScreen from "./src/screens/ApprovalsScreen";
 import FieldServiceScreen from "./src/screens/FieldServiceScreen";
 import TimesheetScreen from "./src/screens/TimesheetScreen";
+import PerformanceScreen from "./src/screens/PerformanceScreen";
 
 initI18n("vi");
 
@@ -48,7 +49,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance";
 
 export default function App() {
   const { t } = useTranslation();
@@ -73,6 +74,7 @@ export default function App() {
     { key: "field_service",   label: "Kỹ thuật/Dịch vụ",      icon: "🛠️" },
     { key: "timesheet",       label: "Ghi nhận giờ",          icon: "⏱️" },
     { key: "attendance",      label: t("attendance.title")    || "Chấm công",         icon: "📅" },
+    { key: "performance",     label: "KPI & Hiệu suất",       icon: "📈" },
     { key: "payroll",         label: "Tính lương",            icon: "💰" },
     { key: "suppliers",       label: t("nav.suppliers")       || "Nhà CC",            icon: "🏢" },
     { key: "purchasing",      label: t("nav.purchasing")      || "Mua hàng",          icon: "🛒" },
@@ -154,6 +156,7 @@ export default function App() {
       case "approvals":      return <ApprovalsScreen />;
       case "field_service":  return <FieldServiceScreen />;
       case "timesheet":      return <TimesheetScreen />;
+      case "performance":    return <PerformanceScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
