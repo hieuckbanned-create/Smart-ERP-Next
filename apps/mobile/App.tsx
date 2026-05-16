@@ -35,6 +35,7 @@ import QualityScreen from "./src/screens/QualityScreen";
 import EInvoiceScreen from "./src/screens/EInvoiceScreen";
 import ManufacturingScreen from "./src/screens/ManufacturingScreen";
 import AttendanceScreen from "./src/screens/AttendanceScreen";
+import PayrollScreen from "./src/screens/PayrollScreen";
 
 initI18n("vi");
 
@@ -43,7 +44,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll";
 
 export default function App() {
   const { t } = useTranslation();
@@ -64,6 +65,7 @@ export default function App() {
     { key: "manufacturing",   label: t("nav.manufacturing")   || "Sản xuất",           icon: "🏭" },
     { key: "einvoice",        label: t("nav.einvoice")        || "Hóa đơn ĐT",        icon: "🧾" },
     { key: "attendance",      label: t("attendance.title")    || "Chấm công",         icon: "⏱️" },
+    { key: "payroll",         label: "Tính lương",            icon: "💰" },
     { key: "suppliers",       label: t("nav.suppliers")       || "Nhà CC",            icon: "🏢" },
     { key: "purchasing",      label: t("nav.purchasing")      || "Mua hàng",          icon: "🛒" },
     { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
@@ -139,6 +141,7 @@ export default function App() {
       case "einvoice":       return <EInvoiceScreen />;
       case "manufacturing":  return <ManufacturingScreen />;
       case "attendance":     return <AttendanceScreen />;
+      case "payroll":        return <PayrollScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
