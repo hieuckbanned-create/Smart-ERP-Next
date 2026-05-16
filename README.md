@@ -107,34 +107,32 @@ smart-erp-next/
 
 ## Modules (API + Web)
 
-| Module         | API | Web | Mobile |
-| -------------- | :-: | :-: | :----: |
-| Dashboard      | ✅  | ✅  |   ✅   |
-| POS (Bán hàng) | ✅  | ✅  |   ✅   |
-| Đơn hàng       | ✅  | ✅  |   ✅   |
-| Sản phẩm       | ✅  | ✅  |   ✅   |
-| Kho hàng       | ✅  | ✅  |   🔜   |
-| Khách hàng     | ✅  | ✅  |   ✅   |
-| Nhà cung cấp   | ✅  | ✅  |   🔜   |
-| Mua hàng       | ✅  | ✅  |   🔜   |
-| Thu chi        | ✅  | ✅  |   🔜   |
-| Quản lý kho    | ✅  | ✅  |   🔜   |
-| Lô hàng (Lot) | ✅  | ✅  |   🔜   |
-| Chuyển kho     | ✅  | ✅  |   🔜   |
-| Người dùng     | ✅  | ✅  |   🔜   |
-| Báo cáo        | ✅  | ✅  |   🔜   |
-| Cài đặt        |  —  | ✅  |   🔜   |
-| **HR/Payroll** | ✅  | ✅  |   ✅   |
-| **Loyalty**    | ✅  | ✅  |   ✅   |
-| **Fixed Assets**| ✅  | ✅  |   ✅   |
-| **Projects**   | ✅  | ✅  |   ✅   |
-| **HR/Payroll** | ✅  | ✅  |   ✅   |
-| **Loyalty**    | ✅  | ✅  |   ✅   |
-| **Fixed Assets**| ✅  | ✅  |   ✅   |
-| **Projects**   | ✅  | ✅  |   ✅   |
-| **Sản xuất (MRP)**| ✅  | ✅  |   🔜   |
-| **Helpdesk**   | ✅  | ✅  |   ✅   |
-| **AI Forecast**| ✅  | ✅  |   ✅   |
+| Module         | API | Web | Mobile | Desktop |
+| -------------- | :-: | :-: | :----: | :-----: |
+| Dashboard      | ✅  | ✅  |   ✅   |   ✅    |
+| POS (Bán hàng) | ✅  | ✅  |   ✅   |   ✅    |
+| Đơn hàng       | ✅  | ✅  |   ✅   |   ✅    |
+| Sản phẩm       | ✅  | ✅  |   ✅   |   ✅    |
+| Kho hàng       | ✅  | ✅  |   ✅   |   ✅    |
+| Khách hàng     | ✅  | ✅  |   ✅   |   ✅    |
+| Nhà cung cấp   | ✅  | ✅  |   ✅   |   🔜    |
+| Mua hàng       | ✅  | ✅  |   ✅   |   🔜    |
+| Thu chi        | ✅  | ✅  |   🔜   |   🔜    |
+| Quản lý kho    | ✅  | ✅  |   🔜   |   🔜    |
+| Lô hàng (Lot) | ✅  | ✅  |   🔜   |   🔜    |
+| Chuyển kho     | ✅  | ✅  |   🔜   |   🔜    |
+| Người dùng     | ✅  | ✅  |   🔜   |   🔜    |
+| Báo cáo        | ✅  | ✅  |   ✅   |   🔜    |
+| Cài đặt        |  —  | ✅  |   🔜   |   🔜    |
+| **HR/Payroll** | ✅  | ✅  |   ✅   |   ✅    |
+| **Loyalty**    | ✅  | ✅  |   ✅   |   🔜    |
+| **Fixed Assets**| ✅  | ✅  |   ✅   |   🔜    |
+| **Projects**   | ✅  | ✅  |   ✅   |   🔜    |
+| **Sản xuất (MRP)**| ✅  | ✅  |   ✅   |   ✅    |
+| **Chất lượng (QMS)**| ✅  | ✅  |   ✅   |   ✅    |
+| **Đa kênh (Omnichannel)**| ✅  | ✅  |   ✅   |   ✅    |
+| **Helpdesk**   | ✅  | ✅  |   ✅   |   🔜    |
+| **AI Forecast**| ✅  | ✅  |   ✅   |   ✅    |
 
 ---
 
@@ -291,6 +289,11 @@ pnpm --filter @smart-erp/docs start     # Docs: http://localhost:3002
 | `/payments`            | Thu chi              |
 | `/warehouses`          | Quản lý kho          |
 | `/reports`             | Báo cáo              |
+| `/quality`             | Chất lượng (QMS)     |
+| `/omnichannel`         | Bán hàng đa kênh     |
+| `/manufacturing`       | Sản xuất (MRP)       |
+| `/hr/employees`        | Nhân sự              |
+| `/hr/payroll`          | Bảng lương           |
 | `/users`               | Quản lý người dùng   |
 | `/settings`            | Cài đặt              |
 

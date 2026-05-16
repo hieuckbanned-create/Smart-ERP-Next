@@ -1,4 +1,4 @@
-// Smart ERP Desktop - Main App
+// Smart ERP Desktop - Main App (Tauri)
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sidebar } from '@smart-erp/ui';
@@ -11,25 +11,39 @@ import { InventoryScreen } from './components/InventoryScreen';
 import { ForecastScreen } from './components/ForecastScreen';
 import { syncService } from './lib/sync-service';
 
-type Screen = 'dashboard' | 'pos' | 'crm' | 'products' | 'orders' | 'inventory' | 'accounting' | 'forecast';
+type Screen =
+  | 'dashboard'
+  | 'pos'
+  | 'crm'
+  | 'products'
+  | 'orders'
+  | 'inventory'
+  | 'accounting'
+  | 'forecast'
+  | 'quality'
+  | 'omnichannel'
+  | 'hr'
+  | 'manufacturing';
 
 export default function DesktopApp() {
   const { t } = useTranslation();
-
-  const NAV_ITEMS: NavItem[] = [
-    { key: 'dashboard', label: t('nav.dashboard'), href: '/dashboard' },
-    { key: 'pos', label: t('nav.pos'), href: '/pos' },
-    { key: 'orders', label: t('nav.orders'), href: '/orders' },
-    { key: 'products', label: t('nav.products'), href: '/products' },
-    { key: 'inventory', label: t('nav.inventory'), href: '/inventory' },
-    { key: 'crm', label: t('nav.crm'), href: '/crm' },
-    { key: 'accounting', label: t('nav.accounting'), href: '/accounting' },
-    { key: 'forecast', label: t('nav.forecast'), href: '/forecast' },
-  ];
-
-export default function DesktopApp() {
   const [activeScreen, setActiveScreen] = useState<Screen>('dashboard');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  const NAV_ITEMS: NavItem[] = [
+    { key: 'dashboard', label: t('nav.dashboard') || 'Tổng quan', href: '/dashboard' },
+    { key: 'pos', label: t('nav.pos') || 'Bán hàng', href: '/pos' },
+    { key: 'orders', label: t('nav.orders') || 'Đơn hàng', href: '/orders' },
+    { key: 'products', label: t('nav.products') || 'Sản phẩm', href: '/products' },
+    { key: 'inventory', label: t('nav.inventory') || 'Kho hàng', href: '/inventory' },
+    { key: 'quality', label: t('nav.quality') || 'Chất lượng', href: '/quality' },
+    { key: 'manufacturing', label: t('nav.manufacturing') || 'Sản xuất', href: '/manufacturing' },
+    { key: 'crm', label: t('nav.crm') || 'CRM', href: '/crm' },
+    { key: 'omnichannel', label: t('nav.omnichannel') || 'Đa kênh', href: '/omnichannel' },
+    { key: 'accounting', label: t('nav.accounting') || 'Kế toán', href: '/accounting' },
+    { key: 'hr', label: t('nav.hr') || 'Nhân sự', href: '/hr' },
+    { key: 'forecast', label: t('nav.forecast') || 'Dự báo', href: '/forecast' },
+  ];
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -57,14 +71,22 @@ export default function DesktopApp() {
         return <POSScreen />;
       case 'accounting':
         return <AccountingScreen />;
-      case 'products':
-        return <div className="p-8 text-gray-500">{t('nav.products')}</div>;
-      case 'orders':
-        return <div className="p-8 text-gray-500">{t('nav.orders')}</div>;
       case 'inventory':
         return <InventoryScreen />;
       case 'forecast':
         return <ForecastScreen />;
+      case 'products':
+        return <div className="p-8 text-gray-500">{t('nav.products')}</div>;
+      case 'orders':
+        return <div className="p-8 text-gray-500">{t('nav.orders')}</div>;
+      case 'quality':
+        return <div className="p-8 text-gray-500">{t('nav.quality') || 'Quản lý chất lượng'}</div>;
+      case 'manufacturing':
+        return <div className="p-8 text-gray-500">{t('nav.manufacturing') || 'Sản xuất (MRP)'}</div>;
+      case 'omnichannel':
+        return <div className="p-8 text-gray-500">{t('nav.omnichannel') || 'Bán hàng đa kênh'}</div>;
+      case 'hr':
+        return <div className="p-8 text-gray-500">{t('nav.hr') || 'Nhân sự & Tiền lương'}</div>;
       default:
         return <Dashboard />;
     }
@@ -86,7 +108,7 @@ export default function DesktopApp() {
         }
         footer={
           <div className="p-4 border-t border-gray-200">
-            <p className="text-xs text-gray-400">v0.3.0 - Desktop</p>
+            <p className="text-xs text-gray-400">v0.4.0 - Desktop (Tauri)</p>
           </div>
         }
       />
