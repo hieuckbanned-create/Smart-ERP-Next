@@ -109,3 +109,20 @@ Hệ thống quản lý quy trình phê duyệt động cho các chứng từ qu
 **Điểm vượt trội:**
 - **Native Mobile Approval**: Cấp quản lý có thể duyệt nhanh ngay trên App thông qua màn hình `ApprovalsScreen`.
 - **Dynamic Rules**: Tự động xác định luồng duyệt dựa trên giá trị chứng từ (Ví dụ: PO > 100tr cần thêm CEO duyệt).
+
+---
+
+## Quản lý Dịch vụ Hiện trường (Field Service) `/field-service`
+Giải pháp quản lý đội ngũ kỹ thuật hiện trường, tối ưu hóa quá trình sửa chữa, bảo trì tại điểm khách hàng.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/field-service/tickets` | Liệt kê danh sách phiếu dịch vụ (tự động lọc theo Technician) |
+| POST   | `/field-service/tickets` | Tạo mới phiếu dịch vụ và phân công kỹ thuật viên |
+| PATCH  | `/field-service/tickets/:id/check-in` | Ghi nhận sự hiện diện của kỹ thuật viên tại địa điểm khách hàng (GPS) |
+| PATCH  | `/field-service/tickets/:id/complete` | Hoàn tất phiếu dịch vụ, kèm báo cáo và chữ ký khách hàng |
+
+**Tính năng vượt trội:**
+- **GPS Verification**: Ngăn chặn gian lận check-in ảo bằng cách đối chiếu vị trí thực tế của kỹ thuật viên với địa chỉ khách hàng.
+- **Offline Mode Ready**: Kỹ thuật viên có thể xem thông tin phiếu và ghi chú ngay cả khi mất kết nối mạng (Native Mobile advantage).
+- **Integrated CRM**: Tự động lưu lịch sử sửa chữa vào hồ sơ khách hàng để hỗ trợ bảo hành và CSKH.

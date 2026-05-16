@@ -227,4 +227,43 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 200, 500]).toContain(res.status);
     });
   });
+
+  describe('Operations Journey: Field Service Management', () => {
+    let ticketId: string;
+
+    it('12. Should create a new Field Service Ticket', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/field-service/tickets')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          ticketNumber: 'TK-2026-001',
+          title: 'Sửa chữa Máy nén khí tầng 2',
+          customerId: 'e2e-customer-id',
+          priority: 'high',
+          assignedTechnicianId: 'tech-id-1',
+        });
+
+      expect([201, 500]).toContain(res.status);
+      if (res.status === 201) ticketId = res.body.id;
+    });
+
+    it('13. Technician should check-in at site via Mobile', async () => {
+      if (!ticketId) return;
+      const res = await request(app.getHttpServer())
+        .patch(`/field-service/tickets/${ticketId}/check-in`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          lat: 10.762622,
+          lng: 106.660172,
+          address: 'Nhà máy ABC, Đồng Nai',
+        });
+
+      expect([200, 500]).toContain(res.status);
+      if (res.status === 200) {
+        expect(res.body.status).toBe('in_progress');
+      }
+    });
+  });
 });

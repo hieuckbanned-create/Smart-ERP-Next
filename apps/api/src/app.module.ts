@@ -46,6 +46,7 @@ import { EContractsModule } from './e-contracts/e-contracts.module';
 import { AiCopilotModule } from './ai-copilot/ai-copilot.module';
 import { EcommerceModule } from './ecommerce/ecommerce.module';
 import { OmnichannelModule } from './omnichannel/omnichannel.module';
+import { FieldServiceModule } from './field-service/field-service.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -101,6 +102,7 @@ import { DRIZZLE } from './common/drizzle.decorator';
     AiCopilotModule,
     EcommerceModule,
     OmnichannelModule,
+    FieldServiceModule,
   ],
   controllers: [AppController],
   providers: [
