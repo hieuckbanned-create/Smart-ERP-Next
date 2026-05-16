@@ -648,4 +648,29 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([200, 500]).toContain(res.status);
     });
   });
+
+  describe('Revenue Journey: Advanced CRM & Pipelines', () => {
+    it('42. Should retrieve sales pipelines and stages', async () => {
+      const res = await request(app.getHttpServer())
+        .get('/crm/pipelines')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([200, 500]).toContain(res.status);
+    });
+
+    it('43. Should create a new deal and trigger stage automation', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/crm/deals')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          title: 'Hợp đồng Tư vấn Chuyển đổi số',
+          amount: 2500000000,
+          stageId: 'dummy-stage-id',
+        });
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });

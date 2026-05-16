@@ -1,11 +1,64 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { leads } from '@smart-erp/database';
-import { eq, desc } from 'drizzle-orm';
+import { leads, crmPipelines, crmStages, crmDeals } from '@smart-erp/database';
+import { eq, and, desc, asc } from 'drizzle-orm';
 
 @Injectable()
 export class CrmService {
   constructor(private readonly drizzle: DrizzleService) {}
+
+  async getPipelines(tenantId: string) {
+    const pipelines = await this.drizzle.db
+      .select()
+      .from(crmPipelines)
+      .where(eq(crmPipelines.tenantId, tenantId));
+
+    const results = [];
+    for (const pipe of pipelines) {
+      const stages = await this.drizzle.db
+        .select()
+        .from(crmStages)
+        .where(eq(crmStages.pipelineId, pipe.id))
+        .orderBy(asc(crmStages.sequence));
+      results.push({ ...pipe, stages });
+    }
+    return results;
+  }
+
+  async getDealsByStage(tenantId: string, stageId: string) {
+    return this.drizzle.db
+      .select()
+      .from(crmDeals)
+      .where(and(eq(crmDeals.tenantId, tenantId), eq(crmDeals.stageId, stageId)))
+      .orderBy(desc(crmDeals.createdAt));
+  }
+
+  async createDeal(tenantId: string, data: any) {
+    const [deal] = await this.drizzle.db
+      .insert(crmDeals)
+      .values({
+        ...data,
+        tenantId,
+      })
+      .returning();
+    return deal;
+  }
+
+  async updateDealStage(tenantId: string, dealId: string, stageId: string) {
+    const [updated] = await this.drizzle.db
+      .update(crmDeals)
+      .set({ stageId, updatedAt: new Date() })
+      .where(and(eq(crmDeals.id, dealId), eq(crmDeals.tenantId, tenantId)))
+      .returning();
+    
+    // Trigger Automation: Notify manager if high value
+    if (updated && Number(updated.amount) > 1000000000) {
+      // Mock notification
+      console.log('High value deal alert!');
+    }
+    
+    return updated;
+  }
 
   async getLeads(tenantId: string) {
     return this.drizzle.db

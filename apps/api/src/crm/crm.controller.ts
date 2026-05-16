@@ -26,4 +26,22 @@ export class CrmController {
   updateLeadStatus(@Request() req: any, @Param('id') id: string, @Body() body: { status: string }) {
     return this.service.updateLeadStatus(req.user.tenantId, id, body.status);
   }
+
+  @ApiOperation({ summary: 'List all sales pipelines and stages' })
+  @Get('pipelines')
+  getPipelines(@Request() req: any) {
+    return this.service.getPipelines(req.user.tenantId);
+  }
+
+  @ApiOperation({ summary: 'Create a new deal' })
+  @Post('deals')
+  createDeal(@Request() req: any, @Body() body: any) {
+    return this.service.createDeal(req.user.tenantId, body);
+  }
+
+  @ApiOperation({ summary: 'Update deal stage (Drag & Drop)' })
+  @Patch('deals/:id/stage')
+  updateDealStage(@Request() req: any, @Param('id') id: string, @Body() body: { stageId: string }) {
+    return this.service.updateDealStage(req.user.tenantId, id, body.stageId);
+  }
 }

@@ -350,3 +350,19 @@ Tối ưu hóa vận tải, quản lý đội xe và theo dõi hành trình giao
 - **Fleet & Vehicle Tracking**: Quản lý chi tiết đội xe (xe tải, xe van) cùng với tải trọng và tình trạng vận hành, giúp tối ưu hóa việc phân bổ chuyến hàng.
 - **Mobile Driver App (PoD)**: Ứng dụng di động dành riêng cho tài xế để nhận lộ trình, chỉ đường và xác nhận giao hàng bằng chữ ký điện tử hoặc hình ảnh (Proof of Delivery).
 - **Real-time Order Sync**: Ngay khi tài xế xác nhận giao hàng thành công trên Mobile, trạng thái đơn hàng trong ERP được cập nhật ngay lập tức, kích hoạt quy trình đối soát và thanh toán tự động.
+
+---
+
+## Quản trị Quan hệ Khách hàng Nâng cao (Advanced CRM) `/crm`
+Hệ thống quản trị doanh thu, tự động hóa quy trình bán hàng và tối ưu hóa tỷ lệ chốt deal.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/crm/pipelines` | Danh sách các đường ống bán hàng và các giai đoạn (Stages) |
+| POST   | `/crm/deals` | **Deal Management**: Khởi tạo cơ hội kinh doanh mới từ khách hàng tiềm năng |
+| PATCH  | `/crm/deals/:id/stage` | **Sales Automation**: Cập nhật giai đoạn deal và kích hoạt các kịch bản tự động |
+
+**Tính năng vượt trội:**
+- **Custom Multi-Pipelines**: Cho phép định nghĩa nhiều quy trình bán hàng khác nhau (Bán hàng trực tiếp, Bán qua đại lý, Tư vấn giải pháp), mỗi quy trình có các giai đoạn và tỷ lệ thành công riêng.
+- **Weighted Revenue Forecasting**: Tự động tính toán doanh thu dự kiến (Forecasted Revenue) dựa trên giá trị Deal và xác suất thành công của từng giai đoạn trong Pipeline.
+- **Kanban-first Mobile UX**: Giao diện dạng thẻ trực quan trên Mobile giúp nhân viên kinh doanh dễ dàng điều chuyển trạng thái Deal bằng thao tác kéo thả, đảm bảo dữ liệu luôn được cập nhật thời gian thực.

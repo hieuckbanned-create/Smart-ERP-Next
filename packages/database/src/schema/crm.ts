@@ -41,5 +41,70 @@ export const leads = pgTable(
   })
 );
 
+export const crmPipelines = pgTable(
+  'crm_pipelines',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+      
+    name: text('name').notNull(),
+    isDefault: integer('is_default').default(0),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  }
+);
+
+export const crmStages = pgTable(
+  'crm_stages',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+      
+    pipelineId: uuid('pipeline_id')
+      .notNull()
+      .references(() => crmPipelines.id, { onDelete: 'cascade' }),
+      
+    name: text('name').notNull(),
+    sequence: integer('sequence').notNull(),
+    probability: integer('probability').default(0), // % probability of winning
+  }
+);
+
+export const crmDeals = pgTable(
+  'crm_deals',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+      
+    title: text('title').notNull(),
+    leadId: uuid('lead_id').references(() => leads.id, { onDelete: 'set null' }),
+    
+    stageId: uuid('stage_id').references(() => crmStages.id),
+    
+    amount: numeric('amount', { precision: 20, scale: 2 }).default('0'),
+    currency: text('currency').default('VND'),
+    
+    expectedCloseDate: timestamp('expected_close_date'),
+    
+    assignedTo: uuid('assigned_to').references(() => users.id),
+    
+    status: text('status', { enum: ['open', 'won', 'lost'] }).default('open'),
+    
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (t) => ({
+    stageIdx: index('crm_deal_stage_idx').on(t.stageId),
+  })
+);
+
 export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
+export type CrmPipeline = typeof crmPipelines.$inferSelect;
+export type CrmStage = typeof crmStages.$inferSelect;
+export type CrmDeal = typeof crmDeals.$inferSelect;

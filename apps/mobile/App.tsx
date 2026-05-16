@@ -49,6 +49,7 @@ import WmsScreen from "./src/screens/WmsScreen";
 import SupplierPortalScreen from "./src/screens/SupplierPortalScreen";
 import ProjectAdvancedScreen from "./src/screens/ProjectAdvancedScreen";
 import TmsScreen from "./src/screens/TmsScreen";
+import CrmPipelineScreen from "./src/screens/CrmPipelineScreen";
 
 initI18n("vi");
 
@@ -57,7 +58,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance" | "wms" | "supplier_portal" | "project_advanced" | "tms";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance" | "wms" | "supplier_portal" | "project_advanced" | "tms" | "crm_pipeline";
 
 export default function App() {
   const { t } = useTranslation();
@@ -92,7 +93,8 @@ export default function App() {
     { key: "supplier_portal", label: "Cổng thông tin NCC",      icon: "🤝" },
     { key: "scm",             label: "Gợi ý nhập hàng (AI)",   icon: "🤖" },
     { key: "customer_portal", label: "Cổng thông tin Khách",   icon: "🏠" },
-    { key: "leads",           label: t("nav.crm")             || "CRM",               icon: "🎯" },
+    { key: "leads",           label: t("nav.crm")             || "CRM (Leads)",       icon: "🎯" },
+    { key: "crm_pipeline",    label: "Pipeline Bán hàng",     icon: "🚀" },
     { key: "marketing",       label: "Tiếp thị & Camp",       icon: "📢" },
     { key: "projects",        label: t("nav.projects")        || "Dự án",             icon: "🏗️" },
     { key: "project_advanced", label: "Quản trị Dự án (Adv)",    icon: "📊" },
@@ -182,6 +184,7 @@ export default function App() {
       case "supplier_portal": return <SupplierPortalScreen />;
       case "project_advanced": return <ProjectAdvancedScreen />;
       case "tms":            return <TmsScreen />;
+      case "crm_pipeline":   return <CrmPipelineScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
