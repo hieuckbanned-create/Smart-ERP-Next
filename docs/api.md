@@ -483,130 +483,63 @@ Returns daily predicted demand with confidence intervals.
 
 ---
 
-## HR `/hr`
+## CRM `/crm`
 
-### Employees
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/crm/leads` | List all leads |
+| POST   | `/crm/leads` | Create a new lead |
+| PATCH  | `/crm/leads/:id/status` | Update lead status in pipeline |
 
-| Method | Path              | Description                    |
-| ------ | ----------------- | ------------------------------ |
-| POST   | `/hr/employees`   | Create employee                |
-| GET    | `/hr/employees`   | List employees (paginated)     |
-| GET    | `/hr/employees/:id` | Get employee by ID           |
-| PATCH  | `/hr/employees/:id` | Update employee              |
-| DELETE | `/hr/employees/:id` | Delete employee              |
-
-**Create Body:**
+**Create Lead Body:**
 ```json
 {
-  "code": "EMP-001",
-  "name": "Nguyễn Văn A",
-  "email": "a@example.com",
+  "name": "Khách hàng VVIP",
+  "company": "Công ty ABC",
   "phone": "0901234567",
-  "position": "Developer",
-  "salary": 15000000
-}
-```
-
-### Payroll
-
-| Method | Path              | Description                    |
-| ------ | ----------------- | ------------------------------ |
-| POST   | `/hr/payroll/process` | Process payroll for current month |
-| GET    | `/hr/payroll`     | List payroll records (paginated) |
-
----
-
-## Loyalty `/loyalty`
-
-| Method | Path                        | Description                    |
-| ------ | --------------------------- | ------------------------------ |
-| POST   | `/loyalty/cards`            | Create loyalty card            |
-| GET    | `/loyalty/cards/:customerId` | Get customer loyalty card     |
-| POST   | `/loyalty/earn`             | Earn points                    |
-| POST   | `/loyalty/redeem`           | Redeem points                  |
-| GET    | `/loyalty/rewards`          | List available rewards         |
-| GET    | `/loyalty/transactions/:customerId` | Transaction history    |
-
-**Earn Points Body:**
-```json
-{
-  "customer_id": 1,
-  "points": 100,
-  "reference_id": "ORDER-001",
-  "description": "Purchase reward"
-}
-```
-
-**Redeem Points Body:**
-```json
-{
-  "customer_id": 1,
-  "points": 50,
-  "reference_id": "REWARD-001",
-  "description": "Redeemed: Discount 50k"
+  "estimatedValue": 50000000,
+  "score": 85
 }
 ```
 
 ---
 
-## Fixed Assets `/fixed-assets`
+## E-Invoice `/e-invoice`
 
-| Method | Path                        | Description                    |
-| ------ | --------------------------- | ------------------------------ |
-| POST   | `/fixed-assets`             | Create asset                   |
-| GET    | `/fixed-assets`             | List assets (paginated)        |
-| GET    | `/fixed-assets/:id`         | Get asset by ID                |
-| GET    | `/fixed-assets/:id/depreciation` | Get monthly depreciation |
-| POST   | `/fixed-assets/:id/dispose` | Dispose asset                  |
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/e-invoice` | List invoices |
+| POST   | `/e-invoice` | Create Decree-123 e-invoice |
+| PATCH  | `/e-invoice/:id/issue` | Sign & Issue invoice to tax authority |
 
-**Create Body:**
+**Create E-Invoice Body:**
 ```json
 {
-  "code": "FA-001",
-  "name": "Máy tính Dell XPS",
-  "category": "IT Equipment",
-  "purchase_cost": 25000000,
-  "residual_value": 2500000,
-  "useful_life_months": 36,
-  "start_date": "2026-01-01"
+  "invoiceSeries": "1C23TML",
+  "buyerName": "Công ty X",
+  "buyerTaxCode": "0101234567",
+  "totalAmount": 10000000,
+  "vatRate": 10,
+  "provider": "misa"
 }
 ```
 
 ---
 
-## Projects `/projects`
+## Attendance `/hr/attendance`
 
-| Method | Path                        | Description                    |
-| ------ | --------------------------- | ------------------------------ |
-| POST   | `/projects`                 | Create project                 |
-| GET    | `/projects`                 | List projects (paginated)      |
-| GET    | `/projects/:id`             | Get project by ID              |
-| PATCH  | `/projects/:id`             | Update project                 |
-| DELETE | `/projects/:id`             | Delete project                 |
-| GET    | `/projects/:id/stats`       | Get project statistics         |
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| POST   | `/hr/attendance/shifts` | Create working shift |
+| POST   | `/hr/attendance/check-in` | GPS-based check in |
+| POST   | `/hr/attendance/check-out` | GPS-based check out |
 
-**Create Body:**
+**Check-in Body:**
 ```json
 {
-  "code": "PRJ-001",
-  "name": "Website Redesign",
-  "description": "Redesign company website",
-  "priority": "high",
-  "status": "planning",
-  "start_date": "2026-06-01",
-  "end_date": "2026-08-31",
-  "budget": 50000000
-}
-```
-
-**Stats Response:**
-```json
-{
-  "project": { ... },
-  "total_tasks": 12,
-  "completed_tasks": 5,
-  "in_progress_tasks": 3,
-  "total_hours": 156.5,
-  "completion_rate": 42
+  "shiftId": "uuid",
+  "method": "app",
+  "latitude": 10.762622,
+  "longitude": 106.660172
 }
 ```

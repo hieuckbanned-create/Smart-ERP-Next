@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # AI Forecasting Service (Python + Prophet ML)
   ai-forecast:
@@ -25,8 +23,8 @@ services:
   # API Server (NestJS)
   api:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/api/Dockerfile
     container_name: smart-erp-api
     ports:
       - "${API_PORT:-3000}:3000"
@@ -43,8 +41,8 @@ services:
   # Web Dashboard (Next.js)
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/web/Dockerfile
     container_name: smart-erp-web
     ports:
       - "${WEB_PORT:-3001}:3000"

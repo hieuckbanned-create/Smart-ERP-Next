@@ -11,7 +11,7 @@ async function main() {
   // 1. Create Tenant
   const [tenant] = await db.insert(tenants).values({
     name: 'Smart ERP Next Demo',
-    domain: 'demo.smarterp.next',
+    slug: 'demo-erp',
   }).returning();
 
   // 2. Create Admin User
@@ -20,7 +20,7 @@ async function main() {
     tenantId: tenant.id,
     email: 'admin@demo.vn',
     name: 'Quản trị viên',
-    password: hashedPassword,
+    passwordHash: hashedPassword,
     role: 'admin',
   }).returning();
 

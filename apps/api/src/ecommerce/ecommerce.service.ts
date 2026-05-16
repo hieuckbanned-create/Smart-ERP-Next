@@ -104,7 +104,7 @@ export class EcommerceService {
       errorMessage: errors.length > 0 ? errors.join('; ') : null,
       startedAt,
       completedAt,
-    });
+    } as any);
 
     // Update store last sync info
     await db
@@ -243,7 +243,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(products).set(productData).where(eq(products.id, existing.id));
     } else {
-      await db.insert(products).values({ ...productData, tenantId });
+      await db.insert(products).values({ ...productData, tenantId } as any);
     }
   }
 
@@ -322,7 +322,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(products).set(productData).where(eq(products.id, existing.id));
     } else {
-      await db.insert(products).values({ ...productData, tenantId });
+      await db.insert(products).values({ ...productData, tenantId } as any);
     }
   }
 
@@ -442,7 +442,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(products).set(productData).where(eq(products.id, existing.id));
     } else {
-      await db.insert(products).values({ ...productData, tenantId });
+      await db.insert(products).values({ ...productData, tenantId } as any);
     }
   }
 
@@ -481,7 +481,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(products).set(productData).where(eq(products.id, existing.id));
     } else {
-      await db.insert(products).values({ ...productData, tenantId });
+      await db.insert(products).values({ ...productData, tenantId } as any);
     }
   }
 
@@ -520,7 +520,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(products).set(productData).where(eq(products.id, existing.id));
     } else {
-      await db.insert(products).values({ ...productData, tenantId });
+      await db.insert(products).values({ ...productData, tenantId } as any);
     }
   }
 
@@ -540,6 +540,9 @@ export class EcommerceService {
   }
 
   private async upsertOrder(tenantId: string, orderData: any) {
+    if (orderData.total && typeof orderData.total === 'number') {
+      orderData.total = orderData.total.toString();
+    }
     const existing = await db
       .select()
       .from(orders)
@@ -548,7 +551,7 @@ export class EcommerceService {
     if (existing) {
       await db.update(orders).set(orderData).where(eq(orders.id, existing.id));
     } else {
-      await db.insert(orders).values(orderData);
+      await db.insert(orders).values(orderData as any);
     }
   }
 

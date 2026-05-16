@@ -5,6 +5,8 @@
     "outDir": "./dist",
     "strictPropertyInitialization": false,
     "paths": {
+      "@smart-erp/accounting": ["../../packages/accounting/src/index.ts"],
+      "@smart-erp/accounting": ["../../packages/accounting/src/index.ts"],
       "@smart-erp/database": ["../../packages/database/src/index.ts"],
       "@smart-erp/database/drizzle": ["../../packages/database/src/drizzle.ts"],
       "@smart-erp/database/schema": [

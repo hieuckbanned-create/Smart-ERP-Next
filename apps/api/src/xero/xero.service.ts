@@ -17,7 +17,7 @@ export class XeroService {
     if (existing) {
       await db.update(xeroConnections).set(data).where(eq(xeroConnections.id, existing.id));
     } else {
-      await db.insert(xeroConnections).values({ ...data, tenantId });
+      await db.insert(xeroConnections).values({ ...data, tenantId } as any);
     }
   }
 
@@ -38,6 +38,7 @@ export class XeroService {
     const externalId = xeroCustomer.ContactID;
     const existing = await db.select().from(customers).where(and(eq(customers.tenantId, tenantId), eq(customers.externalId, externalId))).then(r => r[0]);
     const customerData = {
+      code: xeroCustomer.ContactNumber || externalId,
       name: xeroCustomer.Name || xeroCustomer.ContactNumber || 'Unknown',
       email: xeroCustomer.EmailAddress || '',
       phone: xeroCustomer.PhoneNumber || '',
@@ -48,7 +49,7 @@ export class XeroService {
     if (existing) {
       await db.update(customers).set(customerData).where(eq(customers.id, existing.id));
     } else {
-      await db.insert(customers).values({ ...customerData, tenantId });
+      await db.insert(customers).values({ ...customerData, tenantId } as any);
     }
   }
 
@@ -72,7 +73,7 @@ export class XeroService {
     const orderData = {
       code: xeroInvoice.InvoiceNumber,
       customerName: xeroInvoice.Contact?.Name || 'Xero Customer',
-      total: parseFloat(xeroInvoice.Total || '0'),
+      total: parseFloat(xeroInvoice.Total || '0').toString(),
       status: this.mapXeroStatus(xeroInvoice.Status),
       channel: 'xero',
       externalId,
@@ -82,7 +83,7 @@ export class XeroService {
     if (existing) {
       await db.update(orders).set(orderData).where(eq(orders.id, existing.id));
     } else {
-      await db.insert(orders).values({ ...orderData, tenantId });
+      await db.insert(orders).values({ ...orderData, tenantId } as any);
     }
   }
 

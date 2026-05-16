@@ -46,3 +46,4 @@ export * from './maintenance';
 export * from './wms';
 export * from './tms';
 export * from './finance';
+export * from './xero';
