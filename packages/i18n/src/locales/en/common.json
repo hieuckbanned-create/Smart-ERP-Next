@@ -1581,5 +1581,81 @@
       "totalOT": "Total OT",
       "totalDeductions": "Insurance & Tax"
     }
+  },
+  "einvoice": {
+    "title": "E-Invoice Management",
+    "subtitle": "Manage invoices per Vietnam Decree 123/2020 — VNPT, Viettel, MISA integration",
+    "create": "Create Invoice",
+    "invoiceNumber": "Invoice Number",
+    "invoiceSeries": "Series",
+    "buyer": "Buyer",
+    "buyerName": "Buyer Name",
+    "buyerTaxCode": "Tax Code",
+    "buyerAddress": "Address",
+    "buyerEmail": "Email",
+    "totalAmount": "Total Amount",
+    "vatAmount": "VAT Amount",
+    "vatRate": "VAT Rate",
+    "status": "Status",
+    "issuedAt": "Issued Date",
+    "issue": "Issue",
+    "cancel": "Cancel Invoice",
+    "replace": "Replace",
+    "adjust": "Adjust",
+    "view": "View",
+    "downloadPdf": "Download PDF",
+    "lookupCode": "Lookup Code",
+    "provider": "E-Invoice Provider",
+    "noInvoices": "No invoices yet",
+    "cancellationReason": "Cancellation Reason",
+    "statuses": {
+      "draft": "Draft",
+      "signed": "Signed",
+      "issued": "Issued",
+      "cancelled": "Cancelled",
+      "replaced": "Replaced",
+      "adjusted": "Adjusted"
+    },
+    "stats": {
+      "issued": "Issued",
+      "draft": "Draft",
+      "cancelled": "Cancelled",
+      "revenue": "Revenue",
+      "vat": "Total VAT"
+    },
+    "providers": {
+      "vnpt": "VNPT e-Invoice",
+      "viettel": "Viettel e-Invoice",
+      "misa": "MISA e-Invoice",
+      "easy_invoice": "Easy Invoice",
+      "bkav": "BKAV Invoice"
+    }
+  },
+  "attendance": {
+    "title": "Attendance & Timekeeping",
+    "subtitle": "Daily check-in/out, shift management, overtime tracking",
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "checkedIn": "Checked In",
+    "notCheckedIn": "Not Checked In",
+    "workHours": "Work Hours",
+    "overtime": "Overtime",
+    "absent": "Absent",
+    "late": "Late",
+    "shift": "Shift",
+    "shifts": {
+      "morning": "Morning Shift",
+      "afternoon": "Afternoon Shift",
+      "night": "Night Shift",
+      "full": "Full Day"
+    },
+    "today": "Today's Attendance",
+    "monthly": "Monthly Summary",
+    "totalDays": "Working Days",
+    "totalHours": "Total Hours",
+    "totalOT": "Overtime Hours",
+    "absences": "Absences",
+    "lateCount": "Late Arrivals",
+    "exportReport": "Export Report"
   }
 }
