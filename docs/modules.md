@@ -67,3 +67,30 @@ Cỗ máy No-code cho phép người dùng tự định nghĩa các quy trình t
 - `actions`: Mảng các hành động thực thi (Gửi Email, Thông báo App, Cập nhật trạng thái CRM).
 
 *Lưu ý: Engine thực thi được tích hợp sâu vào lifecycle của NestJS và Drizzle ORM.*
+
+---
+
+## Omnichannel E-commerce `/ecommerce`
+Hệ thống kết nối đa sàn thương mại điện tử, tự động đồng bộ tồn kho và đơn hàng từ Shopee, Lazada, TikTok Shop, Amazon, eBay.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/ecommerce/stores` | Liệt kê các cửa hàng đã kết nối |
+| POST   | `/ecommerce/stores` | Kết nối cửa hàng mới (Cung cấp API Key/Secret) |
+| POST   | `/ecommerce/sync/all` | Kích hoạt đồng bộ tồn kho & đơn hàng cho toàn bộ hệ thống |
+| GET    | `/ecommerce/logs` | Xem nhật ký đồng bộ (Success/Failed) |
+
+---
+
+## Omnichannel Messaging `/omnichannel`
+Giải pháp Social Commerce tích hợp, cho phép chat trực tiếp với khách hàng từ Facebook, Zalo, Web Chat ngay trên ERP.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/omnichannel/messages` | Lấy lịch sử hội thoại với khách hàng |
+| POST   | `/omnichannel/messages` | Gửi tin nhắn phản hồi tới khách hàng trên mạng xã hội |
+
+**Tính năng nổi bật:**
+- **Identity Resolution**: Tự động nhận diện khách hàng cũ dựa trên ID mạng xã hội để hiển thị lịch sử mua hàng ngay trong cửa sổ chat.
+- **Conversion**: Chốt đơn trực tiếp từ hội thoại chat, tự động tạo Đơn hàng trong ERP.
+

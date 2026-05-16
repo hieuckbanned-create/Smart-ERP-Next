@@ -44,6 +44,8 @@ import { EInvoiceModule } from './e-invoice/e-invoice.module';
 import { CustomerPortalModule } from './customers/customer-portal.module';
 import { EContractsModule } from './e-contracts/e-contracts.module';
 import { AiCopilotModule } from './ai-copilot/ai-copilot.module';
+import { EcommerceModule } from './ecommerce/ecommerce.module';
+import { OmnichannelModule } from './omnichannel/omnichannel.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
@@ -97,6 +99,8 @@ import { DRIZZLE } from './common/drizzle.decorator';
     EInvoiceModule,
     EContractsModule,
     AiCopilotModule,
+    EcommerceModule,
+    OmnichannelModule,
   ],
   controllers: [AppController],
   providers: [
