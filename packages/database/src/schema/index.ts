@@ -42,3 +42,4 @@ export * from './hr_performance';
 export * from './scm';
 export * from './qms';
 export * from './marketing';
+export * from './maintenance';

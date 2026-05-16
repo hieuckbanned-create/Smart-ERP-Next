@@ -270,3 +270,19 @@ Tăng trưởng doanh thu thông qua các chiến dịch tiếp thị đa kênh 
 - **AI-Powered Lead Scoring**: Tự động chấm điểm tiềm năng dựa trên hành vi (mở email, click link, xem báo giá). Đội ngũ sales chỉ tập trung vào các "Hot Leads" có điểm số cao nhất.
 - **Multi-channel ROI Tracking**: Đo lường chính xác hiệu quả đầu tư (ROI) của từng chiến dịch dựa trên dữ liệu doanh thu thực tế từ phân hệ Bán hàng.
 - **Dynamic Segmentation**: Tự động nhóm khách hàng vào các phân khúc khác nhau dựa trên thói quen mua sắm và giá trị vòng đời khách hàng (CLV).
+
+---
+
+## Quản lý Bảo trì Thiết bị (Maintenance/EAM) `/maintenance`
+Tối ưu hóa hiệu suất thiết bị và giảm thiểu thời gian dừng máy thông qua quy trình bảo trì chuyên nghiệp.
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | `/maintenance/orders` | Danh sách các lệnh bảo trì (Sửa chữa & Định kỳ) |
+| POST   | `/maintenance/requests` | **Failure Reporting**: Công nhân báo cáo sự cố máy móc qua Mobile |
+| POST   | `/maintenance/process-schedules` | **Auto-Scheduler**: Tự động tạo lệnh bảo trì dựa trên lịch định kỳ |
+
+**Tính năng vượt trội:**
+- **Predictive & Preventive Maintenance**: Tự động hóa lịch bảo trì định kỳ cho máy móc, giúp ngăn ngừa sự cố trước khi chúng xảy ra, kéo dài tuổi thọ tài sản.
+- **Instant Floor Reporting**: Công nhân có thể báo lỗi máy ngay khi gặp sự cố qua ứng dụng di động, hệ thống sẽ tự động cập nhật trạng thái tài sản thành "Đang sửa chữa".
+- **Downtime Minimization**: Quy trình gán việc cho kỹ thuật viên và theo dõi thời gian sửa chữa giúp doanh nghiệp kiểm soát và giảm thiểu tối đa thời gian dừng sản xuất.

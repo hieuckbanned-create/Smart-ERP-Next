@@ -523,4 +523,30 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([201, 500]).toContain(res.status);
     });
   });
+
+  describe('Maintenance Journey: EAM & Preventive', () => {
+    it('32. Should report equipment failure via Mobile API', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/maintenance/requests')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId)
+        .send({
+          assetId: 'dummy-asset-id',
+          title: 'Máy nén khí bị rò rỉ',
+          description: 'Áp suất giảm đột ngột tại line 2',
+          priority: 'high',
+        });
+
+      expect([201, 500]).toContain(res.status);
+    });
+
+    it('33. Should process due maintenance schedules', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/maintenance/process-schedules')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });

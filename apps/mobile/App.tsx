@@ -44,6 +44,7 @@ import PerformanceScreen from "./src/screens/PerformanceScreen";
 import ScmScreen from "./src/screens/ScmScreen";
 import CustomerPortalScreen from "./src/screens/CustomerPortalScreen";
 import MarketingScreen from "./src/screens/MarketingScreen";
+import MaintenanceScreen from "./src/screens/MaintenanceScreen";
 
 initI18n("vi");
 
@@ -52,7 +53,7 @@ const mobileSyncService = new SyncService(
   new SecureStoreTokenProvider(),
 );
 
-type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing";
+type Screen = "dashboard" | "pos" | "products" | "orders" | "customers" | "inventory" | "leads" | "accounting" | "suppliers" | "warehouses" | "purchasing" | "reports" | "omnichannel" | "forecast" | "quality" | "einvoice" | "manufacturing" | "attendance" | "payroll" | "contracts" | "approvals" | "field_service" | "timesheet" | "performance" | "scm" | "customer_portal" | "marketing" | "maintenance";
 
 export default function App() {
   const { t } = useTranslation();
@@ -75,7 +76,8 @@ export default function App() {
     { key: "contracts",       label: "Hợp đồng",              icon: "🖋️" },
     { key: "approvals",       label: "Phê duyệt",             icon: "⚖️" },
     { key: "field_service",   label: "Kỹ thuật/Dịch vụ",      icon: "🛠️" },
-    { key: "timesheet",       label: "Ghi nhận giờ",          icon: "⏱️" },
+    { key: "maintenance",     label: "Bảo trì thiết bị",      icon: "⚙️" },
+    { key: "timesheet",       label: t("nav.timesheet")       || "Ghi nhận giờ",      icon: "⏱️" },
     { key: "attendance",      label: t("attendance.title")    || "Chấm công",         icon: "📅" },
     { key: "performance",     label: "KPI & Hiệu suất",       icon: "📈" },
     { key: "payroll",         label: "Tính lương",            icon: "💰" },
@@ -166,6 +168,7 @@ export default function App() {
       case "scm":            return <ScmScreen />;
       case "customer_portal": return <CustomerPortalScreen />;
       case "marketing":      return <MarketingScreen />;
+      case "maintenance":    return <MaintenanceScreen />;
       default: return <DashboardScreen user={user} />;
     }
   };
