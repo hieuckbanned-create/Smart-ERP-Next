@@ -171,10 +171,10 @@ export default function AppLayout({
       href: "/crm",
     },
     {
-      key: "crm",
-      label: t("nav.crm"),
-      icon: <TrendingUp className="w-5 h-5" />,
-      href: "/crm",
+      key: "omnichannel",
+      label: t("nav.omnichannel") || "Đa kênh",
+      icon: <ShoppingCart className="w-5 h-5" />,
+      href: "/omnichannel",
     },
     {
       key: "forecast",
@@ -352,14 +352,6 @@ export default function AppLayout({
               )}
             </div>
 
-            <button
-              onClick={handleSync}
-              disabled={syncing}
-              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition disabled:opacity-50"
-              title="Sync offline changes"
-            >
-              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
-            </button>
             <button
               onClick={handleSync}
               disabled={syncing}
