@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { leads, crmPipelines, crmStages, crmDeals } from '@smart-erp/database';
+import { leads, crmPipelines, crmStages, crmDeals, orders } from '@smart-erp/database';
 import { eq, and, desc, asc } from 'drizzle-orm';
 
 @Injectable()
@@ -90,5 +90,37 @@ export class CrmService {
       throw new NotFoundException('Lead not found');
     }
     return updated;
+  }
+
+  /**
+   * Close the loop: Convert Won Deal to Sales Order
+   */
+  async convertToOrder(tenantId: string, dealId: string) {
+    const [deal] = await this.drizzle.db
+      .select()
+      .from(crmDeals)
+      .where(and(eq(crmDeals.id, dealId), eq(crmDeals.tenantId, tenantId)));
+
+    if (!deal) throw new NotFoundException('Deal not found');
+
+    // Create the order
+    const [order] = await this.drizzle.db
+      .insert(orders)
+      .values({
+        tenantId,
+        customerId: deal.leadId, // Assuming lead is converted to customer or linked
+        totalAmount: deal.amount,
+        status: 'pending',
+        orderNumber: `SO-FROM-DEAL-${dealId.slice(0, 8).toUpperCase()}`,
+      })
+      .returning();
+
+    // Mark deal as won
+    await this.drizzle.db
+      .update(crmDeals)
+      .set({ status: 'won', updatedAt: new Date() })
+      .where(eq(crmDeals.id, dealId));
+
+    return order;
   }
 }

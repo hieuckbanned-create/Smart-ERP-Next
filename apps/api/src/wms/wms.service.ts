@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { warehouseLocations, warehouseTasks, warehouseTaskItems, products } from '@smart-erp/database/schema';
+import { warehouseLocations, warehouseTasks, warehouseTaskItems, products, tmsTrips, tmsTripStops } from '@smart-erp/database/schema';
 import { eq, and, sql, desc } from '@smart-erp/database/drizzle';
 
 @Injectable()
@@ -79,5 +79,38 @@ export class WmsService {
       .set({ pickedQuantity: quantity.toString() })
       .where(eq(warehouseTaskItems.id, itemId))
       .returning();
+  }
+
+  /**
+   * Close the loop: Complete Picking and Dispatch for Shipment
+   */
+  async completeTaskAndDispatch(tenantId: string, taskId: string) {
+    const [task] = await db
+      .update(warehouseTasks)
+      .set({ status: 'completed', updatedAt: new Date() })
+      .where(and(eq(warehouseTasks.id, taskId), eq(warehouseTasks.tenantId, tenantId)))
+      .returning();
+
+    if (task.referenceType === 'sale_order' && task.referenceId) {
+      // Auto-create TMS Trip
+      const tripNumber = `AUTO-DISPATCH-${task.referenceId.slice(0, 8).toUpperCase()}`;
+      const [trip] = await db.insert(tmsTrips).values({
+        tenantId,
+        tripNumber,
+        status: 'planned',
+      }).returning();
+
+      await db.insert(tmsTripStops).values({
+        tenantId,
+        tripId: trip.id,
+        orderId: task.referenceId,
+        sequence: 1,
+        status: 'pending',
+      });
+
+      return { task, trip };
+    }
+
+    return { task };
   }
 }

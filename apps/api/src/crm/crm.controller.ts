@@ -44,4 +44,10 @@ export class CrmController {
   updateDealStage(@Request() req: any, @Param('id') id: string, @Body() body: { stageId: string }) {
     return this.service.updateDealStage(req.user.tenantId, id, body.stageId);
   }
+
+  @ApiOperation({ summary: 'Close the loop: Convert Won Deal to Sales Order' })
+  @Post('deals/:id/convert')
+  convertToOrder(@Request() req: any, @Param('id') id: string) {
+    return this.service.convertToOrder(req.user.tenantId, id);
+  }
 }

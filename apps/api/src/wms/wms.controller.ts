@@ -32,4 +32,10 @@ export class WmsController {
   createPick(@Request() req: any, @Body() body: any) {
     return this.wmsService.createPickingTask(req.user.tenantId, body);
   }
+
+  @ApiOperation({ summary: 'Close the loop: Complete Picking and Dispatch for Shipment' })
+  @Post('tasks/:id/complete')
+  completeTask(@Request() req: any, @Param('id') id: string) {
+    return this.wmsService.completeTaskAndDispatch(req.user.tenantId, id);
+  }
 }

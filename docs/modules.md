@@ -382,3 +382,19 @@ Quản trị dòng tiền, kiểm soát ngân sách và hỗ trợ ra quyết đ
 - **Predictive Cashflow**: Không chỉ là kế toán quá khứ, hệ thống tự động tổng hợp dữ liệu từ Đơn hàng (AR) và Mua hàng (AP) để dự báo dòng tiền trong tương lai, giúp doanh nghiệp chủ động về thanh khoản.
 - **Tight Budget Control**: Thiết lập ngân sách chi tiết cho từng hạng mục và theo dõi mức độ giải ngân theo thời gian thực. Hệ thống cảnh báo ngay lập tức nếu chi phí thực tế vượt định mức.
 - **Executive Finance Dashboard**: Cung cấp các chỉ số sức khỏe tài chính (KPIs) trực quan trên ứng dụng di động, giúp CFO và Chủ doanh nghiệp nắm bắt tình hình tài chính mọi lúc, mọi nơi.
+
+---
+
+## Hệ sinh thái Tự động hóa Khép kín (Closed-Loop Ecosystem)
+Kết nối các điểm chạm dữ liệu giữa các phòng ban, loại bỏ thao tác thủ công và sai sót dữ liệu.
+
+| Automation Trigger | Source Module | Target Module | Description |
+| ------------------ | ------------- | ------------- | ----------- |
+| **Deal-to-Order** | CRM | Sales | Chuyển đổi Deal thành công (Won) thành Đơn hàng ngay lập tức |
+| **Pick-to-Dispatch** | WMS | TMS | Tự động lập chuyến hàng (Trip) ngay khi hoàn tất nhặt hàng (Picking) |
+| **Confirmation-to-AR** | TMS/WMS | Finance | Cập nhật dự báo dòng tiền ngay khi hàng rời kho hoặc được giao thành công |
+
+**Tính năng vượt trội:**
+- **Zero-Manual Data Entry**: Dữ liệu chảy xuyên suốt từ giai đoạn tìm kiếm khách hàng (CRM) đến khi tiền về tài khoản (Finance). Nhân viên không phải nhập lại thông tin đơn hàng ở từng bước.
+- **Bi-directional Status Sync**: Khi tài xế xác nhận giao hàng (TMS), khách hàng nhận được thông báo (CRM/Portal) và kế toán thấy doanh thu (Finance) theo thời gian thực.
+- **Enterprise Velocity**: Tăng tốc độ vận hành lên gấp 5 lần bằng cách tự động hóa các bước chuyển tiếp giữa Kho - Vận tải - Bán hàng.

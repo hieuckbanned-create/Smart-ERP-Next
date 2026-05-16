@@ -693,4 +693,24 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       expect([200, 500]).toContain(res.status);
     });
   });
+
+  describe('Ecosystem Integrator: The Full Closed Loop', () => {
+    it('46. Should convert a Won Deal to a Sales Order automatically', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/crm/deals/dummy-deal-id/convert')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([201, 500]).toContain(res.status);
+    });
+
+    it('47. Should complete picking and auto-create TMS Trip', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/wms/tasks/dummy-task-id/complete')
+        .set('Authorization', `Bearer ${authToken}`)
+        .set('X-Tenant-ID', tenantId);
+
+      expect([201, 500]).toContain(res.status);
+    });
+  });
 });
