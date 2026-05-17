@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Standalone output bundles only the necessary files for production Docker image
+  output: 'standalone',
   // NOTE: Remove `output: 'export'` — it breaks API routes and server components.
   // Tauri desktop uses the dev server (localhost:3001) in dev mode and
   // a separate static build via `next export` only when packaging.

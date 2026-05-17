@@ -1,7 +1,35 @@
 version: '3.8'
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Smart ERP Next — Docker Compose (v0.4.0)
+# Usage:
+#   cp .env.example .env   # fill in DB_PASSWORD, JWT_SECRET, HOST
+#   docker-compose up -d --build
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
-  # AI Forecasting Service (Python + Prophet ML)
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: smart-erp-postgres
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: smart_erp
+      POSTGRES_USER: ${DB_USER:-smart_erp}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-smart_erp} -d smart_erp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - smart-erp-network
+
+  # ── AI Forecasting Service (Python + Prophet ML) ────────────────────────────
   ai-forecast:
     build:
       context: ./apps/ai-forecast
@@ -10,8 +38,8 @@ services:
     ports:
       - "${AI_FORECAST_PORT:-8000}:8000"
     environment:
-      - PORT=8000
-      - LOG_LEVEL=info
+      PORT: 8000
+      LOG_LEVEL: info
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -22,51 +50,56 @@ services:
     networks:
       - smart-erp-network
 
-  # API Server (NestJS)
+  # ── API Server (NestJS) ─────────────────────────────────────────────────────
   api:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/api/Dockerfile
     container_name: smart-erp-api
     ports:
       - "${API_PORT:-3000}:3000"
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - AI_FORECAST_URL=http://ai-forecast:8000
+      DATABASE_URL: postgresql://${DB_USER:-smart_erp}:${DB_PASSWORD}@postgres:5432/smart_erp
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      NODE_ENV: production
+      PORT: 3000
+      AI_FORECAST_URL: http://ai-forecast:8000
     depends_on:
-      - ai-forecast
-      - postgres
+      postgres:
+        condition: service_healthy
+      ai-forecast:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
     networks:
       - smart-erp-network
 
-  # Web Dashboard (Next.js)
+  # ── Web Dashboard (Next.js) ─────────────────────────────────────────────────
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # NEXT_PUBLIC_API_URL must be the URL reachable from the user's browser
+        # e.g. http://your-server-ip:3000 or https://api.yourdomain.com
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
     container_name: smart-erp-web
     ports:
       - "${WEB_PORT:-3001}:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://api:3000
+      NODE_ENV: production
+      # Runtime override (for SSR fetch — same value as build arg)
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
     depends_on:
-      - api
-    networks:
-      - smart-erp-network
-
-  # PostgreSQL Database
-  postgres:
-    image: postgres:16-alpine
-    container_name: smart-erp-postgres
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    environment:
-      - POSTGRES_DB=smart_erp
-      - POSTGRES_USER=${DB_USER:-smart_erp}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      api:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - smart-erp-network
 
