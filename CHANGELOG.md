@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [0.4.0] — 2026-05-17
+
 ### Added
 - **Helpdesk & Ticketing System**:
   - Ticket CRUD with priority, status, category

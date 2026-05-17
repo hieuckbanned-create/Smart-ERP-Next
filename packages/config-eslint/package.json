@@ -1,1 +1,14 @@
-{"dependencies":{"@antfu/eslint-config":"^2.21.0","eslint":"^8.57.0","typescript":"^5.4.5"},"main":"index.js","name":"@smart-erp/eslint-config","peerDependencies":{"eslint":">=8.0.0"},"private":true,"version":"0.0.0"}
+{
+  "dependencies": {
+    "@antfu/eslint-config": "^2.21.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "main": "index.js",
+  "name": "@smart-erp/eslint-config",
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  },
+  "private": true,
+  "version": "0.4.0"
+}
