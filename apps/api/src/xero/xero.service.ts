@@ -38,6 +38,7 @@ export class XeroService {
     const externalId = xeroCustomer.ContactID;
     const existing = await db.select().from(customers).where(and(eq(customers.tenantId, tenantId), eq(customers.externalId, externalId))).then(r => r[0]);
     const customerData = {
+      code: xeroCustomer.ContactNumber || externalId,
       name: xeroCustomer.Name || xeroCustomer.ContactNumber || 'Unknown',
       email: xeroCustomer.EmailAddress || '',
       phone: xeroCustomer.PhoneNumber || '',
@@ -72,7 +73,7 @@ export class XeroService {
     const orderData = {
       code: xeroInvoice.InvoiceNumber,
       customerName: xeroInvoice.Contact?.Name || 'Xero Customer',
-      total: parseFloat(xeroInvoice.Total || '0'),
+      total: parseFloat(xeroInvoice.Total || '0').toString(),
       status: this.mapXeroStatus(xeroInvoice.Status),
       channel: 'xero',
       externalId,

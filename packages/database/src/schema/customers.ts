@@ -18,6 +18,8 @@ export const customers = pgTable(
     province: text('province'),
     taxCode: text('tax_code'),
     contactPerson: text('contact_person'),
+    externalId: text('external_id'),
+    externalPlatform: text('external_platform'),
     customerGroup: text('customer_group').default('retail'), // retail, wholesale, vip
     debtLimit: numeric('debt_limit', { precision: 18, scale: 2 }).default('0'),
     currentDebt: numeric('current_debt', { precision: 18, scale: 2 }).default('0'),

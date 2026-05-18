@@ -32,7 +32,7 @@ export default function TmsScreen() {
     try {
       setLoading(true);
       const res = await api.get('/tms/trips');
-      setTrips(res || []);
+      setTrips((res as any) || []);
     } catch (error) {
       console.error('Failed to fetch TMS trips', error);
     } finally {

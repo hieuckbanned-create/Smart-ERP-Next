@@ -26,7 +26,7 @@ export default function WmsScreen() {
     try {
       setLoading(true);
       const res = await api.get('/wms/tasks');
-      setTasks(res || []);
+      setTasks((res as any) || []);
     } catch (error) {
       console.error('Failed to fetch WMS tasks', error);
     } finally {

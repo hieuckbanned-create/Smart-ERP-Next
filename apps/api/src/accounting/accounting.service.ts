@@ -4,8 +4,8 @@ import {
   chartOfAccounts,
   journalEntries,
   journalEntryLines,
-} from '@smart-erp/database/schema';
-import { eq, and, desc, sql, gte, lte } from 'drizzle-orm';
+} from '@smart-erp/accounting';
+import { eq, and, desc, gte, lte, sql } from 'drizzle-orm';
 
 @Injectable()
 export class AccountingService {
@@ -55,7 +55,7 @@ export class AccountingService {
         .from(journalEntryLines)
         .leftJoin(chartOfAccounts, eq(journalEntryLines.accountId, chartOfAccounts.id))
         .where(
-          db.sql`${journalEntryLines.journalEntryId} = ANY(${entryIds})`
+          sql`${journalEntryLines.journalEntryId} = ANY(${entryIds})`
         );
 
       for (const line of lines) {

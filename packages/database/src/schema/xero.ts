@@ -1,29 +1,49 @@
-import { pgTable, uuid, varchar, timestamp, boolean, text, integer, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, boolean, index } from 'drizzle-orm/pg-core';
+import { tenants } from './tenants';
 
-export const xeroConnections = pgTable('xero_connections', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  tenantId: uuid('tenant_id').notNull(),
-  xeroTenantId: varchar('xero_tenant_id', { length: 100 }).notNull(),
-  accessToken: text('access_token'),
-  refreshToken: text('refresh_token'),
-  expiresAt: timestamp('expires_at'),
-  scope: text('scope'),
-  tokenType: varchar('token_type', { length: 50 }),
-  connectedAt: timestamp('connected_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
+// Xero integration connections
+export const xeroConnections = pgTable(
+  'xero_connections',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+    clientId: text('client_id').notNull(),
+    clientSecret: text('client_secret').notNull(),
+    refreshToken: text('refresh_token'),
+    xeroTenantId: text('xero_tenant_id'),
+    isActive: boolean('is_active').notNull().default(true),
+    lastSyncAt: timestamp('last_sync_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    tenantIdx: index('xero_connections_tenant_idx').on(table.tenantId),
+  })
+);
 
-export const xeroSyncLogs = pgTable('xero_sync_logs', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  tenantId: uuid('tenant_id').notNull(),
-  connectionId: uuid('connection_id').references(() => xeroConnections.id),
-  syncType: varchar('sync_type', { length: 50 }).notNull(), // 'invoice', 'contact', 'item'
-  syncDirection: varchar('sync_direction', { length: 20 }).notNull(), // 'import', 'export'
-  status: varchar('status', { length: 20 }).notNull(), // 'success', 'failed', 'partial'
-  recordsProcessed: integer('records_processed').default(0),
-  recordsFailed: integer('records_failed').default(0),
-  errorMessage: text('error_message'),
-  startedAt: timestamp('started_at').defaultNow(),
-  endedAt: timestamp('ended_at'),
-  createdAt: timestamp('created_at').defaultNow(),
-});
+// Xero sync logs
+export const xeroSyncLogs = pgTable(
+  'xero_sync_logs',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+    syncType: text('sync_type').notNull(), // customers, invoices, etc.
+    status: text('status').notNull(), // success, failed
+    errorMessage: text('error_message'),
+    startedAt: timestamp('started_at').notNull(),
+    completedAt: timestamp('completed_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    tenantIdx: index('xero_sync_logs_tenant_idx').on(table.tenantId),
+  })
+);
+
+export type XeroConnection = typeof xeroConnections.$inferSelect;
+export type NewXeroConnection = typeof xeroConnections.$inferInsert;
+export type XeroSyncLog = typeof xeroSyncLogs.$inferSelect;
+export type NewXeroSyncLog = typeof xeroSyncLogs.$inferInsert;

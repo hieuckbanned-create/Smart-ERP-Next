@@ -1,4 +1,7 @@
 {
+  "name": "@smart-erp/api",
+  "version": "0.0.1",
+  "private": true,
   "dependencies": {
     "@nestjs/common": "^10.3.0",
     "@nestjs/config": "^3.1.1",
@@ -7,29 +10,27 @@
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.0",
-    "@nestjs/platform-socket.io": "11.1.19",
-    "@nestjs/websockets": "11.1.19",
+    "@nestjs/platform-socket.io": "^10.3.0",
+    "@nestjs/websockets": "^10.3.0",
+    "@nestjs/swagger": "^7.1.0",
     "@smart-erp/database": "workspace:*",
-    "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
+    "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/types": "workspace:*",
     "@smart-erp/utils": "workspace:*",
     "@smart-erp/validation": "workspace:*",
-    "@types/socket.io": "3.0.2",
     "axios": "^1.6.0",
-    "cache-manager": "^5.3.0",
-    "@nestjs/swagger": "^7.1.0",
     "bcrypt": "^5.1.1",
+    "cache-manager": "^5.3.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
-    "i18n": "0.15.3",
     "nestjs-i18n": "10.8.4",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "socket.io": "4.8.3"
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.3.0",
@@ -42,6 +43,7 @@
     "@types/cache-manager": "^4.0.0",
     "@types/passport-jwt": "^4.0.0",
     "@types/passport-local": "1.0.38",
+    "@types/socket.io": "3.0.2",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
     "ts-loader": "^9.5.1",
@@ -49,8 +51,6 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   },
-  "name": "@smart-erp/api",
-  "private": true,
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
@@ -60,6 +60,5 @@
     "seed": "ts-node -r tsconfig-paths/register src/common/seeds/main.seed.ts",
     "test": "jest",
     "type-check": "tsc --noEmit"
-  },
-  "version": "0.4.0"
+  }
 }

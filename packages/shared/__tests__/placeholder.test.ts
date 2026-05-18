@@ -1,1 +1,3 @@
-test('placeholder', () => { expect(1).toBe(1); });
+test('placeholder test', () => {
+  expect(true).toBe(true);
+});

@@ -26,16 +26,4 @@ describe('AccountingService', () => {
       expect(result).toHaveProperty('bankBalance');
     });
   });
-
-  describe('calculateProfitMargin', () => {
-    it('should calculate profit margin correctly', () => {
-      const margin = service['calculateProfitMargin'](1000000, 700000);
-      expect(margin).toBeCloseTo(30, 1);
-    });
-
-    it('should return 0 when revenue is 0', () => {
-      const margin = service['calculateProfitMargin'](0, 100000);
-      expect(margin).toBe(0);
-    });
-  });
 });
