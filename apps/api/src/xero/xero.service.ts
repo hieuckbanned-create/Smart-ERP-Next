@@ -17,7 +17,7 @@ export class XeroService {
     if (existing) {
       await db.update(xeroConnections).set(data).where(eq(xeroConnections.id, existing.id));
     } else {
-      await db.insert(xeroConnections).values({ ...data, tenantId } as any);
+      await db.insert(xeroConnections).values({ ...data, tenantId });
     }
   }
 
@@ -49,7 +49,7 @@ export class XeroService {
     if (existing) {
       await db.update(customers).set(customerData).where(eq(customers.id, existing.id));
     } else {
-      await db.insert(customers).values({ ...customerData, tenantId } as any);
+      await db.insert(customers).values({ ...customerData, tenantId });
     }
   }
 
@@ -83,7 +83,7 @@ export class XeroService {
     if (existing) {
       await db.update(orders).set(orderData).where(eq(orders.id, existing.id));
     } else {
-      await db.insert(orders).values({ ...orderData, tenantId } as any);
+      await db.insert(orders).values({ ...orderData, tenantId });
     }
   }
 
