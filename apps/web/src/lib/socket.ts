@@ -27,11 +27,15 @@ export function initSocket(userId: string, tenantId?: string): Socket {
   return socket;
 }
 
-export const getSocket = (): Socket | null => socket;
+export const getSocket = (token?: string): Socket | null => socket;
 
 export function closeSocket(): void {
   if (socket) {
     socket.disconnect();
     socket = null;
   }
+}
+
+export function disconnectSocket(): void {
+  closeSocket();
 }

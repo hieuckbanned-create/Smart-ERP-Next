@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bell, X, ShoppingBag, Package, AlertTriangle, DollarSign } from 'lucide-react';
 import { getSocket } from '@/lib/socket';
 
@@ -21,6 +22,7 @@ const TYPE_CONFIG = {
 };
 
 export default function NotificationCenter() {
+  const { t } = useTranslation('common');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

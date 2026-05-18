@@ -13,8 +13,8 @@ export function SyncStatusBar() {
   const handleManualSync = async () => {
     emitSyncEvent({ type: 'start' });
     try {
-      const { syncAll } = await import('@/lib/sync-service');
-      await syncAll();
+      const { syncService } = await import('@/lib/sync-service');
+      await syncService.syncAll();
       emitSyncEvent({ type: 'success' });
     } catch (err) {
       emitSyncEvent({ type: 'failure', payload: err instanceof Error ? err.message : 'Sync failed' });
@@ -32,12 +32,13 @@ export function SyncStatusBar() {
     };
   }, []);
 
-  const statusIcon = {
+  const statusIconMap: Record<string, React.ReactNode> = {
     idle: <Wifi className="h-4 w-4 text-green-600" />,
     syncing: <RefreshCw className="h-4 w-4 animate-spin text-blue-500" />,
     error: <AlertCircle className="h-4 w-4 text-red-500" />,
     offline: <WifiOff className="h-4 w-4 text-gray-400" />,
-  }[status];
+  };
+  const statusIcon = statusIconMap[status];
 
   const statusText = t(`sync.status.${status}`, 'Sync status');
 

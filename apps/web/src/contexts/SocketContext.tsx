@@ -14,13 +14,13 @@ interface SocketContextValue {
 const SocketContext = createContext<SocketContextValue>({ isConnected: false });
 
 export function SocketProvider({ children }: { children: ReactNode }) {
-  const { token, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { t } = useTranslation('common');
-  const { toast } = useToast();
+  const { info: toastInfo } = useToast();
   const socketConnected = useRef(false);
 
   useEffect(() => {
-    if (!isAuthenticated || !token) {
+    if (!isAuthenticated) {
       if (socketConnected.current) {
         disconnectSocket();
         socketConnected.current = false;
@@ -28,7 +28,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const socket = getSocket(token);
+    const socket = getSocket();
+    if (!socket) return;
+
     const onConnect = () => {
       console.log('Socket connected');
       socketConnected.current = true;
@@ -38,7 +40,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       socketConnected.current = false;
     };
     const onActivity = (payload: ActivityPayload) => {
-      // Map action to translation key
       const actionKey = `activity.${payload.action}`;
       const entityKey = `entity.${payload.entityType}`;
       const message = t('socket.new_activity', {
@@ -46,18 +47,13 @@ export function SocketProvider({ children }: { children: ReactNode }) {
         entity: t(entityKey),
         id: payload.entityId,
       });
-      toast({
-        title: t('socket.new_activity_title'),
-        description: message,
-        duration: 5000,
-      });
+      toastInfo(message);
     };
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('activity', onActivity);
 
-    // Connect if not already
     if (!socket.connected) {
       socket.connect();
     }
@@ -69,7 +65,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       disconnectSocket();
       socketConnected.current = false;
     };
-  }, [token, isAuthenticated, t, toast]);
+  }, [isAuthenticated, t, toastInfo]);
 
   return (
     <SocketContext.Provider value={{ isConnected: socketConnected.current }}>

@@ -4,7 +4,6 @@
  */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as SecureStore from 'expo-secure-store';
 
 export type Theme = 'light' | 'dark' | 'system';
 export type BrandColor = 'blue' | 'green' | 'purple' | 'orange' | 'red';
@@ -27,51 +26,50 @@ const BRAND_COLORS: Record<BrandColor, string> = {
   red: '#ef4444',
 };
 
+function loadFromStorage(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function saveToStorage(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // ignore
+  }
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation('common');
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [brandColor, setBrandColorState] = useState<BrandColor>('blue');
+  const [theme, setThemeState] = useState<Theme>(() => (loadFromStorage('theme') as Theme) || 'system');
+  const [brandColor, setBrandColorState] = useState<BrandColor>(() => (loadFromStorage('brandColor') as BrandColor) || 'blue');
   const [systemPreference, setSystemPreference] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    // Load saved preferences
-    loadPreferences();
-  }, []);
-
-  useEffect(() => {
-    // Listen for system theme changes
     if (typeof window !== 'undefined') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      setSystemPreference(mediaQuery.matches ? 'dark' : 'light');
       const handler = (e: MediaQueryListEvent) => setSystemPreference(e.matches ? 'dark' : 'light');
       mediaQuery.addEventListener('change', handler);
       return () => mediaQuery.removeEventListener('change', handler);
     }
   }, []);
 
-  const loadPreferences = async () => {
-    try {
-      const savedTheme = await SecureStore.getItemAsync('theme');
-      const savedBrand = await SecureStore.getItemAsync('brandColor');
-      if (savedTheme) setThemeState(savedTheme as Theme);
-      if (savedBrand) setBrandColorState(savedBrand as BrandColor);
-    } catch (e) {
-      // Ignore errors
-    }
-  };
-
   const effectiveTheme = theme === 'system' ? systemPreference : theme;
 
-  const setTheme = async (newTheme: Theme) => {
+  const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    await SecureStore.setItemAsync('theme', newTheme);
+    saveToStorage('theme', newTheme);
   };
 
-  const setBrandColor = async (color: BrandColor) => {
+  const setBrandColor = (color: BrandColor) => {
     setBrandColorState(color);
-    await SecureStore.setItemAsync('brandColor', color);
+    saveToStorage('brandColor', color);
   };
 
-  // Apply theme to document
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.classList.remove('light', 'dark');

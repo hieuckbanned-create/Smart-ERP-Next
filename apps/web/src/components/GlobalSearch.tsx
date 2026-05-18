@@ -51,7 +51,7 @@ export default function GlobalSearch() {
         const res = await apiClient.get<UnifiedSearchResult[]>('/search', {
           params: { q: query, limit: 10 },
         });
-        setResults(res);
+        setResults(res.data ?? res);
       } catch {
         setResults([]);
       } finally {

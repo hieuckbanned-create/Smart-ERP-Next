@@ -17,4 +17,5 @@ export * from "./ui/Chart";
 export * from "./ui/Switch";
 export * from "./ui/Toast";
 export * from "./ui/useToast";
+export * from "./ui/ConfirmDialog";
 export * from "./ui/StatCard";

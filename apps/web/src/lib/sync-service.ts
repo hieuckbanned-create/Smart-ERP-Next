@@ -12,7 +12,7 @@ const getClientId = (): string => {
 
 export class SyncService {
   private clientId = getClientId();
-  private debounceTimer: number | null = null;
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   private async withRetry<T>(fn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> {
     for (let i = 0; i < retries; i++) {
@@ -43,6 +43,7 @@ export class SyncService {
     }
 
     await db.syncLog.add({
+      id: Date.now(),
       clientId: this.clientId,
       lastSyncAt: Date.now(),
       vectorClock: newClock,
@@ -95,6 +96,10 @@ export class SyncService {
   async sync(): Promise<void> {
     await this.push();
     await this.pull();
+  }
+
+  async syncAll(): Promise<void> {
+    await this.sync();
   }
 
   // Call this on any local mutation
