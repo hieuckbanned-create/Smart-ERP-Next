@@ -101,7 +101,7 @@ export default function ClvPage() {
         {loading ? (
           <div className="flex justify-center py-12"><Spinner /></div>
         ) : (
-          <DataTable data={predictions} columns={columns} />
+          <DataTable data={predictions} columns={columns as any} />
         )}
       </Card>
 

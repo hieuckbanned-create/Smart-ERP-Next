@@ -154,7 +154,7 @@ export default function InventoryPage() {
     if (!adjustForm.productSearch.trim()) { setSearchResults([]); return; }
     const t = setTimeout(async () => {
       const res = await productsApi.getAll({ search: adjustForm.productSearch, limit: 6 });
-      setSearchResults(res.items);
+      setSearchResults(res.data?.items ?? res.items);
     }, 250);
     return () => clearTimeout(t);
   }, [adjustForm.productSearch]);
@@ -208,7 +208,7 @@ export default function InventoryPage() {
     if (!lotForm.productSearch.trim()) { setLotSearchResults([]); return; }
     const t = setTimeout(async () => {
       const res = await productsApi.getAll({ search: lotForm.productSearch, limit: 6 });
-      setLotSearchResults(res.items);
+      setLotSearchResults(res.data?.items ?? res.items);
     }, 250);
     return () => clearTimeout(t);
   }, [lotForm.productSearch]);

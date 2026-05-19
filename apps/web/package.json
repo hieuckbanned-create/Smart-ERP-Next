@@ -1,12 +1,12 @@
 {
   "dependencies": {
+    "@headlessui/react": "2.2.10",
     "@smart-erp/hooks": "workspace:*",
     "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
-    "@smart-erp/sync-status": "workspace:*",
-    "@smart-erp/sync-status": "workspace:*",
     "@smart-erp/socket-types": "workspace:*",
     "@smart-erp/sync": "workspace:*",
+    "@smart-erp/sync-status": "workspace:*",
     "@smart-erp/types": "workspace:*",
     "@smart-erp/ui": "workspace:*",
     "@smart-erp/utils": "workspace:*",
@@ -23,6 +23,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^14.1.2",
+    "react-icons": "5.6.0",
     "recharts": "3.8.1",
     "socket.io-client": "4.8.3"
   },

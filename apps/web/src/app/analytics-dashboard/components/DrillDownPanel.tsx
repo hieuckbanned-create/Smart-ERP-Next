@@ -8,15 +8,14 @@ export default function DrillDownPanel({ isOpen, onClose, type }: { isOpen: bool
   const { t } = useTranslation('analytics');
 
   return (
-    <Transition.Show show={isOpen}>
-      <Transition.Child as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={onClose} returnFocusToContent>
-          <Transition.Child enter="transition-opacity">
-            <div className="fixed inset-0 bg-black bg-opacity-25">
-              <div className="flex min-h-full flex items-center justify-center p-4">
-                <Transition.Child as={Fragment}>
-                  <Dialog.Panel className="relative w-full max-w-md rounded-lg bg-white p-4 shadow-lg">
-                    <Dialog.Title as="h3" className="text-lg font-medium" onClose={onClose}>
+    <Transition show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
+        <Transition.Child as={Fragment} enter="transition-opacity" enterFrom="opacity-0" enterTo="opacity-100">
+          <div className="fixed inset-0 bg-black bg-opacity-25">
+            <div className="flex min-h-full flex items-center justify-center p-4">
+              <Transition.Child as={Fragment} enter="transition ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100">
+                <Dialog.Panel className="relative w-full max-w-md rounded-lg bg-white p-4 shadow-lg">
+                    <Dialog.Title as="h3" className="text-lg font-medium">
                       {type === 'revenue' ? t('analytics.revenueBreakdown') : t('analytics.topProductsBreakdown')}
                     </Dialog.Title>
                     <div className="p-2">
@@ -41,7 +40,6 @@ export default function DrillDownPanel({ isOpen, onClose, type }: { isOpen: bool
             </div>
           </Transition.Child>
         </Dialog>
-      </Transition.Child>
-    </Transition.Show>
+      </Transition>
   );
 }

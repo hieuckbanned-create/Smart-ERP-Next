@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from '@smart-erp/i18n';
 import { apiClient } from '@/lib/api-client';
-import { Button, Input, Select, Table, DatePicker } from '@smart-erp/shared';
+import { Button, Input, Select, Table, TableHeader, TableRow, TableHead, TableBody, TableCell, DatePicker } from '@smart-erp/shared';
 import { Download } from 'lucide-react';
 import AuthGuard from '@/components/layout/AuthGuard';
 
@@ -88,7 +88,7 @@ export default function ActivityLogsPage() {
               { value: 'inventory', label: t('entities.inventory') },
             ]}
             value={filters.entityType}
-            onChange={(val) => setFilters({ ...filters, entityType: val })}
+            onChange={(e) => setFilters({ ...filters, entityType: e.target.value })}
           />
           <Select
             placeholder={t('activityLogs.action')}
@@ -101,7 +101,7 @@ export default function ActivityLogsPage() {
               { value: 'stock_adjusted', label: t('actions.stockAdjusted') },
             ]}
             value={filters.action}
-            onChange={(val) => setFilters({ ...filters, action: val })}
+            onChange={(e) => setFilters({ ...filters, action: e.target.value })}
           />
           <DatePicker
             placeholder={t('common.fromDate')}

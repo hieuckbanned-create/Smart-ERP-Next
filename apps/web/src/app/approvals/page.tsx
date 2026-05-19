@@ -27,7 +27,7 @@ export default function ApprovalsPage() {
   const fetchRequests = async () => {
     try {
       const res = await apiClient.get<{ items: ApprovalRequest[] }>('/approvals');
-      setRequests(res.items);
+      setRequests((res.data?.items ?? (res as any).items) as ApprovalRequest[]);
     } catch (err: any) {
       setError(err.message);
     } finally {

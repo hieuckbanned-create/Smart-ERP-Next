@@ -3,6 +3,8 @@ export * from "./modules";
 export * from "./platforms";
 export * from "./positioning";
 export * from "./utils/formatters";
+export * from "./ui/Badge";
+export * from "./ui/Badge";
 export * from "./ui/Button";
 export * from "./ui/Select";
 export * from "./ui/Table";

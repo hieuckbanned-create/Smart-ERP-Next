@@ -13,10 +13,6 @@ import {
   Wallet, Coins, Activity, CreditCard,
 } from 'lucide-react';
 
-interface AccountingDashboardProps {
-  period?: string;
-}
-
 interface DashboardData {
   totalRevenue: number;
   totalExpense: number;
@@ -55,7 +51,7 @@ const CURRENCY_COLORS = {
 
 const EXPENSE_COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6'];
 
-export default function AccountingDashboard({ period }: AccountingDashboardProps) {
+export default function AccountingDashboard() {
   const { t } = useTranslation('common');
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +60,7 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
   const fetchData = async () => {
     try {
       const res = await apiClient.get('/accounting/dashboard', {
-        params: { period: period || new Date().getFullYear().toString() },
+        params: { period: new Date().getFullYear().toString() },
       });
       setData(res.data);
     } catch (err) {
@@ -216,13 +212,13 @@ export default function AccountingDashboard({ period }: AccountingDashboardProps
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
               >
                 {data.expenseBreakdown.map((_entry, index) => (
                   <Cell key={`cell-${index}`} fill={EXPENSE_COLORS[index % EXPENSE_COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value: number) => formatVND(value)} />
+              <Tooltip formatter={(value) => formatVND(Number(value))} />
             </PieChart>
           </ResponsiveContainer>
         </div>

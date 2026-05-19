@@ -32,7 +32,7 @@ export default function ProductsPage() {
     setLoading(true);
     try {
       const res = await productsApi.getAll({ page: p, limit, search: s || undefined });
-      setProductList(res.items);
+      setProductList(res.data?.items ?? res.items);
       setTotalPages(res.totalPages);
       setTotal(res.total);
     } catch (err) {

@@ -3,10 +3,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface AutomationBuilderProps {
-  mode?: 'view' | 'edit';
-}
-
 interface DragItem {
   id: string;
   type: string;
@@ -14,7 +10,7 @@ interface DragItem {
   icon: string;
 }
 
-export default function AutomationBuilder({ mode = 'edit' }: AutomationBuilderProps) {
+export default function AutomationBuilder() {
   const { t } = useTranslation('common');
   const [workflowName, setWorkflowName] = useState('');
   const [selectedTrigger, setSelectedTrigger] = useState<string | null>(null);
