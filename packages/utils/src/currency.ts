@@ -36,7 +36,31 @@ export function formatNumber(
 
 /** Parse a VND string back to number */
 export function parseVND(value: string): number {
-  return parseFloat(value.replace(/[^\d.-]/g, '')) || 0;
+  let clean = value.replace(/[^\d.,-]/g, '');
+  if (clean.includes('.') && clean.includes(',')) {
+    if (clean.indexOf('.') < clean.indexOf(',')) {
+      // Dot is thousands, comma is decimal (Vietnamese format: 1.234,50)
+      clean = clean.replace(/\./g, '').replace(',', '.');
+    } else {
+      // Comma is thousands, dot is decimal (US format: 1,234.50)
+      clean = clean.replace(/,/g, '');
+    }
+  } else if (clean.includes(',')) {
+    // Only commas: could be thousands (US: 1,234) or decimal (VN: 1,23)
+    const parts = clean.split(',');
+    if (parts.length > 1 && parts[parts.length - 1].length === 3) {
+      clean = clean.replace(/,/g, '');
+    } else {
+      clean = clean.replace(',', '.');
+    }
+  } else if (clean.includes('.')) {
+    // Only dots: could be thousands (VN: 150.000) or decimal (US: 1.23)
+    const parts = clean.split('.');
+    if (parts.length > 1 && parts[parts.length - 1].length === 3) {
+      clean = clean.replace(/\./g, '');
+    }
+  }
+  return parseFloat(clean) || 0;
 }
 
 /** Calculate profit margin as percentage */
