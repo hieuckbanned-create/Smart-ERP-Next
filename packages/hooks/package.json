@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@smart-erp/tsconfig": "workspace:*",
+    "@types/react": "^19.0.0",
     "typescript": "^5.4.5"
   },
   "peerDependencies": {

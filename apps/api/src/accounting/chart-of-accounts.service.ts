@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { chartOfAccounts } from '@smart-erp/accounting/schema';
+import { chartOfAccounts, DEFAULT_ACCOUNTS, ACCOUNT_TYPES } from '@smart-erp/accounting';
 import { eq, and, like, or, isNull } from 'drizzle-orm';
 import { CreateChartOfAccountDto, UpdateChartOfAccountDto } from './dto';
-import { DEFAULT_ACCOUNTS, ACCOUNT_TYPES } from '@smart-erp/accounting/types';
 
 @Injectable()
 export class ChartOfAccountsService {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { sql } from 'drizzle-orm';
 
@@ -29,37 +29,37 @@ export class AnalyticsService {
     // Revenue this month
     const revenueThisMonth = await this.drizzle.db.execute(
       sql`SELECT COALESCE(SUM(total), 0) as total FROM orders WHERE tenant_id = ${tenantId} AND created_at >= ${thisMonth} AND status != 'cancelled'`
-    );
+    ) as unknown as { total: number }[];
     const revenueLastMonth = await this.drizzle.db.execute(
       sql`SELECT COALESCE(SUM(total), 0) as total FROM orders WHERE tenant_id = ${tenantId} AND created_at >= ${lastMonth} AND created_at < ${thisMonth} AND status != 'cancelled'`
-    );
+    ) as unknown as { total: number }[];
 
-    const currentRevenue = Number((revenueThisMonth as any[])[0]?.total || 0);
-    const prevRevenue = Number((revenueLastMonth as any[])[0]?.total || 0);
+    const currentRevenue = Number(revenueThisMonth[0]?.total || 0);
+    const prevRevenue = Number(revenueLastMonth[0]?.total || 0);
     const revenueChange = prevRevenue > 0 ? ((currentRevenue - prevRevenue) / prevRevenue) * 100 : 0;
 
     // Orders count
     const ordersThisMonth = await this.drizzle.db.execute(
       sql`SELECT COUNT(*) as count FROM orders WHERE tenant_id = ${tenantId} AND created_at >= ${thisMonth}`
-    );
+    ) as unknown as { count: number }[];
     const ordersLastMonth = await this.drizzle.db.execute(
       sql`SELECT COUNT(*) as count FROM orders WHERE tenant_id = ${tenantId} AND created_at >= ${lastMonth} AND created_at < ${thisMonth}`
-    );
+    ) as unknown as { count: number }[];
 
-    const currentOrders = Number((ordersThisMonth as any[])[0]?.count || 0);
-    const prevOrders = Number((ordersLastMonth as any[])[0]?.count || 0);
+    const currentOrders = Number(ordersThisMonth[0]?.count || 0);
+    const prevOrders = Number(ordersLastMonth[0]?.count || 0);
     const ordersChange = prevOrders > 0 ? ((currentOrders - prevOrders) / prevOrders) * 100 : 0;
 
     // New customers
     const customersThisMonth = await this.drizzle.db.execute(
       sql`SELECT COUNT(*) as count FROM customers WHERE tenant_id = ${tenantId} AND created_at >= ${thisMonth}`
-    );
+    ) as unknown as { count: number }[];
     const customersLastMonth = await this.drizzle.db.execute(
       sql`SELECT COUNT(*) as count FROM customers WHERE tenant_id = ${tenantId} AND created_at >= ${lastMonth} AND created_at < ${thisMonth}`
-    );
+    ) as unknown as { count: number }[];
 
-    const currentCustomers = Number((customersThisMonth as any[])[0]?.count || 0);
-    const prevCustomers = Number((customersLastMonth as any[])[0]?.count || 0);
+    const currentCustomers = Number(customersThisMonth[0]?.count || 0);
+    const prevCustomers = Number(customersLastMonth[0]?.count || 0);
     const customersChange = prevCustomers > 0 ? ((currentCustomers - prevCustomers) / prevCustomers) * 100 : 0;
 
     // Average order value
@@ -92,11 +92,11 @@ export class AnalyticsService {
         GROUP BY DATE(created_at)
         ORDER BY date ASC
       `,
-    );
+    ) as unknown as { date: string; revenue: number; orders: number }[];
 
-    const labels = (result as any[]).map((r) => r.date);
-    const revenue = (result as any[]).map((r) => Number(r.revenue));
-    const orders = (result as any[]).map((r) => Number(r.orders));
+    const labels = result.map((r) => r.date);
+    const revenue = result.map((r) => Number(r.revenue));
+    const orders = result.map((r) => Number(r.orders));
 
     return {
       labels,
@@ -125,7 +125,7 @@ export class AnalyticsService {
         ORDER BY total_revenue DESC
         LIMIT ${limit}
       `,
-    );
+    ) as unknown as { id: string; name: string; sku: string; total_sold: number; total_revenue: number }[];
   }
 
   /** Get customer segmentation */
@@ -151,6 +151,6 @@ export class AnalyticsService {
         GROUP BY segment
         ORDER BY total_revenue DESC
       `,
-    );
+    ) as unknown as { segment: string; count: number; total_revenue: number }[];
   }
 }

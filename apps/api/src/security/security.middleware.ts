@@ -33,7 +33,7 @@ export class SecurityMiddleware implements NestMiddleware {
 
   use(req: Request, res: Response, next: NextFunction) {
     // Apply helmet security headers
-    this.helmet(req, res, (err) => {
+    this.helmet(req, res, (err: any) => {
       if (err) return next(err);
 
       // Additional custom security headers

@@ -47,3 +47,8 @@ export * from './wms';
 export * from './tms';
 export * from './finance';
 export * from './xero';
+export * from './mrp';
+export * from './activity_logs';
+export * from './loyalty';
+
+

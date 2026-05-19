@@ -1,4 +1,4 @@
-import { pgTable, text, decimal, boolean, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, text, decimal, boolean, timestamp, uuid, integer } from 'drizzle-orm/pg-core';
 import { tenants } from '@smart-erp/database/schema';
 import { chartOfAccounts } from '../chart-of-accounts/schema';
 

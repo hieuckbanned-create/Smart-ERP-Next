@@ -14,7 +14,7 @@ export class ForecastController {
     @Param('productId') productId: string,
     @Query('days') days?: string,
   ) {
-    const forecastDays = Math.min(parseInt(days) || 30, 90);
+    const forecastDays = Math.min(parseInt(days ?? '30') || 30, 90);
     const result = await this.forecastService.getDemandForecast(user.tenantId, productId, forecastDays);
     return result;
   }

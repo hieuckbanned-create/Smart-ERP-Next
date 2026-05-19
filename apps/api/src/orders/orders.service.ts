@@ -10,12 +10,32 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { ActivityService } from '../modules/activity/activity.service';
 
+function escapeXml(unsafe: string): string {
+  return unsafe.replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+      default: return c;
+    }
+  });
+}
+
 @Injectable()
 export class OrdersService {
   constructor(
     private readonly notifications: NotificationsGateway,
     private readonly activityService: ActivityService,
   ) {}
+
+  validateOrderData(order: any) {
+    if (!order.code) throw new BadRequestException('Order code is required');
+    if (!order.customerName) throw new BadRequestException('Customer name is required');
+    if (order.total < 0) throw new BadRequestException('Total must be positive');
+    if (!order.items?.length) throw new BadRequestException('Order must have at least 1 item');
+  }
 
   private async generateCode(tenantId: string): Promise<string> {
     const [{ count }] = await db
@@ -192,7 +212,7 @@ export class OrdersService {
     <InvDate>${date}</InvDate>
     <SupplierName>${companyName}</SupplierName>
     <SupplierTaxCode>${taxCode}</SupplierTaxCode>
-    <BuyerName>${order.customerName || 'Walk-in Customer'}</BuyerName>
+    <BuyerName>${(order as any).customerName || 'Walk-in Customer'}</BuyerName>
     <BuyerAddress>${order.shippingAddress || ''}</BuyerAddress>
   </Header>
   <Details>

@@ -17,9 +17,9 @@ export class WarehouseMetricsService {
     if (!warehouse) return null;
 
     const totalProductsResult = await this.drizzle.db
-      .select({ count: sql<number>`count(distinct ${inventoryTransactions.productId})` })
-      .from(inventoryTransactions)
-      .where(eq(inventoryTransactions.warehouseId, warehouseId));
+      .select({ count: sql<number>`count(*)::int` })
+      .from(products)
+      .where(eq(products.tenantId, tenantId));
 
     const inTransitResult = await this.drizzle.db.execute(
       sql`SELECT count(*) as count FROM warehouse_transfers WHERE tenant_id = ${tenantId} AND (from_warehouse_id = ${warehouseId} OR to_warehouse_id = ${warehouseId}) AND status = 'in_transit'`,

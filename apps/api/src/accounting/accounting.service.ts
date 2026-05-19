@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import {
   chartOfAccounts,
   journalEntries,
   journalEntryLines,
 } from '@smart-erp/accounting';
-import { eq, and, desc, gte, lte, sql } from 'drizzle-orm';
+import { eq, and, desc, sql, gte, lte } from 'drizzle-orm';
 
 @Injectable()
 export class AccountingService {
@@ -25,8 +25,8 @@ export class AccountingService {
         and(
           eq(journalEntries.tenantId, tenantId),
           eq(journalEntries.isPosted, true),
-          gte(journalEntries.voucherDate, yearStart),
-          lte(journalEntries.voucherDate, yearEnd),
+          gte(journalEntries.voucherDate, new Date(yearStart)),
+          lte(journalEntries.voucherDate, new Date(yearEnd)),
         )
       );
 
@@ -121,8 +121,8 @@ export class AccountingService {
           and(
             eq(journalEntries.tenantId, tenantId),
             eq(journalEntries.isPosted, true),
-            gte(journalEntries.voucherDate, monthStart),
-            lte(journalEntries.voucherDate, monthEnd),
+            gte(journalEntries.voucherDate, new Date(monthStart)),
+            lte(journalEntries.voucherDate, new Date(monthEnd)),
           )
         );
 

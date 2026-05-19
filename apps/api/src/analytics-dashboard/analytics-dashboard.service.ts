@@ -33,7 +33,7 @@ export class AnalyticsDashboardService {
       WHERE tenant_id = ${tenantId}
         AND created_at >= ${startDate.toISOString()}`
     );
-    const curr = (current as any[])[0] || { revenue: 0, orders: 0 };
+    const curr = (current as unknown as any[])[0] || { revenue: 0, orders: 0 };
 
     // Previous period metrics
     const previous = await this.drizzle.db.execute(sql`
@@ -45,13 +45,13 @@ export class AnalyticsDashboardService {
         AND created_at >= ${prevStartDate.toISOString()}
         AND created_at < ${prevEndDate.toISOString()}`
     );
-    const prev = (previous as any[])[0] || { revenue: 0, orders: 0 };
+    const prev = (previous as unknown as any[])[0] || { revenue: 0, orders: 0 };
 
     // Customer count
     const customers = await this.drizzle.db.execute(sql`
       SELECT COUNT(*) as total FROM customers WHERE tenant_id = ${tenantId} AND is_active = true`
     );
-    const totalCustomers = Number((customers as any[])?.[0]?.total || 0);
+    const totalCustomers = Number((customers as unknown as any[])?.[0]?.total || 0);
 
     // Low stock count
     const lowStock = await this.drizzle.db.execute(sql`
@@ -59,14 +59,14 @@ export class AnalyticsDashboardService {
       WHERE tenant_id = ${tenantId} AND is_active = true
         AND current_stock <= min_stock`
     );
-    const lowStockCount = Number((lowStock as any[])?.[0]?.total || 0);
+    const lowStockCount = Number((lowStock as unknown as any[])?.[0]?.total || 0);
 
     // Production in progress
     const production = await this.drizzle.db.execute(sql`
       SELECT COUNT(*) as total FROM production_orders
       WHERE tenant_id = ${tenantId} AND status = 'in_progress'`
     );
-    const productionInProgress = Number((production as any[])?.[0]?.total || 0);
+    const productionInProgress = Number((production as unknown as any[])?.[0]?.total || 0);
 
     // Quality pass rate
     const quality = await this.drizzle.db.execute(sql`
@@ -77,7 +77,7 @@ export class AnalyticsDashboardService {
       WHERE tenant_id = ${tenantId}
         AND inspection_date >= ${startDate.toISOString()}`
     );
-    const qual = (quality as any[])[0] || { total: 0, passed: 0 };
+    const qual = (quality as unknown as any[])[0] || { total: 0, passed: 0 };
     const qualityPassRate = qual.total > 0 ? Math.round((Number(qual.passed) / Number(qual.total)) * 10000) / 100 : 0;
 
     // Period comparison
@@ -183,7 +183,7 @@ export class AnalyticsDashboardService {
         AND created_at >= NOW() - INTERVAL '14 days'
       GROUP BY DATE(created_at) ORDER BY date ASC`
     );
-    const revData = revenueData as any[];
+    const revData = revenueData as unknown as any[];
     if (revData.length >= 7) {
       const values = revData.map((d: any) => Number(d.daily_revenue || 0));
       const avg = values.reduce((a: number, b: number) => a + b, 0) / values.length;
@@ -204,7 +204,7 @@ export class AnalyticsDashboardService {
       SELECT COUNT(*) as count FROM products
       WHERE tenant_id = ${tenantId} AND is_active = true AND current_stock <= min_stock`
     );
-    const lowStockCount = Number((lowStock as any[])?.[0]?.count || 0);
+    const lowStockCount = Number((lowStock as unknown as any[])?.[0]?.count || 0);
     if (lowStockCount > 0) {
       insights.push({ type: 'inventory', severity: lowStockCount > 10 ? 'critical' : 'warning', message: `${lowStockCount} products below minimum stock level`, metric: 'lowStock', value: lowStockCount });
     }
@@ -217,7 +217,7 @@ export class AnalyticsDashboardService {
       FROM qms_inspections
       WHERE tenant_id = ${tenantId} AND inspection_date >= NOW() - INTERVAL '7 days'`
     );
-    const qual = (quality as any[])[0] || { total: 0, failed: 0 };
+    const qual = (quality as unknown as any[])[0] || { total: 0, failed: 0 };
     const failRate = Number(qual.total) > 0 ? (Number(qual.failed) / Number(qual.total)) * 100 : 0;
     if (failRate > 20) {
       insights.push({ type: 'quality', severity: 'critical', message: `Quality fail rate at ${failRate.toFixed(1)}% — above 20% threshold`, metric: 'qualityFailRate', value: failRate });
@@ -231,7 +231,7 @@ export class AnalyticsDashboardService {
       WHERE tenant_id = ${tenantId} AND status = 'in_progress'
         AND started_at < NOW() - INTERVAL '7 days'`
     );
-    const staleProd = Number((prod as any[])?.[0]?.count || 0);
+    const staleProd = Number((prod as unknown as any[])?.[0]?.count || 0);
     if (staleProd > 0) {
       insights.push({ type: 'production', severity: 'warning', message: `${staleProd} production orders stuck in progress for over 7 days`, metric: 'staleProduction', value: staleProd });
     }

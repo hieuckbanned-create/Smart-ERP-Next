@@ -48,12 +48,12 @@ export class XeroClient {
   }
 
   async getOrganisations(): Promise<any> {
-    const res = await this.request('GET', '/api.xro/2.0/Organisation');
+    const res = await this.request<any>('GET', '/api.xro/2.0/Organisation');
     return res.Organisations?.[0] || null;
   }
 
   async getCustomers(page = 1, pageSize = 100) {
-    const res = await this.request('GET', `/api.xro/2.0/Contacts?page=${page}&pageSize=${pageSize}`);
+    const res = await this.request<any>('GET', `/api.xro/2.0/Contacts?page=${page}&pageSize=${pageSize}`);
     return res.Contacts || [];
   }
 
@@ -62,7 +62,7 @@ export class XeroClient {
     if (modifiedSince) {
       url += `&modifiedAfter=${modifiedSince.toISOString()}`;
     }
-    const res = await this.request('GET', url);
+    const res = await this.request<any>('GET', url);
     return res.Invoices || [];
   }
 
@@ -71,7 +71,7 @@ export class XeroClient {
     if (modifiedSince) {
       url += `&modifiedAfter=${modifiedSince.toISOString()}`;
     }
-    const res = await this.request('GET', url);
+    const res = await this.request<any>('GET', url);
     return res.Payments || [];
   }
 }

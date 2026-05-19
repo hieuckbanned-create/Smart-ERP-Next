@@ -13,7 +13,7 @@ export class CashflowController {
     @CurrentUser() user: { tenantId: string; sub: string },
     @Query('days') days?: string,
   ) {
-    const forecastDays = Math.min(parseInt(days) || 30, 90);
+    const forecastDays = Math.min(parseInt(days ?? '30') || 30, 90);
     const result = await this.cashflowService.forecast(user.tenantId, forecastDays);
     return result;
   }

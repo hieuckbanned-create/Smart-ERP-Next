@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { notifications, NewNotification, Notification } from '@smart-erp/database';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, sql } from 'drizzle-orm';
 
 @Injectable()
 export class NotificationsService {
@@ -58,7 +58,7 @@ export class NotificationsService {
 
   async getUnreadCount(tenantId: string, userId: string): Promise<number> {
     const result = await this.drizzle.db
-      .select({ count: this.drizzle.db.$count(notifications) })
+      .select({ count: sql<number>`count(*)::int` })
       .from(notifications)
       .where(and(eq(notifications.tenantId, tenantId), eq(notifications.userId, userId), eq(notifications.isRead, false)));
     return result[0]?.count || 0;

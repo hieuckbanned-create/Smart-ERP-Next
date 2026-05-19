@@ -1,7 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
-import { journalEntries, journalEntryLines } from '@smart-erp/accounting/journal-entry/schema';
-import { chartOfAccounts } from '@smart-erp/accounting/chart-of-accounts/schema';
+import { journalEntries, journalEntryLines, chartOfAccounts } from '@smart-erp/accounting';
 import { eq, and, gte, lte, desc } from 'drizzle-orm';
 import { CreateJournalEntryDto } from './dto';
 import { v4 as uuid } from 'uuid';

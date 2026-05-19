@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, payments } from '@smart-erp/database/schema';
-import { and, between, eq, sql } from '@smart-erp/database/drizzle';
+import { and, eq, sql } from '@smart-erp/database/drizzle';
 
 interface DailyCashFlow {
   date: string;

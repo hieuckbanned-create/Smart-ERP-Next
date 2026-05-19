@@ -1,7 +1,26 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { ForecastService } from '../forecast/forecast.service';
 import { ActivityService } from '../modules/activity/activity.service';
 import axios from 'axios';
+
+interface ForecastDemandItem {
+  month?: string;
+  demand: number;
+  [key: string]: unknown;
+}
+
+interface ReorderResult {
+  productId: string;
+  shouldReorder: boolean;
+  currentStock: number;
+  predictedDemandNext7d: number;
+  predictedDemandNext30d: number;
+  suggestedOrderQuantity: number;
+  safetyStock: number;
+  reorderPoint: number;
+  daysUntilStockout: number;
+  reasons: string[];
+}
 
 /**
  * Service that combines inventory data with demand forecast to suggest
@@ -23,8 +42,8 @@ export class InventoryRecommendationService {
    * @deprecated Use getReorderSuggestion with AI-powered calculations.
    */
   async getRecommendation(tenantId: string, userId: string, productId: string, currentStock: number) {
-    const forecast = await this.forecastService.getMonthlyDemand(productId);
-    const avgDemand = forecast.slice(0, 3).reduce((sum, d) => sum + d.demand, 0) / 3;
+    const forecast: ForecastDemandItem[] = await this.forecastService.getMonthlyDemand(productId) as ForecastDemandItem[];
+    const avgDemand = forecast.slice(0, 3).reduce((sum: number, d: ForecastDemandItem) => sum + d.demand, 0) / 3;
     const suggested = Math.max(0, Math.round(avgDemand - currentStock));
 
     await this.activityService.log({
@@ -48,9 +67,8 @@ export class InventoryRecommendationService {
     userId: string,
     productId: string,
     currentStock: number,
-  ) {
+  ): Promise<ReorderResult> {
     try {
-      // Generate sales history from forecast service
       const salesHistory = this.generateSalesHistory();
 
       const response = await axios.post(
@@ -68,7 +86,6 @@ export class InventoryRecommendationService {
         { timeout: 10000 },
       );
 
-      // Log the activity
       await this.activityService.log({
         tenantId,
         userId,
@@ -96,17 +113,12 @@ export class InventoryRecommendationService {
         reasons: response.data.reasons,
       };
     } catch (error) {
-      // Fallback to simple calculation if AI service unavailable
       return this.getFallbackReorderSuggestion(productId, currentStock);
     }
   }
 
-  /**
-   * Generate synthetic sales history for AI service.
-   * In production, fetch from database.
-   */
   private generateSalesHistory(): { date: string; quantity: number }[] {
-    const history = [];
+    const history: { date: string; quantity: number }[] = [];
     const today = new Date();
     for (let i = 60; i >= 0; i--) {
       const date = new Date(today);
@@ -119,12 +131,9 @@ export class InventoryRecommendationService {
     return history;
   }
 
-  /**
-   * Fallback reorder suggestion when AI service is unavailable.
-   */
-  private async getFallbackReorderSuggestion(productId: string, currentStock: number) {
-    const forecast = await this.forecastService.getMonthlyDemand(productId);
-    const demand7d = forecast.slice(0, 7).reduce((sum, d) => sum + d.demand, 0);
+  private async getFallbackReorderSuggestion(productId: string, currentStock: number): Promise<ReorderResult> {
+    const forecast: ForecastDemandItem[] = await this.forecastService.getMonthlyDemand(productId) as ForecastDemandItem[];
+    const demand7d = forecast.slice(0, 7).reduce((sum: number, d: ForecastDemandItem) => sum + d.demand, 0);
     const safetyStock = Math.floor(demand7d * 0.3);
     const reorderPoint = demand7d;
     const shouldReorder = currentStock <= reorderPoint;
@@ -135,7 +144,7 @@ export class InventoryRecommendationService {
       shouldReorder,
       currentStock,
       predictedDemandNext7d: demand7d,
-      predictedDemandNext30d: forecast.reduce((sum, d) => sum + d.demand, 0),
+      predictedDemandNext30d: forecast.reduce((sum: number, d: ForecastDemandItem) => sum + d.demand, 0),
       suggestedOrderQuantity: suggested,
       safetyStock,
       reorderPoint,

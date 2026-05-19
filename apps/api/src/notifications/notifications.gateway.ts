@@ -21,7 +21,10 @@ export type NotificationEvent =
   | 'lead.converted'
   | 'chat.message'
   | 'comment.added'
-  | 'system.alert';
+  | 'system.alert'
+  | 'approval:new'
+  | 'approval:decision'
+  | 'forecast:ready';
 
 @WebSocketGateway({
   cors: { origin: '*', credentials: true },

@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { orders, e_contracts, crm_leads, attendance } from '@smart-erp/database';
+import { crmLeads } from '@smart-erp/database';
+import { orders, e_contracts } from '@smart-erp/database';
 import { eq, sql, gte, and } from 'drizzle-orm';
 
 @Injectable()
@@ -11,27 +12,26 @@ export class AiCopilotService {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    // 1. Calculate Revenue
+    // 1. Calculate Revenue (use total column)
     const revenueRes = await this.drizzle.db
-      .select({ total: sql<number>`sum(${orders.totalAmount})` })
+      .select({ total: sql<number>`sum(${orders.total})` })
       .from(orders)
       .where(and(eq(orders.tenantId, tenantId), gte(orders.createdAt, startOfMonth)));
     const revenue = revenueRes[0]?.total || 0;
 
-    // 2. Count CRM Leads & Conversion
+    // 2. Count CRM Leads
     const leadsRes = await this.drizzle.db
       .select({ count: sql<number>`count(*)` })
-      .from(crm_leads)
-      .where(and(eq(crm_leads.tenantId, tenantId), gte(crm_leads.createdAt, startOfMonth)));
+      .from(crmLeads)
+      .where(and(eq(crmLeads.tenantId, tenantId), gte(crmLeads.createdAt, startOfMonth)));
     const leadsCount = leadsRes[0]?.count || 0;
 
-    // 3. Attendance Health (Late arrivals)
-    // Giả định có trường checkInTime và startTime
-    const lateRes = await this.drizzle.db
+    // 3. High-priority leads as a simple metric
+    const highPriorityRes = await this.drizzle.db
       .select({ count: sql<number>`count(*)` })
-      .from(attendance)
-      .where(and(eq(attendance.tenantId, tenantId), eq(attendance.status, 'late')));
-    const lateCount = lateRes[0]?.count || 0;
+      .from(crmLeads)
+      .where(and(eq(crmLeads.tenantId, tenantId), eq(crmLeads.status, 'new')));
+    const highPriority = highPriorityRes[0]?.count || 0;
 
     // 4. E-Contract Status
     const signedContractsRes = await this.drizzle.db
@@ -40,30 +40,24 @@ export class AiCopilotService {
       .where(and(eq(e_contracts.tenantId, tenantId), eq(e_contracts.status, 'signed')));
     const signedCount = signedContractsRes[0]?.count || 0;
 
-    // Phân tích "thông minh" dựa trên dữ liệu thực
-    let healthStatus = 'ổn định';
-    let recommendations = [];
+    let healthStatus = 'on track';
+    const recommendations: string[] = [];
 
-    if (lateCount > 5) {
-      healthStatus = 'cần chú ý';
-      recommendations.push('Tỉ lệ nhân viên đi trễ đang cao. Cần rà soát lại chính sách chuyên cần.');
+    if (highPriority > 5) {
+      healthStatus = 'needs attention';
+      recommendations.push('High number of new leads. Review sales pipeline.');
     }
-
     if (revenue < 100000000) {
-      recommendations.push('Doanh thu chưa đạt kỳ vọng. Hãy đẩy mạnh các Lead trong CRM.');
-    }
-
-    if (leadsCount > 10 && signedCount < 2) {
-      recommendations.push('Nhiều Lead nhưng tỉ lệ chốt hợp đồng thấp. Cần kiểm tra lại khâu sale B2B.');
+      recommendations.push('Revenue below target. Push CRM leads conversion.');
     }
 
     return {
       revenue,
       leadsCount,
-      lateCount,
+      highPriority,
       signedCount,
       healthStatus,
-      summary: `Hệ thống hiện tại đang ở trạng thái ${healthStatus}.`,
+      summary: `System is currently ${healthStatus}.`,
       recommendations,
       generatedAt: now.toISOString(),
     };

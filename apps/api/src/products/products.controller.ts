@@ -10,7 +10,10 @@ import {
   UseGuards,
   Request,
   ParseUUIDPipe,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -93,7 +96,7 @@ export class ProductsController {
   @UseInterceptors(FileInterceptor('file'))
   async importProducts(
     @Request() req: any,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: any,
   ) {
     return this.productsService.importFromCsv(req.user.tenantId, file.buffer);
   }

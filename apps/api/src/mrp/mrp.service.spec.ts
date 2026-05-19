@@ -49,9 +49,9 @@ describe('MRPService', () => {
         onConflictDoUpdate: jest.fn().mockResolvedValue(undefined),
       });
 
-      const result = await service.calculateMRP('tenant-1', 1);
+      const result = await service.calculateMRP('tenant-1', '1');
 
-      expect(result.productId).toBe(1);
+      expect(result.productId).toBe('1');
       expect(result.productName).toBe('Widget');
       expect(result.forecastedDemand).toBe(100);
       expect(result.salesOrderDemand).toBe(30);
@@ -72,7 +72,7 @@ describe('MRPService', () => {
         onConflictDoUpdate: jest.fn().mockResolvedValue(undefined),
       });
 
-      const result = await service.calculateMRP('tenant-1', 1);
+      const result = await service.calculateMRP('tenant-1', '1');
 
       // net = max(0, 70 - 200 + 10) = 0
       expect(result.netRequirement).toBe(0);
@@ -82,7 +82,7 @@ describe('MRPService', () => {
     it('should throw error when product not found', async () => {
       (drizzleService.db.execute as jest.Mock).mockResolvedValueOnce([]);
 
-      await expect(service.calculateMRP('tenant-1', 999))
+      await expect(service.calculateMRP('tenant-1', '999'))
         .rejects.toThrow('Product not found');
     });
 
@@ -92,8 +92,8 @@ describe('MRPService', () => {
         .mockResolvedValueOnce([{ total_forecast: 100 }])
         .mockResolvedValueOnce([{ total_orders: 0 }])
         .mockResolvedValueOnce([
-          { id: 10, component_name: 'Steel', current_stock: 50, required_qty: 200 },
-          { id: 11, component_name: 'Paint', current_stock: 100, required_qty: 50 },
+          { id: '10', component_name: 'Steel', current_stock: 50, required_qty: 200 },
+          { id: '11', component_name: 'Paint', current_stock: 100, required_qty: 50 },
         ]);
 
       (drizzleService.db.insert as jest.Mock).mockReturnValue({
@@ -101,7 +101,7 @@ describe('MRPService', () => {
         onConflictDoUpdate: jest.fn().mockResolvedValue(undefined),
       });
 
-      const result = await service.calculateMRP('tenant-1', 1);
+      const result = await service.calculateMRP('tenant-1', '1');
 
       expect(result.bomComponents).toHaveLength(2);
       expect(result.bomComponents[0].gap).toBe(150); // 200 - 50
@@ -113,12 +113,12 @@ describe('MRPService', () => {
   describe('calculateMRPBatch', () => {
     it('should process all active products and sort by urgency', async () => {
       (drizzleService.db.execute as jest.Mock)
-        .mockResolvedValueOnce([{ id: 1 }, { id: 2 }]) // product list
-        .mockResolvedValueOnce([{ id: 1, name: 'A', current_stock: 0, lead_time_days: 7, safety_stock: 0 }])
+        .mockResolvedValueOnce([{ id: '1' }, { id: '2' }]) // product list
+        .mockResolvedValueOnce([{ id: '1', name: 'A', current_stock: 0, lead_time_days: 7, safety_stock: 0 }])
         .mockResolvedValueOnce([{ total_forecast: 100 }])
         .mockResolvedValueOnce([{ total_orders: 0 }])
         .mockResolvedValueOnce([])
-        .mockResolvedValueOnce([{ id: 2, name: 'B', current_stock: 500, lead_time_days: 7, safety_stock: 0 }])
+        .mockResolvedValueOnce([{ id: '2', name: 'B', current_stock: 500, lead_time_days: 7, safety_stock: 0 }])
         .mockResolvedValueOnce([{ total_forecast: 10 }])
         .mockResolvedValueOnce([{ total_orders: 0 }])
         .mockResolvedValueOnce([]);

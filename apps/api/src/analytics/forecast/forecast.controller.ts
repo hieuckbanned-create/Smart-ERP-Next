@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+﻿import { Controller, Get, Query } from '@nestjs/common';
 import { ForecastService } from './forecast.service';
 
 @Controller('analytics/forecast')
@@ -10,7 +10,9 @@ export class ForecastController {
     @Query('productId') productId?: string,
     @Query('days') days?: string,
   ) {
-    // Placeholder implementation
-    return this.forecastService.getDemandForecast(productId, days ? parseInt(days) : 30);
+    // Use undefined when productId is omitted to match service signature.
+    const prodId = productId !== undefined ? productId : undefined;
+    const numDays = days ? parseInt(days) : 30;
+    return this.forecastService.getDemandForecast(prodId, numDays);
   }
 }

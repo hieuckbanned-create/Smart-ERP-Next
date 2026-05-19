@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDatabase } from '../../database/database.decorator';
 import { Database } from '../../database/database.module';
 import { syncMetadata, SyncMetadata } from '@smart-erp/database';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 
 @Injectable()
 export class SyncService {

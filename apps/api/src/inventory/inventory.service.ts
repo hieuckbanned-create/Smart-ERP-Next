@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from "@nestjs/common";
+﻿import { Injectable, ConflictException } from "@nestjs/common";
 import { db } from "@smart-erp/database";
 import { products, inventoryTransactions, inventoryReservations, ecommerceStores } from "@smart-erp/database/schema";
 import { eq, and, sql, desc, gte, lte } from "@smart-erp/database/drizzle";
@@ -371,12 +371,14 @@ export class InventoryService {
     for (const store of stores) {
       try {
         const result = await this.pushStockToMarketplace(tenantId, store.id);
-        results.push({ storeId: store.id, status: 'success', ...result });
-      } catch (err) {
-        results.push({ storeId: store.id, status: 'error', error: err.message });
+        results.push({ status: 'success', ...result });
+      } catch (err: any) {
+        results.push({ status: 'error', error: err.message });
       }
     }
 
     return results;
   }
 }
+
+

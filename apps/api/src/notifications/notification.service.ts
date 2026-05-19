@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, sql } from 'drizzle-orm';
 
 export type NotificationChannel = 'email' | 'sms' | 'push' | 'in_app';
 export type NotificationPriority = 'low' | 'normal' | 'high' | 'urgent';
@@ -239,7 +239,7 @@ export class NotificationService {
         );
 
         if (!response.ok) throw new Error(`Twilio error: ${response.status}`);
-        const data = await response.json();
+        const data = await response.json() as any;
         return { success: true, messageId: data.sid };
       }
 

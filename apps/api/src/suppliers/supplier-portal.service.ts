@@ -10,9 +10,9 @@ export class SupplierPortalService {
     return db
       .select({
         id: purchaseOrders.id,
-        code: purchaseOrders.orderCode,
+        code: purchaseOrders.code,
         status: purchaseOrders.status,
-        total: purchaseOrders.totalAmount,
+        total: purchaseOrders.total,
         createdAt: purchaseOrders.createdAt,
       })
       .from(purchaseOrders)

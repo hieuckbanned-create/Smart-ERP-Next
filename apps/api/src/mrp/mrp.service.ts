@@ -4,7 +4,7 @@ import { eq, and, gte, sql } from 'drizzle-orm';
 import { products, orders, orderItems, billsOfMaterials, inventoryTransactions, mrpForecasts } from '@smart-erp/database';
 
 export interface MRPResult {
-  productId: number;
+  productId: string;
   productName: string;
   forecastDate: string;
   forecastedDemand: number;
@@ -16,7 +16,7 @@ export interface MRPResult {
 }
 
 export interface BOMRequirement {
-  componentProductId: number;
+  componentProductId: string;
   componentProductName: string;
   requiredQuantity: number;
   currentStock: number;
@@ -31,7 +31,7 @@ export class MRPService {
    * Calculate MRP for a product within a date range.
    * Considers forecast demand + confirmed sales orders vs current inventory.
    */
-  async calculateMRP(tenantId: string, productId: number, daysAhead: number = 30): Promise<MRPResult> {
+  async calculateMRP(tenantId: string, productId: string, daysAhead: number = 30): Promise<MRPResult> {
     const today = new Date();
     const endDate = new Date(today);
     endDate.setDate(endDate.getDate() + daysAhead);
@@ -41,10 +41,10 @@ export class MRPService {
       sql`SELECT id, name, current_stock, lead_time_days, safety_stock
           FROM products WHERE tenant_id = ${tenantId} AND id = ${productId} LIMIT 1`
     );
-    if (!(productRows as any[]).length) {
+    if (!(productRows as unknown as any[]).length) {
       throw new Error(`Product not found: ${productId}`);
     }
-    const product = (productRows as any[])[0];
+    const product = (productRows as unknown as any[])[0];
 
     // Get forecast demand
     const forecastRows = await this.drizzle.db.execute(
@@ -53,7 +53,7 @@ export class MRPService {
           WHERE tenant_id = ${tenantId} AND product_id = ${productId}
             AND forecast_date BETWEEN ${today.toISOString().split('T')[0]} AND ${endDate.toISOString().split('T')[0]}`
     );
-    const forecastDemand = Number((forecastRows as any[])?.[0]?.total_forecast || 0);
+    const forecastDemand = Number((forecastRows as unknown as any[])?.[0]?.total_forecast || 0);
 
     // Get confirmed sales order demand
     const salesOrderRows = await this.drizzle.db.execute(
@@ -65,7 +65,7 @@ export class MRPService {
             AND o.created_at >= ${today.toISOString()}
             AND o.created_at <= ${endDate.toISOString()}`
     );
-    const salesOrderDemand = Number((salesOrderRows as any[])?.[0]?.total_orders || 0);
+    const salesOrderDemand = Number((salesOrderRows as unknown as any[])?.[0]?.total_orders || 0);
 
     // Total demand
     const totalDemand = forecastDemand + salesOrderDemand;
@@ -86,7 +86,7 @@ export class MRPService {
           JOIN products cp ON cp.id = b.component_product_id
           WHERE b.tenant_id = ${tenantId} AND b.product_id = ${productId}`
     );
-    const bomRowsData = bomRows as any[];
+    const bomRowsData = bomRows as unknown as any[];
 
     const bomComponents: BOMRequirement[] = (bomRowsData || []).map((row: any) => {
       const requiredQty = Number(row.required_qty || 0);
@@ -136,14 +136,14 @@ export class MRPService {
   /**
    * Calculate MRP for multiple products (full MRP run).
    */
-  async calculateMRPBatch(tenantId: string, productIds?: number[], daysAhead: number = 30): Promise<MRPResult[]> {
+  async calculateMRPBatch(tenantId: string, productIds?: string[], daysAhead: number = 30): Promise<MRPResult[]> {
     // Get all active products if no IDs specified
     let productIdsToProcess = productIds;
     if (!productIdsToProcess) {
       const productRows = await this.drizzle.db.execute(
         sql`SELECT id FROM products WHERE tenant_id = ${tenantId} AND is_active = true`
       );
-      productIdsToProcess = (productRows as any[]).map((p: any) => p.id);
+      productIdsToProcess = (productRows as unknown as any[]).map((p: any) => p.id);
     }
 
     const results: MRPResult[] = [];

@@ -31,7 +31,7 @@ export class DocumentScannerService {
       });
 
       if (response.ok) {
-        return await response.json();
+        return await response.json() as ScannedDocument;
       }
     } catch (error: any) {
       this.logger.warn(`AI OCR service unavailable: ${error.message}`);

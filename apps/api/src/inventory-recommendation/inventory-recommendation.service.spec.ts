@@ -5,11 +5,11 @@ import { ActivityService } from '../modules/activity/activity.service';
 
 describe('InventoryRecommendationService', () => {
   let service: InventoryRecommendationService;
-  let mockForecastService: jest.Mocked<ForecastService>;
+  let mockForecastService: { getMonthlyDemand: jest.Mock };
   let mockActivityService: jest.Mocked<ActivityService>;
 
   beforeEach(async () => {
-    mockForecastService = { getMonthlyDemand: jest.fn() } as any;
+    mockForecastService = { getMonthlyDemand: jest.fn() };
     mockActivityService = { log: jest.fn().mockResolvedValue(undefined) } as any;
 
     const module: TestingModule = await Test.createTestingModule({

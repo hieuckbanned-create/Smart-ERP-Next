@@ -1,5 +1,5 @@
-import { Injectable, CACHE_MANAGER } from '@nestjs/common';
-import { Inject, ConfigService } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ export class ForecastService {
 
   constructor(
     private readonly config: ConfigService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    @Inject('CACHE_MANAGER') private readonly cacheManager: Cache,
   ) {
     this.aiServiceUrl = this.config.get('AI_FORECAST_URL', 'http://localhost:8000');
   }
@@ -67,7 +67,7 @@ export class ForecastService {
   private generateSalesHistory(productId: string): { date: string; quantity: number }[] {
     const history = [];
     const today = new Date();
-    for (let i = 60; i >= 0; i--) {
+    for (let i = 59; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       history.push({

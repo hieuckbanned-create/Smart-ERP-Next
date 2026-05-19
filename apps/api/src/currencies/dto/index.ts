@@ -1,5 +1,8 @@
 import { IsString, IsNumber, IsOptional, Min, IsPositive } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateCurrencyDto } from './create-currency.dto';
+
+export { CreateCurrencyDto };
 
 export class ExchangeRateDto {
   @ApiProperty({ example: 'USD' })

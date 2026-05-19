@@ -45,12 +45,12 @@ export class ManufacturingService {
       sql`
         SELECT
           b.id,
-          b.product_id,
-          cp.id as component_product_id,
-          cp.name as component_product_name,
+          b.product_id as "productId",
+          cp.id as "componentProductId",
+          cp.name as "componentProductName",
           b.quantity,
-          b.unit_cost,
-          b.wastage_percent
+          b.unit_cost as "unitCost",
+          b.wastage_percent as "wastagePercent"
         FROM bills_of_materials b
         JOIN products cp ON cp.id = b.component_product_id
         WHERE b.product_id = ${productId}
@@ -58,7 +58,15 @@ export class ManufacturingService {
         ORDER BY b.id
       `,
     );
-    return boms as BomItem[];
+    return (boms as any).map((row: any) => ({
+      id: row.id,
+      productId: row.productId,
+      componentProductId: row.componentProductId,
+      componentProductName: row.componentProductName,
+      quantity: Number(row.quantity || 0),
+      unitCost: row.unitCost ? Number(row.unitCost) : undefined,
+      wastagePercent: row.wastagePercent ? Number(row.wastagePercent) : undefined,
+    }));
   }
 
   /** Create BOM item */
@@ -70,7 +78,10 @@ export class ManufacturingService {
   }) {
     const id = crypto.randomUUID();
     await this.drizzle.db.insert(billsOfMaterials).values({
-      ...data,
+      componentProductId: data.componentProductId,
+      quantity: String(data.quantity),
+      unitCost: data.unitCost !== undefined ? String(data.unitCost) : undefined,
+      wastagePercent: data.wastagePercent !== undefined ? String(data.wastagePercent) : undefined,
       id,
       tenantId,
       productId,
@@ -90,10 +101,10 @@ export class ManufacturingService {
       tenantId,
       orderCode: code,
       productId: data.productId,
-      quantity: data.quantity,
+      quantity: String(data.quantity),
       status: 'draft',
-      startDate: data.startDate || new Date().toISOString(),
-      endDate: data.endDate,
+      startDate: data.startDate ? new Date(data.startDate) : new Date(),
+      endDate: data.endDate ? new Date(data.endDate) : undefined,
       createdBy: userId,
     }).returning();
 
@@ -115,7 +126,7 @@ export class ManufacturingService {
     const boms = await this.getBOM(order.productId, tenantId);
 
     for (const bom of boms) {
-      const requiredQty = bom.quantity * order.quantity * (1 + (bom.wastagePercent || 0) / 100);
+      const requiredQty = bom.quantity * Number(order.quantity) * (1 + (bom.wastagePercent || 0) / 100);
 
       // Check inventory
       const invResult = await this.drizzle.db.execute(
@@ -126,7 +137,7 @@ export class ManufacturingService {
         `,
       );
 
-      const currentStock = (invResult as any[])?.[0]?.current_stock ?? 0;
+      const currentStock = (invResult as any)?.[0]?.current_stock ?? 0;
       if (currentStock < requiredQty) {
         throw new Error(
           `Insufficient materials for ${bom.componentProductName}: need ${requiredQty.toFixed(2)}, current stock ${currentStock}`,
@@ -144,15 +155,19 @@ export class ManufacturingService {
       );
 
       // Log transaction
+      const previousStock = Number(currentStock);
+      const newStock = previousStock - requiredQty;
+
       await this.drizzle.db.insert(inventoryTransactions).values({
         tenantId,
         productId: bom.componentProductId,
         type: 'production_consumption',
-        quantity: requiredQty,
-        referenceType: 'production_order',
-        referenceId: orderId,
-        performedBy: userId,
+        quantity: Math.round(requiredQty),
+        previousStock: Math.round(previousStock),
+        newStock: Math.round(newStock),
+        reference: `production_order:${orderId}`,
         notes: `Production consumption for ${order.orderCode}`,
+        createdBy: userId,
       });
     }
 
@@ -179,7 +194,17 @@ export class ManufacturingService {
       .where(eq(productionOrders.id, orderId))
       .limit(1);
 
-    const addQty = (order as any).quantity;
+    const addQty = Number(order.quantity);
+    const invResult = await this.drizzle.db.execute(
+      sql`
+        SELECT current_stock FROM inventory_summary
+        WHERE tenant_id = ${tenantId} AND product_id = ${(order as any).product_id}
+        LIMIT 1
+      `,
+    );
+    const previousStock = Number((invResult as any)?.[0]?.current_stock ?? 0);
+    const newStock = previousStock + addQty;
+
     await this.drizzle.db.execute(
       sql`
         UPDATE inventory_summary
@@ -193,11 +218,12 @@ export class ManufacturingService {
       tenantId,
       productId: (order as any).product_id,
       type: 'production_output',
-      quantity: addQty,
-      referenceType: 'production_order',
-      referenceId: orderId,
-      performedBy: userId,
+      quantity: Math.round(addQty),
+      previousStock: Math.round(previousStock),
+      newStock: Math.round(newStock),
+      reference: `production_order:${orderId}`,
       notes: `Production completed for ${order.orderCode}`,
+      createdBy: userId,
     });
 
     return this.getProductionOrderById(tenantId, orderId);
@@ -232,7 +258,7 @@ export class ManufacturingService {
 
   /** Get production order details */
   async getProductionOrderById(tenantId: string, orderId: string): Promise<ProductionOrder> {
-    const [order] = await this.drizzle.db.execute(
+    const [order] = (await this.drizzle.db.execute(
       sql`
         SELECT
           po.id,
@@ -249,7 +275,7 @@ export class ManufacturingService {
         WHERE po.tenant_id = ${tenantId} AND po.id = ${orderId}
         LIMIT 1
       `,
-    );
+    )) as any;
 
     if (!(order as any[]).length) throw new NotFoundException('Production order not found');
 
@@ -290,7 +316,7 @@ export class ManufacturingService {
       .limit(1);
 
     // Return default checkpoints (i18n keys for frontend translation)
-    const defaultCheckpoints = [
+    const defaultCheckpoints: QCCheckpoint[] = [
       { id: 'qc-1', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint1', status: 'pending' },
       { id: 'qc-2', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint2', status: 'pending' },
       { id: 'qc-3', productionOrderId: orderId, checkpoint: 'manufacturing.qc.checkpoint3', status: 'pending' },
@@ -300,7 +326,7 @@ export class ManufacturingService {
   }
 
   /** Update QC checkpoint */
-  async updateQCCheckpoint(orderId: string, checkpointId: string, status: 'passed' | 'failed', notes?: string) {
+  async updateQCCheckpoint(orderId: string, checkpointId: string, status: 'pending' | 'passed' | 'failed', notes?: string) {
     // Simplified: would update qc_checkpoints table
     return { id: checkpointId, status, notes, checkedAt: new Date().toISOString() };
   }
@@ -363,7 +389,7 @@ export class ManufacturingService {
             AND reference_id = ${orderId}
             AND type = 'production_consumption'`
     );
-    const actualMaterialCost = Number((actualTxns as any[])?.[0]?.actual_cost || 0);
+    const actualMaterialCost = Number((actualTxns as any)?.[0]?.actual_cost || 0);
 
     // Variances
     const materialVariance = actualMaterialCost - standardCost.totalMaterialCost;

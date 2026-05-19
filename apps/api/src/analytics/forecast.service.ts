@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems } from '@smart-erp/database/schema';
 import { eq, and, gte, sql, desc } from '@smart-erp/database/drizzle';
@@ -11,7 +11,7 @@ export class ForecastService {
     startDate.setDate(startDate.getDate() - 90);
     const rows = await db
       .select({
-        date: sql`DATE(${orderItems.createdAt})`,
+        date: sql`DATE(${orderItems.created_at})`,
         quantity: sql`SUM(${orderItems.quantity})`,
       })
       .from(orderItems)
@@ -20,12 +20,12 @@ export class ForecastService {
         and(
           eq(orders.tenantId, tenantId),
           eq(orderItems.productId, productId),
-          gte(orderItems.createdAt, startDate.toISOString()),
+          gte(orderItems.created_at, startDate.toISOString()),
           eq(orders.status, 'delivered'),
         ),
       )
-      .groupBy(sql`DATE(${orderItems.createdAt})`)
-      .orderBy(sql`DATE(${orderItems.createdAt})`);
+      .groupBy(sql`DATE(${orderItems.created_at})`)
+      .orderBy(sql`DATE(${orderItems.created_at})`);
 
     // If not enough data, fallback to simple average
     const dailySales = rows.map(r => Number(r.quantity));
@@ -53,3 +53,5 @@ export class ForecastService {
     return { forecast, reorderRecommendation: recommended };
   }
 }
+
+

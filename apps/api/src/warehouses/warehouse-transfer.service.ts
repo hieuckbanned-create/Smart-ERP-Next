@@ -5,8 +5,9 @@ import {
   NewInventoryTransaction,
   warehouseTransfers,
   NewWarehouseTransfer,
+  warehouseTransferItems,
 } from '@smart-erp/database';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 
 export type TransferStatus = 'draft' | 'in_transit' | 'received' | 'cancelled';
 
@@ -31,14 +32,26 @@ export class WarehouseTransferService {
 
     const transfer: NewWarehouseTransfer = {
       tenantId,
+      transferCode: `TRF-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
       fromWarehouseId,
       toWarehouseId,
       status: 'draft',
       notes,
-      createdBy: userId,
+      requestedBy: userId,
     };
 
     const [result] = await this.drizzle.db.insert(warehouseTransfers).values(transfer).returning();
+
+    if (items.length) {
+      await this.drizzle.db.insert(warehouseTransferItems).values(
+        items.map((item) => ({
+          transferId: result.id,
+          productId: item.productId,
+          quantityRequested: item.quantity,
+        })),
+      );
+    }
+
     return result;
   }
 
@@ -99,7 +112,7 @@ export class WarehouseTransferService {
       .offset(offset);
 
     const [{ count }] = await this.drizzle.db
-      .select({ count: inventoryTransactions })
+      .select({ count: sql<number>`count(*)::int` })
       .from(warehouseTransfers)
       .where(eq(warehouseTransfers.tenantId, tenantId));
 

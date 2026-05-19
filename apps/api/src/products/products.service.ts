@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from "@nestjs/common";
 import { db } from "@smart-erp/database";
 import { products, inventoryTransactions } from "@smart-erp/database/schema";
@@ -118,8 +119,9 @@ export class ProductsService {
       .from(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.id, id)));
     if (!product) throw new NotFoundException("Product not found");
-    if (lang && product.translations && product.translations[lang]) {
-      product.description = product.translations[lang].description;
+    const prod = product as any;
+    if (lang && prod.translations && prod.translations[lang]) {
+      product.description = prod.translations[lang].description;
     }
     return product;
   }
@@ -267,5 +269,13 @@ export class ProductsService {
       }
     }
     return results;
+  }
+
+  async getTransactions(tenantId: string, productId: string) {
+    return db
+      .select()
+      .from(inventoryTransactions)
+      .where(and(eq(inventoryTransactions.tenantId, tenantId), eq(inventoryTransactions.productId, productId)))
+      .orderBy(desc(inventoryTransactions.createdAt));
   }
 }

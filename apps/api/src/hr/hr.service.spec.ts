@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HrService } from './hr.service';
+import { HrService } from './services/hr.service';
 import { NotFoundException } from '@nestjs/common';
 
 describe('HrService', () => {

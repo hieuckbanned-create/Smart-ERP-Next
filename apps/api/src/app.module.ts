@@ -1,4 +1,5 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod, CacheModule } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ForecastModule } from './forecast/forecast.module';
 import { InventoryRecommendationModule } from './inventory-recommendation/inventory-recommendation.module';
 import { ConfigModule } from '@nestjs/config';
@@ -31,6 +32,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { HelpdeskModule } from './helpdesk/helpdesk.module';
 import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
+import { SyncModule } from './modules/sync/sync.module';
 import { ExportModule } from './exports/export.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { SearchModule } from './search/search.module';
@@ -96,6 +98,7 @@ import { FinanceModule } from './finance/finance.module';
     HelpdeskModule,
     CrmModule,
     ActivityModule,
+    SyncModule,
     HealthModule,
     ExportModule,
     WebhooksModule,

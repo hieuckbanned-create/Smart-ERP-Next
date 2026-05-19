@@ -37,7 +37,7 @@ export class SearchService {
           LIMIT ${limit}`
     );
 
-    for (const c of customerResults as any[]) {
+    for (const c of customerResults.rows as any[]) {
       results.push({
         id: c.id,
         type: 'customer',
@@ -59,7 +59,7 @@ export class SearchService {
           LIMIT ${limit}`
     );
 
-    for (const p of productResults as any[]) {
+    for (const p of productResults.rows as any[]) {
       results.push({
         id: p.id,
         type: 'product',
@@ -79,7 +79,7 @@ export class SearchService {
           LIMIT ${limit}`
     );
 
-    for (const o of orderResults as any[]) {
+    for (const o of orderResults.rows as any[]) {
       results.push({
         id: o.id,
         type: 'order',
@@ -100,7 +100,7 @@ export class SearchService {
           LIMIT ${limit}`
     );
 
-    for (const s of supplierResults as any[]) {
+    for (const s of supplierResults.rows as any[]) {
       results.push({
         id: s.id,
         type: 'supplier',
@@ -120,7 +120,7 @@ export class SearchService {
           LIMIT ${limit}`
     );
 
-    for (const p of paymentResults as any[]) {
+    for (const p of paymentResults.rows as any[]) {
       results.push({
         id: p.id,
         type: 'payment',

@@ -23,7 +23,7 @@ export class WebhookDispatcher implements OnModuleInit {
       'payment.received',
     ];
     for (const event of events) {
-      this.eventEmitter.on(event, async (payload) => {
+      this.eventEmitter.on(event, async (payload: any) => {
         await this.dispatch(event, payload);
       });
     }

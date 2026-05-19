@@ -1,1 +1,2 @@
-export { CurrentUser, CurrentUserData } from '../current-user.decorator';
+export { CurrentUser } from '../current-user.decorator';
+export type { CurrentUserData } from '../current-user.decorator';

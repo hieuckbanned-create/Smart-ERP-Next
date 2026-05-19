@@ -1,1 +1,1 @@
-export { and, desc, eq, gte, ilike, lte, or, sql } from "drizzle-orm";
+export { and, desc, asc, eq, gte, ilike, lte, or, sql } from "drizzle-orm";

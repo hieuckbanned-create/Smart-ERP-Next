@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, UseGuards, Request, Query } from '@nestjs/common';
 import { WebhooksService, WebhookEvent } from './webhooks.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 

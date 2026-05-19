@@ -8,5 +8,5 @@ module.exports = {
   coverageReporters: ['text', 'lcov'],
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   // Run a global setup that imports every source file to force coverage
-  globalSetup: './tests/global-setup.ts',
+  // globalSetup: './tests/global-setup.ts', // Commented out - file doesn't exist
 };

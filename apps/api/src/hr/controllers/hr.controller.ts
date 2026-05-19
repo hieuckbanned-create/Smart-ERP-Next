@@ -14,7 +14,7 @@ import {
 import { HrService } from '../services/hr.service';
 import { CreateEmployeeDto } from '../dto/create-employee.dto';
 import { UpdateEmployeeDto } from '../dto/update-employee.dto';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('hr')
@@ -51,12 +51,12 @@ export class HrController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateEmployeeDto,
   ) {
-    return this.hrService.updateEmployee(req.user.tenantId, req.user.sub, id, dto);
+    return this.hrService.updateEmployee(req.user.tenantId, id, dto);
   }
 
   @Delete('employees/:id')
   remove(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
-    return this.hrService.removeEmployee(req.user.tenantId, req.user.sub, id);
+    return this.hrService.removeEmployee(req.user.tenantId, id);
   }
 
   @Post('payroll/process')

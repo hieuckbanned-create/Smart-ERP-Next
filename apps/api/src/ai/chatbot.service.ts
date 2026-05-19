@@ -193,7 +193,7 @@ export class ChatbotService {
         });
 
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json() as { response: string };
           return { message: data.response, intent: 'general' };
         }
       } catch (error: any) {

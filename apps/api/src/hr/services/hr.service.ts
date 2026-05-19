@@ -72,7 +72,7 @@ export class HrService {
     };
   }
 
-  async findOneEmployee(tenantId: string, id: number) {
+  async findOneEmployee(tenantId: string, id: string) {
     const [employee] = await db
       .select()
       .from(employees)
@@ -81,7 +81,7 @@ export class HrService {
     return employee;
   }
 
-  async updateEmployee(tenantId: string, id: number, dto: UpdateEmployeeDto) {
+  async updateEmployee(tenantId: string, id: string, dto: UpdateEmployeeDto) {
     const [employee] = await db
       .update(employees)
       .set({ ...dto, updatedAt: new Date() })
@@ -91,7 +91,7 @@ export class HrService {
     return employee;
   }
 
-  async removeEmployee(tenantId: string, id: number) {
+  async removeEmployee(tenantId: string, id: string) {
     const [employee] = await db
       .delete(employees)
       .where(and(eq(employees.tenantId, tenantId), eq(employees.id, id)))

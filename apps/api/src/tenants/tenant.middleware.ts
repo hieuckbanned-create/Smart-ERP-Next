@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware, ForbiddenException } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { DrizzleService } from '../drizzle/drizzle.service';
+import { sql } from 'drizzle-orm';
 
 export interface TenantRequest extends Request {
   user?: {
@@ -29,7 +30,7 @@ export class TenantMiddleware implements NestMiddleware {
         sql`SELECT role, permissions FROM user_tenants WHERE user_id = ${userId} AND tenant_id = ${tenantId} AND is_active = true LIMIT 1`
       );
 
-      if (!(membership as any[])?.length) {
+      if (!membership.rows?.length) {
         throw new ForbiddenException('User does not have access to this tenant');
       }
 
@@ -37,8 +38,8 @@ export class TenantMiddleware implements NestMiddleware {
       req.user = {
         ...req.user!,
         tenantId,
-        role: (membership as any[])[0].role,
-        permissions: (membership as any[])[0].permissions || [],
+        role: membership.rows[0].role as string,
+        permissions: (membership.rows[0].permissions as string[]) || [],
       };
     }
 

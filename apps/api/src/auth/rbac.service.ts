@@ -23,7 +23,7 @@ export interface Role {
   isSystem: boolean;
 }
 
-const DEFAULT_ROLES: Record<string, Permission[]> = {
+const DEFAULT_ROLES: Record<string, (Permission | string)[]> = {
   admin: ['*'] as any,
   manager: [
     'customers.read', 'customers.create', 'customers.update',

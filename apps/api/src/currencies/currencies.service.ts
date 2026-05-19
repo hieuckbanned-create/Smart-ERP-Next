@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { currencies as currenciesTable, exchangeRates } from '@smart-erp/database/schema';
-import { eq, and, desc, or, isNull, gte, lte } from 'drizzle-orm';
-import { ExchangeRateDto, UpdateExchangeRateDto } from './dto';
+import { eq, and, desc, gte, lte } from 'drizzle-orm';
+import { ExchangeRateDto, UpdateExchangeRateDto, CreateCurrencyDto } from './dto';
+import { exchangeRates } from '@smart-erp/database/schema';
 
 @Injectable()
 export class CurrenciesService {
@@ -97,8 +98,8 @@ export class CurrenciesService {
   async createExchangeRate(tenantId: string, dto: ExchangeRateDto) {
     // Validate currencies exist
     const [fromCurrency, toCurrency] = await Promise.all([
-      db.select().from(currenciesTable).where(eq(currenciesTable.tenantId, tenantId)).and(eq(currenciesTable.code, dto.fromCurrency)).limit(1),
-      db.select().from(currenciesTable).where(eq(currenciesTable.tenantId, tenantId)).and(eq(currenciesTable.code, dto.toCurrency)).limit(1),
+      db.select().from(currenciesTable).where(and(eq(currenciesTable.tenantId, tenantId), eq(currenciesTable.code, dto.fromCurrency))).limit(1),
+      db.select().from(currenciesTable).where(and(eq(currenciesTable.tenantId, tenantId), eq(currenciesTable.code, dto.toCurrency))).limit(1),
     ]);
 
     if (!fromCurrency[0] || !toCurrency[0]) {
@@ -118,14 +119,10 @@ export class CurrenciesService {
     const [rate] = await db
       .insert(exchangeRates)
       .values({
-        tenantId,
         fromCurrencyId: fromCurrency[0].id,
         toCurrencyId: toCurrency[0].id,
         rate: dto.rate.toString(),
-        effectiveFrom,
-        effectiveTo,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        effectiveDate: effectiveFrom,
       })
       .returning();
 
@@ -145,21 +142,15 @@ export class CurrenciesService {
     const toId = toRes[0].id;
 
     const conditions = [
-      eq(exchangeRates.tenantId, tenantId),
       eq(exchangeRates.fromCurrencyId, fromId),
       eq(exchangeRates.toCurrencyId, toId),
-      eq(exchangeRates.isActive, true),
     ];
 
     if (atDate) {
       const date = new Date(atDate);
-      conditions.push(
-        lte(exchangeRates.effectiveFrom, date),
-        or(isNull(exchangeRates.effectiveTo), gte(exchangeRates.effectiveTo, date))
-      );
+      conditions.push(lte(exchangeRates.effectiveDate, date));
     } else {
-      conditions.push(lte(exchangeRates.effectiveFrom, new Date()));
-      conditions.push(or(isNull(exchangeRates.effectiveTo), gte(exchangeRates.effectiveTo, new Date())));
+      conditions.push(lte(exchangeRates.effectiveDate, new Date()));
     }
 
     const rate = await db
@@ -189,11 +180,8 @@ export class CurrenciesService {
       .from(exchangeRates)
       .where(
         and(
-          eq(exchangeRates.tenantId, tenantId),
           eq(exchangeRates.toCurrencyId, baseId),
-          eq(exchangeRates.isActive, true),
-          lte(exchangeRates.effectiveFrom, new Date()),
-          or(isNull(exchangeRates.effectiveTo), gte(exchangeRates.effectiveTo, new Date()))
+          lte(exchangeRates.effectiveDate, new Date()),
         )
       )
       .orderBy(desc(exchangeRates.createdAt));
@@ -213,29 +201,21 @@ export class CurrenciesService {
     const existing = await db
       .select()
       .from(exchangeRates)
-      .where(and(eq(exchangeRates.tenantId, tenantId), eq(exchangeRates.id, id)))
+      .where(eq(exchangeRates.id, id))
       .limit(1);
 
     if (!existing.length) {
       throw new NotFoundException('Exchange rate not found');
     }
 
-    // Validate date range if provided
-    if (dto.effectiveFrom && dto.effectiveTo) {
-      if (new Date(dto.effectiveFrom) > new Date(dto.effectiveTo)) {
-        throw new ConflictException('Effective from date must be before effective to date');
-      }
-    }
-
-    const updates: any = { updatedAt: new Date() };
+    const updates: any = {};
     if (dto.rate !== undefined) updates.rate = dto.rate.toString();
-    if (dto.effectiveFrom) updates.effectiveFrom = new Date(dto.effectiveFrom);
-    if (dto.effectiveTo) updates.effectiveTo = new Date(dto.effectiveTo);
+    if (dto.effectiveFrom) updates.effectiveDate = new Date(dto.effectiveFrom);
 
     const [updated] = await db
       .update(exchangeRates)
       .set(updates)
-      .where(and(eq(exchangeRates.tenantId, tenantId), eq(exchangeRates.id, id)))
+      .where(eq(exchangeRates.id, id))
       .returning();
 
     return updated;
@@ -245,7 +225,7 @@ export class CurrenciesService {
     const existing = await db
       .select()
       .from(exchangeRates)
-      .where(and(eq(exchangeRates.tenantId, tenantId), eq(exchangeRates.id, id)))
+      .where(eq(exchangeRates.id, id))
       .limit(1);
 
     if (!existing.length) {
@@ -254,7 +234,7 @@ export class CurrenciesService {
 
     await db
       .delete(exchangeRates)
-      .where(and(eq(exchangeRates.tenantId, tenantId), eq(exchangeRates.id, id)));
+      .where(eq(exchangeRates.id, id));
 
     return { success: true };
   }

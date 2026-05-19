@@ -1,8 +1,8 @@
-﻿import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { ConfigService } from '@nestjs/config';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
-import { webhookSubscriptions, webhookDeliveries, NewWebhookSubscription, NewWebhookDelivery } from '@smart-erp/database';
+import { webhookSubscriptions, webhookDeliveryLogs, NewWebhookSubscription, NewWebhookDeliveryLog } from '@smart-erp/database';
 import { eq, and, desc } from 'drizzle-orm';
 
 export type WebhookEvent =
@@ -34,10 +34,11 @@ export class WebhooksService {
   async subscribe(tenantId: string, url: string, events: WebhookEvent[], secret?: string) {
     const sub: NewWebhookSubscription = {
       tenantId,
+      name: `Webhook ${new Date().toISOString().slice(0, 10)}`,
       url,
       events,
       secret,
-      isActive: true,
+      active: true,
     };
     const [result] = await this.drizzle.db.insert(webhookSubscriptions).values(sub).returning();
     return result;
@@ -48,14 +49,14 @@ export class WebhooksService {
     return this.drizzle.db
       .select()
       .from(webhookSubscriptions)
-      .where(and(eq(webhookSubscriptions.tenantId, tenantId), eq(webhookSubscriptions.isActive, true)));
+      .where(and(eq(webhookSubscriptions.tenantId, tenantId), eq(webhookSubscriptions.active, true)));
   }
 
   /** Delete a subscription */
   async unsubscribe(tenantId: string, subscriptionId: string) {
     await this.drizzle.db
       .update(webhookSubscriptions)
-      .set({ isActive: false })
+      .set({ active: false })
       .where(and(eq(webhookSubscriptions.id, subscriptionId), eq(webhookSubscriptions.tenantId, tenantId)));
   }
 
@@ -73,7 +74,7 @@ export class WebhooksService {
       .from(webhookSubscriptions)
       .where(and(
         eq(webhookSubscriptions.tenantId, tenantId),
-        eq(webhookSubscriptions.isActive, true),
+        eq(webhookSubscriptions.active, true),
       ));
 
     const matching = subscriptions.filter((s) => s.events.includes(event));
@@ -128,25 +129,23 @@ export class WebhooksService {
     latencyMs: number,
     error?: string,
   ) {
-    const log: NewWebhookDelivery = {
-      subscriptionId,
+    const log: NewWebhookDeliveryLog = {
+      webhookId: subscriptionId,
       event: payload.event,
       payload: payload as any,
-      status,
-      statusCode,
-      latencyMs,
+      statusCode: statusCode.toString(),
       error,
     };
-    await this.drizzle.db.insert(webhookDeliveries).values(log);
+    await this.drizzle.db.insert(webhookDeliveryLogs).values(log);
   }
 
   /** Get delivery logs for a subscription */
   async getDeliveryLogs(tenantId: string, subscriptionId: string, limit = 50) {
     return this.drizzle.db
       .select()
-      .from(webhookDeliveries)
-      .where(eq(webhookDeliveries.subscriptionId, subscriptionId))
-      .orderBy(desc(webhookDeliveries.createdAt))
+      .from(webhookDeliveryLogs)
+      .where(eq(webhookDeliveryLogs.webhookId, subscriptionId))
+      .orderBy(desc(webhookDeliveryLogs.createdAt))
       .limit(limit);
   }
 }

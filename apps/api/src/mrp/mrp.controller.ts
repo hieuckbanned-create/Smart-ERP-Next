@@ -10,15 +10,15 @@ export class MRPController {
   constructor(private readonly mrpService: MRPService) {}
 
   @ApiOperation({ summary: 'Calculate MRP for a single product' })
-  @ApiParam({ name: 'productId', type: Number })
+  @ApiParam({ name: 'productId', type: String })
   @ApiQuery({ name: 'daysAhead', required: false, type: Number })
   @Get('calculate/:productId')
   async calculateMRP(
     @Request() req: any,
-    @Param('productId') productId: number,
+    @Param('productId') productId: string,
     @Query('daysAhead') daysAhead?: number,
   ) {
-    return this.mrpService.calculateMRP(req.user.tenantId, Number(productId), daysAhead || 30);
+    return this.mrpService.calculateMRP(req.user.tenantId, productId, daysAhead || 30);
   }
 
   @ApiOperation({ summary: 'Run full MRP batch for all active products' })

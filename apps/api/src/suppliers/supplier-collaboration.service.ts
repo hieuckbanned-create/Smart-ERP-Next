@@ -62,7 +62,7 @@ export class SupplierCollaborationService {
       .where(and(eq(purchaseOrders.supplierId, supplierId), eq(purchaseOrders.tenantId, tenantId)));
 
     const totalOrders = orders.length;
-    const totalAmount = orders.reduce((sum, o) => sum + Number(o.totalAmount ?? 0), 0);
+    const totalAmount = orders.reduce((sum, o) => sum + Number(o.total ?? 0), 0);
     const completedOrders = orders.filter((o) => o.status === 'received');
     const onTimeRate = totalOrders > 0 ? (completedOrders.length / totalOrders) * 100 : 0;
 

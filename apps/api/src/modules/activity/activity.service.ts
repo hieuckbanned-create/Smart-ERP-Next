@@ -1,47 +1,85 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { ActivityLog } from './activity.entity';
+import { DrizzleService } from '../../drizzle/drizzle.service';
+import { eq, and, desc, gte, lte, sql } from 'drizzle-orm';
+import { activityLogs, users } from '@smart-erp/database';
 import { QueryActivityDto } from './dto/query-activity.dto';
 
 @Injectable()
 export class ActivityService {
-  constructor(
-    @InjectRepository(ActivityLog)
-    private activityRepo: Repository<ActivityLog>,
-  ) {}
+  constructor(private readonly drizzle: DrizzleService) {}
 
-  async getRecentActivities(tenantId: string, limit = 10): Promise<ActivityLog[]> {
-    return this.activityRepo.find({
-      where: { tenantId },
-      order: { createdAt: 'DESC' },
-      take: limit,
-      relations: ['user'],
-    });
+  async getRecentActivities(tenantId: string, limit = 10): Promise<any[]> {
+    return this.drizzle.db
+      .select({
+        id: activityLogs.id,
+        tenantId: activityLogs.tenantId,
+        userId: activityLogs.userId,
+        action: activityLogs.action,
+        entityType: activityLogs.entityType,
+        entityId: activityLogs.entityId,
+        details: activityLogs.details,
+        createdAt: activityLogs.createdAt,
+        user: {
+          id: users.id,
+          name: users.name,
+          email: users.email,
+        },
+      })
+      .from(activityLogs)
+      .leftJoin(users, eq(activityLogs.userId, users.id))
+      .where(eq(activityLogs.tenantId, tenantId))
+      .orderBy(desc(activityLogs.createdAt))
+      .limit(limit);
   }
 
   async findAllPaginated(
     tenantId: string,
     query: QueryActivityDto,
-  ): Promise<{ items: ActivityLog[]; total: number; page: number; limit: number; totalPages: number }> {
-    const { page, limit, entityType, action, userId, fromDate, toDate } = query;
-    const skip = (page - 1) * limit;
+  ): Promise<{ items: any[]; total: number; page: number; limit: number; totalPages: number }> {
+    const page = query.page || 1;
+    const limit = query.limit || 10;
+    const { entityType, action, userId, fromDate, toDate } = query;
+    const offset = (page - 1) * limit;
 
-    const qb = this.activityRepo.createQueryBuilder('log')
-      .leftJoinAndSelect('log.user', 'user')
-      .where('log.tenantId = :tenantId', { tenantId });
+    const conditions = [eq(activityLogs.tenantId, tenantId)];
+    if (entityType) conditions.push(eq(activityLogs.entityType, entityType));
+    if (action) conditions.push(eq(activityLogs.action, action));
+    if (userId) conditions.push(eq(activityLogs.userId, userId));
+    if (fromDate) conditions.push(gte(activityLogs.createdAt, new Date(fromDate)));
+    if (toDate) conditions.push(lte(activityLogs.createdAt, new Date(toDate)));
 
-    if (entityType) qb.andWhere('log.entityType = :entityType', { entityType });
-    if (action) qb.andWhere('log.action = :action', { action });
-    if (userId) qb.andWhere('log.userId = :userId', { userId });
-    if (fromDate) qb.andWhere('log.createdAt >= :fromDate', { fromDate });
-    if (toDate) qb.andWhere('log.createdAt <= :toDate', { toDate });
+    const whereClause = and(...conditions);
 
-    const [items, total] = await qb
-      .orderBy('log.createdAt', 'DESC')
-      .skip(skip)
-      .take(limit)
-      .getManyAndCount();
+    // Get total count
+    const [countResult] = await this.drizzle.db
+      .select({ count: sql<number>`count(*)` })
+      .from(activityLogs)
+      .where(whereClause);
+    const total = Number(countResult?.count || 0);
+
+    // Get paginated items
+    const items = await this.drizzle.db
+      .select({
+        id: activityLogs.id,
+        tenantId: activityLogs.tenantId,
+        userId: activityLogs.userId,
+        action: activityLogs.action,
+        entityType: activityLogs.entityType,
+        entityId: activityLogs.entityId,
+        details: activityLogs.details,
+        createdAt: activityLogs.createdAt,
+        user: {
+          id: users.id,
+          name: users.name,
+          email: users.email,
+        },
+      })
+      .from(activityLogs)
+      .leftJoin(users, eq(activityLogs.userId, users.id))
+      .where(whereClause)
+      .orderBy(desc(activityLogs.createdAt))
+      .limit(limit)
+      .offset(offset);
 
     return {
       items,
@@ -59,15 +97,18 @@ export class ActivityService {
     entityType: string,
     entityId: string,
     details?: Record<string, any>,
-  ): Promise<ActivityLog> {
-    const activity = this.activityRepo.create({
-      tenantId,
-      userId,
-      action,
-      entityType,
-      entityId,
-      details,
-    });
-    return this.activityRepo.save(activity);
+  ): Promise<any> {
+    const [inserted] = await this.drizzle.db
+      .insert(activityLogs)
+      .values({
+        tenantId,
+        userId,
+        action,
+        entityType,
+        entityId,
+        details,
+      })
+      .returning();
+    return inserted;
   }
 }

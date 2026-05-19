@@ -8,6 +8,7 @@
   "dependencies": {
     "@smart-erp/types": "workspace:*",
     "@smart-erp/validation": "workspace:*",
+    "drizzle-orm": "^0.30.10",
     "zod": "^3.23.8"
   },
   "devDependencies": {
