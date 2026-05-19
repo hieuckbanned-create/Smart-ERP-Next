@@ -7,6 +7,7 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['text', 'lcov'],
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+  testPathIgnorePatterns: ['/node_modules/', '/tests/', '/dist/', '/build/', '/e2e/', '\\.spec\\.js$'],
   moduleNameMapper: {
     '^@smart-erp/database/schema$': '<rootDir>/packages/database/src/schema/index.ts',
     '^@smart-erp/database/drizzle$': '<rootDir>/packages/database/src/drizzle.ts',
