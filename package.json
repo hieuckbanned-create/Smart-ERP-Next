@@ -1,1 +1,73 @@
-{"devDependencies":{"@playwright/test":"1.60.0","prettier":"^3.2.5","tsx":"4.22.2","turbo":"^2.9.14"},"engines":{"node":">=20"},"name":"smart-erp-next","packageManager":"pnpm@9.0.0","private":true,"scripts":{"build":"turbo build","clean":"turbo clean && rm -rf node_modules","dev":"turbo dev","format":"prettier --write \"**/*.{ts,tsx,md,json}\"","lint":"turbo lint","test":"turbo test","type-check":"turbo type-check"},"version":"0.0.0"}
+{
+  "devDependencies": {
+    "@playwright/test": "1.60.0",
+    "prettier": "^3.2.5",
+    "tsx": "4.22.2",
+    "turbo": "^2.9.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "@types/jest": "^29.5.12"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "clean": "turbo clean && remove-items /all node_modules",
+    "dev": "turbo dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "lint": "turbo lint",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "type-check": "turbo type-check"
+  },
+  "version": "0.0.0",
+  "description": "**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.",
+  "main": "jest.config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "dependencies": {
+    "eslint": "8.57.1",
+    "eslint-compat-utils": "0.6.5",
+    "eslint-config-flat-gitignore": "0.1.8",
+    "eslint-config-flat-modules": "0.1.5",
+    "eslint-flat-config-utils": "0.3.1",
+    "eslint-import-context": "0.1.9",
+    "eslint-import-resolver-node": "0.3.10",
+    "eslint-json-compat-utils": "0.2.3",
+    "eslint-merge-processors": "0.1.0",
+    "eslint-plugin-antfu": "2.7.0",
+    "eslint-plugin-command": "0.2.7",
+    "eslint-plugin-es-x": "7.8.0",
+    "eslint-plugin-import-x": "4.16.2",
+    "eslint-plugin-jsdoc": "50.8.0",
+    "eslint-plugin-jsonc": "2.21.1",
+    "eslint-plugin-markdown": "5.1.0",
+    "eslint-plugin-n": "17.24.0",
+    "eslint-plugin-no-only-tests": "3.4.0",
+    "eslint-plugin-perfectionist": "3.9.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-regexp": "2.10.0",
+    "eslint-plugin-toml": "0.11.1",
+    "eslint-plugin-unicorn": "55.0.0",
+    "eslint-plugin-unused-imports": "4.4.1",
+    "eslint-plugin-vue": "9.33.0",
+    "eslint-plugin-yml": "1.19.1",
+    "eslint-processor-vue-blocks": "0.1.2",
+    "eslint-scope": "7.2.2",
+    "eslint-visitor-keys": "3.4.3",
+    "jsonc-eslint-parser": "2.4.2",
+    "toml-eslint-parser": "0.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hieuck/Smart-ERP-Next.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hieuck/Smart-ERP-Next/issues"
+  },
+  "homepage": "https://github.com/hieuck/Smart-ERP-Next#readme"
+}
