@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { productsApi, type Product } from '@/lib/api-products';
 import AuthGuard from '@/components/layout/AuthGuard';
+import { ProductTranslationsEditor } from '@/components/ProductTranslationsEditor';
 import { ArrowLeft, Save, Package } from 'lucide-react';
 
 const UNITS = [

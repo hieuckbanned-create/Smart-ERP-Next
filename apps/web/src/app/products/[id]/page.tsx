@@ -74,6 +74,9 @@ export default function ProductDetailPage() {
   if (!product) return null;
 
   const isLow = product.stock <= (product.minStock ?? 0);
+  const unitLabel = product.unit
+    ? t(`products.units.${product.unit}`, { defaultValue: product.unit })
+    : '—';
   const margin = product.cost && parseFloat(product.price) > 0
     ? (((parseFloat(product.price) - parseFloat(product.cost)) / parseFloat(product.price)) * 100).toFixed(1)
     : null;
@@ -126,7 +129,7 @@ export default function ProductDetailPage() {
                 {[
                   { label: t('products.sku'), value: product.sku, mono: true },
                   { label: t('products.category'), value: product.category ?? '—' },
-                  { label: t('products.unit'), value: product.unit ?? '—' },
+                  { label: t('products.unit'), value: unitLabel },
                   { label: 'Trạng thái', value: product.isActive ? 'Đang kinh doanh' : 'Ngừng kinh doanh' },
                 ].map((row) => (
                   <div key={row.label}>
@@ -208,7 +211,7 @@ export default function ProductDetailPage() {
                 {product.stock}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                {product.unit ?? 'đơn vị'} · Tối thiểu: {product.minStock ?? 0}
+                {unitLabel} · Tối thiểu: {product.minStock ?? 0}
               </p>
               {isLow && (
                 <p className="text-xs text-red-600 mt-2 font-medium">⚠ Cần nhập thêm hàng</p>

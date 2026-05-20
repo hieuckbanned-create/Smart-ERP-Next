@@ -34,7 +34,9 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(user));
       document.cookie = `access_token=${encodeURIComponent(access_token)}; Path=/; Max-Age=604800; SameSite=Lax`;
       if (user.tenantId) localStorage.setItem('tenant_id', user.tenantId);
-      router.push('/dashboard');
+      const from = new URLSearchParams(window.location.search).get('from');
+      const redirectTo = from?.startsWith('/') && !from.startsWith('//') ? from : '/dashboard';
+      router.push(redirectTo);
     } catch (err: any) {
       setError(err.response?.data?.message || t('auth.loginFailed'));
     } finally {
