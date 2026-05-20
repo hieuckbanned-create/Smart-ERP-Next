@@ -326,17 +326,21 @@
     "total": "Total",
     "paid": "Paid",
     "debt": "Debt",
+    "statusLabel": "Status",
     "status": {
       "draft": "Draft",
       "confirmed": "Confirmed",
       "processing": "Processing",
       "shipped": "Shipped",
       "delivered": "Delivered",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "pending": "Pending",
+      "completed": "Completed"
     },
     "statusAll": "All",
     "paymentStatus": "Payment",
     "channel": "Channel",
+    "channelLabel": "Channel",
     "items": "Items",
     "subtotal": "Subtotal",
     "discount": "Discount",

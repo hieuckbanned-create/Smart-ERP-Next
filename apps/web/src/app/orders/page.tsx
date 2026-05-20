@@ -33,6 +33,8 @@ const statusColors: Record<string, string> = {
   delivered: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
   returned: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
+  pending: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
 };
 
 const paymentStatusColors: Record<string, string> = {
@@ -146,13 +148,13 @@ export default function OrdersPage() {
               />
             </div>
             <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">
-              {t('actions.search')}
+              {t('actions.search.title')}
             </button>
           </form>
           <div className="flex flex-wrap gap-2">
             <div className="flex items-center gap-1.5">
               <Filter className="w-4 h-4 text-gray-400" />
-              <span className="text-xs text-gray-500">{t('orders.status')}:</span>
+              <span className="text-xs text-gray-500">{t('orders.statusLabel')}:</span>
             </div>
             {statusOptions.map((opt) => (
               <button
@@ -206,10 +208,10 @@ export default function OrdersPage() {
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.code')}</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.channel')}</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.channelLabel')}</th>
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.total')}</th>
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.debt')}</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.status')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.statusLabel')}</th>
                       <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.paymentStatus')}</th>
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('orders.date')}</th>
                       <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('common.actions')}</th>
@@ -239,7 +241,7 @@ export default function OrdersPage() {
                           </td>
                           <td className="px-4 py-3 text-center">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                              {statusOptions.find((s) => s.value === order.status)?.label ?? order.status}
+                              {statusOptions.find((s) => s.value === order.status)?.label ?? t(`orders.status.${order.status}`, { defaultValue: order.status })}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center">

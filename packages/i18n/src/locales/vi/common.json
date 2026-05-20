@@ -125,6 +125,18 @@
     "paymentStatus": "Trạng thái TT"
   },
   "orders": {
+    "title": "Đơn hàng",
+    "add": "Tạo đơn",
+    "code": "Mã đơn",
+    "comments": "Bình luận",
+    "noComments": "Chưa có bình luận",
+    "commentPlaceholder": "Nhập bình luận...",
+    "customer": "Khách hàng",
+    "date": "Ngày",
+    "total": "Tổng tiền",
+    "paid": "Đã trả",
+    "debt": "Công nợ",
+    "statusLabel": "Trạng thái",
     "status": {
       "draft": "Nháp",
       "confirmed": "Đã xác nhận",
@@ -132,15 +144,36 @@
       "shipped": "Đã giao vận",
       "delivered": "Đã giao hàng",
       "cancelled": "Đã hủy",
-      "returned": "Đã trả hàng"
+      "returned": "Đã trả hàng",
+      "pending": "Đang chờ",
+      "completed": "Hoàn thành"
     },
+    "statusAll": "Tất cả",
+    "paymentStatus": "Thanh toán",
+    "channelLabel": "Kênh bán",
     "channel": {
       "pos": "Tại quầy",
       "online": "Online",
       "phone": "Điện thoại",
       "wholesale": "Bán sỉ"
     },
+    "channels": {
+      "pos": "Tại quầy",
+      "online": "Online",
+      "phone": "Điện thoại",
+      "wholesale": "Bán sỉ"
+    },
+    "items": "Mặt hàng",
+    "subtotal": "Tạm tính",
+    "discount": "Giảm giá",
+    "tax": "Thuế",
+    "shippingFee": "Phí vận chuyển",
     "notes": "Ghi chú",
+    "empty": "Chưa có đơn hàng",
+    "createButton": "Tạo đơn",
+    "searchPlaceholder": "Tìm theo mã đơn, khách hàng...",
+    "updateFailed": "Cập nhật thất bại",
+    "confirmDelete": "Bạn có chắc chắn muốn hủy đơn này?",
     "cancelReason": "Lý do hủy",
     "history": "Lịch sử",
     "createOrder": "Tạo đơn",

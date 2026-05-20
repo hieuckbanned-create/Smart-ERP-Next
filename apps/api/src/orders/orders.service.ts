@@ -5,22 +5,20 @@ import {
 } from '@nestjs/common';
 import { db } from '@smart-erp/database';
 import { orders, orderItems, products } from '@smart-erp/database/schema';
-import { eq, and, ilike, sql, desc } from '@smart-erp/database/drizzle';
+import { eq, and, ilike, sql, desc, inArray } from '@smart-erp/database/drizzle';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
 import { ActivityService } from '../modules/activity/activity.service';
 
 function escapeXml(unsafe: string): string {
-  return unsafe.replace(/[<>&'"]/g, (c) => {
-    switch (c) {
-      case '<': return '&lt;';
-      case '>': return '&gt;';
-      case '&': return '&amp;';
-      case '\'': return '&apos;';
-      case '"': return '&quot;';
-      default: return c;
-    }
-  });
+  const map: Record<string, string> = {
+    '<': '&lt;',
+    '>': '&gt;',
+    '&': '&amp;',
+    "'": '&apos;',
+    '"': '&quot;',
+  };
+  return unsafe.replace(/[<>&'"]/g, (c) => map[c]);
 }
 
 @Injectable()
@@ -55,7 +53,7 @@ export class OrdersService {
     const productList = await db
       .select()
       .from(products)
-      .where(and(eq(products.tenantId, tenantId), sql`id = ANY(${productIds})`));
+      .where(and(eq(products.tenantId, tenantId), inArray(products.id, productIds)));
     const productMap = new Map(productList.map((p) => [p.id, p]));
 
     let subtotal = 0;
