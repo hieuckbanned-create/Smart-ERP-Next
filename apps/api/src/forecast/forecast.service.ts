@@ -13,10 +13,10 @@ export class ForecastService {
   private readonly aiServiceUrl: string;
 
   constructor(
-    private readonly config: ConfigService,
+    @Inject(ConfigService) private readonly config: ConfigService,
     @Inject('CACHE_MANAGER') private readonly cacheManager: Cache,
   ) {
-    this.aiServiceUrl = this.config.get('AI_FORECAST_URL', 'http://localhost:8000');
+    this.aiServiceUrl = this.config?.get('AI_FORECAST_URL') || process.env.AI_FORECAST_URL || 'http://localhost:8000';
   }
 
   /**
@@ -50,6 +50,8 @@ export class ForecastService {
         suggestedOrder: response.data.suggested_order_quantity,
         confidenceLower: response.data.confidence_lower,
         confidenceUpper: response.data.confidence_upper,
+        source: 'ai',
+        lookaheadDays: 30,
         generatedAt: new Date().toISOString(),
       };
 
@@ -92,6 +94,9 @@ export class ForecastService {
     return {
       productId,
       data: result,
+      source: 'fallback',
+      lookaheadDays: 30,
+      generatedAt: new Date().toISOString(),
       isFallback: true,
     };
   }
@@ -103,5 +108,7 @@ interface MonthlyForecastCache {
   suggestedOrder: number;
   confidenceLower: { date: string; quantity: number }[];
   confidenceUpper: { date: string; quantity: number }[];
+  source: 'ai';
+  lookaheadDays: number;
   generatedAt: string;
 }

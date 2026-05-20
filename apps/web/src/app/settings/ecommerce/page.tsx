@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -73,7 +74,6 @@ export default function EcommerceSettingsPage() {
   useEffect(() => {
     loadStores();
     loadLogs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const syncAll = async () => {

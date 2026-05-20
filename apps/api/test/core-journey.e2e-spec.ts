@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '../src/app.module';
 
 describe('Smart ERP Next - Core User Journey (E2E)', () => {
   let app: INestApplication;
   let authToken: string;
-  let tenantId = 'e2e-tenant-id';
-  let shiftId: string;
+  const tenantId = 'e2e-tenant-id';
+  const shiftId = 'e2e-shift-id';
   let boardId: string;
   let invoiceId: string;
 

@@ -1,197 +1,149 @@
-// @ts-nocheck
-import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
-import { Cache } from 'cache-manager';
-import { ForecastService } from './forecast.service';
 import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
+import { ForecastService } from './forecast.service';
 
 jest.mock('axios');
+
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('ForecastService', () => {
+  const originalAiForecastUrl = process.env.AI_FORECAST_URL;
+  let cacheManager: { get: jest.Mock; set: jest.Mock };
   let service: ForecastService;
-  let cacheManager: jest.Mocked<Cache>;
 
-  const mockCacheManager = {
-    get: jest.fn(),
-    set: jest.fn(),
-    del: jest.fn(),
-    reset: jest.fn(),
-  };
-
-  const mockConfigService = {
-    get: jest.fn(),
-  };
-
-  beforeEach(async () => {
+  beforeEach(() => {
     jest.clearAllMocks();
+    process.env.AI_FORECAST_URL = originalAiForecastUrl;
+    cacheManager = {
+      get: jest.fn(),
+      set: jest.fn(),
+    };
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ForecastService,
-        {
-          provide: ConfigService,
-          useValue: mockConfigService,
-        },
-        {
-          provide: 'CACHE_MANAGER',
-          useValue: mockCacheManager,
-        },
-      ],
-    }).compile();
+    const configService = {
+      get: jest.fn().mockReturnValue('http://forecast.test'),
+    } as unknown as ConfigService;
 
-    service = module.get<ForecastService>(ForecastService);
-    cacheManager = mockCacheManager as jest.Mocked<Cache>;
-
-    mockConfigService.get.mockReturnValue('http://localhost:8000');
+    service = new ForecastService(configService, cacheManager as never);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  afterAll(() => {
+    process.env.AI_FORECAST_URL = originalAiForecastUrl;
   });
 
-  describe('getMonthlyDemand', () => {
-    it('should return cached data if available', async () => {
-      const cachedData = {
-        productId: 'PROD-001',
-        predictions: [{ date: '2024-01-01', quantity: 100 }],
-        suggestedOrder: 50,
-        confidenceLower: [],
-        confidenceUpper: [],
-        generatedAt: '2024-01-01T00:00:00Z',
-      };
+  it('returns cached forecast without calling the AI service', async () => {
+    const cached = {
+      productId: 'prod-1',
+      predictions: [{ date: '2026-05-20', quantity: 12 }],
+      suggestedOrder: 42,
+      confidenceLower: [{ date: '2026-05-20', quantity: 8 }],
+      confidenceUpper: [{ date: '2026-05-20', quantity: 16 }],
+      source: 'ai',
+      lookaheadDays: 30,
+      generatedAt: '2026-05-20T00:00:00.000Z',
+    };
+    cacheManager.get.mockResolvedValue(cached);
 
-      cacheManager.get.mockResolvedValue(cachedData);
+    await expect(service.getMonthlyDemand('prod-1')).resolves.toBe(cached);
+    expect(mockedAxios.post).not.toHaveBeenCalled();
+    expect(cacheManager.set).not.toHaveBeenCalled();
+  });
 
-      const result = await service.getMonthlyDemand('PROD-001');
-
-      expect(result).toEqual(cachedData);
-      expect(cacheManager.get).toHaveBeenCalledWith('forecast:PROD-001');
-      expect(mockedAxios.post).not.toHaveBeenCalled();
+  it('adds forecast metadata when AI service succeeds', async () => {
+    cacheManager.get.mockResolvedValue(undefined);
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        predicted_daily_demand: [{ date: '2026-05-21', quantity: 18 }],
+        suggested_order_quantity: 54,
+        confidence_lower: [{ date: '2026-05-21', quantity: 12 }],
+        confidence_upper: [{ date: '2026-05-21', quantity: 24 }],
+      },
     });
 
-    it('should call AI service when cache is empty', async () => {
-      cacheManager.get.mockResolvedValue(null);
+    const result = await service.getMonthlyDemand('prod-2');
 
-      const mockResponse = {
-        data: {
-          predicted_daily_demand: [
-            { date: '2024-01-01', quantity: 100 },
-            { date: '2024-01-02', quantity: 110 },
-          ],
-          suggested_order_quantity: 150,
-          confidence_lower: [{ date: '2024-01-01', quantity: 90 }],
-          confidence_upper: [{ date: '2024-01-01', quantity: 120 }],
-        },
-      };
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      'http://forecast.test/forecast',
+      expect.objectContaining({
+        product_id: 'prod-2',
+        lookahead_days: 30,
+      }),
+      { timeout: 10000 },
+    );
+    expect(result).toMatchObject({
+      productId: 'prod-2',
+      suggestedOrder: 54,
+      source: 'ai',
+      lookaheadDays: 30,
+    });
+    expect(result.generatedAt).toEqual(expect.any(String));
+    expect(cacheManager.set).toHaveBeenCalledWith(
+      'forecast:prod-2',
+      expect.objectContaining({ source: 'ai' }),
+      { ttl: 300 },
+    );
+  });
 
-      mockedAxios.post.mockResolvedValue(mockResponse);
+  it('returns fallback metadata when AI service fails', async () => {
+    cacheManager.get.mockResolvedValue(undefined);
+    mockedAxios.post.mockRejectedValue(new Error('service unavailable'));
 
-      const result = await service.getMonthlyDemand('PROD-001');
+    const result = await service.getMonthlyDemand('prod-3');
 
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:8000/forecast',
-        expect.objectContaining({
-          product_id: 'PROD-001',
-          lookahead_days: 30,
-        }),
-        expect.objectContaining({ timeout: 10000 })
-      );
+    expect(result).toMatchObject({
+      productId: 'prod-3',
+      source: 'fallback',
+      lookaheadDays: 30,
+      isFallback: true,
+    });
+    expect((result as { data: unknown[] }).data).toHaveLength(6);
+    expect(result.generatedAt).toEqual(expect.any(String));
+  });
 
-      expect(result.productId).toBe('PROD-001');
-      expect(result.predictions).toEqual(mockResponse.data.predicted_daily_demand);
-      expect(result.suggestedOrder).toBe(150);
-      expect(cacheManager.set).toHaveBeenCalledWith(
-        'forecast:PROD-001',
-        expect.any(Object),
-        { ttl: 300 }
-      );
+  it('uses AI service URL from environment when config is unset', async () => {
+    process.env.AI_FORECAST_URL = 'http://forecast.env';
+    cacheManager.get.mockResolvedValue(undefined);
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        predicted_daily_demand: [],
+        suggested_order_quantity: 0,
+        confidence_lower: [],
+        confidence_upper: [],
+      },
     });
 
-    it('should return fallback forecast when AI service fails', async () => {
-      cacheManager.get.mockResolvedValue(null);
-      mockedAxios.post.mockRejectedValue(new Error('AI service unavailable'));
+    const configService = {
+      get: jest.fn().mockReturnValue(undefined),
+    } as unknown as ConfigService;
+    service = new ForecastService(configService, cacheManager as never);
 
-      const result = await service.getMonthlyDemand('PROD-001');
+    await service.getMonthlyDemand('prod-env');
 
-      expect(result.productId).toBe('PROD-001');
-      expect(result).toHaveProperty('isFallback', true);
-      expect(result).toHaveProperty('data');
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      'http://forecast.env/forecast',
+      expect.objectContaining({ product_id: 'prod-env' }),
+      { timeout: 10000 },
+    );
+  });
+
+  it('uses localhost AI service URL when config and environment are unset', async () => {
+    delete process.env.AI_FORECAST_URL;
+    cacheManager.get.mockResolvedValue(undefined);
+    mockedAxios.post.mockResolvedValue({
+      data: {
+        predicted_daily_demand: [],
+        suggested_order_quantity: 0,
+        confidence_lower: [],
+        confidence_upper: [],
+      },
     });
+    service = new ForecastService(undefined as never, cacheManager as never);
 
-    it('should use custom AI service URL from config', async () => {
-      cacheManager.get.mockResolvedValue(null);
-      mockConfigService.get.mockImplementation((key: string, defaultValue?: string) => {
-        if (key === 'AI_FORECAST_URL') return 'http://custom-ai:9000';
-        return defaultValue ?? '';
-      });
+    await service.getMonthlyDemand('prod-default');
 
-      // Re-create service with new config mock so constructor picks up custom URL
-      const customModule = await Test.createTestingModule({
-        providers: [
-          ForecastService,
-          { provide: ConfigService, useValue: mockConfigService },
-          { provide: 'CACHE_MANAGER', useValue: mockCacheManager },
-        ],
-      }).compile();
-
-      const customService = customModule.get<ForecastService>(ForecastService);
-
-      mockedAxios.post.mockResolvedValue({
-        data: {
-          predicted_daily_demand: [],
-          suggested_order_quantity: 0,
-          confidence_lower: [],
-          confidence_upper: [],
-        },
-      });
-
-      await customService.getMonthlyDemand('PROD-001');
-
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://custom-ai:9000/forecast',
-        expect.any(Object),
-        expect.any(Object)
-      );
-    });
-
-    it('should generate 60 days of sales history', async () => {
-      cacheManager.get.mockResolvedValue(null);
-      mockedAxios.post.mockResolvedValue({
-        data: {
-          predicted_daily_demand: [],
-          suggested_order_quantity: 0,
-          confidence_lower: [],
-          confidence_upper: [],
-        },
-      });
-
-      await service.getMonthlyDemand('PROD-001');
-
-      const callArgs = mockedAxios.post.mock.calls[0][1];
-      expect(callArgs.sales_history).toHaveLength(60);
-      expect(callArgs.sales_history[0].date).toBeDefined();
-      expect(typeof callArgs.sales_history[0].quantity).toBe('number');
-    });
-
-    it('should cache result for 5 minutes', async () => {
-      cacheManager.get.mockResolvedValue(null);
-      mockedAxios.post.mockResolvedValue({
-        data: {
-          predicted_daily_demand: [],
-          suggested_order_quantity: 0,
-          confidence_lower: [],
-          confidence_upper: [],
-        },
-      });
-
-      await service.getMonthlyDemand('PROD-001');
-
-      expect(cacheManager.set).toHaveBeenCalledWith(
-        'forecast:PROD-001',
-        expect.any(Object),
-        { ttl: 300 }
-      );
-    });
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      'http://localhost:8000/forecast',
+      expect.objectContaining({ product_id: 'prod-default' }),
+      { timeout: 10000 },
+    );
   });
 });

@@ -6,12 +6,14 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
+    "@smart-erp/database": "workspace:*",
     "@smart-erp/types": "workspace:*",
     "@smart-erp/validation": "workspace:*",
-    "drizzle-orm": "^0.30.10",
+    "drizzle-orm": "^0.31.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@smart-erp/tsconfig": "workspace:*",
     "typescript": "^5.4.5"
   }
 }

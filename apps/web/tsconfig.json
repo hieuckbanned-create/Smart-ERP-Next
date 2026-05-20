@@ -1,12 +1,27 @@
 {
-  "extends": "@smart-erp/tsconfig/nextjs.json",
+  "extends": "@smart-erp/tsconfig/react-library.json",
   "compilerOptions": {
+    "rootDir": ".",
     "baseUrl": ".",
-    "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["src/*"]
+    },
+    "allowJs": true,
+    "incremental": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "__tests__",
+    "src",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
