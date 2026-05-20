@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { authApi } from '@/lib/api-client';
@@ -156,6 +157,13 @@ export default function LoginPage() {
               {t('auth.demoCredentials')}
             </button>
           </div>
+
+          <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">
+            Chưa có tài khoản?{' '}
+            <Link href="/register" className="font-semibold text-blue-600 hover:underline">
+              Đăng ký MVP
+            </Link>
+          </p>
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">

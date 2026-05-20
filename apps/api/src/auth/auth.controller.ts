@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Request, Get } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards, Request, Get, UnauthorizedException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -12,13 +12,23 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() createUserDto: RegisterDto) {
-    return this.authService.register(createUserDto);
+    return this.authService.register(
+      createUserDto.email,
+      createUserDto.password,
+      createUserDto.name,
+      createUserDto.tenantId,
+      createUserDto.companyName,
+    );
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto.email, loginDto.password);
+    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    return this.authService.login(user);
   }
 
   @ApiBearerAuth()

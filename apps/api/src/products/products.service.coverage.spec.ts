@@ -54,7 +54,7 @@ type SelectResponse = {
   chainAfterOrderBy?: boolean;
 };
 
-const selectQueue: SelectResponse[] = [];
+const selectQueue: Array<SelectResponse | any[]> = [];
 const insertReturningQueue: any[][] = [];
 const updateReturningQueue: any[][] = [];
 const deleteReturningQueue: any[][] = [];

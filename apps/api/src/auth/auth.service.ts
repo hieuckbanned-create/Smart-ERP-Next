@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { db } from "@smart-erp/database";
-import { users } from "@smart-erp/database/schema";
+import { tenants, users } from "@smart-erp/database/schema";
 import { eq } from "@smart-erp/database/drizzle";
 import { UsersService } from "../users/users.service";
 import { NotificationsGateway } from "../notifications/notifications.gateway";
@@ -52,22 +52,26 @@ export class AuthService {
     password: string,
     name?: string,
     tenantId?: string,
+    companyName?: string,
   ) {
-    if (!tenantId) {
-      throw new BadRequestException(this.i18n.t('validation.required', undefined, { field: 'tenantId' }));
+    const normalizedEmail = email.trim().toLowerCase();
+    const existingUser = await this.usersService.findByEmail(normalizedEmail);
+    if (existingUser) {
+      throw new ConflictException("Email already in use");
     }
 
+    const resolvedTenantId = tenantId ?? (await this.createTenantForSignup(companyName));
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert directly to include passwordHash (bypasses service which strips it)
     const [user] = await db
       .insert(users)
       .values({
-        email,
+        email: normalizedEmail,
         name: name ?? null,
         passwordHash: hashedPassword,
-        tenantId,
-        role: "user",
+        tenantId: resolvedTenantId,
+        role: tenantId ? "user" : "admin",
       })
       .returning();
 
@@ -80,5 +84,51 @@ export class AuthService {
     });
 
     return this.login(user);
+  }
+
+  private async createTenantForSignup(companyName?: string): Promise<string> {
+    const normalizedName = companyName?.trim();
+    if (!normalizedName) {
+      throw new BadRequestException(
+        this.i18n.t("validation.required", undefined, { field: "companyName" }),
+      );
+    }
+
+    const baseSlug = this.slugify(normalizedName);
+    const slug = await this.uniqueTenantSlug(baseSlug);
+    const [tenant] = await db
+      .insert(tenants)
+      .values({
+        name: normalizedName,
+        slug,
+      })
+      .returning();
+
+    return tenant.id;
+  }
+
+  private async uniqueTenantSlug(baseSlug: string): Promise<string> {
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      const slug = attempt === 0 ? baseSlug : `${baseSlug}-${attempt + 1}`;
+      const [existing] = await db
+        .select({ id: tenants.id })
+        .from(tenants)
+        .where(eq(tenants.slug, slug));
+      if (!existing) return slug;
+    }
+
+    return `${baseSlug}-${Date.now().toString(36)}`;
+  }
+
+  private slugify(value: string): string {
+    const slug = value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 48);
+
+    return slug || `tenant-${Date.now().toString(36)}`;
   }
 }

@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Already authenticated → redirect away from login
-  if (token && pathname === '/login') {
+  if (token && (pathname === '/login' || pathname === '/register')) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
