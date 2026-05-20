@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "drizzle-orm": "^0.30.10",
+    "drizzle-orm": "^0.31.2",
+    "dotenv": "^16.4.5",
     "pg": "^8.11.5"
   },
   "devDependencies": {
@@ -8,20 +9,29 @@
     "drizzle-kit": "^0.22.8",
     "typescript": "^5.4.5"
   },
-  "main": "./src/index.ts",
+  "main": "./dist/src/index.js",
   "name": "@smart-erp/database",
   "private": true,
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "generate": "drizzle-kit generate",
     "migrate": "node ./src/migrate.ts",
     "studio": "drizzle-kit studio"
   },
-  "type": "module",
   "types": "./src/index.ts",
   "version": "0.4.0",
   "exports": {
-    ".": "./src/index.ts",
-    "./drizzle": "./src/drizzle.ts",
-    "./schema": "./src/schema/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./drizzle": {
+      "types": "./src/drizzle.ts",
+      "default": "./dist/src/drizzle.js"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./dist/src/schema/index.js"
+    }
   }
 }

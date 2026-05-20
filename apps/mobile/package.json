@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "@react-native-async-storage/async-storage": "3.0.2",
-    "@react-native-picker/picker": "2.11.4",
+    "@babel/runtime": "^7.29.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-picker/picker": "2.9.0",
     "@react-navigation/native": "7.2.4",
     "@smart-erp/i18n": "workspace:*",
     "@smart-erp/shared": "workspace:*",
@@ -11,26 +12,26 @@
     "detox": "20.50.4",
     "dexie": "4.4.2",
     "expo": "~52.0.0",
-    "expo-camera": "55.0.18",
-    "expo-notifications": "55.0.23",
+    "expo-asset": "~11.0.5",
+    "expo-camera": "~16.0.18",
+    "expo-notifications": "~0.29.14",
     "expo-secure-store": "~14.0.0",
-    "expo-sqlite": "~15.0.0",
     "expo-status-bar": "~2.0.0",
-    "react": "19.2.6",
+    "react": "18.3.1",
     "react-i18next": "^14.1.2",
-    "react-native": "0.76.0",
+    "react-native": "0.76.9",
     "socket.io-client": "4.8.3"
   },
   "devDependencies": {
-    "@types/react": "~19.2.14",
+    "@types/react": "~18.3.12",
     "typescript": "^5.9.3"
   },
   "main": "index.ts",
   "name": "@smart-erp/mobile",
   "private": true,
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "start": "expo start",
     "type-check": "tsc --noEmit",
     "web": "expo start --web"

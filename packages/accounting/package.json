@@ -2,9 +2,11 @@
   "name": "@smart-erp/accounting",
   "version": "0.4.0",
   "private": true,
-  "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/src/index.js",
   "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
   "dependencies": {
     "@smart-erp/database": "workspace:*",
     "@smart-erp/types": "workspace:*",

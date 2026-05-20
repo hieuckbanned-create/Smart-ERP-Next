@@ -3,6 +3,8 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "outDir": "./dist",
+    "rootDir": "../..",
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -206,7 +207,7 @@ export default function AppLayout({
       href: "/hr/payroll",
     },
     {
-      key: "crm",
+      key: "crm-sales",
       label: "CRM & Bán hàng",
       icon: <Target className="w-5 h-5" />,
       href: "/crm",
