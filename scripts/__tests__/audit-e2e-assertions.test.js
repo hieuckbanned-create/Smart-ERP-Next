@@ -1,6 +1,20 @@
-const { auditContent } = require('../audit-e2e-assertions');
+const {
+  AUDIT_ROOT_RELATIVE_PATHS,
+  auditContent,
+} = require('../audit-e2e-assertions');
 
 describe('e2e assertion audit', () => {
+  it('covers every current end-user and app-local test root', () => {
+    expect(AUDIT_ROOT_RELATIVE_PATHS).toEqual([
+      'apps/api/test',
+      'apps/desktop/tests',
+      'apps/mobile/e2e',
+      'apps/web/e2e',
+      'e2e/tests',
+      'tests',
+    ]);
+  });
+
   it('flags broad status arrays that treat platform failures as acceptable', () => {
     const findings = auditContent(
       'apps/api/test/core-journey.e2e-spec.ts',

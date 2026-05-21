@@ -2,10 +2,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
-const AUDIT_ROOTS = [
+const AUDIT_ROOT_RELATIVE_PATHS = [
   'apps/api/test',
+  'apps/desktop/tests',
+  'apps/mobile/e2e',
+  'apps/web/e2e',
   'e2e/tests',
-].map((relativePath) => path.join(REPO_ROOT, relativePath));
+  'tests',
+];
 
 const TEST_FILE_EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx']);
 const BROAD_STATUS_PATTERN = /expect\s*\(\s*\[[^\]]*\b(?:401|404|500)\b[^\]]*\]\s*\)\s*\.toContain\s*\(\s*[a-zA-Z_$][\w$]*\.status\s*\)/;
@@ -28,6 +32,12 @@ function walkTestFiles(dir, files = []) {
 
 function toRepoPath(filePath) {
   return path.relative(REPO_ROOT, filePath).replace(/\\/g, '/');
+}
+
+function getAuditRoots(repoRoot = REPO_ROOT) {
+  return AUDIT_ROOT_RELATIVE_PATHS.map((relativePath) =>
+    path.join(repoRoot, relativePath),
+  );
 }
 
 function auditContent(file, content) {
@@ -66,7 +76,7 @@ function auditFiles(files) {
 }
 
 function main() {
-  const files = AUDIT_ROOTS.flatMap((root) => walkTestFiles(root));
+  const files = getAuditRoots().flatMap((root) => walkTestFiles(root));
   const findings = auditFiles(files);
 
   if (findings.length > 0) {
@@ -87,7 +97,9 @@ if (require.main === module) {
 }
 
 module.exports = {
+  AUDIT_ROOT_RELATIVE_PATHS,
   auditContent,
   auditFiles,
+  getAuditRoots,
   main,
 };
