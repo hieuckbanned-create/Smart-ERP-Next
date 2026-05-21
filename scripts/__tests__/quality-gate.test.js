@@ -25,6 +25,7 @@ describe('quality gate plan', () => {
       'type-check',
       'unit-coverage',
       'web-build',
+      'web-production-build',
       'desktop-build',
       'mobile-type-check',
       'e2e-assertion-audit',
@@ -45,6 +46,7 @@ describe('quality gate plan', () => {
 
     expect(findMissingGateIds(plan, results)).toEqual([
       'web-build',
+      'web-production-build',
       'desktop-build',
       'mobile-type-check',
       'e2e-assertion-audit',

@@ -29,6 +29,7 @@ Runs the release gate:
 
 - all commit gates
 - web build
+- web production build artifact verification
 - native Windows desktop build
 - mobile native type-check
 - e2e assertion audit that blocks `401`, `404`, and `500` as accepted success states
@@ -37,6 +38,10 @@ Runs the release gate:
 - native artifact verification for Android, iOS, and Windows
 
 If APK, IPA, or Windows installable artifacts are missing, release certification must fail.
+
+The web production build artifact verification blocks `.next` outputs that still contain development manifests, `isDev=true` server bundles, or server chunks that reference missing files. This catches the `next start` runtime class of failures where a stale dev `.next` artifact crashes with missing `vendor-chunks/*` modules.
+
+Web development uses `.next-dev` through `pnpm --filter @smart-erp/web dev`, while production build/start uses `.next`. This prevents a running `next dev` process from overwriting production build artifacts during local release checks.
 
 ## Test Directory Map
 

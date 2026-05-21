@@ -23,7 +23,8 @@
     "test:cov": "jest --coverage",
     "test:e2e": "playwright test -c e2e/playwright.config.ts",
     "type-check": "turbo type-check",
-    "verify:native-artifacts": "node scripts/verify-native-artifacts.js"
+    "verify:native-artifacts": "node scripts/verify-native-artifacts.js",
+    "verify:web-production": "node scripts/verify-web-production-build.js apps/web"
   },
   "version": "0.0.0",
   "description": "**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.",

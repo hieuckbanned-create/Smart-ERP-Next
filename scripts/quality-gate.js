@@ -35,6 +35,12 @@ const RELEASE_ONLY_GATES = [
     args: ['--filter', '@smart-erp/web', 'build'],
   },
   {
+    id: 'web-production-build',
+    name: 'Verify web production build artifact',
+    command: 'pnpm',
+    args: ['verify:web-production'],
+  },
+  {
     id: 'desktop-build',
     name: 'Build native Windows desktop MVP',
     command: 'pnpm',
