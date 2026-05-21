@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Commit gate is not release certification.
+# Release claims must run:
+#   pnpm qa:release
+
+pnpm qa:commit
+exit $?

@@ -10,13 +10,19 @@
   },
   "scripts": {
     "build": "turbo build",
+    "audit:e2e-assertions": "node scripts/audit-e2e-assertions.js",
     "clean": "turbo clean && remove-items /all node_modules",
     "dev": "turbo dev",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "lint": "turbo lint",
+    "qa:commit": "node scripts/quality-gate.js commit",
+    "qa:release": "node scripts/quality-gate.js release",
     "test": "jest",
+    "test:api:e2e": "pnpm --filter @smart-erp/api exec jest --config jest-e2e.json --runInBand",
     "test:cov": "jest --coverage",
-    "type-check": "turbo type-check"
+    "test:e2e": "playwright test -c e2e/playwright.config.ts",
+    "type-check": "turbo type-check",
+    "verify:native-artifacts": "node scripts/verify-native-artifacts.js"
   },
   "version": "0.0.0",
   "description": "**Hệ thống quản trị doanh nghiệp thế hệ mới** — vượt trội ERPNext, Odoo, KiotViet, Nhanhvn, MISA về tốc độ, trải nghiệm và khả năng mở rộng.",
