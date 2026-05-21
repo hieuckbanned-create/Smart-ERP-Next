@@ -32,8 +32,8 @@ module.exports = {
       lines: 70,
     },
   },
-  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)', '!**/*.e2e-spec.ts', '!**/e2e/**'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/build/', '/.next/', '/e2e/', '/apps/desktop/tests/', '/.claude/', '/.claude/worktrees/', '/tests/'],
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/build/', '/.next/', '/e2e/', '/apps/desktop/tests/', '/.claude/', '/.claude/worktrees/', '/tests/', '.*\\.e2e-spec\\.ts$'],
   transform: {
     '^.+\\.(ts|tsx|js|jsx)$': ['ts-jest', {
       tsconfig: {
