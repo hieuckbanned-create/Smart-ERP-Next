@@ -24,7 +24,8 @@ import { getTableConfig } from 'drizzle-orm/pg-core';
 const isDrizzleTable = (value: unknown) =>
   !!value &&
   typeof value === 'object' &&
-  Object.getOwnPropertySymbols(value).some((symbol) => String(symbol) === 'Symbol(drizzle:IsDrizzleTable)' && (value as any)[symbol]);
+  Object.getOwnPropertySymbols(value).some((symbol) => String(symbol) === 'Symbol(drizzle:Name)') &&
+  Object.getOwnPropertySymbols(value).some((symbol) => String(symbol) === 'Symbol(drizzle:Columns)');
 
 describe('database schema import coverage', () => {
   it('loads operational schema modules and table definitions', () => {
