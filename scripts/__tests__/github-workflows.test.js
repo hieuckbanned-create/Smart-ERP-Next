@@ -38,6 +38,22 @@ describe('GitHub workflow definitions', () => {
     expect(workflow).not.toContain('npx playwright test');
   });
 
+  it('provisions the API E2E database before running API E2E tests', () => {
+    const workflow = readWorkflow('ci.yml');
+    const doc = YAML.parse(workflow);
+    const job = doc.jobs['test-and-build'];
+    const steps = job.steps;
+    const apiE2EStepIndex = steps.findIndex((step) => step.name === 'Run API E2E tests');
+    const migrateStepIndex = steps.findIndex((step) => step.name === 'Apply database migrations');
+
+    expect(job.services?.postgres).toBeDefined();
+    expect(job.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
+    expect(migrateStepIndex).toBeGreaterThan(-1);
+    expect(apiE2EStepIndex).toBeGreaterThan(migrateStepIndex);
+    expect(steps[migrateStepIndex].run).toContain('drizzle-kit migrate');
+    expect(steps[apiE2EStepIndex].run).toBe('pnpm test:api:e2e');
+  });
+
   it('uses packageManager as the single pnpm version source', () => {
     for (const workflowName of readWorkflowNames()) {
       const doc = YAML.parse(readWorkflow(workflowName));

@@ -15,6 +15,13 @@
       "when": 1779240890938,
       "tag": "0001_milky_night_nurse",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779608960000,
+      "tag": "0002_product_catalog_mvp",
+      "breakpoints": true
     }
   ]
 }
