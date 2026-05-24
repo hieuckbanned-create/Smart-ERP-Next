@@ -6,6 +6,12 @@ function readWorkflow(name) {
   return fs.readFileSync(path.join(__dirname, '..', '..', '.github', 'workflows', name), 'utf8');
 }
 
+function readWorkflowNames() {
+  return fs
+    .readdirSync(path.join(__dirname, '..', '..', '.github', 'workflows'))
+    .filter((name) => name.endsWith('.yml') || name.endsWith('.yaml'));
+}
+
 describe('GitHub workflow definitions', () => {
   it('keeps the release workflow valid YAML', () => {
     const workflow = readWorkflow('release.yml');
@@ -30,5 +36,19 @@ describe('GitHub workflow definitions', () => {
     expect(doc.on.pull_request.branches).toContain('master');
     expect(workflow).toContain('pnpm test:e2e');
     expect(workflow).not.toContain('npx playwright test');
+  });
+
+  it('uses packageManager as the single pnpm version source', () => {
+    for (const workflowName of readWorkflowNames()) {
+      const doc = YAML.parse(readWorkflow(workflowName));
+
+      for (const job of Object.values(doc.jobs)) {
+        for (const step of job.steps) {
+          if (step.uses?.startsWith('pnpm/action-setup@')) {
+            expect(step.with?.version).toBeUndefined();
+          }
+        }
+      }
+    }
   });
 });
