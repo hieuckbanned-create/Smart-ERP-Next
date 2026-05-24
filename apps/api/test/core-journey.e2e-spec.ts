@@ -129,20 +129,26 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
       request(app.getHttpServer())
         .post('/crm/leads')
         .send({
-          name: `Khach hang B2B ${runCode}`,
+          firstName: 'Khach hang',
+          lastName: `B2B ${runCode}`,
           company: 'Smart ERP E2E',
+          source: 'website',
+          status: 'new',
           phone: '0909123456',
-          estimatedValue: 200000000,
-          score: 80,
+          leadScore: 80,
         }),
     );
 
     expect(res.status).toBe(201);
     expect(res.body).toMatchObject({
       tenantId,
-      name: `Khach hang B2B ${runCode}`,
+      firstName: 'Khach hang',
+      lastName: `B2B ${runCode}`,
       company: 'Smart ERP E2E',
+      source: 'website',
+      status: 'new',
     });
+    expect(Number(res.body.leadScore)).toBe(80);
   });
 
   it('creates and issues a draft e-invoice', async () => {

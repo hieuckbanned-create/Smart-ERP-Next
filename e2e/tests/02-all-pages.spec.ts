@@ -4,28 +4,26 @@ import { test, expect, type Page } from '@playwright/test';
 // Helpers
 // ═══════════════════════════════════════════════════════════════════
 
+let authState: { token: string; user: any };
+
 const emailSelector = 'input[type="email"], input[name="email"], input[placeholder*="email" i]';
 const passwordSelector = 'input[type="password"]';
 const loginButtonSelector = 'button[type="submit"], button:has-text("Đăng nhập"), button:has-text("Login")';
 
-async function typeField(page: Page, selector: string, value: string) {
-  const field = page.locator(selector).first();
-  await expect(field).toBeEditable({ timeout: 10000 });
-  await field.click();
-  await page.keyboard.press('Control+A');
-  await page.keyboard.type(value);
-}
-
-async function loginAsAdmin(page: Page) {
-  await page.goto('/login');
-  await typeField(page, emailSelector, 'admin@smarterp.vn');
-  await typeField(page, passwordSelector, 'admin123');
-  const loginBtn = page.locator(loginButtonSelector).first();
-  await expect(loginBtn).toBeEnabled();
-  await Promise.all([
-    page.waitForURL(/\/(dashboard|$)/, { timeout: 15000 }),
-    loginBtn.click(),
+async function authenticatePage(page: Page) {
+  await page.context().addCookies([
+    {
+      name: 'access_token',
+      value: authState.token,
+      url: 'http://localhost:3000',
+      sameSite: 'Lax',
+    },
   ]);
+  await page.addInitScript(({ token, user }) => {
+    localStorage.setItem('access_token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    if (user.tenantId) localStorage.setItem('tenant_id', user.tenantId);
+  }, authState);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -33,8 +31,19 @@ async function loginAsAdmin(page: Page) {
 // ═══════════════════════════════════════════════════════════════════
 
 test.describe('All Pages Navigation (Authenticated)', () => {
+  test.beforeAll(async ({ request }) => {
+    const response = await request.post('http://localhost:3001/auth/login', {
+      data: { email: 'admin@smarterp.vn', password: 'admin123' },
+    });
+    expect(response.ok()).toBeTruthy();
+    const body = await response.json();
+    expect(body.access_token).toBeTruthy();
+    expect(body.user).toBeTruthy();
+    authState = { token: body.access_token, user: body.user };
+  });
+
   test.beforeEach(async ({ page }) => {
-    await loginAsAdmin(page);
+    await authenticatePage(page);
   });
 
   // --- Core Business ---

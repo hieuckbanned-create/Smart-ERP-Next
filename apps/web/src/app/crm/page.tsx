@@ -10,13 +10,13 @@ import { Button, Badge } from '@smart-erp/ui';
 
 interface Lead {
   id: string;
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
+  firstName: string;
+  lastName: string;
+  company?: string;
+  email?: string;
+  phone?: string;
   status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'won' | 'lost';
-  estimatedValue: string;
-  score: number;
+  leadScore: number;
 }
 
 const COLUMNS = [
@@ -39,8 +39,8 @@ export default function CrmPage() {
 
   const fetchLeads = async () => {
     try {
-      const res = await apiClient.get<Lead[]>('/crm/leads');
-      setLeads(res.data);
+      const res = await apiClient.get<Lead[] | { items: Lead[] }>('/crm/leads');
+      setLeads(Array.isArray(res.data) ? res.data : res.data.items || []);
     } catch (e) {
       // ignore
       setLeads([]);
@@ -52,11 +52,11 @@ export default function CrmPage() {
   const handleCreateMockLead = async () => {
     try {
       await apiClient.post('/crm/leads', {
-        name: `Khách hàng ${Math.floor(Math.random() * 1000)}`,
+        firstName: 'Khách',
+        lastName: `hàng ${Math.floor(Math.random() * 1000)}`,
         company: 'Công ty Đối tác',
         phone: '0901234567',
-        estimatedValue: Math.floor(Math.random() * 50) * 1000000,
-        score: Math.floor(Math.random() * 100),
+        leadScore: Math.floor(Math.random() * 100),
       });
       fetchLeads();
     } catch (e) {
@@ -68,14 +68,11 @@ export default function CrmPage() {
     // Optimistic UI Update
     setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus as any } : l));
     try {
-      await apiClient.patch(`/crm/leads/${leadId}/status`, { status: newStatus });
+      await apiClient.patch(`/crm/leads/${leadId}`, { status: newStatus });
     } catch (e) {
       fetchLeads(); // rollback if error
     }
   };
-
-  const formatCurrency = (val: string | number) => 
-    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(val));
 
   return (
     <AuthGuard>
@@ -98,7 +95,7 @@ export default function CrmPage() {
           <div className="flex gap-4 h-full min-w-max">
             {COLUMNS.map(col => {
               const colLeads = leads.filter(l => l.status === col.id);
-              const totalValue = colLeads.reduce((acc, l) => acc + Number(l.estimatedValue || 0), 0);
+              const totalScore = colLeads.reduce((acc, l) => acc + Number(l.leadScore || 0), 0);
 
               return (
                 <div 
@@ -120,7 +117,7 @@ export default function CrmPage() {
                   </div>
                   
                   <div className="text-xs font-bold text-gray-400 mb-3 px-1">
-                    {formatCurrency(totalValue)}
+                    Tổng điểm: {totalScore}
                   </div>
 
                   <div className="flex-1 overflow-y-auto space-y-3 pr-1">
@@ -132,9 +129,9 @@ export default function CrmPage() {
                         className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-sm cursor-grab active:cursor-grabbing border border-transparent hover:border-blue-300 transition-colors"
                       >
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-bold text-gray-800 dark:text-white">{lead.name}</h4>
-                          <Badge variant={lead.score > 80 ? 'success' : lead.score > 50 ? 'warning' : 'default'}>
-                            Điểm: {lead.score}
+                          <h4 className="font-bold text-gray-800 dark:text-white">{lead.firstName} {lead.lastName}</h4>
+                          <Badge variant={lead.leadScore > 80 ? 'success' : lead.leadScore > 50 ? 'warning' : 'default'}>
+                            Điểm: {lead.leadScore}
                           </Badge>
                         </div>
                         
@@ -145,10 +142,10 @@ export default function CrmPage() {
                         </div>
 
                         <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                          <span className="text-xs font-medium text-gray-400">Giá trị</span>
+                          <span className="text-xs font-medium text-gray-400">Điểm lead</span>
                           <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
                             <FiDollarSign size={12} />
-                            {Number(lead.estimatedValue).toLocaleString('vi-VN')}
+                            {Number(lead.leadScore || 0).toLocaleString('vi-VN')}
                           </span>
                         </div>
                       </div>

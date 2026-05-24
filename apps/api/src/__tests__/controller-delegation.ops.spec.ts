@@ -201,19 +201,19 @@ describe('operations controller delegation coverage', () => {
     };
     const helpdesk = new HelpdeskController(helpdeskService as any);
     helpdesk.createTicket(req, { title: 'Printer' });
-    helpdesk.findAll(req, '2', '25', 'open', 'high', '7', '9');
+    helpdesk.findAll(req, '2', '25', 'open', 'high', 'assignee-7', 'customer-9');
     helpdesk.findAll(req);
-    helpdesk.findOne(req, 1);
-    helpdesk.updateStatus(req, 1, 'closed');
-    helpdesk.assign(req, 1, 7);
-    helpdesk.addComment(req, 1, 'Done', true);
-    helpdesk.getComments(req, 1);
-    helpdesk.getHistory(req, 1);
+    helpdesk.findOne(req, 'ticket-1');
+    helpdesk.updateStatus(req, 'ticket-1', 'closed');
+    helpdesk.assign(req, 'ticket-1', 'assignee-7');
+    helpdesk.addComment(req, 'ticket-1', 'Done', true);
+    helpdesk.getComments(req, 'ticket-1');
+    helpdesk.getHistory(req, 'ticket-1');
     helpdesk.getStats(req);
 
     expect(helpdeskService.findAll).toHaveBeenCalledWith('tenant-1', {
-      assigneeId: 7,
-      customerId: 9,
+      assigneeId: 'assignee-7',
+      customerId: 'customer-9',
       limit: 25,
       page: 2,
       priority: 'high',
@@ -227,7 +227,7 @@ describe('operations controller delegation coverage', () => {
       priority: undefined,
       status: undefined,
     });
-    expect(helpdeskService.addComment).toHaveBeenCalledWith('tenant-1', 'user-1', 1, 'Done', true);
+    expect(helpdeskService.addComment).toHaveBeenCalledWith('tenant-1', 'user-1', 'ticket-1', 'Done', true);
   });
 
   it('delegates e-invoice lifecycle actions and date defaults', () => {

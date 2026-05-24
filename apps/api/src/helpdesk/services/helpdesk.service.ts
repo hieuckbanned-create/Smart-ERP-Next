@@ -26,7 +26,7 @@ export class HelpdeskService {
     return ticket;
   }
 
-  async findAll(tenantId: string, query: { page?: number; limit?: number; status?: string; priority?: string; assigneeId?: number; customerId?: number }) {
+  async findAll(tenantId: string, query: { page?: number; limit?: number; status?: string; priority?: string; assigneeId?: string | number; customerId?: string | number }) {
     const { serviceTickets: tickets } = await import('@smart-erp/database/schema');
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 20, 100);
@@ -42,14 +42,14 @@ export class HelpdeskService {
     return { items, total: count, page, limit, totalPages: Math.ceil(count / limit) };
   }
 
-  async findOne(tenantId: string, id: number) {
+  async findOne(tenantId: string, id: string | number) {
     const { serviceTickets: tickets } = await import('@smart-erp/database/schema');
     const [ticket] = await db.select().from(tickets).where(and(eq(tickets.tenantId, tenantId), eq(tickets.id, id)));
     if (!ticket) throw new NotFoundException('Ticket not found');
     return ticket;
   }
 
-  async updateStatus(tenantId: string, userId: string, id: number, status: string) {
+  async updateStatus(tenantId: string, userId: string, id: string | number, status: string) {
     const { serviceTickets: tickets, ticketHistory } = await import('@smart-erp/database/schema');
     const ticket = await this.findOne(tenantId, id);
     const [updated] = await db.update(tickets).set({ status, updatedAt: new Date(), ...(status === 'resolved' ? { resolvedAt: new Date() } : {}), ...(status === 'closed' ? { closedAt: new Date() } : {}) }).where(and(eq(tickets.tenantId, tenantId), eq(tickets.id, id))).returning();
@@ -59,7 +59,7 @@ export class HelpdeskService {
     return updated;
   }
 
-  async assignTicket(tenantId: string, userId: string, id: number, assigneeId: number) {
+  async assignTicket(tenantId: string, userId: string, id: string | number, assigneeId: string | number) {
     const { serviceTickets: tickets, ticketHistory } = await import('@smart-erp/database/schema');
     const ticket = await this.findOne(tenantId, id);
     const [updated] = await db.update(tickets).set({ assignedTechnicianId: assigneeId, updatedAt: new Date() }).where(and(eq(tickets.tenantId, tenantId), eq(tickets.id, id))).returning();
@@ -69,7 +69,7 @@ export class HelpdeskService {
     return updated;
   }
 
-  async addComment(tenantId: string, userId: string, ticketId: number, content: string, isInternal = false) {
+  async addComment(tenantId: string, userId: string, ticketId: string | number, content: string, isInternal = false) {
     const { ticketComments } = await import('@smart-erp/database/schema');
     const ticket = await this.findOne(tenantId, ticketId);
     if (!ticketComments) return { ticketId, authorId: userId, content, isInternal };
@@ -77,13 +77,13 @@ export class HelpdeskService {
     return comment;
   }
 
-  async getComments(tenantId: string, ticketId: number) {
+  async getComments(tenantId: string, ticketId: string | number) {
     const { ticketComments } = await import('@smart-erp/database/schema');
     if (!ticketComments) return [];
     return db.select().from(ticketComments).where(and(eq(ticketComments.tenantId, tenantId), eq(ticketComments.ticketId, ticketId))).orderBy(ticketComments.createdAt);
   }
 
-  async getHistory(tenantId: string, ticketId: number) {
+  async getHistory(tenantId: string, ticketId: string | number) {
     const { ticketHistory } = await import('@smart-erp/database/schema');
     if (!ticketHistory) return [];
     return db.select().from(ticketHistory).where(and(eq(ticketHistory.tenantId, tenantId), eq(ticketHistory.ticketId, ticketId))).orderBy(ticketHistory.createdAt);
