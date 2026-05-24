@@ -26,4 +26,12 @@ describe('workspace package manifests', () => {
 
     expect(manifest.devDependencies).toHaveProperty('typescript', '5.9.3');
   });
+
+  it('maps workspace packages in API e2e Jest config before build artifacts exist', () => {
+    const config = readJson('apps/api/jest-e2e.json');
+
+    expect(config.moduleNameMapper['^@smart-erp/(.*)$']).toBe(
+      '<rootDir>/../../packages/$1/src/index.ts',
+    );
+  });
 });
