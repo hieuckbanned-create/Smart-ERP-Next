@@ -14,6 +14,20 @@ permissions:
 jobs:
   publish-release:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: smart_erp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d smart_erp_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,7 +47,16 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
+      - name: Apply database migrations
+        working-directory: packages/database
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
+        run: pnpm exec drizzle-kit migrate
+
       - name: Run release quality gate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
+          JWT_SECRET: release-e2e-secret
         run: |
           pnpm qa:release
 
