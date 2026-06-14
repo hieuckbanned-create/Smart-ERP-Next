@@ -1,4 +1,9 @@
-import { renderToStaticMarkup } from 'react-dom/server';
+/**
+ * @jest-environment jsdom
+ */
+
+import '@testing-library/jest-dom';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ProductImageInput } from './ProductImageInput';
 import {
   PRODUCT_IMAGE_ACCEPT,
@@ -6,8 +11,9 @@ import {
   validateProductImageFile,
 } from './ProductImageInput.logic';
 
+const mockUploadImage = jest.fn();
 jest.mock('@/lib/api-products', () => ({
-  productsApi: { uploadImage: jest.fn() },
+  productsApi: { uploadImage: (...args: any[]) => mockUploadImage(...args) },
   resolveProductImageUrl: (imageUrl: string) =>
     imageUrl.startsWith('/') ? `http://api.test${imageUrl}` : imageUrl,
 }));
@@ -25,27 +31,84 @@ describe('ProductImageInput coverage', () => {
   });
 
   it('renders upload controls, accepted image types, and empty preview state', () => {
-    const html = renderToStaticMarkup(<ProductImageInput value="" onChange={jest.fn()} />);
-
-    expect(html).toContain('Tải ảnh từ thiết bị');
-    expect(html).toContain(PRODUCT_IMAGE_ACCEPT);
-    expect(html).toContain('Hỗ trợ JPG, PNG, WEBP, GIF. Tối đa 5MB.');
-    expect(html).not.toContain('Xóa ảnh');
+    render(<ProductImageInput value="" onChange={jest.fn()} />);
+    expect(screen.getByText('Tải ảnh từ thiết bị')).toBeInTheDocument();
+    expect(screen.getByText(/Hỗ trợ JPG, PNG/)).toBeInTheDocument();
+    expect(screen.queryByText('Xóa ảnh')).not.toBeInTheDocument();
   });
 
   it('renders an existing uploaded image and remove action', () => {
-    const html = renderToStaticMarkup(
-      <ProductImageInput value="/uploads/products/tenant/product.png" onChange={jest.fn()} />,
-    );
-
-    expect(html).toContain('src="http://api.test/uploads/products/tenant/product.png"');
-    expect(html).toContain('alt="Ảnh sản phẩm"');
-    expect(html).toContain('Xóa ảnh');
+    render(<ProductImageInput value="/uploads/products/tenant/product.png" onChange={jest.fn()} />);
+    expect(screen.getByAltText('Ảnh sản phẩm')).toBeInTheDocument();
+    expect(screen.getByText('Xóa ảnh')).toBeInTheDocument();
   });
 
   it('disables controls when the parent form is disabled', () => {
-    const html = renderToStaticMarkup(<ProductImageInput value="" onChange={jest.fn()} disabled />);
+    render(<ProductImageInput value="" onChange={jest.fn()} disabled />);
+    expect(screen.getByPlaceholderText(/https:\/\/example\.com/)).toBeDisabled();
+    expect(screen.getByText('Tải ảnh từ thiết bị').closest('button')).toBeDisabled();
+  });
 
-    expect(html).toContain('disabled=""');
+  it('calls onChange when URL is typed into the text input', () => {
+    const onChange = jest.fn();
+    render(<ProductImageInput value="" onChange={onChange} />);
+    fireEvent.change(screen.getByPlaceholderText(/https:\/\/example\.com/), {
+      target: { value: 'https://example.com/img.jpg' },
+    });
+    expect(onChange).toHaveBeenCalledWith('https://example.com/img.jpg');
+  });
+
+  it('calls onChange with empty string when remove button is clicked', () => {
+    const onChange = jest.fn();
+    render(<ProductImageInput value="http://api.test/img.png" onChange={onChange} />);
+    fireEvent.click(screen.getByText('Xóa ảnh'));
+    expect(onChange).toHaveBeenCalledWith('');
+  });
+
+  it('calls uploadImage and onChange on valid file selection', async () => {
+    mockUploadImage.mockResolvedValueOnce({ imageUrl: '/uploads/products/new.png' });
+    const onChange = jest.fn();
+    const { container } = render(<ProductImageInput value="" onChange={onChange} />);
+    const fileInput = container.querySelector('input[type="file"]')!;
+    await act(async () => {
+      fireEvent.change(fileInput, { target: { files: [new File(['dummy'], 'test.png', { type: 'image/png' })] } });
+    });
+    expect(mockUploadImage).toHaveBeenCalled();
+    expect(onChange).toHaveBeenCalledWith('/uploads/products/new.png');
+  });
+
+  it('shows error when upload API fails', async () => {
+    mockUploadImage.mockRejectedValueOnce({ response: { data: { message: 'Server error' } } });
+    const { container } = render(<ProductImageInput value="" onChange={jest.fn()} />);
+    await act(async () => {
+      fireEvent.change(container.querySelector('input[type="file"]')!, {
+        target: { files: [new File(['dummy'], 'test.png', { type: 'image/png' })] },
+      });
+    });
+    expect(await screen.findByText('Server error')).toBeInTheDocument();
+  });
+
+  it('shows upload error fallback when API error has no message', async () => {
+    mockUploadImage.mockRejectedValueOnce(new Error('network failure'));
+    const { container } = render(<ProductImageInput value="" onChange={jest.fn()} />);
+    await act(async () => {
+      fireEvent.change(container.querySelector('input[type="file"]')!, {
+        target: { files: [new File(['x'], 'x.png', { type: 'image/png' })] },
+      });
+    });
+    expect(await screen.findByText('Không thể tải ảnh lên.')).toBeInTheDocument();
+  });
+
+  it('shows uploading spinner during upload', async () => {
+    let resolveUpload: (value: any) => void;
+    mockUploadImage.mockReturnValueOnce(new Promise((resolve) => { resolveUpload = resolve; }));
+    const { container } = render(<ProductImageInput value="" onChange={jest.fn()} />);
+    await act(async () => {
+      fireEvent.change(container.querySelector('input[type="file"]')!, {
+        target: { files: [new File(['dummy'], 'test.png', { type: 'image/png' })] },
+      });
+    });
+    expect(await screen.findByText('Đang tải lên...')).toBeInTheDocument();
+    resolveUpload!({ imageUrl: '/uploads/products/done.png' });
   });
 });

@@ -30,6 +30,7 @@
   "devDependencies": {
     "@smart-erp/eslint-config": "workspace:*",
     "@smart-erp/tsconfig": "workspace:*",
+    "@testing-library/user-event": "14.6.1",
     "@types/node": "^20.19.41",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",

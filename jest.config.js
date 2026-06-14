@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>'],
   collectCoverage: true,
+  setupFiles: ['<rootDir>/scripts/jest-setup.js'],
   cacheDirectory: '<rootDir>/.jest-cache',
   collectCoverageFrom: [
     'apps/**/*.ts',
