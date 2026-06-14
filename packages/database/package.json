@@ -19,7 +19,7 @@
     "studio": "drizzle-kit studio"
   },
   "types": "./src/index.ts",
-  "version": "0.4.0",
+  "version": "0.1.0",
   "exports": {
     ".": {
       "types": "./src/index.ts",

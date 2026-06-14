@@ -1,6 +1,6 @@
 [package]
 name = "smart-erp-desktop"
-version = "0.4.0"
+version = "0.1.0"
 description = "Smart ERP Next - Desktop Application"
 authors = ["Smart ERP Team"]
 license = "MIT"

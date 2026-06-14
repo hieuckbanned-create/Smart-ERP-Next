@@ -250,9 +250,9 @@ docker-compose -f docker-compose.production.yml up -d
 
 ---
 
-**Last Verified**: 2026-05-17  
-**Next Review Due**: 2026-06-17  
-**System Version**: Smart ERP Next v0.4.0
+**Last Verified**: 2026-06-15  
+**Next Review Due**: 2026-07-15  
+**System Version**: Smart ERP Next v0.1.0
 
 ---
 
