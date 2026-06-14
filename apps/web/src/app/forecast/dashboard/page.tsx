@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chart } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
@@ -29,11 +29,7 @@ export default function ForecastDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [productId, setProductId] = useState('PROD-001');
 
-  useEffect(() => {
-    fetchForecast();
-  }, [productId]);
-
-  const fetchForecast = async () => {
+  const fetchForecast = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -44,7 +40,11 @@ export default function ForecastDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [api, productId, t]);
+
+  useEffect(() => {
+    fetchForecast();
+  }, [fetchForecast]);
 
   const chartData = data?.predictions?.slice(0, 30).map((d) => ({
     x: d.date.split('-').slice(1).join('/'),

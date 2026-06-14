@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, LogIn, Building2, Eye, EyeOff } from 'lucide-react';
-import { authApi } from '@/lib/api-client';
+import { apiClient, authApi } from '@/lib/api-client';
 
 export default function LoginPage() {
   const { t } = useTranslation('common');
@@ -30,11 +30,18 @@ export default function LoginPage() {
       const email = emailRef.current?.value.trim() ?? '';
       const password = passwordRef.current?.value ?? '';
       const response = await authApi.login(email, password);
-      const { access_token, user } = response.data;
+      const { access_token } = response.data;
+      let user = response.data.user;
       localStorage.setItem('access_token', access_token);
+      if (!user) {
+        const profileResponse = await apiClient.get('/auth/profile', {
+          headers: { Authorization: `Bearer ${access_token}` },
+        });
+        user = profileResponse.data;
+      }
       localStorage.setItem('user', JSON.stringify(user));
       document.cookie = `access_token=${encodeURIComponent(access_token)}; Path=/; Max-Age=604800; SameSite=Lax`;
-      if (user.tenantId) localStorage.setItem('tenant_id', user.tenantId);
+      if (user?.tenantId) localStorage.setItem('tenant_id', user.tenantId);
       const from = new URLSearchParams(window.location.search).get('from');
       const redirectTo = from?.startsWith('/') && !from.startsWith('//') ? from : '/dashboard';
       router.push(redirectTo);
@@ -79,6 +86,7 @@ export default function LoginPage() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   ref={emailRef}
+                  name="email"
                   type="email"
                   disabled={!mounted || loading}
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
@@ -102,6 +110,7 @@ export default function LoginPage() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   ref={passwordRef}
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   disabled={!mounted || loading}
                   className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
@@ -157,7 +166,7 @@ export default function LoginPage() {
                 </p>
               </div>
               <button
-                formAction="button"
+                type="button"
                 onClick={fillDemo}
                 className="px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-xs text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition"
               >

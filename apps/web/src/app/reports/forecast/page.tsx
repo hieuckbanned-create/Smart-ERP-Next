@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -14,27 +14,29 @@ interface ForecastItem {
   forecastedDemand: number[];
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function ForecastPage() {
   const { t } = useTranslation('common');
   const [forecast, setForecast] = useState<ForecastItem[]>([]);
   const [days, setDays] = useState(30);
   const [loading, setLoading] = useState(true);
 
-  const fetchForecast = async () => {
+  const fetchForecast = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get('/insights/forecast', { params: { days } });
-      setForecast(res.data.forecast);
+      setForecast(asArray<ForecastItem>(res.data?.forecast ?? res.data));
     } catch (err) {
-      console.error(err);
+      setForecast([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [days]);
 
   useEffect(() => {
     fetchForecast();
-  }, [days]);
+  }, [fetchForecast]);
 
   return (
     <AuthGuard>

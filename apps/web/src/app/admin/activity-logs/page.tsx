@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useTranslation } from '@smart-erp/i18n';
 import { apiClient } from '@/lib/api-client';
 import { Button, Input, Select, Table, TableHeader, TableRow, TableHead, TableBody, TableCell, DatePicker } from '@smart-erp/shared';
@@ -18,6 +18,8 @@ interface ActivityLog {
   details: any;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function ActivityLogsPage() {
   const { t } = useTranslation('common');
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -31,24 +33,28 @@ export default function ActivityLogsPage() {
     toDate: '',
   });
 
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
     setLoading(true);
     try {
+      const activeFilters = Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => Boolean(value)),
+      );
       const res = await apiClient.get('/activity', {
-        params: { page, limit: 20, ...filters },
+        params: { page, limit: 20, ...activeFilters },
       });
-      setLogs(res.data.items);
-      setTotalPages(res.data.totalPages);
+      setLogs(asArray<ActivityLog>(res.data?.items ?? res.data));
+      setTotalPages(res.data?.totalPages ?? 1);
     } catch (error) {
-      console.error('Failed to fetch activity logs', error);
+      setLogs([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters, page]);
 
   useEffect(() => {
     fetchLogs();
-  }, [page, filters]);
+  }, [fetchLogs]);
 
   const exportCSV = () => {
     const headers = [t('activityLogs.timestamp'), t('activityLogs.user'), t('activityLogs.action'), t('activityLogs.entityType'), t('activityLogs.entityId'), t('activityLogs.details')];

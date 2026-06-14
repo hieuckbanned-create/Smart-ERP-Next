@@ -26,7 +26,7 @@ export function Dashboard() {
 
   const fetchDashboard = async () => {
     try {
-      const res = await fetch('http://localhost:3000/insights/dashboard', {
+      const res = await fetch('http://localhost:3456/insights/dashboard', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           'X-Tenant-ID': localStorage.getItem('tenant_id') || '',

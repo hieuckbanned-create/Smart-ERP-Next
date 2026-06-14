@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 // Comprehensive API Endpoint Tests — every NestJS route
 // ═══════════════════════════════════════════════════════════════════
 
-const API = 'http://localhost:3001';
+const API = 'http://localhost:3456';
 let token: string;
 
 test.beforeAll(async ({ request }) => {

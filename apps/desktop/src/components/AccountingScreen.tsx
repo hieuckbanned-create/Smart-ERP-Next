@@ -25,7 +25,7 @@ export function AccountingScreen() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:3000/accounting/dashboard', {
+      const res = await fetch('http://localhost:3456/accounting/dashboard', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           'X-Tenant-ID': localStorage.getItem('tenant_id') || '',

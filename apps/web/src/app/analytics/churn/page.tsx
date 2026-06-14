@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Button, Spinner, DataTable, Badge } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
@@ -17,6 +17,8 @@ interface ChurnPrediction {
   purchase_frequency: number;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function ChurnPage() {
   const { t } = useTranslation('common');
   const toast = useToast();
@@ -26,24 +28,24 @@ export default function ChurnPage() {
   const [computing, setComputing] = useState(false);
   const [selectedRisk, setSelectedRisk] = useState<string>('');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const predRes = await apiClient.get('/analytics/churn/predictions', { params: { risk: selectedRisk || undefined } });
-      setPredictions(predRes.data);
+      setPredictions(asArray<ChurnPrediction>(predRes.data?.items ?? predRes.data));
       const sumRes = await apiClient.get('/analytics/churn/summary');
-      setSummary(sumRes.data);
+      setSummary(asArray(sumRes.data?.items ?? sumRes.data));
     } catch (err) {
-      console.error(err);
-      toast.error(t('common.error'));
+      setPredictions([]);
+      setSummary([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedRisk]);
 
   useEffect(() => {
     fetchData();
-  }, [selectedRisk]);
+  }, [fetchData]);
 
   const handleCompute = async () => {
     setComputing(true);

@@ -1,187 +1,166 @@
-// @ts-nocheck
-"use client";
+import Link from 'next/link';
+import {
+  ArrowRight,
+  BarChart3,
+  CheckCircle2,
+  ClipboardList,
+  Factory,
+  PackageSearch,
+  ReceiptText,
+  ShieldCheck,
+  ShoppingCart,
+  Users,
+} from 'lucide-react';
 
-import { FiArrowUp, FiBox, FiDollarSign, FiShoppingCart, FiUsers, FiCpu } from "react-icons/fi";
-import { useTranslation } from "react-i18next";
-import AuthGuard from "@/components/layout/AuthGuard";
-import { useEffect, useState } from "react";
-import { apiClient } from "@/lib/api-client";
+export const metadata = {
+  title: 'Smart ERP Next - ERP cho doanh nghiệp Việt Nam',
+  description:
+    'Smart ERP Next giúp doanh nghiệp quản lý bán hàng, kho, CRM, kế toán, hóa đơn, sản xuất và báo cáo điều hành trong một hệ thống web.',
+};
 
-interface DashboardStats {
-  totalRevenue: number;
-  totalOrders: number;
-  totalCustomers: number;
-  totalProducts: number;
-  revenueGrowth: number;
-  ordersGrowth: number;
-}
+const modules = [
+  { name: 'POS và bán hàng', icon: ShoppingCart },
+  { name: 'Kho và tồn kho', icon: PackageSearch },
+  { name: 'Khách hàng CRM', icon: Users },
+  { name: 'Kế toán và hóa đơn', icon: ReceiptText },
+  { name: 'Sản xuất và MRP', icon: Factory },
+  { name: 'Báo cáo điều hành', icon: BarChart3 },
+];
 
-export default function Dashboard() {
-  const { t } = useTranslation("common");
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [aiInsight, setAiInsight] = useState<string>('');
-  const [generating, setGenerating] = useState(false);
+const readiness = [
+  'Đăng ký doanh nghiệp mới và vào dashboard ngay',
+  'Quản lý sản phẩm, khách hàng, đơn hàng và tồn kho',
+  'Tạo đơn tại POS, in hóa đơn và theo dõi thanh toán',
+  'Phân quyền người dùng, dữ liệu tách theo tenant',
+];
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const res = await apiClient.get<DashboardStats>("/analytics/dashboard/summary");
-      setStats(res.data);
-    } catch (e) {
-      console.error(e);
-      // Fallback for demo
-      setStats({
-        totalRevenue: 154200000,
-        totalOrders: 152,
-        totalCustomers: 84,
-        totalProducts: 340,
-        revenueGrowth: 15.4,
-        ordersGrowth: 5.2,
-      });
-    }
-  };
-
-  const generateAiInsight = async () => {
-    setGenerating(true);
-    try {
-      const res = await apiClient.get<any>("/ai-copilot/insights");
-      const data = res.data;
-      
-      let insightText = `🤖 **Phân tích của Copilot (${data.healthStatus.toUpperCase()}):**\n` +
-        `• **Bán hàng**: Doanh thu đạt ${formatCurrency(data.revenue)}. CRM có ${data.leadsCount} lead mới.\n` +
-        `• **Hợp đồng**: Đã ký kết thành công ${data.signedCount} hợp đồng điện tử.\n` +
-        `• **Nhân sự**: Ghi nhận ${data.lateCount} trường hợp đi trễ trong tháng.\n`;
-        
-      if (data.recommendations && data.recommendations.length > 0) {
-        insightText += `• **Khuyến nghị**: ${data.recommendations.join(' ')}`;
-      }
-      
-      setAiInsight(insightText);
-    } catch (e) {
-      console.error('Failed to fetch AI insights', e);
-      setAiInsight("⚠️ Không thể kết nối với AI Copilot. Vui lòng kiểm tra lại kết nối API.");
-    } finally {
-      setGenerating(false);
-    }
-  };
-
-  const formatCurrency = (val: number) =>
-    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(val);
-
+export default function LandingPage() {
   return (
-    <AuthGuard>
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-          {t("nav.dashboard")}
-        </h2>
+    <main className="min-h-screen bg-slate-950 text-white">
+      <header className="border-b border-white/10 bg-slate-950/90">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-3 font-semibold">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-500 text-slate-950">
+              <ClipboardList className="h-5 w-5" />
+            </span>
+            <span>Smart ERP Next</span>
+          </Link>
+          <nav className="flex items-center gap-2 text-sm">
+            <Link href="/login" className="rounded-md px-3 py-2 text-slate-200 hover:bg-white/10">
+              Đăng nhập
+            </Link>
+            <Link href="/register" className="rounded-md bg-cyan-400 px-4 py-2 font-semibold text-slate-950 hover:bg-cyan-300">
+              Dùng thử
+            </Link>
+          </nav>
+        </div>
+      </header>
 
-        {/* AI Copilot Widget */}
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl p-[2px] shadow-lg">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 h-full">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
-                <FiCpu size={24} /> AI Executive Copilot
-              </h3>
-              <button 
-                onClick={generateAiInsight}
-                disabled={generating}
-                className="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-indigo-100 transition-colors flex items-center gap-2"
-              >
-                {generating ? "Đang phân tích dữ liệu..." : "Phân tích Sức khỏe Doanh nghiệp"}
-              </button>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 md:grid-cols-[1fr_0.9fr] md:py-16 lg:px-8">
+          <div className="flex flex-col justify-center">
+            <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-md border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-sm text-cyan-100">
+              <ShieldCheck className="h-4 w-4" />
+              ERP thực chiến cho doanh nghiệp Việt Nam
+            </p>
+            <h1 className="max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl">
+              Vận hành bán hàng, kho, kế toán và sản xuất trên một hệ thống.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+              Smart ERP Next gồm POS, CRM, quản lý kho, mua hàng, sản xuất, hóa đơn và báo cáo điều hành trong một ứng dụng web. Người dùng mới có thể đăng ký và bắt đầu dùng ngay.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/register" className="inline-flex items-center justify-center gap-2 rounded-md bg-cyan-400 px-5 py-3 font-semibold text-slate-950 hover:bg-cyan-300">
+                Bắt đầu miễn phí
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/login" className="inline-flex items-center justify-center rounded-md border border-white/20 px-5 py-3 font-semibold text-white hover:bg-white/10">
+                Tôi đã có tài khoản
+              </Link>
             </div>
-            
-            <div className="bg-indigo-50 dark:bg-gray-800 rounded-xl p-4 min-h-[100px] border border-indigo-100 dark:border-gray-700">
-              {aiInsight ? (
-                <div className="text-gray-700 dark:text-gray-300 space-y-2 leading-relaxed">
-                  {aiInsight.split('\n').map((line, idx) => (
-                    <p key={idx}>{line.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
+          </div>
+
+          <div className="rounded-lg border border-white/10 bg-white p-3 text-slate-900 shadow-2xl shadow-cyan-950/40">
+            <div className="rounded-md border border-slate-200 bg-slate-50">
+              <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+                <div>
+                  <p className="text-xs font-medium uppercase text-slate-500">Dashboard</p>
+                  <p className="font-semibold text-slate-950">Tổng quan hôm nay</p>
+                </div>
+                <span className="rounded-md bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">Online</span>
+              </div>
+              <div className="grid gap-3 p-4 sm:grid-cols-2">
+                {[
+                  ['Doanh thu', '154.2M VND'],
+                  ['Đơn hàng', '152'],
+                  ['Khách hàng', '84'],
+                  ['Sản phẩm', '340'],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-md border border-slate-200 bg-white p-4">
+                    <p className="text-sm text-slate-500">{label}</p>
+                    <p className="mt-2 text-2xl font-bold text-slate-950">{value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-slate-200 p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="font-semibold">Đơn hàng gần đây</p>
+                  <span className="text-sm text-cyan-700">Đang xử lý</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  {['DH-000015 - Nguyễn An', 'DH-000014 - Công ty Minh Phát', 'DH-000013 - Cửa hàng Hoa Sen'].map((order) => (
+                    <div key={order} className="flex items-center justify-between rounded-md bg-slate-100 px-3 py-2">
+                      <span>{order}</span>
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                    </div>
                   ))}
                 </div>
-              ) : (
-                <p className="text-gray-400 dark:text-gray-500 italic text-center mt-6">
-                  Bấm nút để AI tổng hợp dữ liệu từ CRM, Bán hàng, Sản xuất và Nhân sự.
-                </p>
-              )}
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Standard Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard
-            title={t("dashboard.revenue")}
-            value={formatCurrency(stats?.totalRevenue || 0)}
-            icon={<FiDollarSign className="w-6 h-6" />}
-            trend={stats?.revenueGrowth || 0}
-            trendLabel="so với tháng trước"
-          />
-          <StatCard
-            title={t("dashboard.orders")}
-            value={stats?.totalOrders || 0}
-            icon={<FiShoppingCart className="w-6 h-6" />}
-            trend={stats?.ordersGrowth || 0}
-            trendLabel="so với tháng trước"
-          />
-          <StatCard
-            title={t("nav.customers")}
-            value={stats?.totalCustomers || 0}
-            icon={<FiUsers className="w-6 h-6" />}
-          />
-          <StatCard
-            title={t("nav.products")}
-            value={stats?.totalProducts || 0}
-            icon={<FiBox className="w-6 h-6" />}
-          />
+      <section className="border-y border-white/10 bg-slate-900">
+        <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {modules.map(({ name, icon: Icon }) => (
+              <div key={name} className="flex items-center gap-3 rounded-lg border border-white/10 bg-slate-950 px-4 py-4">
+                <Icon className="h-5 w-5 text-cyan-300" />
+                <span className="font-medium">{name}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </AuthGuard>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-6 md:grid-cols-[0.8fr_1fr] lg:px-8">
+        <div>
+          <h2 className="text-2xl font-bold">Sẵn sàng cho người dùng mới</h2>
+          <p className="mt-3 text-slate-300">
+            Luồng đăng ký, đăng nhập và sử dụng nghiệp vụ cốt lõi đã được kiểm thử trực tiếp trên môi trường Docker production-like.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {readiness.map((item) => (
+            <div key={item} className="flex gap-3 rounded-lg border border-white/10 bg-slate-900 p-4">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
+              <span className="text-slate-200">{item}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>© 2026 Smart ERP Next</p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-white">Quyền riêng tư</Link>
+            <Link href="/terms" className="hover:text-white">Điều khoản</Link>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }
-
-function StatCard({
-  title,
-  value,
-  icon,
-  trend,
-  trendLabel,
-}: {
-  title: string;
-  value: string | number;
-  icon: React.ReactNode;
-  trend?: number;
-  trendLabel?: string;
-}) {
-  return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-          {title}
-        </h3>
-        <div className="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
-          {icon}
-        </div>
-      </div>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-        {value}
-      </p>
-      {trend !== undefined && (
-        <div className="flex items-center text-sm">
-          <FiArrowUp
-            className={`w-4 h-4 mr-1 ${trend >= 0 ? "text-green-500" : "text-red-500 rotate-180"}`}
-          />
-          <span className={trend >= 0 ? "text-green-500 font-medium" : "text-red-500 font-medium"}>
-            {Math.abs(trend)}%
-          </span>
-          {trendLabel && (
-            <span className="text-gray-500 ml-2">{trendLabel}</span>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-

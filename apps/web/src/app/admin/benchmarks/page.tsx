@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -25,28 +25,31 @@ interface Event {
   createdAt: string;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function BenchmarksPage() {
   const [stats, setStats] = useState<Stat[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [hours, setHours] = useState(24);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get(`/admin/benchmarks/sync?hours=${hours}`);
-      setStats(res.data.stats);
-      setEvents(res.data.recentEvents);
+      setStats(asArray<Stat>(res.data?.stats));
+      setEvents(asArray<Event>(res.data?.recentEvents));
     } catch (err) {
-      console.error(err);
+      setStats([]);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [hours]);
 
   useEffect(() => {
     fetchData();
-  }, [hours]);
+  }, [fetchData]);
 
   return (
     <AuthGuard>
@@ -66,9 +69,9 @@ export default function BenchmarksPage() {
             onChange={(e) => setHours(parseInt(e.target.value))}
             className="px-3 py-2 border rounded-lg text-sm"
           >
-            <option value={1}>Last hour</option>
-            <option value={24}>Last 24 hours</option>
-            <option value={168}>Last 7 days</option>
+            <option value={1}>1 giờ gần nhất</option>
+            <option value={24}>24 giờ gần nhất</option>
+            <option value={168}>7 ngày gần nhất</option>
           </select>
         </div>
 

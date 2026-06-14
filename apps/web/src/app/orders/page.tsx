@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ordersApi, type Order } from '@/lib/api-orders';
@@ -79,7 +79,7 @@ export default function OrdersPage() {
   const [total, setTotal] = useState(0);
   const limit = 20;
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true);
     try {
       const res = await ordersApi.getAll({
@@ -97,11 +97,11 @@ export default function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, paymentFilter, search, statusFilter]);
 
   useEffect(() => {
     fetchOrders();
-  }, [page, statusFilter, paymentFilter]);
+  }, [fetchOrders]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

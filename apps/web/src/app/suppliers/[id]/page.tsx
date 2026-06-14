@@ -35,7 +35,7 @@ export default function SupplierDetailPage() {
       })
       .catch(() => router.push('/suppliers'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (

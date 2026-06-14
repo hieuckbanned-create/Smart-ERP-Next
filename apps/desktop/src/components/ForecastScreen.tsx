@@ -45,7 +45,7 @@ export function ForecastScreen() {
     setLoading(true);
     setError(null);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3456';
       const token = localStorage.getItem('token');
 
       const [forecastRes, reorderRes] = await Promise.all([

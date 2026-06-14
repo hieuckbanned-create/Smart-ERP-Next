@@ -3,8 +3,10 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>'],
   collectCoverage: true,
+  cacheDirectory: '<rootDir>/.jest-cache',
   collectCoverageFrom: [
     'apps/**/*.ts',
+    'apps/web/src/components/ProductImageInput.tsx',
     'packages/**/*.ts',
     '!**/*.d.ts',
     '!**/types.ts',
@@ -27,10 +29,10 @@ module.exports = {
   coverageReporters: ['text', 'lcov', 'json-summary'],
   coverageThreshold: {
     global: {
-      statements: 70,
-      branches: 70,
-      functions: 70,
-      lines: 70,
+      statements: 90,
+      branches: 90,
+      functions: 90,
+      lines: 90,
     },
   },
   testEnvironment: 'node',
@@ -41,13 +43,13 @@ module.exports = {
     '/.next/',
     '/.next-dev/',
     '/e2e/',
+    '/e2e-playwright-esm-test/',
     '/apps/desktop/tests/',
     '/.claude/',
     '/.claude/worktrees/',
     '/tests/',
     '.*\\.e2e-spec\\.ts$',
-    'apps/api/src/__tests__/db.mock\\.ts$',
-    'apps/api/src/__tests__/.*'
+    'apps[\\\\/]api[\\\\/]src[\\\\/]__tests__[\\\\/]db\\.mock\\.ts$'
   ],
   transform: {
     '^.+\\.(ts|tsx|js|jsx)$': ['ts-jest', {
@@ -69,6 +71,7 @@ module.exports = {
     }],
   },
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/apps/web/src/$1',
     '^@smart-erp/database/schema$': '<rootDir>/packages/database/src/schema/index.ts',
     '^@smart-erp/database/drizzle$': '<rootDir>/packages/database/src/drizzle.ts',
     '^@smart-erp/database$': '<rootDir>/packages/database/src/index.ts',

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /** Paths that don't require authentication */
-const PUBLIC_PATHS = ['/login', '/register', '/mvp'];
+const PUBLIC_PATHS = ['/', '/login', '/register', '/mvp', '/privacy', '/terms'];
 
 /** Static asset patterns — never redirect these */
 const STATIC_PATTERN = /^\/(_next|api|favicon\.ico|robots\.txt|sitemap\.xml)/;
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get('access_token')?.value;
-  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+  const isPublic = PUBLIC_PATHS.some((p) => pathname === p || (p !== '/' && pathname.startsWith(p)));
 
   // Unauthenticated → redirect to login
   if (!token && !isPublic) {

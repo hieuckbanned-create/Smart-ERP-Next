@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -299,7 +300,7 @@ export default function DashboardPage() {
               <h2 className="text-base font-semibold text-gray-900 dark:text-white">
                 {t('dashboard.recentOrders')}
               </h2>
-              <a href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</a>
+              <Link href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</Link>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -342,7 +343,7 @@ export default function DashboardPage() {
             <h2 className="text-base font-semibold text-gray-900 dark:text-white">
               {t('dashboard.recentOrders')}
             </h2>
-            <a href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</a>
+            <Link href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

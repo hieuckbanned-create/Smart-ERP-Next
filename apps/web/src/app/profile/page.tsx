@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -66,7 +67,7 @@ export default function ProfilePage() {
           {/* Avatar */}
           <div className="flex items-center gap-6">
             <div className="relative">
-              <img src={avatarPreview || '/default-avatar.png'} alt="Avatar" className="w-24 h-24 rounded-full object-cover border" />
+              <Image src={avatarPreview || '/default-avatar.png'} alt="Avatar" width={96} height={96} className="h-24 w-24 rounded-full border object-cover" unoptimized />
               <label className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-1 cursor-pointer">
                 <Camera className="w-4 h-4 text-white" />
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />

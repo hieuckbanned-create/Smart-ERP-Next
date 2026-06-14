@@ -61,7 +61,7 @@ export default function OrderDetailPage() {
       .then((res) => setOrder(res.data))
       .catch(() => router.push('/orders'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   const handleStatusChange = async (status: string) => {
     if (!order) return;

@@ -1,6 +1,83 @@
 {
   "appName": "Smart ERP Next",
   "tagline": "Hệ thống quản trị doanh nghiệp thông minh",
+  "dashboard": {
+    "title": "Tổng quan",
+    "todayRevenue": "Doanh thu hôm nay",
+    "todayOrders": "Đơn hàng hôm nay",
+    "newCustomers": "Khách hàng mới",
+    "lowStock": "Sắp hết hàng",
+    "lowStockAlert": "Cần nhập thêm hàng",
+    "recentOrders": "Đơn hàng gần đây",
+    "topProducts": "Sản phẩm bán chạy",
+    "revenueChart": "Biểu đồ doanh thu",
+    "weeklyRevenue": "Doanh thu theo tuần",
+    "monthlyRevenue": "Doanh thu theo tháng",
+    "revenueChange": "↑ 12,5% so với hôm qua",
+    "ordersChange": "↑ 8,2% so với hôm qua",
+    "customersChange": "↑ 3,1% trong tháng này",
+    "revenueWeeklyChange": "+18,2% tuần này",
+    "sold": "đã bán",
+    "viewAll": "Xem tất cả",
+    "orderCode": "Mã đơn",
+    "customer": "Khách hàng",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "time": "Thời gian",
+    "welcome": "Xin chào,",
+    "sectionTitle": "Tổng quan hôm nay",
+    "insights": "Thông tin phân tích",
+    "recentActivities": "Hoạt động gần đây",
+    "noActivities": "Chưa có hoạt động gần đây",
+    "cashflowForecast": "Dự báo dòng tiền",
+    "forecastPeriod": "Kỳ dự báo",
+    "netCashflow": "Dòng tiền ròng (30 ngày)",
+    "avgDailyInflow": "Thu trung bình/ngày",
+    "avgDailyOutflow": "Chi trung bình/ngày",
+    "pendingApprovals": "Ph? duy?t ?ang ch?",
+    "quickActions": "Thao t?c nhanh",
+    "revenueTrend": "Xu h??ng doanh thu"
+  },
+  "forecast": {
+    "demand": "Nhu cầu dự báo",
+    "avgDemand": "Nhu cầu trung bình",
+    "days": "Số ngày",
+    "forecasted": "Đã dự báo",
+    "noData": "Chưa có dữ liệu dự báo",
+    "title": "Dự báo"
+  },
+  "approvals": {
+    "noPending": "Không có phê duyệt đang chờ",
+    "requestedBy": "Người yêu cầu",
+    "title": "Phê duyệt",
+    "rules": "Quy tắc phê duyệt",
+    "ruleName": "Tên quy tắc",
+    "documentType": "Loại chứng từ",
+    "minAmount": "Số tiền tối thiểu",
+    "maxAmount": "Số tiền tối đa",
+    "priority": "Độ ưu tiên",
+    "createRule": "Tạo quy tắc",
+    "editRule": "Sửa quy tắc",
+    "deleteRule": "Xóa quy tắc",
+    "submitForApproval": "Gửi phê duyệt",
+    "approve": "Duyệt",
+    "reject": "Từ chối",
+    "comments": "Bình luận",
+    "pending": "Đang chờ duyệt",
+    "status": {
+      "pending": "Chờ phê duyệt",
+      "approved": "Đã duyệt",
+      "rejected": "Đã từ chối",
+      "not_required": "Không cần phê duyệt"
+    },
+    "notifications": {
+      "submitted": "Chứng từ đã được gửi phê duyệt",
+      "approved": "Chứng từ đã được duyệt",
+      "rejected": "Chứng từ đã bị từ chối",
+      "needApproval": "Bạn có yêu cầu cần phê duyệt"
+    },
+    "amount": "Số tiền"
+  },
   "actions": {
     "add": "Thêm",
     "edit": "Sửa",
@@ -81,7 +158,15 @@
     "process": "Xử lý",
     "syncNow": "Đồng bộ ngay",
     "success": "Thao tác thành công",
-    "error": "Có lỗi xảy ra"
+    "error": "Có lỗi xảy ra",
+    "approved": "Đã duyệt",
+    "created": "Đã tạo",
+    "deleted": "Đã xóa",
+    "export": "Xuất",
+    "rejected": "Từ chối",
+    "stockAdjusted": "Điều chỉnh tồn kho",
+    "updated": "Đã cập nhật",
+    "grantPermission": "C?p quy?n"
   },
   "status": {
     "active": "Hoạt động",
@@ -192,19 +277,12 @@
       "ship": "Giao vận",
       "delivered": "Giao hàng",
       "cancel": "Hủy đơn"
-    }
+    },
+    "createdAt": "Ngày tạo"
   },
   "nav": {
-    "dashboard": "Bảng điều khiển",
-    "pos": "Bán hàng (POS)",
-    "pos.cameraPermissionRequired": "Cần quyền camera",
-    "pos.cameraPermissionMessage": "Vui lòng cấp quyền camera để quét mã vạch",
-    "pos.scanInstruction": "Đặt mã vạch trong khung",
-    "pos.scanBarcode": "Quét mã vạch",
-    "pos.offlineMode": "Chế độ ngoại tuyến",
-    "pos.offlineModeActive": "Đang hoạt động ngoại tuyến",
-    "pos.printReceipt": "In hóa đơn",
-    "pos.cashDrawer": "Ngăn kéo tiền",
+    "dashboard": "Tổng quan",
+    "pos": "Bán hàng",
     "orders": "Đơn hàng",
     "products": "Sản phẩm",
     "inventory": "Kho hàng",
@@ -212,66 +290,19 @@
     "suppliers": "Nhà cung cấp",
     "purchasing": "Mua hàng",
     "payments": "Thu chi",
-    "currencies": "Tiền tệ",
-    "currencies.rate": "Tỷ giá",
-    "currencies.convert": "Chuyển đổi",
-    "currencies.supported": "Tiền tệ hỗ trợ",
-    "currencies.from": "Từ",
-    "currencies.to": "Đến",
-    "currencies.amount": "Số tiền",
-    "currencies.converted": "Số tiền sau chuyển đổi",
-    "currencies.exchangeRate": "Tỷ giá hối đoái",
-    "manufacturing": {
-      "title": "Sản xuất",
-      "bom": "Danh sách nguyên liệu (BOM)",
-      "bomItem": "Nguyên liệu",
-      "productionOrder": "Lệnh sản xuất",
-      "productionOrders": "Lệnh sản xuất",
-      "createOrder": "Tạo lệnh sản xuất",
-      "startOrder": "Bắt đầu sản xuất",
-      "completeOrder": "Hoàn thành sản xuất",
-      "status": {
-        "draft": "Nháp",
-        "inProgress": "Đang sản xuất",
-        "completed": "Hoàn thành",
-        "cancelled": "Đã hủy"
-      },
-      "qc": {
-        "title": "Kiểm soát chất lượng",
-        "checkpoints": "Trạm kiểm tra",
-        "passed": "Đạt",
-        "failed": "Không đạt",
-        "pending": "Chờ kiểm tra"
-      },
-      "cost": {
-        "title": "Chi phí sản xuất",
-        "totalCost": "Tổng chi phí",
-        "unitCost": "Chi phí đơn vị",
-        "materialCost": "Chi phí nguyên liệu"
-      }
-    },
     "warehouses": "Quản lý kho",
     "reports": "Báo cáo",
-    "reports.title": "Báo cáo nâng cao",
-    "reports.dateRange": "Khoảng ngày",
-    "reports.generatedAt": "Tạo lúc",
-    "accounting": "Kế toán",
-    "accounting.totalRevenue": "Tổng doanh thu",
-    "accounting.totalExpense": "Tổng chi phí",
-    "accounting.netIncome": "Thu nhập ròng",
-    "accounting.cashBalance": "Số dư tiền mặt",
-    "accounting.bankBalance": "Số dư ngân hàng",
-    "accounting.accountsReceivable": "Phải thu",
-    "accounting.accountsPayable": "Phải trả",
-    "accounting.financeOverview": "Tổng quan tài chính",
     "crm": "CRM",
+    "accounting": "Kế toán",
+    "users": "Người dùng",
+    "settings": "Cài đặt",
     "forecast": "Dự báo",
-    "forecast.title": "Bảng dự báo nhu cầu",
-    "forecast.month": "Tháng",
-    "forecast.demand": "Nhu cầu",
-    "forecast.description": "Dự báo nhu cầu dựa trên AI, hỗ trợ quyết định nhập hàng.",
-    "benchmarks": "Sync Benchmarks",
-    "approvals": "Phê duyệt"
+    "quality": "Chất lượng",
+    "omnichannel": "Đa kênh",
+    "manufacturing": "Sản xuất",
+    "hr": "Nhân sự",
+    "einvoice": "Hóa đơn điện tử",
+    "contracts": "H?p ??ng"
   },
   "common": {
     "loading": "Đang tải...",
@@ -314,11 +345,28 @@
     "online": "Online",
     "offline": "Offline",
     "viewAll": "Xem tất cả",
-    "change": "Thay đổi"
+    "change": "Thay đổi",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "createdAt": "Ngày tạo",
+    "days": "ngày",
+    "export": "Xuất",
+    "fromDate": "Từ ngày",
+    "next": "Tiếp",
+    "noNotifications": "Chưa có thông báo",
+    "previous": "Trước",
+    "save": "Lưu",
+    "status": "Trạng thái",
+    "time": "Thời gian",
+    "toDate": "Đến ngày",
+    "retry": "Th? l?i",
+    "sold": "?? b?n"
   },
   "inventory": {
     "title": "Quản lý kho",
     "summary": "Tổng quan tồn kho và giao dịch",
+    "quantity": "Số lượng",
     "totalProducts": "Số mặt hàng",
     "totalUnits": "Tổng tồn kho",
     "stockValue": "Giá trị kho",
@@ -364,17 +412,6 @@
     "suggestedOrderQuantity": "Số lượng đề xuất",
     "predictedDemand7d": "Nhu cầu 7 ngày",
     "predictedDemand30d": "Nhu cầu 30 ngày",
-    "shouldReorder": "Cần nhập hàng ngay",
-    "stockOk": "Tồn kho ổn định",
-    "daysUntilStockout": "ngày đến khi hết hàng",
-    "sufficientStock": "Đủ hàng trong 30+ ngày",
-    "selectProductToForecast": "Chọn sản phẩm để xem dự báo",
-    "generatingForecast": "Đang tạo dự báo...",
-    "reorderPoint": "Điểm đặt hàng",
-    "safetyStock": "Tồn kho an toàn",
-    "suggestedOrderQuantity": "Số lượng đề xuất",
-    "predictedDemand7d": "Nhu cầu 7 ngày",
-    "predictedDemand30d": "Nhu cầu 30 ngày",
     "lots": {
       "title": "Quản lý lô hàng",
       "add": "Thêm lô hàng",
@@ -402,7 +439,8 @@
       "notes": "Ghi chú",
       "items": "Danh sách sản phẩm",
       "createSuccess": "Tạo phiếu chuyển kho thành công",
-      "receiveSuccess": "Nhận hàng thành công"
+      "receiveSuccess": "Nhận hàng thành công",
+      "approve": "Duy?t chuy?n kho"
     },
     "metrics": {
       "totalProducts": "Tổng sản phẩm",
@@ -450,17 +488,29 @@
       "meter": "Mét",
       "pair": "Đôi",
       "set": "Bộ"
-    }
+    },
+    "exportTitle": "Xuất sản phẩm",
+    "importTitle": "Nhập sản phẩm"
   },
   "purchasing": {
     "title": "Mua hàng",
     "add": "Tạo đơn mua",
     "supplier": "Nhà cung cấp",
+    "code": "Mã đơn mua",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "expectedDate": "Ngày dự kiến",
+    "createdAt": "Ngày tạo",
+    "searchPlaceholder": "Tìm đơn mua...",
     "notes": "Ghi chú...",
     "createSuccess": "Tạo đơn mua thành công",
     "createError": "Lỗi khi tạo đơn mua",
     "selectWarehouseOptional": "Chọn kho nhận (không bắt buộc)",
-    "preview": "Xem trước: {{items}} mặt hàng, tổng {{quantity}} đơn vị"
+    "preview": "Xem trước: {{items}} mặt hàng, tổng {{quantity}} đơn vị",
+    "all": "T?t c?",
+    "cancel": "H?y ??n mua",
+    "confirmReceive": "X?c nh?n nh?n h?ng",
+    "subtotal": "T?m t?nh"
   },
   "suppliers": {
     "title": "Nhà cung cấp",
@@ -472,6 +522,10 @@
     "email": "Email",
     "address": "Địa chỉ",
     "taxCode": "Mã số thuế",
+    "contact": "Liên hệ",
+    "currentDebt": "Công nợ hiện tại",
+    "totalPurchased": "Tổng đã mua",
+    "empty": "Chưa có nhà cung cấp nào",
     "contactPerson": "Người liên hệ",
     "bankAccount": "Số tài khoản",
     "bankName": "Tên ngân hàng",
@@ -524,6 +578,11 @@
     "notes": "Ghi chú",
     "code": "Mã KH",
     "name": "Tên khách hàng",
+    "contact": "Liên hệ",
+    "group": "Nhóm",
+    "currentDebt": "Công nợ hiện tại",
+    "totalPurchased": "Tổng đã mua",
+    "empty": "Không có khách hàng nào",
     "phone": "Số điện thoại",
     "email": "Email",
     "taxCode": "Mã số thuế",
@@ -550,11 +609,13 @@
       "district": "Quận/Huyện",
       "province": "Chọn tỉnh/thành",
       "notes": "Ghi chú về khách hàng..."
-    }
+    },
+    "loyaltyPoints": "?i?m t?ch l?y"
   },
   "settings": {
     "title": "Cài đặt",
     "general": "Chung",
+    "company": "Công ty",
     "companyName": "Tên công ty",
     "companyAddress": "Địa chỉ",
     "companyPhone": "Điện thoại",
@@ -602,7 +663,16 @@
     "keepLocal": "Giữ bản cục bộ",
     "keepRemote": "Giữ bản máy chủ",
     "lastSync": "Lần đồng bộ cuối",
-    "pendingChanges": "{{count}} thay đổi đang chờ"
+    "pendingChanges": "{{count}} thay đổi đang chờ",
+    "syncNow": "Đồng bộ ngay",
+    "useLocal": "Dùng bản cục bộ",
+    "useRemote": "Dùng bản máy chủ",
+    "status": {
+      "error": "L?i ??ng b?",
+      "idle": "?? c?p nh?t",
+      "offline": "Ngo?i tuy?n",
+      "syncing": "?ang ??ng b?..."
+    }
   },
   "crm": {
     "title": "CRM",
@@ -638,11 +708,35 @@
       "social_media": "Mạng xã hội",
       "email_campaign": "Email marketing",
       "other": "Khác"
-    }
+    },
+    "email": "Email",
+    "searchLeads": "T?m ki?m kh?ch h?ng ti?m n?ng",
+    "subtitle": "Qu?n l? kh?ch h?ng ti?m n?ng v? c? h?i b?n h?ng"
   },
   "accounting": {
+    "title": "Kế toán",
+    "chartOfAccounts": "Hệ thống tài khoản",
+    "totalRevenue": "Tổng doanh thu",
+    "totalExpense": "Tổng chi phí",
+    "netIncome": "Lợi nhuận ròng",
+    "equity": "Vốn chủ sở hữu",
+    "cashBalance": "Số dư tiền mặt",
+    "bankBalance": "Số dư ngân hàng",
+    "accountsReceivable": "Phải thu khách hàng",
+    "accountsPayable": "Phải trả nhà cung cấp",
+    "financialReports": {
+      "incomeStatement": "Báo cáo kết quả kinh doanh",
+      "balanceSheet": "Bảng cân đối kế toán"
+    },
+    "journalEntries": "Bút toán gần đây",
+    "voucherNumber": "Số chứng từ",
+    "voucherDate": "Ngày chứng từ",
+    "description": "Diễn giải",
+    "debit": "Nợ",
+    "credit": "Có",
     "posted": "Đã ghi",
-    "unposted": "Chưa ghi"
+    "unposted": "Chưa ghi",
+    "bankAccounts": "T?i kho?n ng?n h?ng"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -673,7 +767,9 @@
     "sessionExpired": "Phiên đăng nhập đã hết hạn",
     "validation": {
       "required": "Vui lòng nhập email và mật khẩu"
-    }
+    },
+    "fillDemo": "Điền demo",
+    "loginSubtitle": "Đăng nhập để quản lý doanh nghiệp của bạn"
   },
   "activity": {
     "created": "đã tạo",
@@ -723,7 +819,9 @@
       "active": "Kích hoạt",
       "lastSyncAt": "Lần sync gần nhất",
       "lastSyncStatus": "Trạng thái sync",
-      "empty": "Chưa có cửa hàng nào được kết nối. Hãy vào Cài đặt để thêm."
+      "empty": "Chưa có cửa hàng nào được kết nối. Hãy vào Cài đặt để thêm.",
+      "addHint": "Th?m k?nh b?n h?ng ?? b?t ??u ??ng b?",
+      "lastSync": "??ng b? l?n cu?i"
     },
     "logs": {
       "title": "Lịch sử đồng bộ",
@@ -742,37 +840,59 @@
     }
   },
   "analytics": {
-    "title": "Phân tích dự đoán",
-    "clv": "Giá trị vòng đời khách hàng",
-    "clvScore": "Điểm CLV",
-    "churnRisk": "Rủi ro rời bỏ",
-    "churnRisk.low": "Thấp",
-    "churnRisk.medium": "Trung bình",
-    "churnRisk.high": "Cao",
-    "salesTrend": "Xu hướng bán hàng",
-    "growthRate": "Tăng trưởng",
-    "atRisk": "Khách hàng có nguy cơ rời bỏ",
-    "totalRevenue": "Tổng doanh thu",
-    "avgOrderValue": "Giá trị đơn hàng TB",
-    "topCustomers": "Khách hàng hàng đầu",
-    "predictive.title": "Phân tích dự đoán",
-    "predictive.subtitle": "Dự báo xu hướng và hành vi khách hàng",
+    "title": "Bảng phân tích",
+    "revenue": "Doanh thu",
+    "orders": "Đơn hàng",
+    "avgOrder": "Giá trị TB",
+    "customers": "Khách hàng",
+    "lowStock": "Sắp hết hàng",
+    "inProduction": "Đang sản xuất",
+    "qualityPass": "Tỷ lệ đạt QC",
+    "topProducts": "Sản phẩm bán chạy",
+    "revenueChart": "Doanh thu (30 ngày)",
+    "period": "Kỳ",
     "forecast": {
-      "title": "Dự báo nhu cầu",
-      "subtitle": "Dự báo nhu cầu sản phẩm trong 30 ngày tới",
+      "title": "Dự báo AI",
+      "subtitle": "Dự báo nhu cầu và gợi ý vận hành",
       "productId": "Mã sản phẩm",
+      "metrics": {
+        "reorder": "Gợi ý nhập",
+        "confidence": "Độ tin cậy",
+        "mape": "Sai số MAPE"
+      },
       "table": {
+        "predicted": "Giá trị dự báo",
         "date": "Ngày",
-        "predicted": "Dự báo",
         "lower": "Cận dưới",
         "upper": "Cận trên"
-      },
-      "metrics": {
-        "mape": "MAPE",
-        "reorder": "Đề xuất đặt hàng",
-        "confidence": "Độ tin cậy"
       }
-    }
+    },
+    "actualNetCash": "Dòng tiền thực tế",
+    "avgOrderValue": "Giá trị đơn trung bình",
+    "cashflowDescription": "Dự báo dòng tiền theo doanh thu, chi phí và khoản phải thu/phải trả.",
+    "cashflowDisclaimer": "Dữ liệu dự báo chỉ dùng để tham khảo vận hành.",
+    "cashflowForecast": "Dự báo dòng tiền",
+    "churnComputeFailed": "Không thể tính rủi ro rời bỏ",
+    "churnComputeSuccess": "Đã tính rủi ro rời bỏ",
+    "churnDisclaimer": "Kết quả churn là mô hình dự đoán, cần đối chiếu dữ liệu thực tế.",
+    "churnPrediction": "Dự đoán rời bỏ",
+    "churnProbability": "Xác suất rời bỏ",
+    "clv": "Giá trị vòng đời khách hàng",
+    "clvComputeFailed": "Không thể tính CLV",
+    "clvComputeSuccess": "Đã tính CLV",
+    "clvDisclaimer": "CLV là ước tính dựa trên dữ liệu bán hàng hiện có.",
+    "confidenceScore": "Độ tin cậy",
+    "customerLifetimeValue": "Giá trị vòng đời khách hàng",
+    "forecastNetCash": "Dòng tiền dự báo",
+    "predictedClv": "CLV dự đoán",
+    "purchaseFrequency": "Tần suất mua",
+    "recencyDays": "Số ngày từ lần mua gần nhất",
+    "revenueBreakdown": "Phân tích doanh thu",
+    "riskSegment": "Nhóm rủi ro",
+    "runChurn": "Chạy dự đoán churn",
+    "runClv": "Chạy tính CLV",
+    "segment": "Phân khúc",
+    "topProductsBreakdown": "Phân tích sản phẩm bán chạy"
   },
   "system": {
     "health": "Trạng thái hệ thống",
@@ -800,7 +920,8 @@
     "placeholder": "Tìm kiếm sản phẩm, đơn hàng, khách hàng...",
     "noResults": "Không tìm thấy kết quả",
     "results": "Kết quả tìm kiếm",
-    "searching": "Đang tìm kiếm..."
+    "searching": "Đang tìm kiếm...",
+    "viewAll": "Xem tất cả"
   },
   "automation": {
     "title": "Tự động hóa",
@@ -825,102 +946,63 @@
     "profile": "Hồ sơ"
   },
   "manufacturing": {
-    "title": "Sản xuất",
-    "bom": "Danh sách nguyên liệu (BOM)",
-    "bomItem": "Nguyên liệu",
-    "productionOrder": "Lệnh sản xuất",
-    "productionOrders": "Lệnh sản xuất",
+    "title": "Quản lý sản xuất (MRP)",
+    "subtitle": "Lập kế hoạch sản xuất, BOM, và quản lý quy trình",
     "createOrder": "Tạo lệnh sản xuất",
-    "startOrder": "Bắt đầu sản xuất",
-    "completeOrder": "Hoàn thành sản xuất",
+    "productionOrders": "Lệnh sản xuất",
+    "bom": "Định mức nguyên vật liệu (BOM)",
+    "mrp": "Hoạch định MRP",
+    "bomVersion": "Phiên bản BOM",
+    "routing": "Quy trình sản xuất",
+    "workCenter": "Trạm làm việc",
+    "operationName": "Tên công đoạn",
+    "setupTime": "Thời gian chuẩn bị",
+    "cycleTime": "Thời gian gia công",
+    "laborCost": "Chi phí nhân công",
+    "overheadCost": "Chi phí chung",
+    "requiresQC": "Yêu cầu kiểm tra chất lượng",
+    "component": "Nguyên vật liệu",
+    "wastage": "Hao hụt",
+    "subAssembly": "Bán thành phẩm",
+    "quantity": "Số lượng",
     "status": {
       "draft": "Nháp",
-      "inProgress": "Đang sản xuất",
+      "in_progress": "Đang sản xuất",
       "completed": "Hoàn thành",
       "cancelled": "Đã hủy"
     },
-    "qc": {
-      "title": "Kiểm soát chất lượng",
-      "checkpoints": "Trạm kiểm tra",
-      "checkpoint1": "Kiểm tra nguyên liệu",
-      "checkpoint2": "Kiểm tra quy trình",
-      "checkpoint3": "Kiểm tra thành phẩm",
-      "passed": "Đạt",
-      "failed": "Không đạt",
-      "pending": "Chờ kiểm tra"
-    },
-    "cost": {
-      "title": "Chi phí sản xuất",
-      "totalCost": "Tổng chi phí",
-      "unitCost": "Chi phí đơn vị",
-      "materialCost": "Chi phí nguyên liệu"
-    },
-    "insufficientMaterials": "Không đủ nguyên liệu {{component}}: cần {{required}}, tồn kho hiện tại {{available}}",
-    "costVariance": "Chênh lệch chi phí",
-    "standardCost": "Chi phí tiêu chuẩn",
-    "actualCost": "Chi phí thực tế",
-    "variance": "Chênh lệch",
-    "variancePercent": "% Chênh lệch",
-    "overBudget": "Vượt ngân sách",
-    "underBudget": "Dưới ngân sách",
-    "laborCost": "Chi phí nhân công",
-    "overheadCost": "Chi phí chung",
-    "totalCost": "Tổng chi phí"
+    "stats": {
+      "totalOrders": "Tổng lệnh SX",
+      "inProgress": "Đang SX",
+      "completedToday": "Hoàn thành hôm nay",
+      "yieldRate": "Tỷ lệ thành phẩm"
+    }
   },
   "qms": {
-    "title": "Quản lý chất lượng",
-    "inspectionPlan": "Kế hoạch kiểm tra",
-    "inspectionPlans": "Kế hoạch kiểm tra",
-    "createPlan": "Tạo kế hoạch kiểm tra",
-    "samplingRule": "Quy tắc lấy mẫu",
-    "inspection": "Kiểm tra",
-    "inspections": "Kiểm tra",
-    "recordInspection": "Ghi nhận kiểm tra",
-    "verdict": "Kết luận",
-    "pass": "Đạt",
-    "fail": "Không đạt",
-    "conditional": "Đạt có điều kiện",
-    "passRate": "Tỷ lệ đạt",
-    "totalInspections": "Tổng số kiểm tra",
-    "ncr": "Báo cáo không phù hợp",
-    "ncrs": "Báo cáo không phù hợp",
-    "createNCR": "Tạo NCR",
-    "defectCode": "Mã lỗi",
-    "defectCodes": "Mã lỗi",
-    "severity": "Mức độ nghiêm trọng",
-    "rootCause": "Nguyên nhân gốc",
-    "capa": "CAPA",
-    "capas": "CAPAs",
-    "corrective": "Khắc phục",
-    "preventive": "Phòng ngừa",
-    "qualityReport": "Báo cáo chất lượng",
-    "supplierQuality": "Chất lượng nhà cung cấp",
+    "title": "Quản lý chất lượng (QMS)",
+    "subtitle": "Kiểm soát chất lượng nhà cung cấp, sản phẩm và quy trình sản xuất",
     "supplierScore": "Điểm nhà cung cấp",
     "supplierGrade": "Xếp hạng",
-    "supplierReport": "Báo cáo chất lượng NCC",
-    "spcCharts": "Biểu đồ SPC",
-    "spcComingSoon": "Biểu đồ Kiểm soát Quy trình Thống kê sắp ra mắt.",
-    "spcDescription": "Biểu đồ kiểm soát (X-bar, R-chart), Năng lực quy trình (Cp, Cpk)",
-    "noInspections": "Chưa có bản ghi kiểm tra nào",
-    "noNCRs": "Chưa có báo cáo không phù hợp nào",
-    "supplierScore": "Bảng điểm nhà cung cấp",
-    "openNCRs": "NCR đang mở",
-    "criticalNCRs": "NCR nghiêm trọng",
+    "totalInspections": "Tổng kiểm tra",
+    "passRate": "Tỷ lệ đạt",
+    "score": "Điểm số",
+    "openNCRs": "Lỗi đang mở",
+    "criticalNCRs": "Nghiêm trọng",
+    "ncrs": "Phiếu lỗi (NCR)",
     "noSupplierData": "Chưa có dữ liệu chất lượng nhà cung cấp",
-    "score": "Điểm"
-  },
-  "analytics": {
-    "title": "Bảng phân tích",
-    "revenue": "Doanh thu",
-    "orders": "Đơn hàng",
-    "avgOrder": "Giá trị TB",
-    "customers": "Khách hàng",
-    "lowStock": "Sắp hết hàng",
-    "inProduction": "Đang sản xuất",
-    "qualityPass": "Tỷ lệ đạt QC",
-    "topProducts": "Sản phẩm bán chạy",
-    "revenueChart": "Doanh thu (30 ngày)",
-    "period": "Kỳ"
+    "inspections": "Kiểm tra chất lượng",
+    "createInspection": "Tạo phiếu kiểm tra",
+    "capa": "Hành động khắc phục (CAPA)",
+    "spcCharts": "Biểu đồ SPC",
+    "status": {
+      "pass": "Đạt",
+      "fail": "Không đạt",
+      "pending": "Chờ kiểm tra",
+      "in_review": "Đang xem xét"
+    },
+    "fail": "Không đạt",
+    "noNCRs": "Chưa có phiếu không phù hợp",
+    "pass": "Đạt"
   },
   "mrp": {
     "title": "Hoạch định nhu cầu vật tư (MRP)",
@@ -935,7 +1017,8 @@
     "gap": "Thiếu hụt",
     "calculateMRP": "Tính MRP",
     "batchMRP": "Chạy MRP hàng loạt",
-    "daysAhead": "Số ngày dự báo"
+    "daysAhead": "Số ngày dự báo",
+    "emptyState": "Chạy MRP hàng loạt để tính nhu cầu vật tư"
   },
   "export": {
     "title": "Xuất dữ liệu",
@@ -960,7 +1043,8 @@
     "offlineMode": "Chế độ ngoại tuyến",
     "offlineModeActive": "Đang hoạt động ngoại tuyến",
     "printReceipt": "In hóa đơn",
-    "cashDrawer": "Ngăn kéo tiền"
+    "cashDrawer": "Ngăn kéo tiền",
+    "createOrderFailed": "Không thể tạo đơn hàng"
   },
   "brandColor": "Màu thương hiệu",
   "brandColorBlue": "Xanh dương",
@@ -969,30 +1053,42 @@
   "brandColorOrange": "Cam",
   "brandColorRed": "Đỏ",
   "hr": {
-    "title": "Nhân sự",
+    "title": "Quản lý nhân sự",
+    "employees": {
+      "title": "Danh sách nhân viên",
+      "add": "Thêm nhân viên",
+      "edit": "Sửa thông tin",
+      "name": "Họ tên",
+      "department": "Phòng ban",
+      "position": "Chức vụ",
+      "joinDate": "Ngày vào làm",
+      "status": "Trạng thái"
+    },
     "payroll": {
-      "title": "Quản lý lương",
-      "processing": "Đang xử lý lương",
+      "title": "Quản lý lương & thưởng (Payroll)",
+      "subtitle": "Tính lương tự động, tích hợp chấm công và thuế TNCN",
       "employee": "Nhân viên",
-      "salary": "Lương",
-      "tax": "Thuế",
-      "deduction": "Khấu trừ",
-      "netSalary": "Lương ròng",
       "baseSalary": "Lương cơ bản",
       "allowances": "Phụ cấp",
-      "deductions": "Khấu trừ",
-      "status": {
-        "draft": "Nháp",
-        "processing": "Đang xử lý",
-        "completed": "Hoàn thành",
-        "cancelled": "Đã hủy"
-      }
+      "overtime": "Làm thêm (OT)",
+      "deductions": "Khấu trừ (BH, Thuế)",
+      "netSalary": "Thực lãnh",
+      "status": "Trạng thái",
+      "draft": "Bản nháp",
+      "approved": "Đã duyệt",
+      "paid": "Đã thanh toán",
+      "process": "Chạy tính lương",
+      "processing": "Đang tính lương...",
+      "salaryBoard": "Bảng lương chi tiết",
+      "totalEmployees": "Nhân sự tính lương",
+      "totalNet": "Tổng quỹ lương",
+      "totalOT": "Tổng OT",
+      "totalDeductions": "BHXH & Thuế TNCN",
+      "salary": "Lương"
     },
     "employee": {
-      "title": "Quản lý nhân viên",
       "add": "Thêm nhân viên",
-      "edit": "Sửa nhân viên",
-      "delete": "Xóa nhân viên"
+      "title": "Nhân viên"
     }
   },
   "loyalty": {
@@ -1121,30 +1217,10 @@
   },
   "chat": {
     "mention": "đã nhắn đến bạn",
-    "newMessage": "Tin nhắn mới"
-  },
-  "qms": {
-    "title": "Quản lý chất lượng (QMS)",
-    "subtitle": "Kiểm soát chất lượng nhà cung cấp, sản phẩm và quy trình sản xuất",
-    "supplierScore": "Điểm nhà cung cấp",
-    "supplierGrade": "Xếp hạng",
-    "totalInspections": "Tổng kiểm tra",
-    "passRate": "Tỷ lệ đạt",
-    "score": "Điểm số",
-    "openNCRs": "Lỗi đang mở",
-    "criticalNCRs": "Nghiêm trọng",
-    "ncrs": "Phiếu lỗi (NCR)",
-    "noSupplierData": "Chưa có dữ liệu chất lượng nhà cung cấp",
-    "inspections": "Kiểm tra chất lượng",
-    "createInspection": "Tạo phiếu kiểm tra",
-    "capa": "Hành động khắc phục (CAPA)",
-    "spcCharts": "Biểu đồ SPC",
-    "status": {
-      "pass": "Đạt",
-      "fail": "Không đạt",
-      "pending": "Chờ kiểm tra",
-      "in_review": "Đang xem xét"
-    }
+    "newMessage": "Tin nhắn mới",
+    "selectUser": "Chọn người dùng",
+    "typeMessage": "Nhập tin nhắn",
+    "users": "Người dùng"
   },
   "omnichannel": {
     "title": "Bán hàng đa kênh (Omnichannel)",
@@ -1170,94 +1246,30 @@
     "syncHistory": "Lịch sử đồng bộ",
     "mappingRules": "Quy tắc ánh xạ"
   },
-  "manufacturing": {
-    "title": "Quản lý sản xuất (MRP)",
-    "subtitle": "Lập kế hoạch sản xuất, BOM, và quản lý quy trình",
-    "createOrder": "Tạo lệnh sản xuất",
-    "productionOrders": "Lệnh sản xuất",
-    "bom": "Định mức nguyên vật liệu (BOM)",
-    "bomVersion": "Phiên bản BOM",
-    "routing": "Quy trình sản xuất",
-    "workCenter": "Trạm làm việc",
-    "operationName": "Tên công đoạn",
-    "setupTime": "Thời gian chuẩn bị",
-    "cycleTime": "Thời gian gia công",
-    "laborCost": "Chi phí nhân công",
-    "overheadCost": "Chi phí chung",
-    "requiresQC": "Yêu cầu kiểm tra chất lượng",
-    "component": "Nguyên vật liệu",
-    "wastage": "Hao hụt",
-    "subAssembly": "Bán thành phẩm",
-    "quantity": "Số lượng",
-    "status": {
-      "draft": "Nháp",
-      "in_progress": "Đang sản xuất",
-      "completed": "Hoàn thành",
-      "cancelled": "Đã hủy"
-    },
-    "stats": {
-      "totalOrders": "Tổng lệnh SX",
-      "inProgress": "Đang SX",
-      "completedToday": "Hoàn thành hôm nay",
-      "yieldRate": "Tỷ lệ thành phẩm"
-    }
+  "warehouses": {
+    "title": "Kho hàng",
+    "add": "Thêm kho",
+    "code": "Mã kho",
+    "name": "Tên kho",
+    "address": "Địa chỉ",
+    "isDefault": "Kho mặc định",
+    "noWarehouses": "Chưa có kho nào. Hãy tạo kho đầu tiên.",
+    "createWarehouse": "Tạo kho",
+    "confirmDelete": "B?n c? ch?c mu?n x?a kho n?y?",
+    "createInfo": "T?o kho ?? qu?n l? t?n kho v? giao d?ch",
+    "empty": "Ch?a c? kho n?o",
+    "subtitle": "Qu?n l? kho h?ng v? ??a ?i?m l?u tr?"
   },
-  "hr": {
-    "title": "Quản lý nhân sự",
-    "employees": {
-      "title": "Danh sách nhân viên",
-      "add": "Thêm nhân viên",
-      "edit": "Sửa thông tin",
-      "name": "Họ tên",
-      "department": "Phòng ban",
-      "position": "Chức vụ",
-      "joinDate": "Ngày vào làm",
-      "status": "Trạng thái"
-    },
-    "payroll": {
-      "title": "Quản lý lương & thưởng (Payroll)",
-      "subtitle": "Tính lương tự động, tích hợp chấm công và thuế TNCN",
-      "employee": "Nhân viên",
-      "baseSalary": "Lương cơ bản",
-      "allowances": "Phụ cấp",
-      "overtime": "Làm thêm (OT)",
-      "deductions": "Khấu trừ (BH, Thuế)",
-      "netSalary": "Thực lãnh",
-      "status": "Trạng thái",
-      "draft": "Bản nháp",
-      "approved": "Đã duyệt",
-      "paid": "Đã thanh toán",
-      "process": "Chạy tính lương",
-      "processing": "Đang tính lương...",
-      "salaryBoard": "Bảng lương chi tiết",
-      "totalEmployees": "Nhân sự tính lương",
-      "totalNet": "Tổng quỹ lương",
-      "totalOT": "Tổng OT",
-      "totalDeductions": "BHXH & Thuế TNCN"
-    }
-  },
-  "nav": {
-    "dashboard": "Tổng quan",
-    "pos": "Bán hàng",
-    "orders": "Đơn hàng",
-    "products": "Sản phẩm",
-    "inventory": "Kho hàng",
+  "reports": {
+    "title": "Báo cáo",
+    "revenue": "Doanh thu",
+    "expense": "Chi phí",
     "customers": "Khách hàng",
-    "suppliers": "Nhà cung cấp",
-    "purchasing": "Mua hàng",
-    "payments": "Thu chi",
-    "warehouses": "Quản lý kho",
-    "reports": "Báo cáo",
-    "crm": "CRM",
-    "accounting": "Kế toán",
-    "users": "Người dùng",
-    "settings": "Cài đặt",
-    "forecast": "Dự báo",
-    "quality": "Chất lượng",
-    "omnichannel": "Đa kênh",
-    "manufacturing": "Sản xuất",
-    "hr": "Nhân sự",
-    "einvoice": "Hóa đơn điện tử"
+    "dateRange": "Khoảng thời gian",
+    "generatedAt": "Ngày tạo báo cáo",
+    "inventory": "Tồn kho",
+    "profit": "Lợi nhuận",
+    "topProducts": "Sản phẩm bán chạy"
   },
   "einvoice": {
     "title": "Hóa đơn điện tử",
@@ -1323,10 +1335,10 @@
     "onLeave": "Nghỉ phép",
     "shift": "Ca làm việc",
     "shifts": {
-      "morning":   "Ca sáng",
+      "morning": "Ca sáng",
       "afternoon": "Ca chiều",
-      "night":     "Ca đêm",
-      "full":      "Cả ngày"
+      "night": "Ca đêm",
+      "full": "Cả ngày"
     },
     "today": "Hôm nay",
     "monthly": "Tổng tháng",
@@ -1337,35 +1349,101 @@
     "lateCount": "Lần trễ",
     "exportReport": "Xuất báo cáo",
     "methods": {
-      "manual":    "Thủ công",
+      "manual": "Thủ công",
       "biometric": "Vân tay / Khuôn mặt",
-      "qr":        "Quét mã QR",
-      "gps":       "GPS",
-      "app":       "Ứng dụng"
+      "qr": "Quét mã QR",
+      "gps": "GPS",
+      "app": "Ứng dụng"
     },
     "leave": {
       "title": "Đơn nghỉ phép",
       "create": "Tạo đơn",
       "types": {
-        "annual":       "Nghỉ phép năm",
-        "sick":         "Nghỉ ốm",
-        "unpaid":       "Nghỉ không lương",
-        "maternity":    "Thai sản",
-        "paternity":    "Nuôi con",
+        "annual": "Nghỉ phép năm",
+        "sick": "Nghỉ ốm",
+        "unpaid": "Nghỉ không lương",
+        "maternity": "Thai sản",
+        "paternity": "Nuôi con",
         "compensatory": "Nghỉ bù"
       },
       "statuses": {
-        "pending":   "Chờ duyệt",
-        "approved":  "Đã duyệt",
-        "rejected":  "Từ chối",
+        "pending": "Chờ duyệt",
+        "approved": "Đã duyệt",
+        "rejected": "Từ chối",
         "cancelled": "Đã hủy"
       },
-      "startDate":       "Ngày bắt đầu",
-      "endDate":         "Ngày kết thúc",
-      "totalDays":       "Số ngày",
-      "reason":          "Lý do",
-      "approvedBy":      "Người duyệt",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "totalDays": "Số ngày",
+      "reason": "Lý do",
+      "approvedBy": "Người duyệt",
       "rejectionReason": "Lý do từ chối"
-    }
+    },
+    "status": "Trạng thái"
+  },
+  "activityLogs": {
+    "title": "Nhật ký hoạt động",
+    "action": "Hành động",
+    "details": "Chi tiết",
+    "entityId": "Mã đối tượng",
+    "entityType": "Loại đối tượng",
+    "timestamp": "Thời gian",
+    "user": "Người dùng"
+  },
+  "days": "ngày",
+  "entities": {
+    "customer": "Khách hàng",
+    "inventory": "Tồn kho",
+    "order": "Đơn hàng",
+    "product": "Sản phẩm",
+    "supplier": "Nhà cung cấp"
+  },
+  "forecastError": "Không thể tải dữ liệu dự báo",
+  "payments": {
+    "partySearchPlaceholder": "Tìm khách hàng hoặc nhà cung cấp"
+  },
+  "socket": {
+    "new_activity": "Có hoạt động mới"
+  },
+  "theme": {
+    "darkMode": "Chế độ tối",
+    "lightMode": "Chế độ sáng"
+  },
+  "users": {
+    "add": "Thêm người dùng",
+    "email": "Email",
+    "name": "Tên",
+    "role": "Vai trò",
+    "title": "Người dùng"
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc"
+  },
+  "xero": {
+    "clientId": "Client ID",
+    "clientSecret": "Client Secret",
+    "connected": "Đã kết nối",
+    "disconnected": "Chưa kết nối",
+    "refreshToken": "Refresh token",
+    "saved": "Đã lưu cấu hình Xero",
+    "status": "Trạng thái",
+    "syncCustomers": "Đồng bộ khách hàng",
+    "syncCustomersNow": "Đồng bộ khách hàng ngay",
+    "syncInvoices": "Đồng bộ hóa đơn",
+    "syncInvoicesNow": "Đồng bộ hóa đơn ngay",
+    "syncPayments": "Đồng bộ thanh toán",
+    "syncPaymentsNow": "Đồng bộ thanh toán ngay",
+    "tenantId": "Tenant ID",
+    "title": "Tích hợp Xero"
+  },
+  "contracts": {
+    "confirmSign": "B?n c? ch?c mu?n k? h?p ??ng n?y?",
+    "empty": "Ch?a c? h?p ??ng n?o",
+    "fetchFailed": "Kh?ng th? t?i danh s?ch h?p ??ng",
+    "signAction": "K? h?p ??ng",
+    "signFailed": "K? h?p ??ng th?t b?i",
+    "signNow": "K? ngay",
+    "signTitle": "K? h?p ??ng ?i?n t?",
+    "signedSuccess": "H?p ??ng ?? ???c k? th?nh c?ng"
   }
 }

@@ -20,7 +20,7 @@ jest.mock('dotenv', () => ({
 
 jest.mock('bcryptjs', () => ({
   hashSync: jest.fn((value: string) => `hash:${value}`),
-}));
+}), { virtual: true });
 
 jest.mock('./schema', () => ({
   tenants: 'tenants',

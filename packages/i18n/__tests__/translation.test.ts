@@ -49,10 +49,10 @@ describe("i18n resources and helpers", () => {
     );
   });
 
-  it("returns the key when a nested translation is missing or non-string", () => {
+  it("falls back safely for missing keys and object translation groups", () => {
     expect(t("actions.not_real", "vi")).toBe("actions.not_real");
-    expect(t("actions.search", "en")).toBe("actions.search");
-    expect(t("actions.save", "fr" as never)).toBe("actions.save");
+    expect(t("actions.search", "en")).toBe("Search");
+    expect(t("actions.save", "fr" as never)).toBe("Lưu");
   });
 
   it("ships the legacy Vietnamese locale index for native shells", async () => {

@@ -19,6 +19,13 @@ interface ProductionOrder {
   createdAt: string;
 }
 
+const asArray = <T,>(value: any): T[] => {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.items)) return value.items;
+  if (Array.isArray(value?.data)) return value.data;
+  return [];
+};
+
 export default function ProductionOrdersPage() {
   const { t } = useTranslation('common');
   const [orders, setOrders] = useState<ProductionOrder[]>([]);
@@ -33,7 +40,7 @@ export default function ProductionOrdersPage() {
     setLoading(true);
     try {
       const res = await apiClient.get('/manufacturing/orders');
-      setOrders(res.data || []);
+      setOrders(asArray<ProductionOrder>(res.data));
     } catch {
       setOrders([]);
     } finally {
@@ -87,7 +94,7 @@ export default function ProductionOrdersPage() {
         : '-'
     },
     {
-      header: t('actions.export.createdAt') || 'Ngày tạo',
+      header: t('common.createdAt') || 'Ngày tạo',
       accessor: (row: ProductionOrder) => new Date(row.createdAt).toLocaleDateString('vi-VN')
     },
   ];

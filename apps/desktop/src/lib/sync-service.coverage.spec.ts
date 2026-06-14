@@ -33,7 +33,7 @@ describe('desktop sync service coverage', () => {
     localStorage.setItem('access_token', 'token-1');
     localStorage.setItem('tenant_id', 'tenant-1');
 
-    expect(baseUrl).toBe('http://localhost:3000');
+    expect(baseUrl).toBe('http://localhost:3456');
     expect(provider.getToken()).toBe('token-1');
     expect(provider.getTenantId()).toBe('tenant-1');
     expect(provider.getDeviceId()).toBe('device-1');

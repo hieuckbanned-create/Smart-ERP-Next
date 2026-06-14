@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiDollarSign, FiRefreshCw, FiCheckCircle, FiFileText } from 'react-icons/fi';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -40,24 +40,7 @@ export default function PayrollPage() {
   const [payslipsLoading, setPayslipsLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
 
-  useEffect(() => { fetchBoards(); }, []);
-
-  const fetchBoards = async () => {
-    setLoading(true);
-    try {
-      const res = await apiClient.get<SalaryBoard[]>('/hr/payroll/boards');
-      setBoards(res.data);
-      if (res.data.length > 0 && !selectedBoard) {
-        handleSelectBoard(res.data[0]);
-      }
-    } catch(e) {
-      // ignore
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSelectBoard = async (board: SalaryBoard) => {
+  const handleSelectBoard = useCallback(async (board: SalaryBoard) => {
     setSelectedBoard(board);
     setPayslipsLoading(true);
     try {
@@ -68,7 +51,24 @@ export default function PayrollPage() {
     } finally {
       setPayslipsLoading(false);
     }
-  };
+  }, []);
+
+  const fetchBoards = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await apiClient.get<SalaryBoard[]>('/hr/payroll/boards');
+      setBoards(res.data);
+      if (res.data.length > 0 && !selectedBoard) {
+        await handleSelectBoard(res.data[0]);
+      }
+    } catch(e) {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, [handleSelectBoard, selectedBoard]);
+
+  useEffect(() => { fetchBoards(); }, [fetchBoards]);
 
   const handleGenerate = async () => {
     setGenerating(true);

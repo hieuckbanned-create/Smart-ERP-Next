@@ -12,8 +12,12 @@ import {
   ParseUUIDPipe,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { randomUUID } from 'crypto';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -28,6 +32,40 @@ export class ProductsController {
   @Post()
   create(@Request() req: any, @Body() dto: CreateProductDto) {
     return this.productsService.create(req.user.tenantId, dto, req.user.sub);
+  }
+
+  @Post('upload-image')
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 5 * 1024 * 1024 } }))
+  uploadImage(@Request() req: any, @UploadedFile() file: any) {
+    if (!file) {
+      throw new BadRequestException('Image file is required');
+    }
+
+    const allowedTypes: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+    };
+    const extension = allowedTypes[file.mimetype];
+    if (!extension) {
+      throw new BadRequestException('Only JPG, PNG, WEBP, and GIF images are allowed');
+    }
+
+    const tenantId = String(req.user.tenantId);
+    const uploadDir = join(process.cwd(), 'uploads', 'products', tenantId);
+    if (!existsSync(uploadDir)) mkdirSync(uploadDir, { recursive: true });
+
+    const filename = `${randomUUID()}.${extension}`;
+    const relativePath = `/uploads/products/${tenantId}/${filename}`;
+    writeFileSync(join(uploadDir, filename), file.buffer);
+
+    return {
+      imageUrl: relativePath,
+      filename,
+      size: file.size,
+      mimeType: file.mimetype,
+    };
   }
 
   @Get()

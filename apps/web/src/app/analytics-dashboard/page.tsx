@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
@@ -38,6 +38,8 @@ const SEVERITY_ICONS: Record<string, string> = {
   critical: '🚨',
 };
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function AnalyticsDashboardPage() {
   const { t } = useTranslation('common');
   const [kpis, setKpis] = useState<KPIResult | null>(null);
@@ -47,9 +49,7 @@ export default function AnalyticsDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<'today' | 'week' | 'month' | 'quarter'>('month');
 
-  useEffect(() => { fetchData(); }, [period]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [kpiRes, chartRes, productsRes, insightsRes] = await Promise.all([
@@ -59,12 +59,14 @@ export default function AnalyticsDashboardPage() {
         apiClient.get('/analytics-dashboard/ai-insights'),
       ]);
       setKpis(kpiRes.data);
-      setRevenueChart(chartRes.data || []);
-      setTopProducts(productsRes.data || []);
-      setInsights(insightsRes.data || []);
+      setRevenueChart(asArray(chartRes.data));
+      setTopProducts(asArray(productsRes.data));
+      setInsights(asArray(insightsRes.data));
     } catch { /* ignore */ }
     finally { setLoading(false); }
-  };
+  }, [period]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const maxRevenue = Math.max(...revenueChart.map((d: any) => Number(d.revenue || 0)), 1);
 

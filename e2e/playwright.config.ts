@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }], ['list']],
   timeout: 30000,
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3457',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -22,24 +22,21 @@ export default defineConfig({
   webServer: [
     {
       command: 'pnpm --filter @smart-erp/api dev',
-      port: 3001,
-      timeout: 60000,
+      url: 'http://localhost:3456/health',
+      timeout: 120000,
       reuseExistingServer: true,
-      cwd: '..',
       env: {
-        ...process.env,
-        PORT: process.env.PORT ?? '3001',
+        PORT: process.env.API_PORT ?? '3456',
       },
     },
     {
-      command: 'pnpm --filter @smart-erp/web dev --port 3000',
-      port: 3000,
-      timeout: 60000,
+      command: 'pnpm --filter @smart-erp/web dev --port 3457',
+      url: 'http://localhost:3457/login',
+      timeout: 120000,
       reuseExistingServer: true,
-      cwd: '..',
       env: {
-        ...process.env,
-        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001',
+        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3456',
+        PORT: process.env.WEB_PORT ?? '3457',
       },
     },
   ],

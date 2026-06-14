@@ -23,7 +23,7 @@ export default function CashflowForecastPage() {
         const res = await apiClient.get('/analytics/cashflow/forecast?days=30');
         setData(res.data);
       } catch (err) {
-        console.error(err);
+        setData(null);
       } finally {
         setLoading(false);
       }

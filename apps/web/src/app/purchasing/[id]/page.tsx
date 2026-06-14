@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
@@ -61,7 +61,7 @@ export default function PurchaseOrderDetailPage() {
   const [showReceive, setShowReceive] = useState(false);
   const [receiveQtys, setReceiveQtys] = useState<Record<string, number>>({});
 
-  const fetchPO = async () => {
+  const fetchPO = useCallback(async () => {
     const res = await apiClient.get(`/purchasing/${id}`);
     setPo(res.data);
     // Init receive qtys
@@ -70,13 +70,13 @@ export default function PurchaseOrderDetailPage() {
       qtys[item.id] = item.orderedQty - item.receivedQty;
     });
     setReceiveQtys(qtys);
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchPO()
       .catch(() => router.push('/purchasing'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [fetchPO, router]);
 
   const handleConfirm = async () => {
     setUpdating(true);

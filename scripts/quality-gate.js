@@ -1,4 +1,5 @@
 const { spawnSync } = require('node:child_process');
+const path = require('node:path');
 
 const COMMON_GATES = [
   {
@@ -12,6 +13,12 @@ const COMMON_GATES = [
     name: 'Audit test directory ownership',
     command: 'pnpm',
     args: ['audit:test-layout'],
+  },
+  {
+    id: 'i18n-runtime',
+    name: 'Audit runtime i18n keys and encoding',
+    command: 'pnpm',
+    args: ['audit:i18n'],
   },
   {
     id: 'type-check',
@@ -42,9 +49,9 @@ const RELEASE_ONLY_GATES = [
   },
   {
     id: 'desktop-build',
-    name: 'Build native Windows desktop MVP',
-    command: 'pnpm',
-    args: ['--filter', '@smart-erp/desktop', 'build'],
+    name: 'Build or verify native Windows desktop installer',
+    command: 'node',
+    args: ['scripts/ensure-desktop-release-artifact.js'],
   },
   {
     id: 'mobile-type-check',
@@ -63,6 +70,12 @@ const RELEASE_ONLY_GATES = [
     name: 'Run API end-to-end tests',
     command: 'pnpm',
     args: ['test:api:e2e'],
+  },
+  {
+    id: 'release-runtime-smoke',
+    name: 'Smoke test register, product image upload, and product creation against runtime API',
+    command: 'pnpm',
+    args: ['smoke:release-runtime'],
   },
   {
     id: 'web-e2e',
@@ -112,19 +125,49 @@ function formatSuccessMessage(plan) {
     ].join('\n');
   }
 
+  if (['1', 'true', 'yes', 'on'].includes(String(process.env.SKIP_IOS_ARTIFACT || '').toLowerCase())) {
+    return [
+      'Release quality gate passed with iOS artifact intentionally skipped.',
+      'Chi duoc claim release-ready cho web, API, Android, va Windows; iOS .ipa van la deferred release item.',
+    ].join('\n');
+  }
+
   return [
     'Release quality gate passed.',
     'Co the claim release-ready vi tat ca gate unit, build, e2e, native artifact da co evidence pass.',
   ].join('\n');
 }
 
+function resolveGateCommand(gate) {
+  return {
+    command: gate.command,
+    args: gate.args,
+    display: `${gate.command} ${gate.args.join(' ')}`,
+    shell: process.platform === 'win32',
+  };
+}
+
+function buildGateEnv(cwd = process.cwd()) {
+  const pathKey = Object.keys(process.env).find((key) => key.toLowerCase() === 'path') || 'PATH';
+  const pathSeparator = process.platform === 'win32' ? ';' : ':';
+  const shimDir = path.join(cwd, 'scripts', 'shims');
+  const currentPath = process.env[pathKey] || '';
+
+  return {
+    ...process.env,
+    [pathKey]: [shimDir, currentPath].filter(Boolean).join(pathSeparator),
+  };
+}
+
 function runGate(gate, cwd = process.cwd()) {
   console.log(`\n[quality-gate] ${gate.id}: ${gate.name}`);
-  console.log(`[quality-gate] $ ${gate.command} ${gate.args.join(' ')}`);
+  const resolved = resolveGateCommand(gate);
+  console.log(`[quality-gate] $ ${resolved.display}`);
 
-  const result = spawnSync(gate.command, gate.args, {
+  const result = spawnSync(resolved.command, resolved.args, {
     cwd,
-    shell: process.platform === 'win32',
+    env: buildGateEnv(cwd),
+    shell: resolved.shell,
     stdio: 'inherit',
   });
 
@@ -170,8 +213,10 @@ if (require.main === module) {
 
 module.exports = {
   buildGatePlan,
+  buildGateEnv,
   findMissingGateIds,
   formatSuccessMessage,
+  resolveGateCommand,
   runGate,
   runPlan,
 };

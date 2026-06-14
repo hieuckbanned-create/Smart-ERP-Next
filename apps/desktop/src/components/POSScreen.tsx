@@ -43,7 +43,7 @@ export function POSScreen() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:3000/products?isActive=true&limit=100', {
+      const res = await fetch('http://localhost:3456/products?isActive=true&limit=100', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           'X-Tenant-ID': localStorage.getItem('tenant_id') || '',
@@ -107,7 +107,7 @@ export function POSScreen() {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/orders', {
+      const res = await fetch('http://localhost:3456/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

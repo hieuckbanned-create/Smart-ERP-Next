@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -63,7 +63,7 @@ export default function PaymentsPage() {
   });
   const [saving, setSaving] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [paymentsRes, summaryRes] = await Promise.allSettled([
@@ -79,9 +79,9 @@ export default function PaymentsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, typeFilter]);
 
-  useEffect(() => { fetchData(); }, [page, typeFilter]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -4,7 +4,7 @@
  */
 import * as SecureStore from 'expo-secure-store';
 
-const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3456';
 
 type MobileHeaders = Record<string, string>;
 type QueryParamValue = string | number | boolean | null | undefined;

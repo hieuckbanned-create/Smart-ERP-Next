@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Button, Spinner, DataTable, Badge } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
@@ -19,6 +19,8 @@ interface Prediction {
   confidence_score: number;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function ClvPage() {
   const { t } = useTranslation('common');
   const toast = useToast();
@@ -28,24 +30,24 @@ export default function ClvPage() {
   const [computing, setComputing] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState<string>('');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const predRes = await apiClient.get('/analytics/clv/predictions', { params: { segment: selectedSegment || undefined } });
-      setPredictions(predRes.data);
+      setPredictions(asArray<Prediction>(predRes.data?.items ?? predRes.data));
       const sumRes = await apiClient.get('/analytics/clv/summary');
-      setSummary(sumRes.data);
+      setSummary(asArray(sumRes.data?.items ?? sumRes.data));
     } catch (err) {
-      console.error(err);
-      toast.error('Failed to load CLV data');
+      setPredictions([]);
+      setSummary([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedSegment]);
 
   useEffect(() => {
     fetchData();
-  }, [selectedSegment]);
+  }, [fetchData]);
 
   const handleCompute = async () => {
     setComputing(true);

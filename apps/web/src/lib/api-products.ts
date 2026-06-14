@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { apiClient } from './api-client';
+import { API_BASE_URL, apiClient } from './api-client';
 
 export interface Product {
   id: string;
@@ -40,6 +40,20 @@ export interface ProductQueryParams {
   isActive?: boolean;
 }
 
+export interface ProductImageUploadResponse {
+  imageUrl: string;
+  filename: string;
+  size: number;
+  mimeType: string;
+}
+
+export function resolveProductImageUrl(imageUrl?: string | null): string {
+  if (!imageUrl) return '';
+  if (/^(https?:|data:|blob:)/i.test(imageUrl)) return imageUrl;
+  if (imageUrl.startsWith('/')) return `${API_BASE_URL}${imageUrl}`;
+  return imageUrl;
+}
+
 export const productsApi = {
   /** Returns `{ items, total, page, limit, totalPages }` directly */
   getAll: async (params?: ProductQueryParams): Promise<ProductsResponse> => {
@@ -60,6 +74,15 @@ export const productsApi = {
   create: async (data: Record<string, any>): Promise<Product> => {
     const res = await apiClient.post<Product>('/products', data);
     return res.data;
+  },
+
+  uploadImage: async (file: File): Promise<ProductImageUploadResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post<ProductImageUploadResponse>('/products/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return { ...res.data, imageUrl: resolveProductImageUrl(res.data.imageUrl) };
   },
 
   update: async (id: string, data: Partial<Product> | Record<string, any>): Promise<Product> => {

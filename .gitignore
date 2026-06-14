@@ -37,6 +37,7 @@ pnpm-debug.log*
 
 # Turbo
 .turbo
+.jest-cache
 
 # Coverage
 coverage
@@ -49,9 +50,14 @@ output/playwright/
 
 # Temporary
 tmp
+.tmp
 temp
 scratch
 .aider*
+*.bak
+nul
+e2e-playwright-esm-test/
+.env.new
 
 # Package manager artifacts
 package-lock.json

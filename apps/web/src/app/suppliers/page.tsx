@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
@@ -36,7 +36,7 @@ export default function SuppliersPage() {
   const [total, setTotal] = useState(0);
   const limit = 20;
 
-  const fetchSuppliers = async () => {
+  const fetchSuppliers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get('/suppliers', {
@@ -50,9 +50,9 @@ export default function SuppliersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, search]);
 
-  useEffect(() => { fetchSuppliers(); }, [page]);
+  useEffect(() => { fetchSuppliers(); }, [fetchSuppliers]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,7 +100,7 @@ export default function SuppliersPage() {
                 className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">{t('actions.search')}</button>
+            <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">{t('actions.search.title')}</button>
           </form>
         </div>
 

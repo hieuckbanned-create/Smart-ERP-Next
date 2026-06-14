@@ -19,7 +19,7 @@ export default function EditSupplierPage() {
       .then((res) => setSupplier(res.data))
       .catch(() => router.push('/suppliers'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (

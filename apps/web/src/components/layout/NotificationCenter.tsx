@@ -64,7 +64,7 @@ export default function NotificationCenter() {
     return () => {
       events.forEach((event) => socket.off(event));
     };
-  }, []);
+  }, [t]);
 
   // Close on outside click
   useEffect(() => {

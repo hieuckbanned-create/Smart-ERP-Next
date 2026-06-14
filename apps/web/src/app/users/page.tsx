@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usersApi } from "@/lib/api-client";
 import AuthGuard from "@/components/layout/AuthGuard";
@@ -88,7 +88,7 @@ export default function UsersPage() {
   });
   const [saving, setSaving] = useState(false);
 
-  const fetchUsers = async (q = search) => {
+  const fetchUsers = useCallback(async (q = search) => {
     setLoading(true);
     try {
       const [usersRes, statsRes] = await Promise.allSettled([
@@ -100,11 +100,11 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

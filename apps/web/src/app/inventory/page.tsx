@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import { productsApi, type Product } from '@/lib/api-products';
@@ -119,7 +119,7 @@ export default function InventoryPage() {
   const [reorderPoNotes, setReorderPoNotes] = useState<string>('');
   const [reorderPoItems, setReorderPoItems] = useState<{ productId: string; name: string; sku: string; quantity: number; included: boolean }[]>([]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [summaryRes, txRes, lowRes, reorderRes, lotsRes, transfersRes, whRes, storesRes] = await Promise.allSettled([
@@ -147,9 +147,9 @@ export default function InventoryPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page]);
 
-  useEffect(() => { fetchData(); }, [page]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   useEffect(() => {
     if (!adjustForm.productSearch.trim()) { setSearchResults([]); return; }

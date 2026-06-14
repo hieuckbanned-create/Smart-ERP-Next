@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const emailSelector = 'input[type="email"], input[name="email"], input[placeholder*="email" i]';
+const usernameSelector = 'input[type="email"], input[type="text"], input[name="username"], input[name="email"], input[placeholder*="tên đăng nhập" i], input[placeholder*="username" i], input[placeholder*="email" i]';
 const passwordSelector = 'input[type="password"]';
 const loginButtonSelector = 'button[type="submit"], button:has-text("Đăng nhập"), button:has-text("Login")';
 
@@ -13,9 +13,9 @@ async function typeField(page: Page, selector: string, value: string) {
   await expect(field).toHaveValue(value);
 }
 
-async function fillLoginFields(page: Page, email: string, password: string) {
+async function fillLoginFields(page: Page, username: string, password: string) {
   await page.goto('/login');
-  await typeField(page, emailSelector, email);
+  await typeField(page, usernameSelector, username);
   await typeField(page, passwordSelector, password);
 }
 
@@ -35,16 +35,15 @@ async function loginAsAdmin(page: Page) {
 
 test.describe('Health Checks', () => {
   test('API /health returns OK', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/health');
+    const res = await request.get('http://localhost:3456/health');
     expect(res.status()).toBeLessThan(500);
   });
 
   test('Web login page loads', async ({ page }) => {
     await page.goto('/login');
     await expect(page).toHaveTitle(/Smart ERP|Login/i);
-    // Expect a login form or input
-    const emailInput = page.locator('input[type="email"], input[name="email"], input[placeholder*="email" i], input[placeholder*="Email" i]');
-    await expect(emailInput).toBeVisible({ timeout: 10000 });
+    const usernameInput = page.locator(usernameSelector);
+    await expect(usernameInput).toBeVisible({ timeout: 10000 });
   });
 });
 
@@ -167,7 +166,7 @@ test.describe('API Endpoints', () => {
 
   test.beforeAll(async ({ request }) => {
     // Login via API to get token
-    const res = await request.post('http://localhost:3001/auth/login', {
+    const res = await request.post('http://localhost:3456/auth/login', {
       data: { email: 'admin@smarterp.vn', password: 'admin123' },
     });
     if (res.ok()) {
@@ -177,35 +176,35 @@ test.describe('API Endpoints', () => {
   });
 
   test('GET /products returns list', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/products', {
+    const res = await request.get('http://localhost:3456/products', {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status()).toBeLessThan(500);
   });
 
   test('GET /orders returns list', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/orders', {
+    const res = await request.get('http://localhost:3456/orders', {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status()).toBeLessThan(500);
   });
 
   test('GET /customers returns list', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/customers', {
+    const res = await request.get('http://localhost:3456/customers', {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status()).toBeLessThan(500);
   });
 
   test('GET /users returns list', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/users', {
+    const res = await request.get('http://localhost:3456/users', {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status()).toBeLessThan(500);
   });
 
   test('GET /inventory returns data', async ({ request }) => {
-    const res = await request.get('http://localhost:3001/inventory', {
+    const res = await request.get('http://localhost:3456/inventory', {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status()).toBeLessThan(500);

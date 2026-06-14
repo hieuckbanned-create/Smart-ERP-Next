@@ -5,12 +5,12 @@ const mockApiClient = {
   post: jest.fn(),
 };
 
-jest.mock('./api-client', () => ({ apiClient: mockApiClient }));
+jest.mock('./api-client', () => ({ API_BASE_URL: 'http://api.test', apiClient: mockApiClient }));
 
 import { customersApi } from './api-customers';
 import { leadsApi } from './api-crm';
 import { ordersApi } from './api-orders';
-import { productsApi } from './api-products';
+import { productsApi, resolveProductImageUrl } from './api-products';
 
 describe('web api wrapper coverage', () => {
   beforeEach(() => {
@@ -30,6 +30,20 @@ describe('web api wrapper coverage', () => {
     await productsApi.getById('product-1');
     await productsApi.getBySku('SKU-1');
     await productsApi.create({ name: 'Coffee' });
+    mockApiClient.post.mockResolvedValueOnce({
+      data: {
+        filename: 'product.png',
+        imageUrl: '/uploads/products/tenant/product.png',
+        mimeType: 'image/png',
+        size: 11,
+      },
+    });
+    await expect(productsApi.uploadImage({ name: 'product.png' } as any)).resolves.toEqual({
+      filename: 'product.png',
+      imageUrl: 'http://api.test/uploads/products/tenant/product.png',
+      mimeType: 'image/png',
+      size: 11,
+    });
     await productsApi.update('product-1', { name: 'Tea' });
     await expect(productsApi.delete('product-1')).resolves.toBeUndefined();
     await productsApi.adjustStock('product-1', 2);
@@ -40,6 +54,11 @@ describe('web api wrapper coverage', () => {
     expect(mockApiClient.get).toHaveBeenCalledWith('/products/product-1');
     expect(mockApiClient.get).toHaveBeenCalledWith('/products/sku/SKU-1');
     expect(mockApiClient.post).toHaveBeenCalledWith('/products', { name: 'Coffee' });
+    expect(mockApiClient.post).toHaveBeenCalledWith(
+      '/products/upload-image',
+      expect.any(FormData),
+      { headers: { 'Content-Type': 'multipart/form-data' } },
+    );
     expect(mockApiClient.patch).toHaveBeenCalledWith('/products/product-1', { name: 'Tea' });
     expect(mockApiClient.delete).toHaveBeenCalledWith('/products/product-1');
     expect(mockApiClient.patch).toHaveBeenCalledWith('/products/product-1/stock', {
@@ -53,6 +72,18 @@ describe('web api wrapper coverage', () => {
       type: 'OUT',
     });
     expect(mockApiClient.get).toHaveBeenCalledWith('/products/product-1/transactions');
+  });
+
+  it('resolves product image URLs without rewriting external or empty values', () => {
+    expect(resolveProductImageUrl('/uploads/products/tenant/product.png')).toBe(
+      'http://api.test/uploads/products/tenant/product.png',
+    );
+    expect(resolveProductImageUrl('https://cdn.test/product.png')).toBe('https://cdn.test/product.png');
+    expect(resolveProductImageUrl('data:image/png;base64,abc')).toBe('data:image/png;base64,abc');
+    expect(resolveProductImageUrl('blob:http://web.test/id')).toBe('blob:http://web.test/id');
+    expect(resolveProductImageUrl('products/local.png')).toBe('products/local.png');
+    expect(resolveProductImageUrl('')).toBe('');
+    expect(resolveProductImageUrl(null)).toBe('');
   });
 
   it('maps lead, customer, and order wrapper methods', async () => {

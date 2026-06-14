@@ -4,11 +4,11 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: '/api/:path*',
-      destination: 'http://localhost:3001/api/:path*',
+      destination: 'http://localhost:3456/api/:path*',
     },
     {
       source: '/socket.io/:path*',
-      destination: 'http://localhost:3001/socket.io/:path*',
+      destination: 'http://localhost:3456/socket.io/:path*',
     },
   ],
 };

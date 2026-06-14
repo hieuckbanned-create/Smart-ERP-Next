@@ -3,7 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 
 let socket: Socket | null = null;
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3456';
 
 export function initSocket(userId: string, tenantId?: string): Socket {
   if (socket?.connected) return socket;

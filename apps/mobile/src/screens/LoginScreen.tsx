@@ -13,7 +13,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import { useTranslation } from "@smart-erp/i18n";
 
-const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
+const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3456";
 
 interface LoginScreenProps {
   onLoginSuccess: (user: any) => void;
@@ -150,7 +150,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.version}>Smart ERP Next v0.3.0</Text>
+        <Text style={styles.version}>Smart ERP Next v0.4.0</Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -22,6 +22,8 @@ interface Message {
   isRead: string;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function ChatPage() {
   const { t } = useTranslation('common');
   const [users, setUsers] = useState<User[]>([]);
@@ -32,21 +34,25 @@ export default function ChatPage() {
   const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    apiClient.get('/users').then(res => setUsers(res.data.items));
+    apiClient.get('/users').then(res => setUsers(asArray<User>(res.data?.items ?? res.data)));
   }, []);
 
   useEffect(() => {
     if (!selectedUser) return;
-    apiClient.get(`/chat/conversation/${selectedUser.id}`).then(res => setMessages(res.data.items));
+    apiClient.get(`/chat/conversation/${selectedUser.id}`).then(res => setMessages(asArray<Message>(res.data?.items ?? res.data))).catch(() => setMessages([]));
     // Poll every 3 seconds for new messages
     const interval = setInterval(async () => {
-      const res = await apiClient.get(`/chat/conversation/${selectedUser.id}`);
-      setMessages(res.data.items);
+      try {
+        const res = await apiClient.get(`/chat/conversation/${selectedUser.id}`);
+        setMessages(asArray<Message>(res.data?.items ?? res.data));
+      } catch {
+        setMessages([]);
+      }
     }, 3000);
     return () => clearInterval(interval);
   }, [selectedUser]);
 
-  const fetchUnreadCounts = async () => {
+  const fetchUnreadCounts = useCallback(async () => {
     const counts: Record<string, number> = {};
     for (const user of users) {
       try {
@@ -57,13 +63,13 @@ export default function ChatPage() {
       }
     }
     setUnreadCounts(counts);
-  };
+  }, [users]);
 
   useEffect(() => {
     fetchUnreadCounts();
     const interval = setInterval(fetchUnreadCounts, 5000);
     return () => clearInterval(interval);
-  }, [users]);
+  }, [fetchUnreadCounts]);
 
   const sendMessage = async () => {
     if (!selectedUser || !newMessage.trim()) return;
@@ -72,7 +78,7 @@ export default function ChatPage() {
       await apiClient.post('/chat/send', { toUserId: selectedUser.id, content: newMessage });
       setNewMessage('');
       const res = await apiClient.get(`/chat/conversation/${selectedUser.id}`);
-      setMessages(res.data.items);
+      setMessages(asArray<Message>(res.data?.items ?? res.data));
     } catch (err) {
       console.error('Failed to send message', err);
     } finally {

@@ -2,6 +2,8 @@ import { CurrenciesController } from '../currencies/currencies.controller';
 import { CustomersController } from '../customers/customers.controller';
 import { OrdersController } from '../orders/orders.controller';
 import { ProductsController } from '../products/products.controller';
+import { existsSync, rmSync } from 'fs';
+import { join } from 'path';
 
 describe('controller delegation', () => {
   const req = { user: { tenantId: 'tenant-1', sub: 'user-1' } };
@@ -23,6 +25,10 @@ describe('controller delegation', () => {
     const controller = new ProductsController(service as any);
 
     beforeEach(() => jest.clearAllMocks());
+    afterEach(() => {
+      const uploadDir = join(process.cwd(), 'uploads', 'products', 'tenant-1');
+      if (existsSync(uploadDir)) rmSync(uploadDir, { recursive: true, force: true });
+    });
 
     it('passes tenant and user context into product service calls', async () => {
       const product = { name: 'Coffee', sku: 'CF-1' };
@@ -65,6 +71,28 @@ describe('controller delegation', () => {
         Buffer.from('sku,name\nCF-1,Coffee'),
       );
       expect(service.getTransactions).toHaveBeenCalledWith('tenant-1', 'product-1');
+    });
+
+    it('stores uploaded product images and rejects unsupported files', () => {
+      const uploaded = controller.uploadImage(req, {
+        buffer: Buffer.from('image-bytes'),
+        mimetype: 'image/png',
+        size: 11,
+      } as any);
+
+      expect(uploaded).toMatchObject({
+        imageUrl: expect.stringMatching(/^\/uploads\/products\/tenant-1\/.+\.png$/),
+        mimeType: 'image/png',
+        size: 11,
+      });
+      expect(existsSync(join(process.cwd(), uploaded.imageUrl))).toBe(true);
+      expect(() =>
+        controller.uploadImage(req, {
+          buffer: Buffer.from('not-image'),
+          mimetype: 'text/plain',
+          size: 9,
+        } as any),
+      ).toThrow('Only JPG, PNG, WEBP, and GIF images are allowed');
     });
   });
 

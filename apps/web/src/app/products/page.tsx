@@ -2,9 +2,10 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { productsApi, type Product } from '@/lib/api-products';
+import { productsApi, resolveProductImageUrl, type Product } from '@/lib/api-products';
 import AuthGuard from '@/components/layout/AuthGuard';
 import {
   Package, Search, Plus, Edit, Trash2, Eye,
@@ -43,7 +44,7 @@ export default function ProductsPage() {
     }
   }, [page, search]);
 
-  useEffect(() => { fetchProducts(); }, [page]);
+  useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,7 +143,7 @@ export default function ProductsPage() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               {product.imageUrl ? (
-                                <img src={product.imageUrl} alt="" className="w-10 h-10 rounded-lg object-cover border border-gray-200 dark:border-gray-700" />
+                                <Image src={resolveProductImageUrl(product.imageUrl)} alt="" width={40} height={40} className="h-10 w-10 rounded-lg border border-gray-200 object-cover dark:border-gray-700" unoptimized />
                               ) : (
                                 <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                                   <Package className="w-4 h-4 text-gray-400" />

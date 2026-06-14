@@ -14,16 +14,38 @@ const REQUIRED_ARTIFACTS = [
   {
     platform: 'android',
     extensions: ['.apk', '.aab'],
+    signatures: {
+      '.aab': [[0x50, 0x4b]],
+      '.apk': [[0x50, 0x4b]],
+    },
   },
   {
     platform: 'ios',
     extensions: ['.ipa'],
+    signatures: {
+      '.ipa': [[0x50, 0x4b]],
+    },
   },
   {
     platform: 'windows',
     extensions: ['.msi', '.exe'],
+    signatures: {
+      '.exe': [[0x4d, 0x5a]],
+      '.msi': [[0xd0, 0xcf, 0x11, 0xe0]],
+    },
   },
 ];
+
+const MIN_ARTIFACT_BYTES = 1024;
+
+function isTruthyEnv(value) {
+  return ['1', 'true', 'yes', 'on'].includes(String(value || '').toLowerCase());
+}
+
+function getRequiredArtifacts(env = process.env) {
+  const skipIos = isTruthyEnv(env.SKIP_IOS_ARTIFACT);
+  return REQUIRED_ARTIFACTS.filter((artifact) => !(skipIos && artifact.platform === 'ios'));
+}
 
 function walkFiles(dir, files = []) {
   if (!fs.existsSync(dir)) return files;
@@ -40,17 +62,52 @@ function walkFiles(dir, files = []) {
   return files;
 }
 
-function findNativeArtifacts() {
+function hasSignature(filePath, signaturesByExtension) {
+  const extension = path.extname(filePath).toLowerCase();
+  const signatures = signaturesByExtension[extension] || [];
+  if (signatures.length === 0) return false;
+
+  const maxSignatureLength = Math.max(...signatures.map((signature) => signature.length));
+  const file = fs.openSync(filePath, 'r');
+
+  try {
+    const header = Buffer.alloc(maxSignatureLength);
+    const bytesRead = fs.readSync(file, header, 0, maxSignatureLength, 0);
+
+    return signatures.some((signature) => {
+      if (bytesRead < signature.length) return false;
+      return signature.every((byte, index) => header[index] === byte);
+    });
+  } finally {
+    fs.closeSync(file);
+  }
+}
+
+function isInstallableArtifact(filePath, requirement) {
+  if (!fs.existsSync(filePath)) return false;
+
+  const stats = fs.statSync(filePath);
+  if (!stats.isFile() || stats.size < MIN_ARTIFACT_BYTES) return false;
+
+  const extension = path.extname(filePath).toLowerCase();
+  if (!requirement.extensions.includes(extension)) return false;
+
+  return hasSignature(filePath, requirement.signatures);
+}
+
+function findNativeArtifacts(env = process.env) {
   const files = SEARCH_ROOTS.flatMap((root) => walkFiles(root));
 
-  return REQUIRED_ARTIFACTS.map((requirement) => {
-    const matches = files.filter((filePath) => {
+  return getRequiredArtifacts(env).map((requirement) => {
+    const candidates = files.filter((filePath) => {
       const extension = path.extname(filePath).toLowerCase();
       return requirement.extensions.includes(extension);
     });
+    const matches = candidates.filter((filePath) => isInstallableArtifact(filePath, requirement));
 
     return {
       ...requirement,
+      candidates,
       matches,
     };
   });
@@ -59,6 +116,7 @@ function findNativeArtifacts() {
 function main() {
   const artifacts = findNativeArtifacts();
   const missing = artifacts.filter((artifact) => artifact.matches.length === 0);
+  const skipIos = isTruthyEnv(process.env.SKIP_IOS_ARTIFACT);
 
   if (missing.length > 0) {
     console.error('Native artifact gate failed.');
@@ -73,6 +131,9 @@ function main() {
   for (const artifact of artifacts) {
     console.log(`- ${artifact.platform}: ${artifact.matches[0]}`);
   }
+  if (skipIos) {
+    console.log('- ios: skipped by SKIP_IOS_ARTIFACT');
+  }
 
   return 0;
 }
@@ -83,5 +144,9 @@ if (require.main === module) {
 
 module.exports = {
   findNativeArtifacts,
+  getRequiredArtifacts,
+  hasSignature,
+  isInstallableArtifact,
+  isTruthyEnv,
   main,
 };

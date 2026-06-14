@@ -20,7 +20,7 @@ class DesktopSyncService extends SyncService {
 }
 
 export const syncService = new DesktopSyncService(
-  'http://localhost:3000',
+  'http://localhost:3456',
   {
     getToken: () => localStorage.getItem('access_token'),
     getTenantId: () => localStorage.getItem('tenant_id'),

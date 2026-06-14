@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Input, Button, Tabs, Tab, useToast, Select } from '@smart-erp/shared';
 import { apiClient } from '@/lib/api-client';
@@ -45,7 +45,7 @@ export default function EcommerceSettingsPage() {
     configJson: '{}'
   });
 
-  const loadStores = async () => {
+  const loadStores = useCallback(async () => {
     setLoadingStores(true);
     try {
       const res = await apiClient.get('/ecommerce/stores');
@@ -55,9 +55,9 @@ export default function EcommerceSettingsPage() {
     } finally {
       setLoadingStores(false);
     }
-  };
+  }, [t, toast]);
 
-  const loadLogs = async (storeId?: string | null) => {
+  const loadLogs = useCallback(async (storeId?: string | null) => {
     setLoadingLogs(true);
     try {
       const res = await apiClient.get('/ecommerce/logs', {
@@ -69,12 +69,12 @@ export default function EcommerceSettingsPage() {
     } finally {
       setLoadingLogs(false);
     }
-  };
+  }, [t, toast]);
 
   useEffect(() => {
     loadStores();
     loadLogs();
-  }, []);
+  }, [loadLogs, loadStores]);
 
   const syncAll = async () => {
     try {

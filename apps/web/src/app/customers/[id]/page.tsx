@@ -42,7 +42,7 @@ export default function CustomerDetailPage() {
       })
       .catch(() => router.push('/customers'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (

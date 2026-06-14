@@ -64,7 +64,7 @@ describe('web socket coverage', () => {
 
     initSocket('user-1');
 
-    expect(mockIo).toHaveBeenCalledWith('http://localhost:3000/notifications', expect.objectContaining({
+    expect(mockIo).toHaveBeenCalledWith('http://localhost:3456/notifications', expect.objectContaining({
       auth: { tenantId: undefined, userId: 'user-1' },
     }));
     closeSocket();

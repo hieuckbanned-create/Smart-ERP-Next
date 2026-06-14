@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
 import {
@@ -24,26 +24,28 @@ interface Datapoint {
   endpoint: string;
 }
 
+const asArray = <T,>(value: unknown): T[] => Array.isArray(value) ? value : [];
+
 export default function PerformancePage() {
   const [data, setData] = useState<Datapoint[]>([]);
   const [hours, setHours] = useState(24);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await apiClient.get(`/admin/benchmarks/sync/timeseries?hours=${hours}`);
-      setData(res.data);
+      setData(asArray<Datapoint>(res.data?.items ?? res.data));
     } catch (err) {
-      console.error(err);
+      setData([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [hours]);
 
   useEffect(() => {
     fetchData();
-  }, [hours]);
+  }, [fetchData]);
 
   const pushData = data.filter(d => d.endpoint === 'push');
   const pullData = data.filter(d => d.endpoint === 'pull');
@@ -66,9 +68,9 @@ export default function PerformancePage() {
             onChange={(e) => setHours(parseInt(e.target.value))}
             className="px-3 py-2 border rounded-lg text-sm"
           >
-            <option value={24}>Last 24 hours</option>
-            <option value={168}>Last 7 days</option>
-            <option value={720}>Last 30 days</option>
+            <option value={24}>24 giờ gần nhất</option>
+            <option value={168}>7 ngày gần nhất</option>
+            <option value={720}>30 ngày gần nhất</option>
           </select>
         </div>
 

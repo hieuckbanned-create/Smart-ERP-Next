@@ -1,6 +1,6 @@
 import { test, expect, type APIRequestContext, type Page } from '@playwright/test';
 
-const API = 'http://localhost:3001';
+const API = 'http://localhost:3456';
 const emailSelector = 'input[type="email"], input[name="email"], input[placeholder*="email" i]';
 const passwordSelector = 'input[type="password"]';
 

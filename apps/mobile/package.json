@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@types/react": "~18.3.29",
+    "eas-cli": "20.0.0",
     "typescript": "^5.9.3"
   },
   "main": "index.ts",
@@ -31,6 +32,8 @@
   "private": true,
   "scripts": {
     "android": "expo run:android",
+    "build:android": "eas build --platform android --profile production --non-interactive --wait",
+    "build:ios": "eas build --platform ios --profile production --non-interactive --wait",
     "ios": "expo run:ios",
     "start": "expo start",
     "type-check": "tsc --noEmit",

@@ -19,7 +19,7 @@ export default function EditCustomerPage() {
       .then((res) => setCustomer(res.data))
       .catch(() => router.push('/customers'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (

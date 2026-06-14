@@ -38,19 +38,28 @@ export { useTranslation, i18n };
 /** Pure (non-hook) translation helper — useful in utils/services */
 export const t = (key: string, lang: Language = fallbackLng): string => {
   const ns = defaultNS;
-  const resource = resources[lang]?.[ns as keyof (typeof resources)[typeof lang]];
-  if (resource && typeof resource === 'object') {
-    // Support nested keys like "products.title"
+  const languageOrder: Language[] = Array.from(new Set([lang, fallbackLng, 'en' as Language]));
+
+  for (const language of languageOrder) {
+    const resource = resources[language]?.[ns as keyof (typeof resources)[typeof language]];
+    if (!resource || typeof resource !== 'object') continue;
+
     const parts = key.split('.');
     let current: any = resource;
     for (const part of parts) {
       if (current && typeof current === 'object' && part in current) {
         current = current[part];
       } else {
-        return key;
+        current = undefined;
+        break;
       }
     }
-    return typeof current === 'string' ? current : key;
+
+    if (typeof current === 'string') return current;
+    if (current && typeof current === 'object' && typeof current.title === 'string') {
+      return current.title;
+    }
   }
+
   return key;
 };

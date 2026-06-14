@@ -43,7 +43,7 @@ export default function MRPPage() {
         </div>
 
         {results.length === 0 && !loading && (
-          <div className="text-center text-gray-500 py-8">Click "Run Batch MRP" to calculate material requirements</div>
+          <div className="text-center text-gray-500 py-8">{t('mrp.emptyState')}</div>
         )}
 
         {results.length > 0 && (

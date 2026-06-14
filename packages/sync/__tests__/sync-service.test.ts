@@ -266,8 +266,8 @@ describe("SyncService", () => {
     expect(getDefaultApiBase({ process: { env: { NEXT_PUBLIC_API_URL: "https://api.example.test" } } })).toBe(
       "https://api.example.test",
     );
-    expect(getDefaultApiBase({ process: { env: {} } })).toBe("http://localhost:3000");
-    expect(getDefaultApiBase({})).toBe("http://localhost:3000");
+    expect(getDefaultApiBase({ process: { env: {} } })).toBe("http://localhost:3456");
+    expect(getDefaultApiBase({})).toBe("http://localhost:3456");
   });
 
   it("compares vector clocks for missing, equal, and stale device entries", () => {

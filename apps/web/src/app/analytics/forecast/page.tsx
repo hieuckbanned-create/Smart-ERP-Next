@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
@@ -44,7 +44,7 @@ export default function ForecastPage() {
   const [error, setError] = useState<string | null>(null);
   const [productId, setProductId] = useState('PROD-001');
 
-  const fetchForecast = async (pid: string) => {
+  const fetchForecast = useCallback(async (pid: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -63,11 +63,11 @@ export default function ForecastPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchForecast(productId);
-  }, [productId, t]);
+  }, [fetchForecast, productId]);
 
   const getStockStatusColor = (shouldReorder: boolean) => {
     if (shouldReorder) return 'text-red-600 bg-red-50 dark:bg-red-900/20';

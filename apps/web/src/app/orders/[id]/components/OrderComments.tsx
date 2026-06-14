@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import { formatDistanceToNow } from 'date-fns';
@@ -22,7 +22,7 @@ export function OrderComments({ orderId }: { orderId: string }) {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const res = await apiClient.get(`/orders/${orderId}/comments`);
       setComments(res.data.items);
@@ -31,13 +31,13 @@ export function OrderComments({ orderId }: { orderId: string }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId]);
 
   useEffect(() => {
     fetchComments();
     const interval = setInterval(fetchComments, 5000);
     return () => clearInterval(interval);
-  }, [orderId]);
+  }, [fetchComments]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

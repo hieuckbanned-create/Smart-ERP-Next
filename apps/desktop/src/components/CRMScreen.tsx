@@ -33,7 +33,7 @@ export function CRMScreen() {
 
   const fetchLeads = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:3000/crm/leads?limit=50', {
+      const res = await fetch('http://localhost:3456/crm/leads?limit=50', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           'X-Tenant-ID': localStorage.getItem('tenant_id') || '',

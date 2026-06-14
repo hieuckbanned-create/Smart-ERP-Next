@@ -24,8 +24,32 @@ describe('GitHub workflow definitions', () => {
     const workflow = readWorkflow('release.yml');
 
     expect(workflow).toContain('pnpm qa:release');
+    expect(workflow).not.toContain('SKIP_IOS_ARTIFACT');
     expect(workflow).not.toMatch(/\|\|\s*echo/i);
     expect(workflow).not.toContain('continuing release build');
+  });
+
+  it('builds native artifacts before certifying a release', () => {
+    const workflow = readWorkflow('release.yml');
+    const doc = YAML.parse(workflow);
+
+    expect(doc.jobs['mobile-native-artifacts']).toBeDefined();
+    expect(doc.jobs['windows-native-artifacts']).toBeDefined();
+    expect(doc.jobs['certify-release'].needs).toEqual([
+      'mobile-native-artifacts',
+      'windows-native-artifacts',
+    ]);
+    expect(workflow).toContain('EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}');
+    expect(workflow).toContain('EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}');
+    expect(workflow).toContain('EAS_IOS_CREDENTIALS_READY: ${{ secrets.EAS_IOS_CREDENTIALS_READY }}');
+    expect(workflow).toContain('ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}');
+    expect(workflow).toContain('pnpm verify:ios-release-prereqs');
+    expect(workflow).toContain('eas build --platform android');
+    expect(workflow).toContain('eas build --platform ios');
+    expect(workflow).toContain('node scripts/download-eas-artifacts.js');
+    expect(workflow).toContain('pnpm --filter @smart-erp/desktop windows:build');
+    expect(workflow).toContain('actions/download-artifact@v4');
+    expect(workflow).toContain("pattern: '*-native-artifacts'");
   });
 
   it('runs CI on the default branch and uses the project E2E command', () => {
@@ -58,7 +82,7 @@ describe('GitHub workflow definitions', () => {
     expect(apiE2EStep.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
     expect(webE2EStep.env?.DATABASE_URL).toMatch(/^postgresql:\/\/postgres:postgres@localhost:5432\//);
     expect(webE2EStep.env?.PORT).toBe('3001');
-    expect(webE2EStep.env?.NEXT_PUBLIC_API_URL).toBe('http://localhost:3001');
+    expect(webE2EStep.env?.NEXT_PUBLIC_API_URL).toBe('http://localhost:3456');
     expect(migrateStep.run).toContain('drizzle-kit migrate');
     expect(apiE2EStep.run).toBe('pnpm test:api:e2e');
   });

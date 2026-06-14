@@ -173,6 +173,6 @@ export class SyncService {
 /** Default singleton for web (uses localStorage) */
 export const getDefaultApiBase = (
   runtime: { process?: { env?: { NEXT_PUBLIC_API_URL?: string } } } = globalThis as any,
-) => runtime.process?.env?.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+) => runtime.process?.env?.NEXT_PUBLIC_API_URL ?? 'http://localhost:3456';
 
 export const syncService = new SyncService(getDefaultApiBase());

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { productsApi } from '@/lib/api-products';
 import AuthGuard from '@/components/layout/AuthGuard';
+import { ProductImageInput } from '@/components/ProductImageInput';
 import { ArrowLeft, Save, Package } from 'lucide-react';
 
 const UNITS = [
@@ -139,8 +140,11 @@ export default function CreateProductPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Ảnh sản phẩm
                 </label>
-                <input type="text" name="imageUrl" value={form.imageUrl} onChange={handleChange}
-                  placeholder="https://example.com/product.jpg" className={inputClass} />
+                <ProductImageInput
+                  value={form.imageUrl}
+                  disabled={saving}
+                  onChange={(imageUrl) => setForm((prev) => ({ ...prev, imageUrl }))}
+                />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

@@ -12,8 +12,107 @@ permissions:
   contents: write
 
 jobs:
-  publish-release:
+  mobile-native-artifacts:
+    name: Build Android and iOS artifacts
     runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+      EAS_IOS_CREDENTIALS_READY: ${{ secrets.EAS_IOS_CREDENTIALS_READY }}
+      ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+      ASC_API_KEY_ISSUER_ID: ${{ secrets.ASC_API_KEY_ISSUER_ID }}
+      ASC_API_KEY_PATH: ${{ secrets.ASC_API_KEY_PATH }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate iOS release prerequisites
+        run: pnpm verify:ios-release-prereqs
+
+      - name: Build Android installable artifact with EAS
+        shell: bash
+        run: |
+          mkdir -p artifacts/eas
+          pnpm --filter @smart-erp/mobile exec eas build --platform android --profile production --non-interactive --wait --json > artifacts/eas/android.json
+          node scripts/download-eas-artifacts.js artifacts/eas/android.json artifacts
+
+      - name: Build iOS installable artifact with EAS
+        shell: bash
+        run: |
+          mkdir -p artifacts/eas
+          pnpm --filter @smart-erp/mobile exec eas build --platform ios --profile production --non-interactive --wait --json > artifacts/eas/ios.json
+          node scripts/download-eas-artifacts.js artifacts/eas/ios.json artifacts
+
+      - name: Upload mobile native artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-native-artifacts
+          path: |
+            artifacts/android
+            artifacts/ios
+          if-no-files-found: error
+
+  windows-native-artifacts:
+    name: Build Windows installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install NSIS
+        run: choco install nsis -y
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Windows installer
+        run: pnpm --filter @smart-erp/desktop windows:build
+
+      - name: Stage Windows installer
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force artifacts/windows | Out-Null
+          Copy-Item "apps/desktop/src-tauri/target/release/bundle/nsis/*" artifacts/windows/
+
+      - name: Upload Windows native artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-native-artifacts
+          path: artifacts/windows
+          if-no-files-found: error
+
+  certify-release:
+    name: Certify release gates
+    runs-on: ubuntu-latest
+    needs:
+      - mobile-native-artifacts
+      - windows-native-artifacts
     services:
       postgres:
         image: postgres:16
@@ -44,6 +143,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Download native artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-native-artifacts'
+          path: artifacts
+          merge-multiple: true
+
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
@@ -57,8 +163,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
           JWT_SECRET: release-e2e-secret
-        run: |
-          pnpm qa:release
+        run: pnpm qa:release
 
       - name: Create GitHub Release
         env:
@@ -69,4 +174,3 @@ jobs:
             --title "Smart ERP Next $VERSION" \
             --notes-file release-notes.md \
             --draft=false
-

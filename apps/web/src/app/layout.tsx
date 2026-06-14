@@ -22,14 +22,30 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3457'),
   title: {
     default: 'Smart ERP Next',
     template: '%s | Smart ERP Next',
   },
-  description: 'Hệ thống quản trị doanh nghiệp thông minh — vượt trội KiotViet, MISA, ERPNext',
-  keywords: ['ERP', 'quản lý bán hàng', 'kho hàng', 'kế toán', 'POS'],
+  description: 'Hệ thống ERP cho doanh nghiệp Việt Nam: POS, kho, CRM, kế toán, hóa đơn, sản xuất và báo cáo điều hành.',
+  keywords: ['ERP', 'quản lý bán hàng', 'kho hàng', 'kế toán', 'POS', 'CRM', 'sản xuất'],
   authors: [{ name: 'Smart ERP Team' }],
-  robots: 'noindex, nofollow',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'vi_VN',
+    siteName: 'Smart ERP Next',
+    title: 'Smart ERP Next',
+    description: 'ERP web cho bán hàng, kho, CRM, kế toán, hóa đơn và sản xuất.',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Smart ERP Next',
+    description: 'ERP web cho bán hàng, kho, CRM, kế toán, hóa đơn và sản xuất.',
+  },
   icons: {
     icon: '/favicon.svg',
   },
@@ -45,7 +61,7 @@ export const viewport: Viewport = {
 };
 
 /**
- * Inline script to apply dark mode before first paint — prevents flash.
+ * Inline script to apply dark mode before first paint - prevents flash.
  * Reads localStorage 'theme' or falls back to system preference.
  */
 const darkModeScript = `
@@ -62,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
-        {/* Anti-flash dark mode script — must run before body renders */}
+        {/* Anti-flash dark mode script - must run before body renders */}
         <script dangerouslySetInnerHTML={{ __html: darkModeScript }} />
       </head>
       <body className={`${inter.variable} ${beVietnamPro.variable} font-sans antialiased`}>

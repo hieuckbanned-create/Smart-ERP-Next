@@ -53,6 +53,13 @@ const PROVIDER_LABELS: Record<string, string> = {
   bkav:        'BKAV Invoice',
 };
 
+const asArray = <T,>(value: any): T[] => {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.items)) return value.items;
+  if (Array.isArray(value?.data)) return value.data;
+  return [];
+};
+
 export default function EInvoicePage() {
   const { t } = useTranslation('common');
   const [invoices, setInvoices] = useState<EInvoice[]>([]);
@@ -72,7 +79,7 @@ export default function EInvoicePage() {
         apiClient.get<any>('/e-invoice'),
         apiClient.get<any>('/e-invoice/stats/monthly'),
       ]);
-      setInvoices(invRes.data?.items || invRes.data || []);
+      setInvoices(asArray<EInvoice>(invRes.data));
       setStats(statsRes.data || null);
     } catch {
       setInvoices([]);

@@ -95,7 +95,7 @@ describe('mobile api coverage', () => {
 
     await expect(api.get('/health')).rejects.toThrow('HTTP 418');
     expect((global as any).fetch).toHaveBeenCalledWith(
-      'http://localhost:3000/health',
+      'http://localhost:3456/health',
       expect.any(Object),
     );
   });

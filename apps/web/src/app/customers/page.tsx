@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { customersApi, type Customer } from '@/lib/api-customers';
@@ -41,7 +41,7 @@ export default function CustomersPage() {
   const [total, setTotal] = useState(0);
   const limit = 20;
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await customersApi.getAll({ page, limit, search: search || undefined });
@@ -53,11 +53,11 @@ export default function CustomersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, search]);
 
   useEffect(() => {
     fetchCustomers();
-  }, [page]);
+  }, [fetchCustomers]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

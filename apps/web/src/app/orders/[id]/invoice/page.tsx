@@ -35,7 +35,7 @@ export default function OrderInvoicePage() {
       .then(res => setOrder(res.data))
       .catch(() => router.push('/orders'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   useEffect(() => {
     if (!order || searchParams.get('print') !== '1') return;

@@ -2,9 +2,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { productsApi, type Product } from '@/lib/api-products';
+import { productsApi, resolveProductImageUrl, type Product } from '@/lib/api-products';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
 import {
@@ -55,7 +56,7 @@ export default function ProductDetailPage() {
       })
       .catch(() => router.push('/products'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, router]);
 
   if (loading) {
     return (
@@ -118,7 +119,7 @@ export default function ProductDetailPage() {
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Thông tin sản phẩm</h2>
               <div className="mb-4">
                 {product.imageUrl ? (
-                  <img src={product.imageUrl} alt="" className="w-full max-h-64 rounded-xl object-cover border border-gray-200 dark:border-gray-700" />
+                  <Image src={resolveProductImageUrl(product.imageUrl)} alt="" width={640} height={256} className="max-h-64 w-full rounded-xl border border-gray-200 object-cover dark:border-gray-700" unoptimized />
                 ) : (
                   <div className="h-40 rounded-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                     <Package className="w-10 h-10 text-gray-400" />

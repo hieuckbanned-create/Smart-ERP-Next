@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '@/lib/api-client';
 import AuthGuard from '@/components/layout/AuthGuard';
@@ -78,7 +78,7 @@ export default function ReportsPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'revenue' | 'profit' | 'inventory' | 'products'>('revenue');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     const { from, to } = getDateRange(range);
     const params = { from, to };
@@ -102,11 +102,11 @@ export default function ReportsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [range]);
 
   useEffect(() => {
     fetchData();
-  }, [range]);
+  }, [fetchData]);
 
   const exportCSV = () => {
     const rows = [['Sản phẩm', 'SKU', 'Đã bán', 'Doanh thu', 'Lợi nhuận']];

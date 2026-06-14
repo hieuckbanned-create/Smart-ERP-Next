@@ -65,6 +65,9 @@ JWT_SECRET=generate_with: openssl rand -base64 32
 # Required: Public API URL
 NEXT_PUBLIC_API_URL=https://api.yourdomain.com
 
+# Required: Public web URL, used by metadata, robots.txt and sitemap.xml
+NEXT_PUBLIC_SITE_URL=https://app.yourdomain.com
+
 # Security: CORS Origins
 CORS_ORIGINS=https://app.yourdomain.com
 
@@ -73,6 +76,20 @@ API_PORT=3000
 WEB_PORT=3001
 AI_FORECAST_PORT=8000
 ```
+
+## Public Launch Checklist
+
+Before posting public marketing content or sending users to the product, verify:
+
+- The public URL opens `/` without login and shows the Smart ERP Next landing page.
+- `/register` creates a new workspace and redirects the user to `/dashboard`.
+- `/robots.txt` allows `/`, `/register`, `/login`, `/privacy`, and `/terms`.
+- `/sitemap.xml` uses the real public domain, not `localhost`.
+- `NEXT_PUBLIC_API_URL` points to the public API origin.
+- `NEXT_PUBLIC_SITE_URL` points to the public web origin.
+- `CORS_ORIGINS` contains the exact public web origin.
+- HTTPS is enabled for both web and API.
+- Database backup, health monitoring, and a support contact/channel are ready.
 
 ### 4. Start Production Services
 ```bash

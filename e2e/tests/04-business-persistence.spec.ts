@@ -1,6 +1,6 @@
 import { test, expect, type APIResponse } from '@playwright/test';
 
-const API = 'http://localhost:3001';
+const API = 'http://localhost:3456';
 let token: string;
 
 function auth() {
