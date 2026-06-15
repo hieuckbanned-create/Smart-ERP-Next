@@ -41,8 +41,8 @@ echo  Web: http://localhost:3457
 echo ============================================
 echo.
 
-start "SmartERP-API" cmd /c "call pnpm --filter @smart-erp/api dev"
-start "SmartERP-Web" cmd /c "call pnpm --filter @smart-erp/web dev"
+start "SmartERP-API" cmd /c "set PORT=3456 && call pnpm --filter @smart-erp/api dev"
+start "SmartERP-Web" cmd /c "set PORT=3457 && call pnpm --filter @smart-erp/web dev"
 
 echo Nhan phim bat ky de dung tat ca servers...
 pause >nul
