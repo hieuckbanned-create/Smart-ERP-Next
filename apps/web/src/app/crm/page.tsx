@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Target, Phone, DollarSign } from 'lucide-react';
+import { Phone, DollarSign } from 'lucide-react';
 import AuthGuard from '@/components/layout/AuthGuard';
 import { apiClient } from '@/lib/api-client';
+import { PageHeader } from '@smart-erp/shared';
 
 interface Lead {
   id: string;
@@ -59,16 +60,13 @@ export default function CrmPage() {
 
   return (
     <AuthGuard>
-      <div className="h-full flex flex-col p-6 gap-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Target className="w-5 h-5 text-blue-500" />
-              {t('crm.title')}
-            </h1>
-            <p className="text-sm text-gray-500 mt-0.5">{t('crm.subtitle')}</p>
-          </div>
-        </div>
+      <div className="p-6 space-y-6">
+        <PageHeader
+          title={t('crm.title')}
+          description={t('crm.subtitle')}
+          icon={<Target className="w-5 h-5" />}
+          iconColor="blue"
+        />
 
         {loading ? (
           <div className="flex items-center justify-center py-16 text-gray-400 text-sm">
