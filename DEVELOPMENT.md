@@ -13,6 +13,16 @@ docker compose up -d
 
 ### Cách 2: Local dev (nhanh, hot-reload)
 
+**Windows:**
+```bash
+dev.bat
+```
+
+**Mac/Linux:**
+```bash
+./scripts/dev.sh
+```
+
 ```bash
 git clone https://github.com/hieuck/Smart-ERP-Next.git
 cd Smart-ERP-Next
