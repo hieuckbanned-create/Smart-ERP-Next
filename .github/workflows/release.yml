@@ -52,7 +52,7 @@ jobs:
           node scripts/download-eas-artifacts.js artifacts/eas/android.json artifacts
 
       - name: Build iOS installable artifact with EAS
-        if: ${{ secrets.EXPO_TOKEN != '' }}
+        if: env.EXPO_TOKEN != ''
         shell: bash
         env:
           EAS_BUILD_PROFILE: ${{ secrets.EAS_IOS_CREDENTIALS_READY == '' && 'ios-unsigned' || 'production' }}

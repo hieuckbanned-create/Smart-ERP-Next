@@ -46,7 +46,7 @@ describe('GitHub workflow definitions', () => {
     expect(workflow).toContain('pnpm verify:ios-release-prereqs');
     expect(workflow).toContain('eas build --platform android');
     expect(workflow).toContain('eas build --platform ios');
-    expect(workflow).toContain('if: ${{ secrets.EXPO_TOKEN != \'\' }}');
+    expect(workflow).toContain('if: env.EXPO_TOKEN != \'\'');
     expect(workflow).toContain('node scripts/download-eas-artifacts.js');
     expect(workflow).toContain('pnpm --filter @smart-erp/desktop windows:build');
     expect(workflow).toContain('actions/download-artifact@v4');
