@@ -1,33 +1,20 @@
-// Components
-export { Button, type ButtonProps } from "./components/Button";
-export { ThemeProvider, useTheme } from "./components/ThemeProvider";
-export { AppShell, type AppShellProps } from "./components/AppShell";
-export { Sidebar, type SidebarProps, type NavItem } from "./components/Sidebar";
+// Re-export everything from @smart-erp/shared for UI consistency
+// All components should be imported from @smart-erp/shared going forward
 export {
-  DataTable,
-  type DataTableProps,
-  type Column,
-} from "./components/DataTable";
-export { Pagination, type PaginationProps } from "./components/Pagination";
-export {
+  Button,
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  type CardProps,
-} from "./components/Card";
-export { Badge, type BadgeProps } from "./components/Badge";
-export { StatCard, type StatCardProps } from "./components/StatCard";
-export {
+  Badge,
+  DataTable,
+  StatCard,
+  PageHeader,
+  Spinner,
   Toast,
   ToastContainer,
-  type ToastProps,
-  type ToastVariant,
-} from "./components/Toast";
-export {
   ConfirmDialog,
-  type ConfirmDialogProps,
-} from "./components/ConfirmDialog";
+} from '@smart-erp/shared';
 
-// Utils
-export { cn } from "./utils/cn";
+export type { Column } from '@smart-erp/shared';
+export { cn } from './utils/cn';
