@@ -126,7 +126,7 @@ export default function ProductsPage() {
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('products.price')}</th>
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('products.cost')}</th>
                       <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('products.stock')}</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('common.actions')}</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase sticky right-0 bg-gray-50 dark:bg-gray-700 shadow-[-4px_0_8px_-4px_rgba(0,0,0,0.1)]">{t('common.actions')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -177,25 +177,25 @@ export default function ProductsPage() {
                               </span>
                             </div>
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="px-4 py-3 sticky right-0 bg-white dark:bg-gray-800 shadow-[-4px_0_8px_-4px_rgba(0,0,0,0.1)]">
                             <div className="flex justify-center gap-1">
                               <button
                                 onClick={() => router.push(`/products/${product.id}`)}
-                                className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition"
+                                className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition shrink-0"
                                 title={t('common.view')}
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => router.push(`/products/${product.id}/edit`)}
-                                className="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition"
+                                className="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition shrink-0"
                                 title={t('common.edit')}
                               >
                                 <Edit className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleDelete(product.id)}
-                                className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
+                                className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition shrink-0"
                                 title={t('common.delete')}
                               >
                                 <Trash2 className="w-4 h-4" />
