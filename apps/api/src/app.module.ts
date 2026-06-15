@@ -26,10 +26,8 @@ import { CommentsModule } from './comments/comments.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { HrModule } from './hr/hr.module';
-import { LoyaltyModule } from './loyalty/loyalty.module';
 import { FixedAssetsModule } from './fixed-assets/fixed-assets.module';
 import { ProjectsModule } from './projects/projects.module';
-import { HelpdeskModule } from './helpdesk/helpdesk.module';
 import { CrmModule } from './crm/crm.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { SyncModule } from './modules/sync/sync.module';
@@ -47,7 +45,6 @@ import { CustomerPortalModule } from './customers/customer-portal.module';
 import { EContractsModule } from './e-contracts/e-contracts.module';
 import { AiCopilotModule } from './ai-copilot/ai-copilot.module';
 import { EcommerceModule } from './ecommerce/ecommerce.module';
-import { OmnichannelModule } from './omnichannel/omnichannel.module';
 import { FieldServiceModule } from './field-service/field-service.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
@@ -95,10 +92,8 @@ import { I18nModule } from './i18n/i18n.module';
     SchedulerModule,
     AccountingModule,
     HrModule,
-    LoyaltyModule,
     FixedAssetsModule,
     ProjectsModule,
-    HelpdeskModule,
     CrmModule,
     ActivityModule,
     SyncModule,
@@ -116,7 +111,6 @@ import { I18nModule } from './i18n/i18n.module';
     EContractsModule,
     AiCopilotModule,
     EcommerceModule,
-    OmnichannelModule,
     FieldServiceModule,
   ],
   controllers: [AppController],

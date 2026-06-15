@@ -91,11 +91,12 @@ export default function PayrollPage() {
     new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(val));
 
   const boardColumns = [
-    { label: 'Tên bảng lương', render: (b: SalaryBoard) => <span className="font-semibold">{b.name}</span> },
-    { label: 'Kỳ lương', render: (b: SalaryBoard) => `${b.month}/${b.year}` },
-    { label: 'Nhân viên', render: (b: SalaryBoard) => b.totalEmployees },
-    { label: 'Tổng quỹ lương', render: (b: SalaryBoard) => <span className="font-bold text-indigo-600">{formatCurrency(b.totalNetSalary)}</span> },
+    { key: 'name', label: 'Tên bảng lương', render: (b: SalaryBoard) => <span className="font-semibold">{b.name}</span> },
+    { key: 'period', label: 'Kỳ lương', render: (b: SalaryBoard) => `${b.month}/${b.year}` },
+    { key: 'employees', label: 'Nhân viên', render: (b: SalaryBoard) => b.totalEmployees },
+    { key: 'total', label: 'Tổng quỹ lương', render: (b: SalaryBoard) => <span className="font-bold text-indigo-600">{formatCurrency(b.totalNetSalary)}</span> },
     {
+      key: 'status',
       label: 'Trạng thái',
       render: (b: SalaryBoard) => (
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${BADGE_COLORS[b.status] || 'bg-yellow-100 text-yellow-700'}`}>
@@ -104,6 +105,7 @@ export default function PayrollPage() {
       ),
     },
     {
+      key: 'actions',
       label: '',
       render: (b: SalaryBoard) => (
         <Button size="sm" variant={selectedBoard?.id === b.id ? 'primary' : 'secondary'} onClick={() => handleSelectBoard(b)}>
@@ -114,13 +116,13 @@ export default function PayrollPage() {
   ];
 
   const payslipColumns = [
-    { label: 'Nhân viên', render: (p: Payslip) => <span className="font-medium text-gray-900 dark:text-white">{p.employee_name}</span> },
-    { label: 'Lương cơ bản', render: (p: Payslip) => formatCurrency(p.base_salary) },
-    { label: 'Ngày công', render: (p: Payslip) => <span className="text-green-600">{p.actual_work_days} / {p.standard_work_days}</span> },
-    { label: 'Làm thêm (OT)', render: (p: Payslip) => <span className="text-orange-500">{Number(p.overtime_hours).toFixed(1)}h</span> },
-    { label: 'Khấu trừ (Trừ…)', render: (p: Payslip) => <span className="text-red-500">-{formatCurrency(p.deductions)}</span> },
-    { label: 'Lương OT', render: (p: Payslip) => <span className="text-green-600">+{formatCurrency(p.overtime_pay)}</span> },
-    { label: 'Thực lĩnh (Net)', render: (p: Payslip) => <span className="font-bold text-indigo-600">{formatCurrency(p.net_salary)}</span> },
+    { key: 'employee', label: 'Nhân viên', render: (p: Payslip) => <span className="font-medium text-gray-900 dark:text-white">{p.employee_name}</span> },
+    { key: 'base', label: 'Lương cơ bản', render: (p: Payslip) => formatCurrency(p.base_salary) },
+    { key: 'days', label: 'Ngày công', render: (p: Payslip) => <span className="text-green-600">{p.actual_work_days} / {p.standard_work_days}</span> },
+    { key: 'ot', label: 'Làm thêm (OT)', render: (p: Payslip) => <span className="text-orange-500">{Number(p.overtime_hours).toFixed(1)}h</span> },
+    { key: 'deductions', label: 'Khấu trừ (Trừ…)', render: (p: Payslip) => <span className="text-red-500">-{formatCurrency(p.deductions)}</span> },
+    { key: 'otPay', label: 'Lương OT', render: (p: Payslip) => <span className="text-green-600">+{formatCurrency(p.overtime_pay)}</span> },
+    { key: 'net', label: 'Thực lĩnh (Net)', render: (p: Payslip) => <span className="font-bold text-indigo-600">{formatCurrency(p.net_salary)}</span> },
   ];
 
   return (

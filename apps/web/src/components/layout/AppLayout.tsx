@@ -177,12 +177,6 @@ export default function AppLayout({
       href: "/crm",
     },
     {
-      key: "omnichannel",
-      label: t("nav.omnichannel") || "Đa kênh",
-      icon: <ShoppingCart className="w-5 h-5" />,
-      href: "/omnichannel",
-    },
-    {
       key: "forecast",
       label: t("nav.forecast"),
       icon: <TrendingUp className="w-5 h-5" />,
