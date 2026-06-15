@@ -4,8 +4,16 @@ setlocal enabledelayedexpansion
 title Smart ERP Next Dev
 
 if not exist .env (
-  echo Tao .env tu .env.example...
+  echo Creating .env from .env.example...
   copy .env.example .env >nul
+) else (
+  findstr /b "DATABASE_URL" .env >nul
+  if errorlevel 1 (
+    echo Adding DATABASE_URL to .env...
+    echo DATABASE_URL=postgresql://smart_erp:smart_erp@localhost:5432/smart_erp > .env.tmp
+    type .env >> .env.tmp
+    move /y .env.tmp .env >nul
+  )
 )
 
 echo Kiem tra PostgreSQL...
@@ -21,7 +29,7 @@ if errorlevel 1 (
 )
 
 echo Dang chay database migrations...
-call npx drizzle-kit migrate --config=packages/database/drizzle.config.ts
+call pnpm --filter @smart-erp/database migrate
 
 echo.
 echo ============================================
