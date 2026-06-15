@@ -681,7 +681,14 @@
     "receiptShort": "In",
     "paymentShort": "Out",
     "amountVnd": "Amount (VND)",
-    "create": "Create"
+    "create": "Create",
+    "methodCash": "Cash",
+    "methodBankTransfer": "Bank transfer",
+    "methodCard": "Card",
+    "methodCredit": "Credit",
+    "methodMomo": "MoMo",
+    "methodVnpay": "VNPay",
+    "methodZalopay": "ZaloPay"
   },
   "warehouses": {
     "title": "Warehouses",

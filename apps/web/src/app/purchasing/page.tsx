@@ -24,13 +24,13 @@ interface PurchaseOrder {
   createdAt: string;
 }
 
-const STATUS_OPTIONS = [
-  { value: '', label: 'Tất cả' },
-  { value: 'draft', label: 'Nháp' },
-  { value: 'confirmed', label: 'Đã xác nhận' },
-  { value: 'partial_received', label: 'Nhận một phần' },
-  { value: 'received', label: 'Đã nhận hàng' },
-  { value: 'cancelled', label: 'Đã hủy' },
+const STATUS_OPTIONS = (t: (key: string) => string) => [
+  { value: '', label: t('purchasing.all') },
+  { value: 'draft', label: t('purchasing.draft') },
+  { value: 'confirmed', label: t('purchasing.confirmed') },
+  { value: 'partial_received', label: t('purchasing.partial') },
+  { value: 'received', label: t('purchasing.received') },
+  { value: 'cancelled', label: t('purchasing.cancelled') },
 ];
 
 const statusColors: Record<string, string> = {
@@ -130,12 +130,12 @@ export default function PurchasingPage() {
               />
             </div>
             <button type="submit" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-sm">
-              Tìm
+              {t('common.search')}
             </button>
           </form>
           <div className="flex flex-wrap gap-2 items-center">
             <Filter className="w-4 h-4 text-gray-400" />
-            {STATUS_OPTIONS.map((opt) => (
+            {STATUS_OPTIONS(t).map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => { setStatusFilter(opt.value); setPage(1); }}
@@ -187,7 +187,7 @@ export default function PurchasingPage() {
                         </td>
                         <td className="px-4 py-3 text-center">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                            {STATUS_OPTIONS.find((s) => s.value === order.status)?.label ?? order.status}
+                            {STATUS_OPTIONS(t).find((s) => s.value === order.status)?.label ?? order.status}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-center">
@@ -210,7 +210,7 @@ export default function PurchasingPage() {
                             <button
                               onClick={() => router.push(`/purchasing/${order.id}`)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition"
-                              title="Xem chi tiết"
+                              title={t('common.viewDetails')}
                             >
                               <Eye className="w-4 h-4" />
                             </button>
@@ -218,7 +218,7 @@ export default function PurchasingPage() {
                               <button
                                 onClick={() => handleConfirm(order.id)}
                                 className="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition"
-                                title="Xác nhận"
+                                title={t('common.confirm')}
                               >
                                 <CheckCircle className="w-4 h-4" />
                               </button>
@@ -227,7 +227,7 @@ export default function PurchasingPage() {
                               <button
                                 onClick={() => handleCancel(order.id)}
                                 className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
-                                title="Hủy"
+                                title={t('common.cancel')}
                               >
                                 <XCircle className="w-4 h-4" />
                               </button>
@@ -243,7 +243,7 @@ export default function PurchasingPage() {
 
             {totalPages > 1 && (
               <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500">{total} đơn nhập</p>
+                <p className="text-sm text-gray-500">{total} {t('common.purchaseOrders', { count: total })}</p>
                 <div className="flex gap-1">
                   <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
                     className="px-2 py-1 rounded border border-gray-300 dark:border-gray-600 text-sm disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-700">

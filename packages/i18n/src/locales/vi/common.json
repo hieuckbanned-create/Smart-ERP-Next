@@ -1453,7 +1453,14 @@
     "party": "Đối tượng",
     "notes": "Ghi chú",
     "amountVnd": "Số tiền (VND)",
-    "create": "Tạo phiếu"
+    "create": "Tạo phiếu",
+    "methodCash": "Tiền mặt",
+    "methodBankTransfer": "Chuyển khoản",
+    "methodCard": "Thẻ",
+    "methodCredit": "Công nợ",
+    "methodMomo": "MoMo",
+    "methodVnpay": "VNPay",
+    "methodZalopay": "ZaloPay"
   },
   "socket": {
     "new_activity": "Có hoạt động mới"
