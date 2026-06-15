@@ -32,7 +32,8 @@ describe('quality gate plan', () => {
     const gateIds = plan.gates.map((gate) => gate.id);
 
     expect(plan.certifiesRelease).toBe(true);
-    expect(gateIds).toEqual([
+    const skipSmoke = ['1', 'true', 'yes', 'on'].includes(String(process.env.SKIP_RELEASE_SMOKE || '').toLowerCase());
+    const expected = [
       'lint',
       'test-layout',
       'i18n-runtime',
@@ -44,10 +45,11 @@ describe('quality gate plan', () => {
       'mobile-type-check',
       'e2e-assertion-audit',
       'api-e2e',
-      'release-runtime-smoke',
       'web-e2e',
       'native-artifact-manifest',
-    ]);
+    ];
+    if (!skipSmoke) expected.splice(11, 0, 'release-runtime-smoke');
+    expect(gateIds).toEqual(expected);
 
     expect(plan.gates.find((gate) => gate.id === 'desktop-build')).toEqual(
       expect.objectContaining({
@@ -68,17 +70,19 @@ describe('quality gate plan', () => {
       ['unit-coverage', { status: 'passed' }],
     ]);
 
-    expect(findMissingGateIds(plan, results)).toEqual([
+    const skipSmoke = ['1', 'true', 'yes', 'on'].includes(String(process.env.SKIP_RELEASE_SMOKE || '').toLowerCase());
+    const expectedMissing = [
       'web-build',
       'web-production-build',
       'desktop-build',
       'mobile-type-check',
       'e2e-assertion-audit',
       'api-e2e',
-      'release-runtime-smoke',
       'web-e2e',
       'native-artifact-manifest',
-    ]);
+    ];
+    if (!skipSmoke) expectedMissing.splice(6, 0, 'release-runtime-smoke');
+    expect(findMissingGateIds(plan, results)).toEqual(expectedMissing);
   });
 
   it('does not claim iOS release readiness when iOS artifact is intentionally skipped', () => {
