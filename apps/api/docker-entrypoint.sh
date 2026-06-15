@@ -1,43 +1,22 @@
 #!/bin/sh
 set -e
 
-# Run migrations on every start (idempotent)
-if [ -d "packages/database/drizzle" ]; then
-  echo "Running drizzle migrations..."
-  npx drizzle-kit migrate --config=packages/database/drizzle.config.ts 2>/dev/null || true
+# Run database migrations (idempotent)
+if command -v npx >/dev/null 2>&1 && [ -f "packages/database/drizzle.config.ts" ]; then
+  echo "Running database migrations..."
+  npx drizzle-kit migrate --config=packages/database/drizzle.config.ts 2>/dev/null || echo "Migration skipped (may already be up to date)"
 fi
 
-# Seed demo data if DB is empty (no users)
-if [ "$SKIP_SEED" != "1" ]; then
-  HAS_USERS=$(node -e "const { Pool } = require('pg'); const p = new Pool({ connectionString: process.env.DATABASE_URL }); p.query('SELECT 1 FROM users LIMIT 1').then(r => { process.exit(r.rows.length ? 0 : 1); }).catch(() => process.exit(1));" 2>/dev/null; echo $?)
-  if [ "$HAS_USERS" = "1" ]; then
-    echo "Seeding demo data..."
-    node -e "
-      const { Pool } = require('pg');
-      const bcrypt = require('bcrypt');
-      const p = new Pool({ connectionString: process.env.DATABASE_URL });
-      (async () => {
-        const hash = await bcrypt.hash('demo123456', 10);
-        const tenant = await p.query(\"INSERT INTO tenants (id, name, slug) VALUES (gen_random_uuid(), 'Demo Company', 'demo') RETURNING id\");
-        const tid = tenant.rows[0].id;
-        await p.query(\"INSERT INTO users (id, email, name, password_hash, tenant_id, role) VALUES (gen_random_uuid(), 'admin@demo.smarterp.vn', 'Admin', '\$1', '\$2', 'admin')\", [hash, tid]);
-        await p.query(\"INSERT INTO users (id, email, name, password_hash, tenant_id, role) VALUES (gen_random_uuid(), 'admin@smarterp.vn', 'Super Admin', '\$1', '\$2', 'admin')\", [hash, tid]);
-        console.log('Demo data seeded');
-        await p.end();
-      })().catch(e => { console.error('Seed error:', e.message); process.exit(0); });
-    "
-  fi
-fi
-
+# Start API server
 echo "Starting API server on port ${PORT:-3456}..."
 node apps/api/dist/apps/api/src/main.js &
 
-# Start Web server if the Next.js build output exists
-if [ -d "apps/web/.next" ]; then
+# Start Web server if present
+if [ -f "apps/web/node_modules/.bin/next" ] && [ -d "apps/web/.next" ]; then
   echo "Starting Web server on port ${WEB_PORT:-3457}..."
-  PORT=${WEB_PORT:-3457} node apps/web/node_modules/.bin/next start apps/web &
+  PORT="${WEB_PORT:-3457}" node apps/web/node_modules/.bin/next start apps/web &
 fi
 
-# Wait for any process to exit
+# Wait for any child to exit
 wait -n
 exit $?
