@@ -78,27 +78,6 @@ services:
     networks:
       - smart-erp-network
 
-  ai-forecast:
-    profiles: ["ai"]
-    build:
-      context: ./apps/ai-forecast
-      dockerfile: Dockerfile
-    container_name: smart-erp-ai-forecast
-    ports:
-      - "${AI_FORECAST_PORT:-8000}:8000"
-    environment:
-      PORT: 8000
-      LOG_LEVEL: info
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    restart: unless-stopped
-    networks:
-      - smart-erp-network
-
   prometheus:
     profiles: ["monitoring"]
     image: prom/prometheus:latest

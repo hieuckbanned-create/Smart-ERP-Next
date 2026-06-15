@@ -42,30 +42,15 @@ import { QmsModule } from './qms/qms.module';
 import { AnalyticsDashboardModule } from './analytics-dashboard/analytics-dashboard.module';
 import { EInvoiceModule } from './e-invoice/e-invoice.module';
 import { CustomerPortalModule } from './customers/customer-portal.module';
-import { EContractsModule } from './e-contracts/e-contracts.module';
-import { AiCopilotModule } from './ai-copilot/ai-copilot.module';
-import { EcommerceModule } from './ecommerce/ecommerce.module';
-import { FieldServiceModule } from './field-service/field-service.module';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
-import { MarketingModule } from './marketing/marketing.module';
-import { MaintenanceModule } from './maintenance/maintenance.module';
-import { WmsModule } from './wms/wms.module';
-import { TmsModule } from './tms/tms.module';
-import { FinanceModule } from './finance/finance.module';
 import { I18nModule } from './i18n/i18n.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     I18nModule,
-    MarketingModule,
-    MaintenanceModule,
-    WmsModule,
-    TmsModule,
-    FinanceModule,
-    // Cache layer for performance
     CacheModule.register({ isGlobal: true, ttl: 60, max: 100 }),
     // Forecast feature
     ForecastModule,
@@ -108,10 +93,6 @@ import { I18nModule } from './i18n/i18n.module';
     AnalyticsDashboardModule,
     CustomerPortalModule,
     EInvoiceModule,
-    EContractsModule,
-    AiCopilotModule,
-    EcommerceModule,
-    FieldServiceModule,
   ],
   controllers: [AppController],
   providers: [
