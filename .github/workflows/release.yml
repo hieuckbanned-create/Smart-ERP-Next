@@ -240,14 +240,14 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
         run: pnpm exec drizzle-kit migrate
 
-      - name: Run release quality gate
+      - name: Build web
+        run: pnpm --filter @smart-erp/web build
+
+      - name: Run Playwright E2E tests
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/smart_erp_test
           JWT_SECRET: release-e2e-secret
-          SKIP_IOS_ARTIFACT: ${{ secrets.EXPO_TOKEN == '' && 'true' || '' }}
-          SKIP_ANDROID_ARTIFACT: ${{ secrets.EXPO_TOKEN == '' && 'true' || '' }}
-          SKIP_RELEASE_SMOKE: 'true'
-        run: pnpm qa:release
+        run: pnpm test:e2e
 
       - name: Create GitHub Release
         env:

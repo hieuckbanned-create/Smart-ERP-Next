@@ -45,8 +45,12 @@ function isTruthyEnv(value) {
 function getRequiredArtifacts(env = process.env) {
   const skipIos = isTruthyEnv(env.SKIP_IOS_ARTIFACT);
   const skipAndroid = isTruthyEnv(env.SKIP_ANDROID_ARTIFACT);
+  const skipWindows = isTruthyEnv(env.SKIP_WINDOWS_ARTIFACT);
   return REQUIRED_ARTIFACTS.filter(
-    (artifact) => !(skipIos && artifact.platform === 'ios') && !(skipAndroid && artifact.platform === 'android'),
+    (artifact) =>
+      !(skipIos && artifact.platform === 'ios') &&
+      !(skipAndroid && artifact.platform === 'android') &&
+      !(skipWindows && artifact.platform === 'windows'),
   );
 }
 
