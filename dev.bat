@@ -15,13 +15,13 @@ if errorlevel 1 (
   docker compose up -d postgres
   :waitpg
   timeout /t 2 /nobreak >nul
-  docker compose exec postgres pg_isready -U smart_erp 2>nul | findstr "accept" >nul
+  docker compose exec -T postgres pg_isready -U smart_erp 2>nul | findstr "accept" >nul
   if errorlevel 1 goto waitpg
   echo PostgreSQL san sang
 )
 
 echo Dang chay database migrations...
-call pnpm exec drizzle-kit migrate --config=packages/database/drizzle.config.ts
+call npx drizzle-kit migrate --config=packages/database/drizzle.config.ts
 
 echo.
 echo ============================================
