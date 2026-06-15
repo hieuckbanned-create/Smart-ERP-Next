@@ -96,6 +96,7 @@ services:
       - smart-erp-network
 
   prometheus:
+    profiles: ["monitoring"]
     image: prom/prometheus:latest
     container_name: smart-erp-prometheus
     ports:
@@ -110,6 +111,7 @@ services:
       - smart-erp-network
 
   grafana:
+    profiles: ["monitoring"]
     image: grafana/grafana:latest
     container_name: smart-erp-grafana
     ports:
