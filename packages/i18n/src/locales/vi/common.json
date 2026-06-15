@@ -361,7 +361,8 @@
     "time": "Thời gian",
     "toDate": "Đến ngày",
     "retry": "Th? l?i",
-    "sold": "?? b?n"
+    "sold": "?? b?n",
+    "type": "Loại"
   },
   "inventory": {
     "title": "Quản lý kho",
@@ -1439,7 +1440,20 @@
     "note": "Ghi chú",
     "date": "Ngày",
     "cash": "Tiền mặt",
-    "transfer": "Chuyển khoản"
+    "transfer": "Chuyển khoản",
+    "receiptCreated": "Đã tạo phiếu thu",
+    "paymentCreated": "Đã tạo phiếu chi",
+    "createFailed": "Tạo phiếu thất bại",
+    "count": "{count} phiếu",
+    "noPayments": "Không có phiếu nào",
+    "receiptShort": "Thu",
+    "paymentShort": "Chi",
+    "createReceipt": "Tạo phiếu thu",
+    "createPayment": "Tạo phiếu chi",
+    "party": "Đối tượng",
+    "notes": "Ghi chú",
+    "amountVnd": "Số tiền (VND)",
+    "create": "Tạo phiếu"
   },
   "socket": {
     "new_activity": "Có hoạt động mới"

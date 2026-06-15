@@ -672,7 +672,16 @@
     "note": "Note",
     "date": "Date",
     "cash": "Cash",
-    "transfer": "Transfer"
+    "transfer": "Transfer",
+    "receiptCreated": "Receipt created",
+    "paymentCreated": "Payment created",
+    "createFailed": "Create failed",
+    "count": "{count} payment(s)",
+    "noPayments": "No payments",
+    "receiptShort": "In",
+    "paymentShort": "Out",
+    "amountVnd": "Amount (VND)",
+    "create": "Create"
   },
   "warehouses": {
     "title": "Warehouses",
@@ -990,7 +999,8 @@
     "sold": "sold",
     "save": "Save",
     "cancel": "Cancel",
-    "search": "Search"
+    "search": "Search",
+    "type": "Type"
   },
   "validation": {
     "required": "{{field}} is required",
