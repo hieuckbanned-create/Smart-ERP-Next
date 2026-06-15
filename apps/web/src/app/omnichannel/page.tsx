@@ -3,9 +3,9 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshCw, ShoppingBag, Link, CheckCircle, AlertCircle } from 'lucide-react';
+import { RefreshCw, ShoppingBag, Link, CheckCircle, AlertCircle, Store } from 'lucide-react';
 import AuthGuard from '@/components/layout/AuthGuard';
-import { DataTable, Button } from '@smart-erp/shared';
+import { DataTable, Button, PageHeader } from '@smart-erp/shared';
 
 interface ChannelStatus {
   id: string;
@@ -161,50 +161,39 @@ export default function OmnichannelPage() {
   return (
     <AuthGuard>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {t('omnichannel.title') || 'Bán hàng đa kênh (Omnichannel)'}
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              {t('omnichannel.subtitle') || 'Quản lý tập trung sản phẩm và đơn hàng từ Shopee, Lazada, TikTok Shop.'}
-            </p>
-          </div>
-          <Button variant="primary">
-            <Link className="w-4 h-4 mr-1.5" />
-            {t('omnichannel.addChannel') || 'Thêm kênh mới'}
-          </Button>
-        </div>
+        <PageHeader
+          title={t('omnichannel.title')}
+          description={t('omnichannel.subtitle')}
+          icon={<Store className="w-5 h-5" />}
+          iconColor="indigo"
+          actions={
+            <Button variant="primary">
+              <Link className="w-4 h-4 mr-1.5" />
+              {t('omnichannel.addChannel')}
+            </Button>
+          }
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('omnichannel.totalShops') || 'Tổng số Shop'}</h3>
-              <ShoppingBag className="w-5 h-5 text-blue-500" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{channels.length}</p>
-          </div>
-          <div className="rounded-lg border border-l-4 border-l-green-500 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('omnichannel.activeShops') || 'Đang kết nối'}</h3>
-              <CheckCircle className="w-5 h-5 text-green-500" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{channels.filter(c => c.status === 'connected' || c.status === 'syncing').length}</p>
-          </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('omnichannel.totalProducts') || 'Sản phẩm đồng bộ'}</h3>
-              <RefreshCw className="w-5 h-5 text-purple-500" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{channels.reduce((sum, c) => sum + c.productCount, 0)}</p>
-          </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('omnichannel.totalOrders') || 'Đơn hàng đa kênh'}</h3>
-              <ShoppingBag className="w-5 h-5 text-orange-500" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{channels.reduce((sum, c) => sum + c.orderCount, 0)}</p>
-          </div>
+          {[
+            { label: t('omnichannel.totalShops'), value: channels.length, icon: ShoppingBag, color: 'text-blue-500 bg-blue-100' },
+            { label: t('omnichannel.activeShops'), value: channels.filter(c => c.status === 'connected' || c.status === 'syncing').length, icon: CheckCircle, color: 'text-green-500 bg-green-100' },
+            { label: t('omnichannel.totalProducts'), value: channels.reduce((sum, c) => sum + c.productCount, 0), icon: RefreshCw, color: 'text-purple-500 bg-purple-100' },
+            { label: t('omnichannel.totalOrders'), value: channels.reduce((sum, c) => sum + c.orderCount, 0), icon: ShoppingBag, color: 'text-orange-500 bg-orange-100' },
+          ].map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <div key={i} className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{s.label}</p>
+                  <div className={`p-2 rounded-lg ${s.color.split(' ')[1]}`}>
+                    <Icon className={`w-4 h-4 ${s.color.split(' ')[0]}`} />
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{s.value}</p>
+              </div>
+            );
+          })}
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl border shadow-sm border-gray-200 dark:border-gray-800">
