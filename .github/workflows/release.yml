@@ -227,8 +227,7 @@ jobs:
           JWT_SECRET: release-e2e-secret
         run: |
           pnpm build
-          cd apps/api
-          PORT=3456 node dist/main.js &
+          PORT=3456 node apps/api/dist/apps/api/src/main.js &
           for i in $(seq 1 10); do
             sleep 2
             curl -s -o /dev/null http://localhost:3456/health && echo "API ready" && break
