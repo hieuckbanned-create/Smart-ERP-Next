@@ -18,9 +18,10 @@
     ]
   },
   "include": [
+    ".next/types/**/*.ts",
     "__tests__",
     "src",
-    ".next/types/**/*.ts"
+    ".next-dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
