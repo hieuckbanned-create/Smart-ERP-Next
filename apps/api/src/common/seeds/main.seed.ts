@@ -243,7 +243,7 @@ async function main() {
 
   // 14. Create CRM Leads
   await exec(`
-    INSERT INTO crm_leads (id, tenant_id, first_name, last_name, email, phone, company, source, status, lead_score, industry, description, assigned_to)
+    INSERT INTO crm_leads (id, tenant_id, first_name, last_name, email, phone, company, source, status, lead_score, industry, description, assigned_to_id)
     VALUES
       (gen_random_uuid(), '${tenant.id}', 'Minh', 'Nguyễn', 'minh.nguyen@techcorp.vn', '0908-111-222', 'TechCorp Việt Nam', 'website', 'new', 85, 'IT', 'Quan tâm đến giải pháp ERP tổng thể', '${admin.id}'),
       (gen_random_uuid(), '${tenant.id}', 'Hương', 'Trần', 'huong.tran@retailco.vn', '0908-333-444', 'RetailCo', 'referral', 'contacted', 72, 'Retail', 'Cần giải pháp quản lý bán hàng đa kênh', '${manager.id}'),
