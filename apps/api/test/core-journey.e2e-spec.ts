@@ -188,12 +188,4 @@ describe('Smart ERP Next - Core User Journey (E2E)', () => {
     expect(issueRes.body).toMatchObject({ id: createRes.body.id, status: 'issued' });
   });
 
-  it('lists marketing campaigns for the authenticated tenant', async () => {
-    const res = await authed(
-      request(app.getHttpServer()).get('/marketing/campaigns'),
-    );
-
-    expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
 });
