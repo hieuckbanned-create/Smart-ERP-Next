@@ -28,17 +28,17 @@ ENV NEXT_PUBLIC_API_URL=http://localhost:3456
 
 RUN npm install -g pnpm@10.33.0 && apk add --no-cache curl
 
-# Copy only built artifacts + runtime deps
+# Copy built artifacts + source (for workspace resolution)
 COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
-COPY --from=build /app/packages/ ./packages/
-COPY --from=build /app/apps/api/dist ./apps/api/dist
-COPY --from=build /app/apps/web/.next ./apps/web/.next
-COPY --from=build /app/apps/web/package.json ./apps/web/
-COPY --from=build /app/apps/web/public ./apps/web/public/
-COPY --from=build /app/scripts/ ./scripts/
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/packages /app/packages
+COPY --from=build /app/apps /app/apps
+COPY --from=build /app/scripts /app/scripts
 COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
+
+# Production install (includes reflect-metadata, sets up workspace links)
+RUN set -eux; \
+    pnpm install --frozen-lockfile --prod; \
+    chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 3456 3457
 HEALTHCHECK CMD curl -f http://127.0.0.1:3456/health || exit 1
