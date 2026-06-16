@@ -45,7 +45,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Validate iOS release prerequisites
         env:
@@ -104,7 +104,7 @@ jobs:
         run: choco install nsis -y
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Windows installer
         continue-on-error: true
