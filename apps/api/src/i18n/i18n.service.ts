@@ -17,18 +17,19 @@ export class I18nService {
 
   private loadTranslations() {
     const candidates = [
-      path.resolve(__dirname, '../../../../packages/i18n/src/locales'),
-      path.resolve(__dirname, '../../../../../../../packages/i18n/src/locales'),
+      path.resolve(__dirname, 'locales'),
+      path.resolve(__dirname, '../../../../src/i18n/locales'),
+      path.resolve(__dirname, '../../../../../../apps/api/src/i18n/locales'),
     ];
     let localesPath = candidates.find(p => fs.existsSync(p));
     if (!localesPath) {
       let currentDir = __dirname;
       for (let i = 0; i < 10; i++) {
-        const checkPath = path.join(currentDir, 'packages/i18n/src/locales');
-        if (fs.existsSync(checkPath)) {
-          localesPath = checkPath;
-          break;
+        for (const check of ['locales', 'apps/api/src/i18n/locales', 'packages/i18n/src/locales']) {
+          const checkPath = path.join(currentDir, check);
+          if (fs.existsSync(checkPath)) { localesPath = checkPath; break; }
         }
+        if (localesPath) break;
         const parentDir = path.dirname(currentDir);
         if (parentDir === currentDir) break;
         currentDir = parentDir;
