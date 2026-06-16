@@ -287,9 +287,9 @@ async function main() {
   await exec(`
     INSERT INTO approval_rules (id, tenant_id, name, document_type, min_amount, priority, is_active)
     VALUES
-      (gen_random_uuid(), '${tenant.id}', 'PO trên 50 triệu', 'purchase_order', 50000000, 1, true),
-      (gen_random_uuid(), '${tenant.id}', 'PO trên 200 triệu', 'purchase_order', 200000000, 2, true),
-      (gen_random_uuid(), '${tenant.id}', 'Chi tiêu trên 10 triệu', 'expense', 10000000, 1, true)
+      (gen_random_uuid(), '${tenant.id}', 'PO trên 50 triệu', 'purchase_order', 50000000, 1, 'true'),
+      (gen_random_uuid(), '${tenant.id}', 'PO trên 200 triệu', 'purchase_order', 200000000, 2, 'true'),
+      (gen_random_uuid(), '${tenant.id}', 'Chi tiêu trên 10 triệu', 'expense', 10000000, 1, 'true')
   `);
   console.log('  ✅ 3 approval rules created');
 
@@ -303,13 +303,13 @@ async function main() {
 
   // 20. Create KPI Definitions
   const kpi1Id = (await exec(`
-    INSERT INTO kpi_definitions (id, tenant_id, name, type, target_value, unit, period)
-    VALUES (gen_random_uuid(), '${tenant.id}', 'Doanh số bán hàng', 'quantity', 100000000, 'VND', 'monthly')
+    INSERT INTO kpi_definitions (id, tenant_id, name, category, unit)
+    VALUES (gen_random_uuid(), '${tenant.id}', 'Doanh số bán hàng', 'sales', 'VND')
     RETURNING id
   `)).rows[0].id;
   const kpi2Id = (await exec(`
-    INSERT INTO kpi_definitions (id, tenant_id, name, type, target_value, unit, period)
-    VALUES (gen_random_uuid(), '${tenant.id}', 'Số đơn hàng xử lý', 'quantity', 200, 'đơn', 'monthly')
+    INSERT INTO kpi_definitions (id, tenant_id, name, category, unit)
+    VALUES (gen_random_uuid(), '${tenant.id}', 'Số đơn hàng xử lý', 'operations', 'đơn')
     RETURNING id
   `)).rows[0].id;
 
@@ -317,10 +317,10 @@ async function main() {
   const emp2Id = (await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}' LIMIT 1 OFFSET 1`)).rows[0].id;
 
   await exec(`
-    INSERT INTO employee_kpi_targets (id, tenant_id, employee_id, kpi_id, target_value, actual_value, period, score, notes)
+    INSERT INTO employee_kpi_targets (id, tenant_id, employee_id, kpi_id, target_value, actual_value, period, score)
     VALUES
-      (gen_random_uuid(), '${tenant.id}', '${emp1Id}', '${kpi1Id}', 100000000, 85000000, '2026-06', 85, 'Đạt 85% chỉ tiêu tháng 6'),
-      (gen_random_uuid(), '${tenant.id}', '${emp2Id}', '${kpi2Id}', 200, 180, '2026-06', 90, 'Xử lý 180/200 đơn hàng')
+      (gen_random_uuid(), '${tenant.id}', '${emp1Id}', '${kpi1Id}', 100000000, 85000000, '2026-06', 85),
+      (gen_random_uuid(), '${tenant.id}', '${emp2Id}', '${kpi2Id}', 200, 180, '2026-06', 90)
   `);
   console.log('  ✅ 2 KPI definitions + targets created');
 
@@ -351,10 +351,10 @@ async function main() {
   if (empRows.rows.length >= 2) {
     const futureDate = new Date(today21.getTime() + 14 * 86400000).toISOString().split('T')[0];
     await exec(`
-      INSERT INTO leave_requests (id, tenant_id, employee_id, leave_type, start_date, end_date, reason, status)
+      INSERT INTO leave_requests (id, tenant_id, employee_id, leave_type, start_date, end_date, total_days, reason, status)
       VALUES
-        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[0].id}', 'annual', '${futureDate}', '${futureDate}', 'Nghỉ phép năm', 'pending'),
-        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[1].id}', 'sick', '${futureDate}', '${futureDate}', 'Khám sức khỏe', 'approved')
+        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[0].id}', 'annual', '${futureDate}', '${futureDate}', 1, 'Nghỉ phép năm', 'pending'),
+        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[1].id}', 'sick', '${futureDate}', '${futureDate}', 1, 'Khám sức khỏe', 'approved')
     `);
     console.log('  ✅ 2 leave requests created');
   }

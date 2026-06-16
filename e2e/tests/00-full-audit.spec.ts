@@ -112,3 +112,4 @@ test.describe('Full Audit: ALL 67 pages', () => {
     console.log(`═══════════════════════════════════════════\n`);
   });
 });
+

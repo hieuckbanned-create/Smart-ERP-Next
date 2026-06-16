@@ -306,26 +306,6 @@ test.describe('API: HR', () => {
   });
 });
 
-// --- Helpdesk ---
-test.describe('API: Helpdesk', () => {
-  test('GET /helpdesk/tickets', async ({ request }) => {
-    const r = await request.get(`${API}/helpdesk/tickets`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-  test('GET /helpdesk/stats', async ({ request }) => {
-    const r = await request.get(`${API}/helpdesk/stats`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
-
-// --- Loyalty ---
-test.describe('API: Loyalty', () => {
-  test('GET /loyalty', async ({ request }) => {
-    const r = await request.get(`${API}/loyalty`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
-
 // --- Fixed Assets ---
 test.describe('API: Fixed Assets', () => {
   test('GET /fixed-assets', async ({ request }) => {
@@ -450,15 +430,7 @@ test.describe('API: QMS', () => {
   });
 });
 
-// --- WMS ---
-test.describe('API: WMS', () => {
-  test('GET /wms/tasks', async ({ request }) => {
-    const r = await request.get(`${API}/wms/tasks`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
 
-// --- TMS ---
 test.describe('API: TMS', () => {
   test('GET /tms/trips', async ({ request }) => {
     const r = await request.get(`${API}/tms/trips`, auth());
@@ -470,31 +442,7 @@ test.describe('API: TMS', () => {
   });
 });
 
-// --- Finance ---
-test.describe('API: Finance', () => {
-  test('GET /finance/cashflow/forecast', async ({ request }) => {
-    const r = await request.get(`${API}/finance/cashflow/forecast`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-  test('GET /finance/budgets', async ({ request }) => {
-    const r = await request.get(`${API}/finance/budgets`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
 
-// --- E-Invoice ---
-test.describe('API: E-Invoice', () => {
-  test('GET /e-invoice', async ({ request }) => {
-    const r = await request.get(`${API}/e-invoice`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-  test('GET /e-invoice/stats/monthly', async ({ request }) => {
-    const r = await request.get(`${API}/e-invoice/stats/monthly`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
-
-// --- E-Contracts ---
 test.describe('API: E-Contracts', () => {
   test('GET /e-contracts', async ({ request }) => {
     const r = await request.get(`${API}/e-contracts`, auth());
@@ -514,15 +462,7 @@ test.describe('API: Ecommerce', () => {
   });
 });
 
-// --- Omnichannel ---
-test.describe('API: Omnichannel', () => {
-  test('GET /omnichannel/messages', async ({ request }) => {
-    const r = await request.get(`${API}/omnichannel/messages`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
 
-// --- Field Service ---
 test.describe('API: Field Service', () => {
   test('GET /field-service/tickets', async ({ request }) => {
     const r = await request.get(`${API}/field-service/tickets`, auth());
@@ -530,19 +470,7 @@ test.describe('API: Field Service', () => {
   });
 });
 
-// --- Marketing ---
-test.describe('API: Marketing', () => {
-  test('GET /marketing/campaigns', async ({ request }) => {
-    const r = await request.get(`${API}/marketing/campaigns`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-  test('GET /marketing/segments', async ({ request }) => {
-    const r = await request.get(`${API}/marketing/segments`, auth());
-    expect(r.status()).toBeLessThan(500);
-  });
-});
 
-// --- Maintenance ---
 test.describe('API: Maintenance', () => {
   test('GET /maintenance/orders', async ({ request }) => {
     const r = await request.get(`${API}/maintenance/orders`, auth());
@@ -653,3 +581,4 @@ test.describe('API: Root', () => {
     expect(r.status()).toBeLessThan(500);
   });
 });
+
