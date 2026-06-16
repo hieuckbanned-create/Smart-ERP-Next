@@ -168,8 +168,8 @@ jobs:
           VERSION: ${{ github.event.inputs.version || github.ref_name }}
         run: |
           gh release delete "$VERSION" --yes 2>/dev/null || true
-          git push --delete origin "$VERSION" 2>/dev/null || true
           gh release create "$VERSION" \
             --title "Smart ERP Next $VERSION" \
             --notes-file release-notes.md \
+            --target "$GITHUB_SHA" \
             --draft=false
