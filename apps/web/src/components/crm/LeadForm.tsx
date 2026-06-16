@@ -30,16 +30,16 @@ const STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost'];
 export default function LeadForm({ lead, onSuccess, onClose }: LeadFormProps) {
   const { t } = useTranslation();
   const [form, setForm] = useState({
-    firstName: lead?.firstName || '',
-    lastName: lead?.lastName || '',
-    email: lead?.email || '',
-    phone: lead?.phone || '',
-    company: lead?.company || '',
-    source: lead?.source || 'website',
-    status: lead?.status || 'new',
+    firstName: lead?.firstName ,
+    lastName: lead?.lastName ,
+    email: lead?.email ,
+    phone: lead?.phone ,
+    company: lead?.company ,
+    source: lead?.source ,
+    status: lead?.status ,
     leadScore: lead?.leadScore || 0,
-    industry: lead?.industry || '',
-    description: lead?.description || '',
+    industry: lead?.industry ,
+    description: lead?.description ,
   });
 
   const [loading, setLoading] = useState(false);

@@ -1011,6 +1011,9 @@
     "inspections": "Kiểm tra chất lượng",
     "createInspection": "Tạo phiếu kiểm tra",
     "capa": "Hành động khắc phục (CAPA)",
+    "description": "Theo dõi chất lượng nhà cung cấp, kiểm tra sản phẩm và xử lý lỗi",
+    "report": "Báo cáo chất lượng",
+    "loadingInspections": "Lịch sử kiểm tra chi tiết đang được tải...",
     "spcCharts": "Biểu đồ SPC",
     "status": {
       "pass": "Đạt",

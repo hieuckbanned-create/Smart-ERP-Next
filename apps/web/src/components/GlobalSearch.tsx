@@ -119,7 +119,7 @@ export default function GlobalSearch() {
           {results.map((result) => (
             <a
               key={result.id}
-              href={result.url || '#'}
+              href={result.url }
               onClick={handleSelect}
               className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition group"
             >

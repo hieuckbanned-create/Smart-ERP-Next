@@ -4,7 +4,7 @@ import {
   View, Text, ScrollView, StyleSheet, TouchableOpacity,
   TextInput, Alert, ActivityIndicator,
 } from 'react-native';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 
 interface Product {

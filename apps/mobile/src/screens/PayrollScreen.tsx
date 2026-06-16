@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 
 interface Payslip {

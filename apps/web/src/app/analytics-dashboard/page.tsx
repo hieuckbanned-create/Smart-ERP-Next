@@ -164,7 +164,7 @@ function KPICard({ label, value, change, color }: { label: string; value: string
     orange: 'border-orange-500', red: 'border-red-500', yellow: 'border-yellow-500',
   };
   return (
-    <div className={`bg-white rounded-xl shadow p-4 border-l-4 ${colorMap[color] || 'border-gray-300'}`}>
+    <div className={`bg-white rounded-xl shadow p-4 border-l-4 ${colorMap[color] }`}>
       <div className="text-xs text-gray-500 uppercase">{label}</div>
       <div className="text-xl font-bold mt-1">{value}</div>
       {change !== undefined && (

@@ -396,7 +396,7 @@ export default function POSPage() {
                       <span className="text-xs text-gray-400">Giảm:</span>
                       <input
                         type="number"
-                        value={item.discount || ''}
+                        value={item.discount }
                         onChange={(e) => updateItemDiscount(item.productId, parseFloat(e.target.value) || 0)}
                         placeholder="0"
                         min={0}
@@ -416,7 +416,7 @@ export default function POSPage() {
               <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">Giảm đơn:</span>
               <input
                 type="number"
-                value={orderDiscount || ''}
+                value={orderDiscount }
                 onChange={(e) => setOrderDiscount(parseFloat(e.target.value) || 0)}
                 placeholder="0"
                 min={0}
@@ -472,7 +472,7 @@ export default function POSPage() {
                 <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">Tiền nhận:</span>
                 <input
                   type="number"
-                  value={cashReceived || ''}
+                  value={cashReceived }
                   onChange={(e) => setCashReceived(parseFloat(e.target.value) || 0)}
                   placeholder={total.toString()}
                   min={0}

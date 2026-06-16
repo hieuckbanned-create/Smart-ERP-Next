@@ -24,7 +24,7 @@ export default function ImportProductsPage() {
       });
       setResult(res.data);
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Import failed');
+      alert(err.response?.data?.message );
     } finally {
       setUploading(false);
     }

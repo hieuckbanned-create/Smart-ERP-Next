@@ -106,7 +106,7 @@ export default function EInvoicePage() {
     : invoices.filter(i => i.status === statusFilter);
 
   const STATUS_FILTERS = [
-    { key: 'all',      label: t('orders.statusAll') || 'Táº¥t cáº£' },
+    { key: 'all',      label: t('orders.statusAll')  },
     { key: 'draft',    label: STATUS_CONFIG.draft.label },
     { key: 'issued',   label: STATUS_CONFIG.issued.label },
     { key: 'cancelled',label: STATUS_CONFIG.cancelled.label },
@@ -114,7 +114,7 @@ export default function EInvoicePage() {
 
   const columns = [
     {
-      header: t('einvoice.invoiceNumber') || 'Sá»‘ hÃ³a Ä‘Æ¡n',
+      header: t('einvoice.invoiceNumber') ,
       accessor: (row: EInvoice) => (
         <div>
           <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
@@ -125,7 +125,7 @@ export default function EInvoicePage() {
       ),
     },
     {
-      header: t('einvoice.buyer') || 'NgÆ°á»i mua',
+      header: t('einvoice.buyer') ,
       accessor: (row: EInvoice) => (
         <div>
           <div className="font-semibold text-gray-900 dark:text-white">{row.buyerName}</div>
@@ -136,7 +136,7 @@ export default function EInvoicePage() {
       ),
     },
     {
-      header: t('einvoice.totalAmount') || 'Tá»•ng tiá»n',
+      header: t('einvoice.totalAmount') ,
       accessor: (row: EInvoice) => (
         <div>
           <div className="font-bold text-gray-900 dark:text-white">{formatVND(row.totalAmount)}</div>
@@ -145,20 +145,20 @@ export default function EInvoicePage() {
       ),
     },
     {
-      header: t('einvoice.status') || 'Tráº¡ng thÃ¡i',
+      header: t('einvoice.status') ,
       accessor: (row: EInvoice) => {
         const cfg = STATUS_CONFIG[row.status] || STATUS_CONFIG.draft;
         return <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${cfg.variant === 'primary' || cfg.variant === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : cfg.variant === 'warning' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : cfg.variant === 'danger' || cfg.variant === 'error' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'}`}>{cfg.icon}{cfg.label}</span>;
       },
     },
     {
-      header: t('einvoice.issuedAt') || 'NgÃ y phÃ¡t hÃ nh',
+      header: t('einvoice.issuedAt') ,
       accessor: (row: EInvoice) => row.issuedAt
         ? new Date(row.issuedAt).toLocaleDateString('vi-VN')
         : <span className="text-gray-400">-</span>,
     },
     {
-      header: t('common.actions') || 'Thao tÃ¡c',
+      header: t('common.actions') ,
       accessor: (row: EInvoice) => (
         <div className="flex items-center gap-1">
           {row.status === 'draft' ? (
@@ -169,7 +169,7 @@ export default function EInvoicePage() {
               loading={actionLoading === row.id}
               onClick={() => handleIssue(row.id)}
             >
-              {t('einvoice.issue') || 'PhÃ¡t hÃ nh'}
+              {t('einvoice.issue') }
             </Button>
           ) : null}
           {row.pdfUrl ? (
@@ -189,7 +189,7 @@ export default function EInvoicePage() {
               icon={<ExternalLink />}
               onClick={() => window.open(row.viewUrl!, '_blank')}
             >
-              {t('einvoice.view') || 'Xem'}
+              {t('einvoice.view') }
             </Button>
           ) : null}
         </div>
@@ -207,11 +207,11 @@ export default function EInvoicePage() {
               {t('einvoice.title')}
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              {t('einvoice.subtitle') || 'Quáº£n lÃ½ hÃ³a Ä‘Æ¡n theo Nghá»‹ Ä‘á»‹nh 123/2020/NÄ-CP â€” tÃ­ch há»£p VNPT, Viettel, MISA'}
+              {t('einvoice.subtitle') }
             </p>
           </div>
           <Button icon={<Plus />} variant="primary">
-            {t('einvoice.create') || 'Táº¡o hÃ³a Ä‘Æ¡n'}
+            {t('einvoice.create') }
           </Button>
         </div>
 
@@ -219,11 +219,11 @@ export default function EInvoicePage() {
         {stats ? (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
-              { title: t('einvoice.stats.issued') || 'ÄÃ£ phÃ¡t hÃ nh', value: stats.issued_count || 0 },
-              { title: t('einvoice.stats.draft') || 'Báº£n nhÃ¡p', value: stats.draft_count || 0 },
-              { title: t('einvoice.stats.cancelled') || 'ÄÃ£ há»§y', value: stats.cancelled_count || 0 },
-              { title: t('einvoice.stats.revenue') || 'Doanh thu', value: formatVND(stats.total_revenue || 0) },
-              { title: t('einvoice.stats.vat') || 'Tá»•ng VAT', value: formatVND(stats.total_vat || 0) },
+              { title: t('einvoice.stats.issued') , value: stats.issued_count || 0 },
+              { title: t('einvoice.stats.draft') , value: stats.draft_count || 0 },
+              { title: t('einvoice.stats.cancelled') , value: stats.cancelled_count || 0 },
+              { title: t('einvoice.stats.revenue') , value: formatVND(stats.total_revenue || 0) },
+              { title: t('einvoice.stats.vat') , value: formatVND(stats.total_vat || 0) },
             ].map((s, i) => (
               <div key={i} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
                 <p className="text-sm text-gray-500 dark:text-gray-400">{s.title}</p>
@@ -256,7 +256,7 @@ export default function EInvoicePage() {
             data={filteredInvoices}
             columns={columns}
             loading={loading}
-            emptyMessage={t('einvoice.noInvoices') || 'ChÆ°a cÃ³ hÃ³a Ä‘Æ¡n nÃ o'}
+            emptyMessage={t('einvoice.noInvoices') }
           />
         </div>
       </div>

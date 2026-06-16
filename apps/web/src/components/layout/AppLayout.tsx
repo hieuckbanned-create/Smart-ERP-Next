@@ -247,7 +247,7 @@ export default function AppLayout({
             <p className="text-sm font-bold text-gray-900 dark:text-white truncate">
               Smart ERP
             </p>
-            <p className="text-xs text-gray-400 truncate">v{process.env.NEXT_PUBLIC_APP_VERSION || '0.1.0'}</p>
+            <p className="text-xs text-gray-400 truncate">v{process.env.NEXT_PUBLIC_APP_VERSION }</p>
           </div>
         )}
       </div>

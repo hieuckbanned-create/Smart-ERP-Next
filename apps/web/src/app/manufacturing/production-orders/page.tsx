@@ -68,33 +68,33 @@ export default function ProductionOrdersPage() {
 
   const columns = [
     {
-      label: t('manufacturing.productionOrders') || 'MÃ£ lá»‡nh SX',
+      label: t('manufacturing.productionOrders') ,
       render: (row: ProductionOrder) => (
         <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">{row.orderCode}</span>
       )
     },
     {
-      label: t('nav.products') || 'Sáº£n pháº©m',
+      label: t('nav.products') ,
       render: 'productName'
     },
     {
-      label: t('manufacturing.quantity') || 'Sá»‘ lÆ°á»£ng',
+      label: t('manufacturing.quantity') ,
       render: (row: ProductionOrder) => (
         <span className="font-semibold">{Number(row.quantity).toLocaleString('vi-VN')}</span>
       )
     },
     {
-      label: t('manufacturing.status.draft').replace(t('manufacturing.status.draft'), t('common.status') || 'Tráº¡ng thÃ¡i'),
+      label: t('manufacturing.status.draft').replace(t('manufacturing.status.draft'), t('common.status') ),
       render: (row: ProductionOrder) => getStatusBadge(row.status)
     },
     {
-      label: t('manufacturing.setupTime') ? t('projects.startDate') : 'NgÃ y báº¯t Ä‘áº§u',
+      label: t('manufacturing.setupTime') ? t('projects.startDate') : 'Ngay bat dau',
       render: (row: ProductionOrder) => row.startDate
         ? new Date(row.startDate).toLocaleDateString('vi-VN')
         : '-'
     },
     {
-      label: t('common.createdAt') || 'NgÃ y táº¡o',
+      label: t('common.createdAt') ,
       render: (row: ProductionOrder) => new Date(row.createdAt).toLocaleDateString('vi-VN')
     },
   ];
@@ -104,7 +104,7 @@ export default function ProductionOrdersPage() {
   const draftCount = orders.filter(o => o.status === 'draft').length;
 
   const FILTERS = [
-    { key: 'all', label: t('orders.statusAll') || 'Táº¥t cáº£' },
+    { key: 'all', label: t('orders.statusAll')  },
     { key: 'draft', label: t('manufacturing.status.draft') },
     { key: 'in_progress', label: t('manufacturing.status.in_progress') },
     { key: 'completed', label: t('manufacturing.status.completed') },
@@ -193,7 +193,7 @@ export default function ProductionOrdersPage() {
             data={filteredOrders}
             columns={columns}
             loading={loading}
-            emptyMessage={t('common.noData') || 'ChÆ°a cÃ³ lá»‡nh sáº£n xuáº¥t nÃ o'}
+            emptyMessage={t('common.noData') }
           />
         </div>
       </div>

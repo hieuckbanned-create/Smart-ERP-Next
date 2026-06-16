@@ -129,11 +129,11 @@ export default function BOMPage() {
       )
     },
     {
-      label: t('products.cost') || 'Unit Cost',
+      label: t('products.cost') ,
       render: (row: BomItem) => formatVND(row.unitCost)
     },
     {
-      label: t('payment.subtotal') || 'Subtotal',
+      label: t('payment.subtotal') ,
       render: (row: BomItem) => {
         const effectiveQty = row.quantity * (1 + row.wastagePercent / 100);
         return <span className="font-semibold">{formatVND(effectiveQty * row.unitCost)}</span>;

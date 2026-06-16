@@ -45,8 +45,8 @@ function saveToStorage(key: string, value: string): void {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation('common');
-  const [theme, setThemeState] = useState<Theme>(() => (loadFromStorage('theme') as Theme) || 'system');
-  const [brandColor, setBrandColorState] = useState<BrandColor>(() => (loadFromStorage('brandColor') as BrandColor) || 'blue');
+  const [theme, setThemeState] = useState<Theme>(() => (loadFromStorage('theme') as Theme) );
+  const [brandColor, setBrandColorState] = useState<BrandColor>(() => (loadFromStorage('brandColor') as BrandColor) );
   const [systemPreference, setSystemPreference] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {

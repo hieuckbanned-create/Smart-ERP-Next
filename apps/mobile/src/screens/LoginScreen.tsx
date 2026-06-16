@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import { useTranslation } from "@smart-erp/i18n";
+import { useTranslation } from "react-i18next";
 
 const API_BASE = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3456";
 

@@ -1248,6 +1248,9 @@
     "inspections": "Quality Inspections",
     "createInspection": "Create Inspection",
     "capa": "Corrective Actions (CAPA)",
+    "description": "Monitor supplier quality, product inspections, and defect handling",
+    "report": "Quality Report",
+    "loadingInspections": "Loading inspection history...",
     "spcCharts": "SPC Charts",
     "status": {
       "pass": "Pass",

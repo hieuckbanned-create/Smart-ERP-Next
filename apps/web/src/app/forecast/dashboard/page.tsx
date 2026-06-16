@@ -105,7 +105,7 @@ export default function ForecastDashboard() {
           <div className="grid grid-cols-3 gap-4">
             <div className="p-4 bg-white rounded-lg shadow">
               <div className="text-sm text-gray-500">{t('analytics.forecast.metrics.reorder')}</div>
-              <div className="text-2xl font-bold">{data.suggestedOrder || '-'}</div>
+              <div className="text-2xl font-bold">{data.suggestedOrder }</div>
             </div>
             <div className="p-4 bg-white rounded-lg shadow">
               <div className="text-sm text-gray-500">{t('analytics.forecast.metrics.confidence')}</div>

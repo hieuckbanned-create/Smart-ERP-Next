@@ -322,7 +322,7 @@ export default function DashboardPage() {
                         {formatVND(order.total)}
                       </td>
                       <td className="px-5 py-3 text-center">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] }`}>
                           {statusLabels[order.status] || order.status}
                         </span>
                       </td>
@@ -365,7 +365,7 @@ export default function DashboardPage() {
                       {formatVND(order.total)}
                     </td>
                     <td className="px-5 py-3 text-center">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] }`}>
                         {statusLabels[order.status] || order.status}
                       </span>
                     </td>

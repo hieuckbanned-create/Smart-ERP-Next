@@ -99,7 +99,7 @@ export default function PayrollPage() {
       key: 'status',
       label: 'Trạng thái',
       render: (b: SalaryBoard) => (
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${BADGE_COLORS[b.status] || 'bg-yellow-100 text-yellow-700'}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${BADGE_COLORS[b.status] }`}>
           {b.status === 'approved' ? 'Đã duyệt' : b.status === 'paid' ? 'Đã chi trả' : 'Bản nháp'}
         </span>
       ),

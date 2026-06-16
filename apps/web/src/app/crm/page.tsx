@@ -109,7 +109,7 @@ export default function CrmPage() {
                           key={lead.id}
                           draggable
                           onDragStart={() => setDraggedLeadId(lead.id)}
-                          className={`bg-white dark:bg-gray-900 p-3 rounded-lg shadow-sm cursor-grab active:cursor-grabbing border-l-4 ${STATUS_COLORS[lead.status] || 'border-l-gray-300'} hover:shadow-md transition-shadow`}
+                          className={`bg-white dark:bg-gray-900 p-3 rounded-lg shadow-sm cursor-grab active:cursor-grabbing border-l-4 ${STATUS_COLORS[lead.status] } hover:shadow-md transition-shadow`}
                         >
                           <div className="flex items-start justify-between mb-1">
                             <h4 className="font-medium text-sm text-gray-900 dark:text-white">

@@ -61,8 +61,8 @@ export default function QualityPage() {
     } catch {
       // API may not be fully mocked or available, graceful degrade
       setSupplierScores([
-        { supplierId: 'CÃ´ng ty ABC', totalInspections: 45, passRate: 98, grade: 'A', score: 95, openNCRs: 0, criticalNCRs: 0 },
-        { supplierId: 'NhÃ  mÃ¡y XYZ', totalInspections: 32, passRate: 85, grade: 'C', score: 72, openNCRs: 2, criticalNCRs: 1 },
+        { supplierId: 'Cong ty ABC', totalInspections: 45, passRate: 98, grade: 'A', score: 95, openNCRs: 0, criticalNCRs: 0 },
+        { supplierId: 'Nha may XYZ', totalInspections: 32, passRate: 85, grade: 'C', score: 72, openNCRs: 2, criticalNCRs: 1 },
       ]);
     } finally {
       setLoading(false);
@@ -72,26 +72,26 @@ export default function QualityPage() {
   useEffect(() => { fetchData(); }, []);
 
   const supplierColumns = [
-    { label: t('suppliers.title') || 'NhÃ  cung cáº¥p', render: 'supplierId' },
-    { label: t('qms.totalInspections') || 'Tá»•ng kiá»ƒm tra', render: 'totalInspections' },
+    { label: t('suppliers.title') , render: 'supplierId' },
+    { label: t('qms.totalInspections') , render: 'totalInspections' },
     { 
-      label: t('qms.passRate') || 'Tá»· lá»‡ Ä‘áº¡t (%)', 
+      label: t('qms.passRate') , 
       render: (row: any) => <span className="font-semibold">{row.passRate}%</span> 
     },
     { 
-      label: t('qms.supplierGrade') || 'Xáº¿p háº¡ng', 
+      label: t('qms.supplierGrade') , 
       render: (row: any) => <span className={"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium " + gradeBadgeClass(row.grade)}>{row.grade}</span> 
     },
     { 
-      label: t('qms.score') || 'Äiá»ƒm', 
+      label: t('qms.score') , 
       render: (row: any) => <span className="text-lg font-bold">{row.score}</span> 
     },
     { 
-      label: t('qms.openNCRs') || 'Lá»—i Ä‘ang má»Ÿ (NCR)', 
+      label: t('qms.openNCRs') , 
       render: (row: any) => (
         <div className="flex gap-2">
-          {row.openNCRs > 0 && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">{row.openNCRs} má»Ÿ</span>}
-          {row.criticalNCRs > 0 && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">{row.criticalNCRs} nghiÃªm trá»ng</span>}
+          {row.openNCRs > 0 && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">{row.openNCRs} mo</span>}
+          {row.criticalNCRs > 0 && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">{row.criticalNCRs} nghiem trong</span>}
           {row.openNCRs === 0 && row.criticalNCRs === 0 && <span className="text-gray-400">-</span>}
         </div>
       )
@@ -99,13 +99,13 @@ export default function QualityPage() {
   ];
 
   const ncrColumns = [
-    { label: 'MÃ£ lá»—i (Code)', render: 'code' },
-    { label: 'MÃ´ táº£', render: 'description' },
+    { label: 'Ma loi (Code)', render: 'code' },
+    { label: 'Mo ta', render: 'description' },
     { 
-      label: 'Má»©c Ä‘á»™', 
+      label: 'Muc do', 
       render: (row: any) => <span className={"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium " + severityBadgeClass(row.severity)}>{row.severity}</span> 
     },
-    { label: 'Tráº¡ng thÃ¡i', render: 'status' },
+    { label: 'Trang thai', render: 'status' },
   ];
 
   return (
@@ -114,15 +114,15 @@ export default function QualityPage() {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {t('qms.title') || 'Quáº£n lÃ½ cháº¥t lÆ°á»£ng (QMS)'}
+              {t('qms.title') }
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Theo dÃµi cháº¥t lÆ°á»£ng nhÃ  cung cáº¥p, kiá»ƒm tra sáº£n pháº©m vÃ  xá»­ lÃ½ lá»—i (NCR/CAPA).
+              {t('qms.description')}
             </p>
           </div>
           <Button>
             <Shield className="w-4 h-4" />
-            BÃ¡o cÃ¡o cháº¥t lÆ°á»£ng
+            {t('qms.report')}
           </Button>
         </div>
 
@@ -133,7 +133,7 @@ export default function QualityPage() {
               <Activity className="w-5 h-5 text-blue-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.totalInspections') || 'Tá»•ng kiá»ƒm tra'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.totalInspections') }</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.totalInspections || 0}</p>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function QualityPage() {
               <CheckCircle className="w-5 h-5 text-green-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.pass') || 'Äáº¡t'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.pass') }</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.passed || 0}</p>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function QualityPage() {
               <XCircle className="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.fail') || 'Không đạt'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.fail') }</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.failed || 0}</p>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function QualityPage() {
               <Shield className="w-5 h-5 text-purple-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.passRate') || 'Tỷ lệ đạt'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('qms.passRate') }</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{report?.passRate?.toFixed(1) || 0}%</p>
             </div>
           </div>
@@ -169,9 +169,9 @@ export default function QualityPage() {
         {/* Tabs */}
         <div className="flex gap-2 border-b border-gray-200 dark:border-gray-800">
           {[
-            { id: 'scorecard', label: t('qms.supplierScore') || 'Điểm nhà cung cấp' },
-            { id: 'ncrs', label: t('qms.ncrs') || 'Báo cáo lỗi (NCR)' },
-            { id: 'inspections', label: t('qms.inspections') || 'Lịch sử kiểm tra' },
+            { id: 'scorecard', label: t('qms.supplierScore')  },
+            { id: 'ncrs', label: t('qms.ncrs')  },
+            { id: 'inspections', label: t('qms.inspections')  },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -195,17 +195,17 @@ export default function QualityPage() {
             <DataTable
               data={supplierScores}
               columns={supplierColumns}
-              emptyMessage={t('qms.noSupplierData') || 'ChÆ°a cÃ³ dá»¯ liá»‡u nhÃ  cung cáº¥p'}
+              emptyMessage={t('qms.noSupplierData') }
             />
           ) : activeTab === 'ncrs' ? (
             <DataTable
               data={ncrs}
               columns={ncrColumns}
-              emptyMessage={t('qms.noNCRs') || 'ChÆ°a cÃ³ bÃ¡o cÃ¡o NCR nÃ o'}
+              emptyMessage={t('qms.noNCRs') }
             />
           ) : (
             <div className="text-center py-8 text-gray-500">
-              Lá»‹ch sá»­ kiá»ƒm tra chi tiáº¿t Ä‘ang Ä‘Æ°á»£c táº£i...
+              {t('qms.loadingInspections')}
             </div>
           )}
         </div>

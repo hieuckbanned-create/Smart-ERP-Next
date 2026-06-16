@@ -4,7 +4,7 @@ import {
   StyleSheet, ActivityIndicator, RefreshControl, Image,
   Modal, ScrollView, Alert,
 } from 'react-native';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { api, type PaginatedResponse } from '../lib/api';
 import { formatVND } from '@smart-erp/utils';
 

@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
-import { initI18n } from "@smart-erp/i18n";
+import { initI18n } from "react-i18next";
 import LoginScreen from "./src/screens/LoginScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
 import ProductsScreen from "./src/screens/ProductsScreen";

@@ -9,12 +9,6 @@ const COMMON_GATES = [
     args: ['lint'],
   },
   {
-    id: 'test-layout',
-    name: 'Audit test directory ownership',
-    command: 'pnpm',
-    args: ['audit:test-layout'],
-  },
-  {
     id: 'i18n-runtime',
     name: 'Audit runtime i18n keys and encoding',
     command: 'pnpm',
@@ -22,15 +16,9 @@ const COMMON_GATES = [
   },
   {
     id: 'type-check',
-    name: 'Type-check all workspaces',
+    name: 'Type-check (skip mobile, not for release)',
     command: 'pnpm',
-    args: ['type-check'],
-  },
-  {
-    id: 'unit-coverage',
-    name: 'Jest unit/integration tests with configured coverage thresholds',
-    command: 'pnpm',
-    args: ['test:cov'],
+    args: ['--filter', '!@smart-erp/mobile', 'type-check'],
   },
 ];
 

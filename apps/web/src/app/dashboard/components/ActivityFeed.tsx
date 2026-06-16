@@ -90,7 +90,7 @@ export function ActivityFeed() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-gray-900 dark:text-white">
-                  <span className="font-medium">{activity.user?.name || 'System'}</span>
+                  <span className="font-medium">{activity.user?.name }</span>
                   {' '}
                   <span className="text-gray-500 dark:text-gray-400">
                     {t(`activity.${activity.action}`, { defaultValue: activity.action })}

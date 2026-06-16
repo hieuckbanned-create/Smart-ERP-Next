@@ -159,7 +159,7 @@ export default function ProductsPage() {
                           </td>
                           <td className="px-4 py-3 font-mono text-xs text-gray-500">{product.sku}</td>
                           <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
-                            {product.category || '—'}
+                            {product.category }
                           </td>
                           <td className="px-4 py-3 text-right font-medium text-gray-900 dark:text-white">
                             {formatVND(product.price)}

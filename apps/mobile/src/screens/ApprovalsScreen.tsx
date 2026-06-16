@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { api } from '../lib/api';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 
 interface ApprovalRequest {
   id: string;

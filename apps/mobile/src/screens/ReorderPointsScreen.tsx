@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 
 interface ReorderSuggestion {

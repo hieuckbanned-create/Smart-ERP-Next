@@ -174,7 +174,7 @@ export default function AttendancePage() {
         : <span className="text-gray-400">â€”</span>,
     },
     {
-      label: t('attendance.status') || 'Tráº¡ng thÃ¡i',
+      label: t('attendance.status') ,
       render: (r: AttendanceRecord) => {
         const cfg = STATUS_CONFIG[r.status] || STATUS_CONFIG.present;
         return (
@@ -191,7 +191,7 @@ export default function AttendancePage() {
     {
       label: t('attendance.leave.title'),
       render: (l: LeaveRequest) => (
-        <span style={{ color: LEAVE_TYPE_COLORS[l.leave_type] || '#374151' }} className="font-semibold">
+        <span style={{ color: LEAVE_TYPE_COLORS[l.leave_type]  }} className="font-semibold">
           {t(`attendance.leave.types.${l.leave_type}`) || l.leave_type}
         </span>
       ),
@@ -219,7 +219,7 @@ export default function AttendancePage() {
       },
     },
     {
-      label: t('common.actions') || 'Thao tÃ¡c',
+      label: t('common.actions') ,
       render: (l: LeaveRequest) => l.status === 'pending' ? (
         <Button
           size="sm"
@@ -338,7 +338,7 @@ export default function AttendancePage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
                 <Sun className="w-4 h-4 text-orange-400" />
-                <span>{t('attendance.halfDay') || 'Ná»­a ngÃ y'}</span>
+                <span>{t('attendance.halfDay') }</span>
               </div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{summary.half_days}</p>
             </div>

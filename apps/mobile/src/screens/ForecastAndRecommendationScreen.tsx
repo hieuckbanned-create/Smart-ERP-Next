@@ -10,7 +10,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { useTranslation } from '@smart-erp/i18n';
+import { useTranslation } from 'react-i18next';
 import { forecastApi, ReorderResponse, DailyDemand } from '../lib/forecast';
 
 interface Product {

@@ -71,7 +71,7 @@ export default function AutomationBuilder() {
   };
 
   const handleSave = () => {
-    alert(t('automation.saveWorkflow') || 'Workflow saved');
+    alert(t('automation.saveWorkflow') );
   };
 
   return (

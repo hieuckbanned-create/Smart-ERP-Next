@@ -21,12 +21,12 @@ export default function ProfilePage() {
       .then(res => {
         setUser(res.data);
         setForm({
-          name: res.data.name || '',
-          phone: res.data.phone || '',
-          avatar: res.data.avatar || '',
+          name: res.data.name ,
+          phone: res.data.phone ,
+          avatar: res.data.avatar ,
           preferences: res.data.preferences || { theme: 'light', language: 'vi' },
         });
-        setAvatarPreview(res.data.avatar || '');
+        setAvatarPreview(res.data.avatar );
       })
       .finally(() => setLoading(false));
   }, []);
@@ -67,7 +67,7 @@ export default function ProfilePage() {
           {/* Avatar */}
           <div className="flex items-center gap-6">
             <div className="relative">
-              <Image src={avatarPreview || '/default-avatar.png'} alt="Avatar" width={96} height={96} className="h-24 w-24 rounded-full border object-cover" unoptimized />
+              <Image src={avatarPreview } alt="Avatar" width={96} height={96} className="h-24 w-24 rounded-full border object-cover" unoptimized />
               <label className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-1 cursor-pointer">
                 <Camera className="w-4 h-4 text-white" />
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
