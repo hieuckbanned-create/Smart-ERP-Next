@@ -31,6 +31,7 @@ jest.mock('@smart-erp/database/drizzle', () => ({
   eq: jest.fn((field, value) => ({ op: 'eq', field, value })),
   and: jest.fn((...conditions) => ({ op: 'and', conditions })),
   ilike: jest.fn((field, value) => ({ op: 'ilike', field, value })),
+  inArray: jest.fn((field, values) => ({ op: 'inArray', field, values })),
   sql: jest.fn((strings, ...values) => ({ op: 'sql', strings, values })),
   desc: jest.fn((field) => ({ op: 'desc', field })),
 }));

@@ -8,6 +8,7 @@ jest.mock('@smart-erp/database', () => ({
 jest.mock('drizzle-orm', () => ({
   eq: jest.fn((field, value) => ({ op: 'eq', field, value })),
   and: jest.fn((...conditions) => ({ op: 'and', conditions })),
+  inArray: jest.fn((field, values) => ({ op: 'inArray', field, values })),
   desc: jest.fn((field) => ({ op: 'desc', field })),
   sql: jest.fn((strings, ...values) => ({ op: 'sql', strings, values })),
 }));
@@ -68,10 +69,10 @@ describe('PayrollService coverage', () => {
 
   it('generates salary boards from attendance aggregates', async () => {
     returningQueue.push([{ id: 'board-1', name: 'Bảng lương tháng 05/2026' }]);
-    drizzle.db.execute.mockResolvedValueOnce([
+    drizzle.db.execute.mockResolvedValueOnce({ rows: [
       { employee_id: 'employee-1', present_days: '22', total_ot: '8', total_late: '5' },
       { employee_id: 'employee-2', present_days: '0', total_ot: null, total_late: null },
-    ]);
+    ] });
 
     await expect(service.generateSalaryBoard('tenant-1', 'user-1', 5, 2026)).resolves.toEqual({
       id: 'board-1',
