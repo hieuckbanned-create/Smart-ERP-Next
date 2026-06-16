@@ -241,6 +241,89 @@ async function main() {
   `);
   console.log('  ✅ 3 activity logs created');
 
+  // 14. Create CRM Leads
+  await exec(`
+    INSERT INTO crm_leads (id, tenant_id, first_name, last_name, email, phone, company, source, status, lead_score, industry, description, assigned_to)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', 'Minh', 'Nguyễn', 'minh.nguyen@techcorp.vn', '0908-111-222', 'TechCorp Việt Nam', 'website', 'new', 85, 'IT', 'Quan tâm đến giải pháp ERP tổng thể', '${admin.id}'),
+      (gen_random_uuid(), '${tenant.id}', 'Hương', 'Trần', 'huong.tran@retailco.vn', '0908-333-444', 'RetailCo', 'referral', 'contacted', 72, 'Retail', 'Cần giải pháp quản lý bán hàng đa kênh', '${manager.id}'),
+      (gen_random_uuid(), '${tenant.id}', 'Tuấn', 'Lê', 'tuan.le@logistics.vn', '0908-555-666', 'LogisticsVN', 'website', 'qualified', 91, 'Logistics', 'Đã demo, rất quan tâm đến module kho vận', '${admin.id}')
+  `);
+  console.log('  ✅ 3 CRM leads created');
+
+  // 15. Create Chart of Accounts
+  await exec(`
+    INSERT INTO chart_of_accounts (id, tenant_id, account_code, account_name, account_type, is_active)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', '1', 'Tài sản', 'asset', true),
+      (gen_random_uuid(), '${tenant.id}', '2', 'Nợ phải trả', 'liability', true),
+      (gen_random_uuid(), '${tenant.id}', '3', 'Vốn chủ sở hữu', 'equity', true),
+      (gen_random_uuid(), '${tenant.id}', '4', 'Doanh thu', 'revenue', true),
+      (gen_random_uuid(), '${tenant.id}', '5', 'Chi phí', 'expense', true)
+  `);
+  console.log('  ✅ 5 chart of accounts created');
+
+  // 16. Create Work Shifts
+  await exec(`
+    INSERT INTO work_shifts (id, tenant_id, name, code, start_time, end_time, description)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', 'Ca hành chính', 'SHIFT-OFFICE', '08:00', '17:00', 'Giờ hành chính tiêu chuẩn'),
+      (gen_random_uuid(), '${tenant.id}', 'Ca sáng', 'SHIFT-MORNING', '06:00', '14:00', 'Ca sáng cho bộ phận kho'),
+      (gen_random_uuid(), '${tenant.id}', 'Ca tối', 'SHIFT-NIGHT', '14:00', '22:00', 'Ca tối cho bộ phận kho')
+  `);
+  console.log('  ✅ 3 work shifts created');
+
+  // 17. Create Fixed Assets
+  await exec(`
+    INSERT INTO fixed_assets (id, tenant_id, code, name, category, purchase_date, purchase_cost, useful_life, salvage_value, depreciation_method, status, location, notes)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', 'FA-001', 'Máy chủ Dell PowerEdge', 'IT Equipment', '2025-06-01', 250000000, 5, 25000000, 'straight_line', 'active', 'Phòng server HN', 'Máy chủ ERP'),
+      (gen_random_uuid(), '${tenant.id}', 'FA-002', 'Toyota Fortuner 2025', 'Vehicle', '2025-03-15', 1200000000, 10, 120000000, 'straight_line', 'active', 'Bãi xe HN', 'Xe công ty cho giám đốc'),
+      (gen_random_uuid(), '${tenant.id}', 'FA-003', 'Máy lạnh Daikin 2.0HP', 'Office Equipment', '2025-05-01', 18000000, 8, 1800000, 'straight_line', 'active', 'VP tầng 3', 'Điều hòa văn phòng')
+  `);
+  console.log('  ✅ 3 fixed assets created');
+
+  // 18. Create Approval Rules
+  await exec(`
+    INSERT INTO approval_rules (id, tenant_id, name, entity_type, trigger_condition, approver_id, priority, is_active)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', 'PO trên 50 triệu', 'purchase_order', '{"min_amount": 50000000}', '${manager.id}', 1, true),
+      (gen_random_uuid(), '${tenant.id}', 'PO trên 200 triệu', 'purchase_order', '{"min_amount": 200000000}', '${admin.id}', 2, true),
+      (gen_random_uuid(), '${tenant.id}', 'Chi tiêu trên 10 triệu', 'expense', '{"min_amount": 10000000}', '${manager.id}', 1, true)
+  `);
+  console.log('  ✅ 3 approval rules created');
+
+  // 19. Create E-Invoice drafts
+  await exec(`
+    INSERT INTO e_invoices (id, tenant_id, order_id, customer_id, buyer_name, invoice_series, invoice_template, status, currency, provider, notes)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', '${orderRows.rows[0].id}', '${customerRows.rows[0].id}', 'Công ty TNHH ABC', 'E2E-001', '01GTKT0/001', 'draft', 'VND', 'vnpt', 'Hóa đơn demo SO-2026-0001')
+  `);
+  console.log('  ✅ 1 e-invoice draft created');
+
+  // 20. Create KPI Definitions
+  const kpi1Id = (await exec(`
+    INSERT INTO kpi_definitions (id, tenant_id, name, type, target_value, unit, period)
+    VALUES (gen_random_uuid(), '${tenant.id}', 'Doanh số bán hàng', 'quantity', 100000000, 'VND', 'monthly')
+    RETURNING id
+  `)).rows[0].id;
+  const kpi2Id = (await exec(`
+    INSERT INTO kpi_definitions (id, tenant_id, name, type, target_value, unit, period)
+    VALUES (gen_random_uuid(), '${tenant.id}', 'Số đơn hàng xử lý', 'quantity', 200, 'đơn', 'monthly')
+    RETURNING id
+  `)).rows[0].id;
+
+  const emp1Id = (await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}' LIMIT 1`)).rows[0].id;
+  const emp2Id = (await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}' LIMIT 1 OFFSET 1`)).rows[0].id;
+
+  await exec(`
+    INSERT INTO employee_kpi_targets (id, tenant_id, employee_id, kpi_id, target_value, actual_value, period, score, notes)
+    VALUES
+      (gen_random_uuid(), '${tenant.id}', '${emp1Id}', '${kpi1Id}', 100000000, 85000000, '2026-06', 85, 'Đạt 85% chỉ tiêu tháng 6'),
+      (gen_random_uuid(), '${tenant.id}', '${emp2Id}', '${kpi2Id}', 200, 180, '2026-06', 90, 'Xử lý 180/200 đơn hàng')
+  `);
+  console.log('  ✅ 2 KPI definitions + targets created');
+
   console.log('');
   console.log('✅ Golden Seed completed! Data is ready for end-users.');
   console.log('');
