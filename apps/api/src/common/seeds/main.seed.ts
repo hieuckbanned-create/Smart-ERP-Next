@@ -313,8 +313,8 @@ async function main() {
     RETURNING id
   `)).rows[0].id;
 
-  const emp1Id = (await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}' LIMIT 1`)).rows[0].id;
-  const emp2Id = (await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}' LIMIT 1 OFFSET 1`)).rows[0].id;
+  const emp1Id = admin.id;
+  const emp2Id = manager.id;
 
   await exec(`
     INSERT INTO employee_kpi_targets (id, tenant_id, employee_id, kpi_id, target_value, actual_value, period, score)
@@ -325,22 +325,23 @@ async function main() {
   console.log('  ✅ 2 KPI definitions + targets created');
 
   // 21. Create Attendance Records (last 30 days for each employee)
+  // Note: employee_id FK references users.id, not employees.id
   const today21 = new Date();
-  const empRows = await exec(`SELECT id FROM employees WHERE tenant_id = '${tenant.id}'`);
+  const userRows = await exec(`SELECT id FROM users WHERE tenant_id = '${tenant.id}'`);
   const shiftRows = await exec(`SELECT id FROM work_shifts WHERE tenant_id = '${tenant.id}'`);
-  if (empRows.rows.length > 0 && shiftRows.rows.length > 0) {
+  if (userRows.rows.length > 0 && shiftRows.rows.length > 0) {
     for (let d = 30; d >= 0; d--) {
       const date = new Date(today21);
       date.setDate(date.getDate() - d);
       const dateStr = date.toISOString().split('T')[0];
       const dayOfWeek = date.getDay();
       if (dayOfWeek === 0) continue; // skip Sunday
-      for (const emp of empRows.rows) {
+      for (const usr of userRows.rows) {
         const status = dayOfWeek === 6 ? 'present' : (Math.random() > 0.1 ? 'present' : 'late');
         const ot = Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
         await exec(`
           INSERT INTO attendance_records (id, tenant_id, employee_id, shift_id, work_date, check_in_at, check_out_at, status, overtime_hours, late_minutes)
-          VALUES (gen_random_uuid(), '${tenant.id}', '${emp.id}', '${shiftRows.rows[0].id}', '${dateStr}', '08:00', '17:00', '${status}', ${ot}, ${status === 'late' ? Math.floor(Math.random() * 30) + 5 : 0})
+          VALUES (gen_random_uuid(), '${tenant.id}', '${usr.id}', '${shiftRows.rows[0].id}', '${dateStr}', '08:00', '17:00', '${status}', ${ot}, ${status === 'late' ? Math.floor(Math.random() * 30) + 5 : 0})
         `);
       }
     }
@@ -348,13 +349,13 @@ async function main() {
   }
 
   // 22. Create Leave Requests
-  if (empRows.rows.length >= 2) {
+  if (userRows.rows.length >= 2) {
     const futureDate = new Date(today21.getTime() + 14 * 86400000).toISOString().split('T')[0];
     await exec(`
       INSERT INTO leave_requests (id, tenant_id, employee_id, leave_type, start_date, end_date, total_days, reason, status)
       VALUES
-        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[0].id}', 'annual', '${futureDate}', '${futureDate}', 1, 'Nghỉ phép năm', 'pending'),
-        (gen_random_uuid(), '${tenant.id}', '${empRows.rows[1].id}', 'sick', '${futureDate}', '${futureDate}', 1, 'Khám sức khỏe', 'approved')
+        (gen_random_uuid(), '${tenant.id}', '${userRows.rows[0].id}', 'annual', '${futureDate}', '${futureDate}', 1, 'Nghỉ phép năm', 'pending'),
+        (gen_random_uuid(), '${tenant.id}', '${userRows.rows[1].id}', 'sick', '${futureDate}', '${futureDate}', 1, 'Khám sức khỏe', 'approved')
     `);
     console.log('  ✅ 2 leave requests created');
   }
