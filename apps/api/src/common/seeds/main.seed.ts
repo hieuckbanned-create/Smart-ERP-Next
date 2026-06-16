@@ -265,11 +265,11 @@ async function main() {
 
   // 16. Create Work Shifts
   await exec(`
-    INSERT INTO work_shifts (id, tenant_id, name, code, start_time, end_time, description)
+    INSERT INTO work_shifts (id, tenant_id, name, code, start_time, end_time, work_hours)
     VALUES
-      (gen_random_uuid(), '${tenant.id}', 'Ca hành chính', 'SHIFT-OFFICE', '08:00', '17:00', 'Giờ hành chính tiêu chuẩn'),
-      (gen_random_uuid(), '${tenant.id}', 'Ca sáng', 'SHIFT-MORNING', '06:00', '14:00', 'Ca sáng cho bộ phận kho'),
-      (gen_random_uuid(), '${tenant.id}', 'Ca tối', 'SHIFT-NIGHT', '14:00', '22:00', 'Ca tối cho bộ phận kho')
+      (gen_random_uuid(), '${tenant.id}', 'Ca hành chính', 'SHIFT-OFFICE', '08:00', '17:00', 8),
+      (gen_random_uuid(), '${tenant.id}', 'Ca sáng', 'SHIFT-MORNING', '06:00', '14:00', 8),
+      (gen_random_uuid(), '${tenant.id}', 'Ca tối', 'SHIFT-NIGHT', '14:00', '22:00', 8)
   `);
   console.log('  ✅ 3 work shifts created');
 
