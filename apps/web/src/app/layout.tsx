@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic';
-// @ts-nocheck
 import type { Metadata, Viewport } from 'next';
 import { Inter, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
