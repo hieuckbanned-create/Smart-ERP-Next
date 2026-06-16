@@ -91,8 +91,14 @@ function findSourceMojibakeFindings() {
 }
 
 function findI18nFindings() {
-  const vi = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'packages/i18n/src/locales/vi/common.json'), 'utf8'));
-  const en = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'packages/i18n/src/locales/en/common.json'), 'utf8'));
+  const localePaths = [
+    'apps/web/src/lib/locales',
+    'apps/api/src/i18n/locales',
+  ];
+  const localeDir = localePaths.find((p) => fs.existsSync(path.join(REPO_ROOT, p, 'vi/common.json')));
+  const fallbackDir = localePaths.find((p) => fs.existsSync(path.join(REPO_ROOT, p, 'en/common.json')));
+  const vi = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, localeDir || fallbackDir, 'vi/common.json'), 'utf8'));
+  const en = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, fallbackDir || localeDir, 'en/common.json'), 'utf8'));
   const keys = extractRuntimeKeys();
   const missingRuntimeKeys = [];
 
