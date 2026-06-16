@@ -3,4 +3,4 @@ packages:
   - "apps/web"
   - "packages/*"
 
-
+packageExtensions: {}
