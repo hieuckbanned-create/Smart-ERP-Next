@@ -38,7 +38,7 @@ export class I18nService {
     if (!localesPath) {
       throw new Error(`Could not locate locales directory from ${__dirname}`);
     }
-    const locales = fs.readdirSync(localesPath).filter(f => f.match(/^(vi|en)$/));
+    const locales = fs.readdirSync(localesPath).filter(f => f.match(/^(vi|en|pt|ru)$/));
     for (const locale of locales) {
       const filePath = path.join(localesPath, locale, 'common.json');
       if (fs.existsSync(filePath)) {

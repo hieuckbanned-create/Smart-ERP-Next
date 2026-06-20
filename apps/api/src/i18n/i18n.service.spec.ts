@@ -4,7 +4,7 @@ describe('I18nService', () => {
   const service = new I18nService();
 
   it('loads supported locales from the shared i18n package', () => {
-    expect(service.getAvailableLocales().sort()).toEqual(['en', 'vi']);
+    expect(service.getAvailableLocales().sort()).toEqual(['en', 'pt', 'ru', 'vi']);
   });
 
   it('translates nested keys and falls back to Vietnamese', () => {

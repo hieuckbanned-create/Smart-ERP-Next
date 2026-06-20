@@ -34,9 +34,9 @@
     "netCashflow": "Dòng tiền ròng (30 ngày)",
     "avgDailyInflow": "Thu trung bình/ngày",
     "avgDailyOutflow": "Chi trung bình/ngày",
-    "pendingApprovals": "Ph? duy?t ?ang ch?",
-    "quickActions": "Thao t?c nhanh",
-    "revenueTrend": "Xu h??ng doanh thu"
+    "pendingApprovals": "Phê duyệt đang chờ",
+    "quickActions": "Thao tác nhanh",
+    "revenueTrend": "Xu hướng doanh thu"
   },
   "forecast": {
     "demand": "Nhu cầu dự báo",
@@ -166,7 +166,7 @@
     "rejected": "Từ chối",
     "stockAdjusted": "Điều chỉnh tồn kho",
     "updated": "Đã cập nhật",
-    "grantPermission": "C?p quy?n"
+    "grantPermission": "Cấp quyền"
   },
   "status": {
     "active": "Hoạt động",
@@ -302,7 +302,7 @@
     "manufacturing": "Sản xuất",
     "hr": "Nhân sự",
     "einvoice": "Hóa đơn điện tử",
-    "contracts": "H?p ??ng"
+    "contracts": "Hợp đồng"
   },
   "common": {
     "loading": "Đang tải...",
@@ -360,8 +360,8 @@
     "status": "Trạng thái",
     "time": "Thời gian",
     "toDate": "Đến ngày",
-    "retry": "Th? l?i",
-    "sold": "?? b?n",
+    "retry": "Thử lại",
+    "sold": "Đã bán",
     "type": "Loại"
   },
   "inventory": {
@@ -441,7 +441,7 @@
       "items": "Danh sách sản phẩm",
       "createSuccess": "Tạo phiếu chuyển kho thành công",
       "receiveSuccess": "Nhận hàng thành công",
-      "approve": "Duy?t chuy?n kho"
+      "approve": "Duyệt chuyển kho"
     },
     "metrics": {
       "totalProducts": "Tổng sản phẩm",
@@ -509,9 +509,9 @@
     "selectWarehouseOptional": "Chọn kho nhận (không bắt buộc)",
     "preview": "Xem trước: {{items}} mặt hàng, tổng {{quantity}} đơn vị",
     "all": "Tất cả",
-    "cancel": "H?y ??n mua",
-    "confirmReceive": "X?c nh?n nh?n h?ng",
-    "subtotal": "T?m t?nh",
+    "cancel": "Hủy đơn mua",
+    "confirmReceive": "Xác nhận nhận hàng",
+    "subtotal": "Tạm tính",
     "draft": "Nháp",
     "confirmed": "Đã xác nhận",
     "partial": "Nhận một phần",
@@ -616,7 +616,7 @@
       "province": "Chọn tỉnh/thành",
       "notes": "Ghi chú về khách hàng..."
     },
-    "loyaltyPoints": "?i?m t?ch l?y"
+    "loyaltyPoints": "Điểm tích lũy"
   },
   "settings": {
     "title": "Cài đặt",
@@ -674,10 +674,10 @@
     "useLocal": "Dùng bản cục bộ",
     "useRemote": "Dùng bản máy chủ",
     "status": {
-      "error": "L?i ??ng b?",
-      "idle": "?? c?p nh?t",
-      "offline": "Ngo?i tuy?n",
-      "syncing": "?ang ??ng b?..."
+      "error": "Lỗi đồng bộ",
+      "idle": "Đã cập nhật",
+      "offline": "Ngoại tuyến",
+      "syncing": "Đang đồng bộ..."
     }
   },
   "crm": {
@@ -716,7 +716,7 @@
       "other": "Khác"
     },
     "email": "Email",
-    "searchLeads": "T?m ki?m kh?ch h?ng ti?m n?ng",
+    "searchLeads": "Tìm kiếm khách hàng tiềm năng",
     "subtitle": "Quản lý khách hàng tiềm năng & hành trình chốt Sale",
     "new": "Khách mới",
     "contacted": "Đã liên hệ",
@@ -752,7 +752,7 @@
     "credit": "Có",
     "posted": "Đã ghi",
     "unposted": "Chưa ghi",
-    "bankAccounts": "T?i kho?n ng?n h?ng"
+    "bankAccounts": "Tài khoản ngân hàng"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -836,8 +836,8 @@
       "lastSyncAt": "Lần sync gần nhất",
       "lastSyncStatus": "Trạng thái sync",
       "empty": "Chưa có cửa hàng nào được kết nối. Hãy vào Cài đặt để thêm.",
-      "addHint": "Th?m k?nh b?n h?ng ?? b?t ??u ??ng b?",
-      "lastSync": "??ng b? l?n cu?i"
+      "addHint": "Thêm kênh bán hàng để bắt đầu đồng bộ",
+      "lastSync": "Đồng bộ lần cuối"
     },
     "logs": {
       "title": "Lịch sử đồng bộ",
@@ -1271,10 +1271,10 @@
     "isDefault": "Kho mặc định",
     "noWarehouses": "Chưa có kho nào. Hãy tạo kho đầu tiên.",
     "createWarehouse": "Tạo kho",
-    "confirmDelete": "B?n c? ch?c mu?n x?a kho n?y?",
-    "createInfo": "T?o kho ?? qu?n l? t?n kho v? giao d?ch",
-    "empty": "Ch?a c? kho n?o",
-    "subtitle": "Qu?n l? kho h?ng v? ??a ?i?m l?u tr?",
+    "confirmDelete": "Bạn có chắc muốn xóa kho này?",
+    "createInfo": "Tạo kho để quản lý tồn kho và giao dịch",
+    "empty": "Chưa có kho nào",
+    "subtitle": "Quản lý kho hàng và địa điểm lưu trữ",
     "setDefault": "Đặt làm mặc định",
     "edit": "Sửa",
     "delete": "Xóa"
@@ -1497,14 +1497,14 @@
     "title": "Tích hợp Xero"
   },
   "contracts": {
-    "confirmSign": "B?n c? ch?c mu?n k? h?p ??ng n?y?",
-    "empty": "Ch?a c? h?p ??ng n?o",
-    "fetchFailed": "Kh?ng th? t?i danh s?ch h?p ??ng",
-    "signAction": "K? h?p ??ng",
-    "signFailed": "K? h?p ??ng th?t b?i",
-    "signNow": "K? ngay",
-    "signTitle": "K? h?p ??ng ?i?n t?",
-    "signedSuccess": "H?p ??ng ?? ???c k? th?nh c?ng"
+    "confirmSign": "Bạn có chắc muốn ký hợp đồng này?",
+    "empty": "Chưa có hợp đồng nào",
+    "fetchFailed": "Không thể tải danh sách hợp đồng",
+    "signAction": "Ký hợp đồng",
+    "signFailed": "Ký hợp đồng thất bại",
+    "signNow": "Ký ngay",
+    "signTitle": "Ký hợp đồng điện tử",
+    "signedSuccess": "Hợp đồng đã được ký thành công"
   },
   "landing": {
     "heroBadge": "ERP thực chiến cho doanh nghiệp Việt Nam",
