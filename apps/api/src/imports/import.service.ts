@@ -53,10 +53,10 @@ export class ImportService {
           sql`SELECT id FROM customers WHERE tenant_id = ${tenantId} AND code = ${data.code} LIMIT 1`
         );
 
-        if ((existing as any[])?.length) {
+        if ((existing as unknown as any[])?.length) {
           // Update existing
           await this.drizzle.db.execute(
-            sql`UPDATE customers SET name = ${data.name}, phone = ${data.phone}, email = ${data.email}, address = ${data.address}, updated_at = NOW() WHERE id = ${(existing as any[])[0].id}`
+            sql`UPDATE customers SET name = ${data.name}, phone = ${data.phone}, email = ${data.email}, address = ${data.address}, updated_at = NOW() WHERE id = ${(existing as unknown as any[])[0].id}`
           );
           result.updated++;
         } else {
@@ -103,9 +103,9 @@ export class ImportService {
           sql`SELECT id FROM products WHERE tenant_id = ${tenantId} AND sku = ${data.sku} LIMIT 1`
         );
 
-        if ((existing as any[])?.length) {
+        if ((existing as unknown as any[])?.length) {
           await this.drizzle.db.execute(
-            sql`UPDATE products SET name = ${data.name}, price = ${data.price}, cost = ${data.cost}, stock = ${data.stock}, updated_at = NOW() WHERE id = ${(existing as any[])[0].id}`
+            sql`UPDATE products SET name = ${data.name}, price = ${data.price}, cost = ${data.cost}, stock = ${data.stock}, updated_at = NOW() WHERE id = ${(existing as unknown as any[])[0].id}`
           );
           result.updated++;
         } else {

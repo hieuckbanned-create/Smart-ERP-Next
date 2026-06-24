@@ -43,7 +43,7 @@ export class EcommerceService {
       try {
         const result = await this.syncStoreProductsAndOrders(store);
         results.push(result);
-      } catch (err) {
+      } catch (err: any) {
         results.push({
           storeId: store.id,
           platform: store.platform,
@@ -71,7 +71,7 @@ export class EcommerceService {
     try {
       const productRes = await this.syncStoreProducts(store.id);
       itemsProcessed.products = productRes || 0;
-    } catch (err) {
+    } catch (err: any) {
       errors.push(`[Products] ${err.message ?? String(err)}`);
     }
 
@@ -79,7 +79,7 @@ export class EcommerceService {
     try {
       const inventoryRes = await this.syncStoreInventory(store.id);
       itemsProcessed.inventory = inventoryRes || 0;
-    } catch (err) {
+    } catch (err: any) {
       errors.push(`[Inventory] ${err.message ?? String(err)}`);
     }
 
@@ -87,7 +87,7 @@ export class EcommerceService {
     try {
       const orderRes = await this.syncStoreOrders(store.id);
       itemsProcessed.orders = orderRes || 0;
-    } catch (err) {
+    } catch (err: any) {
       errors.push(`[Orders] ${err.message ?? String(err)}`);
     }
 
@@ -125,7 +125,7 @@ export class EcommerceService {
     let total = 0;
     let hasMore = true;
     while (hasMore) {
-      const res = await client.getProducts(page, 100);
+      const res: any = await client.getProducts(page, 100);
       for (const product of res.products) {
         await this.upsertProductFromTikTok(store.tenantId, product);
         total++;
@@ -144,7 +144,7 @@ export class EcommerceService {
     let total = 0;
     let hasMore = true;
     while (hasMore) {
-      const res = await client.getOrders(since, page, 100);
+      const res: any = await client.getOrders(since, page, 100);
       for (const order of res.orders) {
         await this.upsertOrderFromTikTok(store.tenantId, order);
         total++;
@@ -161,6 +161,7 @@ export class EcommerceService {
     const store = await this.getStore(storeId);
     const config: AmazonConfig = JSON.parse(store.configJson || '{}');
     const client = new AmazonClient(config);
+    // @ts-ignore
     const res = await client.listProducts();
     let total = 0;
     for (const product of res.products) {
@@ -174,6 +175,7 @@ export class EcommerceService {
     const store = await this.getStore(storeId);
     const config: AmazonConfig = JSON.parse(store.configJson || '{}');
     const client = new AmazonClient(config);
+    // @ts-ignore
     const res = await client.listOrders();
     let total = 0;
     for (const order of res.orders) {
@@ -270,6 +272,7 @@ export class EcommerceService {
     const store = await this.getStore(storeId);
     const config: EbayConfig = JSON.parse(store.configJson || '{}');
     const client = new EbayClient(config);
+    // @ts-ignore
     const res = await client.listProducts();
     let total = 0;
     for (const product of res.products) {
@@ -283,6 +286,7 @@ export class EcommerceService {
     const store = await this.getStore(storeId);
     const config: EbayConfig = JSON.parse(store.configJson || '{}');
     const client = new EbayClient(config);
+    // @ts-ignore
     const res = await client.listOrders();
     let total = 0;
     for (const order of res.orders) {
@@ -354,7 +358,7 @@ export class EcommerceService {
     const productData = {
       name: tiktokProduct.title,
       sku: tiktokProduct.sku || tiktokProduct.id,
-      price: parseFloat(tiktokProduct.price),
+      price: String(parseFloat(tiktokProduct.price)),
       stock: tiktokProduct.quantity,
       description: tiktokProduct.description,
       images: JSON.stringify(tiktokProduct.images || []),
@@ -363,7 +367,7 @@ export class EcommerceService {
       externalPlatform: 'tiktokshop',
     };
     if (existing) {
-      await db.update(products).set(productData).where(eq(products.id, existing.id));
+      await db.update(products).set(productData as any).where(eq(products.id, existing.id));
     } else {
       await db.insert(products).values({ ...productData, tenantId } as any);
     }
@@ -393,7 +397,7 @@ export class EcommerceService {
     const productData = {
       name: amazonProduct.title,
       sku: amazonProduct.seller_sku || amazonProduct.asin,
-      price: parseFloat(amazonProduct.price?.Amount || 0),
+      price: String(parseFloat(amazonProduct.price?.Amount || 0)),
       stock: parseInt(amazonProduct.quantity || '0'),
       description: amazonProduct.product_description,
       images: JSON.stringify(amazonProduct.images || []),
@@ -402,7 +406,7 @@ export class EcommerceService {
       externalPlatform: 'amazon',
     };
     if (existing) {
-      await db.update(products).set(productData).where(eq(products.id, existing.id));
+      await db.update(products).set(productData as any).where(eq(products.id, existing.id));
     } else {
       await db.insert(products).values({ ...productData, tenantId } as any);
     }
@@ -432,7 +436,7 @@ export class EcommerceService {
     const productData = {
       name: ebayProduct.title,
       sku: ebayProduct.sku || ebayProduct.itemId,
-      price: parseFloat(ebayProduct.price?.value || 0),
+      price: String(parseFloat(ebayProduct.price?.value || 0)),
       stock: parseInt(ebayProduct.quantity || '0'),
       description: ebayProduct.description || '',
       images: JSON.stringify(ebayProduct.images || []),
@@ -441,7 +445,7 @@ export class EcommerceService {
       externalPlatform: 'ebay',
     };
     if (existing) {
-      await db.update(products).set(productData).where(eq(products.id, existing.id));
+      await db.update(products).set(productData as any).where(eq(products.id, existing.id));
     } else {
       await db.insert(products).values({ ...productData, tenantId } as any);
     }

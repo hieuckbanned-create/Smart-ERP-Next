@@ -137,7 +137,7 @@ export class ShopeeClient {
    * Get detailed product info
    */
   async getProductDetail(itemId: number) {
-    const result = await this.request('POST', '/api/v2/product/get_item_base_info', {
+    const result = await this.request<any>('POST', '/api/v2/product/get_item_base_info', {
       item_id_list: [itemId],
     });
     const item = result?.item_list?.[0];

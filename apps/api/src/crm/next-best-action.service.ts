@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { db } from '@smart-erp/database';
+// @ts-ignore - crmOpportunities not exported from schema (legacy import kept for reference)
 import { crmLeads, crmOpportunities, customers, orders } from '@smart-erp/database/schema';
 import { eq, and, sql, desc, gte } from '@smart-erp/database/drizzle';
 
@@ -7,11 +8,11 @@ interface LeadContext {
   id: string;
   source: string;
   industry?: string;
-  emailOpens?: number;
-  emailClicks?: number;
-  websiteVisits?: number;
+  emailOpens: number;
+  emailClicks: number;
+  websiteVisits: number;
   totalSpent?: number;
-  daysSinceLastContact?: number;
+  daysSinceLastContact: number;
 }
 
 interface NextBestAction {

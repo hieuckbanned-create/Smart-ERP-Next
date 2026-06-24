@@ -87,7 +87,7 @@ export class CrmService {
   async updateLeadStatus(tenantId: string, leadId: string, status: string) {
     const [updated] = await this.drizzle.db
       .update(leads)
-      .set({ status, updatedAt: new Date() })
+      .set({ status: status as any, updatedAt: new Date() })
       .where(eq(leads.id, leadId))
       .returning();
       
@@ -117,7 +117,7 @@ export class CrmService {
         totalAmount: deal.amount,
         status: 'pending',
         orderNumber: `SO-FROM-DEAL-${dealId.slice(0, 8).toUpperCase()}`,
-      })
+      } as any)
       .returning();
 
     // Mark deal as won

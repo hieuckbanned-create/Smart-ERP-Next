@@ -19,7 +19,7 @@ export class HrService {
     }
     const [employee] = await db
       .insert(employees)
-      .values({ ...dto, tenantId })
+      .values({ ...dto, tenantId } as any)
       .returning();
     return employee;
   }
@@ -84,7 +84,7 @@ export class HrService {
   async updateEmployee(tenantId: string, id: string, dto: UpdateEmployeeDto) {
     const [employee] = await db
       .update(employees)
-      .set({ ...dto, updatedAt: new Date() })
+      .set({ ...dto, updatedAt: new Date() } as any)
       .where(and(eq(employees.tenantId, tenantId), eq(employees.id, id)))
       .returning();
     if (!employee) throw new NotFoundException('Employee not found');
@@ -116,7 +116,7 @@ export class HrService {
         and(
           eq(salaryBoards.tenantId, tenantId),
           eq(salaryBoards.month, currentMonth),
-          eq(salaryBoards.year, currentYear),
+          eq(salaryBoards.year, String(currentYear)),
         ),
       );
 
@@ -126,10 +126,10 @@ export class HrService {
         tenantId,
         name: `Bang luong thang ${currentMonth}/${currentYear}`,
         month: currentMonth,
-        year: currentYear,
+        year: String(currentYear),
         totalEmployees: String(employeesList.length),
         totalNetSalary: String(totalNetSalary),
-      });
+      } as any);
     }
   }
 

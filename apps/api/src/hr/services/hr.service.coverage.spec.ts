@@ -139,7 +139,7 @@ describe('HrService coverage', () => {
     expect(mockDb.insert.mock.results[0].value.values).toHaveBeenCalledWith(expect.objectContaining({
       tenantId: 'tenant-1',
       month: '5',
-      year: 2026,
+      year: '2026',
       totalEmployees: '3',
       totalNetSalary: '3000',
     }));

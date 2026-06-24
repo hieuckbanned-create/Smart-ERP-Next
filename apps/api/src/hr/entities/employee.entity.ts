@@ -36,7 +36,7 @@ export class Employee {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Tenant, (tenant) => tenant.employees, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Tenant, (tenant: Tenant) => tenant.employees, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'tenant_id' })
   tenant: Tenant;
 }

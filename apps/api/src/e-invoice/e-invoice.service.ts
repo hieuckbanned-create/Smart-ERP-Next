@@ -94,7 +94,7 @@ export class EInvoiceService {
           tenantId,
           invoiceId: invoice.id,
           ...item,
-        }))
+        })) as any
       );
     }
 
@@ -254,7 +254,7 @@ export class EInvoiceService {
         AND created_at <  ${end}::date
     `);
 
-    return (result as any[])[0] || {};
+    return (result as unknown as any[])[0] || {};
   }
 
   private async generateInvoiceNumber(tenantId: string): Promise<string> {
@@ -263,7 +263,7 @@ export class EInvoiceService {
       FROM e_invoices
       WHERE tenant_id = ${tenantId} AND status != 'draft'
     `);
-    const nextNum = Number((result as any[])[0]?.next_num || 1);
+    const nextNum = Number((result as unknown as any[])[0]?.next_num || 1);
     return String(nextNum).padStart(7, '0');
   }
 }

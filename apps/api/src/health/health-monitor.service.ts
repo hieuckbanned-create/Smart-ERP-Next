@@ -96,7 +96,7 @@ export class HealthMonitorService {
     const now = Date.now();
     const last5min = this.requestCounts.filter((r) => r.time > now - 5 * 60 * 1000);
     const rpm = last5min.reduce((sum, r) => sum + (r.count || 0), 0);
-    const errors = last5min.filter((r) => r.isError).length;
+    const errors = last5min.filter((r) => (r as any).isError).length;
     const latencies = last5min.map((r) => (r as any).latencyMs).filter(Boolean);
     const avgLatency = latencies.length
       ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length)
