@@ -8,7 +8,7 @@
 git clone https://github.com/hieuck/Smart-ERP-Next.git
 cd Smart-ERP-Next
 docker compose up -d
-# → http://localhost:3457
+# Mở http://localhost:3457
 ```
 
 ### Cách 2: Local dev (nhanh, hot-reload)
@@ -27,62 +27,56 @@ dev.bat
 git clone https://github.com/hieuck/Smart-ERP-Next.git
 cd Smart-ERP-Next
 ./scripts/dev.sh
-# → API: http://localhost:3456 (hot-reload)
-# → Web: http://localhost:3457 (hot-reload)
+# API: http://localhost:3456 (hot-reload)
+# Web: http://localhost:3457 (hot-reload)
 ```
 
-`dev.sh` tự động:
-- Tạo `.env` từ `.env.example` nếu chưa có
-- Start PostgreSQL (Docker) nếu chưa chạy
-- Chạy database migrations
-- Start API + Web với Turbo (hot-reload)
+---
 
-## Demo Data
+## CI-equivalent local test
 
 ```bash
-# Reset DB and seed demo data
-./scripts/reset-dev.sh
-
-# After seeding:
-# Login: admin@demo.smarterp.vn / demo123456
+# Cần Docker (tự động start PostgreSQL)
+.\scripts\ci-local.ps1    # Windows
+./scripts/ci-local.sh      # Mac/Linux
 ```
 
-Or register a new account at `/register` — works immediately.
+Quy trình: fresh DB → migrate → seed → quality gate (lint + i18n + type-check + test) → build
 
-## Production (single container)
+---
+
+## Chạy tests
 
 ```bash
-docker run -p 3457:3457 \
-  -e DATABASE_URL=postgresql://user:pass@host/db \
-  -e JWT_SECRET=your-secret \
-  ghcr.io/hieuck/smart-erp-next:latest
+# Unit + integration tests
+pnpm test
+
+# E2E tests (cần DB + API + Web đang chạy)
+pnpm test:e2e
+
+# Quality gate (chạy trước khi commit)
+pnpm qa:commit
 ```
 
-## Project Structure
+---
+
+## Cấu trúc thư mục
 
 ```
-apps/api/        — NestJS backend (port 3456)
-apps/web/        — Next.js frontend (port 3457)
-apps/mobile/     — React Native / Expo
-apps/desktop/    — Tauri 2 desktop app
-packages/        — Shared libs (database, i18n, ui, utils...)
-e2e/             — Playwright E2E tests
-```
-
-## Scripts
-
-```bash
-pnpm dev          # Start dev servers
-pnpm test         # Run Jest unit tests
-pnpm test:e2e     # Run Playwright E2E
-pnpm lint         # Lint all workspaces
-pnpm build        # Build all packages
-```
-
-## Maintenance
-
-```bash
-./scripts/health-check.sh   # Check all services
-./scripts/reset-dev.sh       # Reset DB + re-seed
-./scripts/backup.sh          # Backup database
+smart-erp-next/
+├── apps/
+│   ├── api/          # NestJS API (port 3456)
+│   └── web/          # Next.js web app (port 3457)
+├── packages/
+│   ├── shared/       # UI components, hooks, localization
+│   ├── hooks/        # React hooks
+│   ├── database/     # Drizzle schema, migrations, seed
+│   ├── utils/        # Shared utilities
+│   ├── validation/   # Zod validation schemas
+│   ├── types/        # Shared TypeScript types
+│   ├── sync/         # Offline-first sync engine
+│   └── accounting/   # Accounting engine
+├── e2e/              # Playwright E2E tests
+├── scripts/          # Dev/CI scripts
+└── .github/          # GitHub Actions workflows
 ```
