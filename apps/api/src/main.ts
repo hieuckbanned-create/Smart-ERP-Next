@@ -1,11 +1,15 @@
 import 'reflect-metadata';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+let APP_VERSION = '0.0.0';
+try {
+  APP_VERSION = JSON.parse(readFileSync(join(__dirname, '../../../package.json'), 'utf-8')).version || '0.0.0';
+} catch { /* fallback */ }
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn', 'log'] });
@@ -33,8 +37,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Smart ERP Next API')
-    .setDescription('API documentation for Smart ERP Next v0.4.0')
-    .setVersion('0.4.0')
+    .setDescription(`Smart ERP Next — API v${APP_VERSION}`)
+    .setVersion(APP_VERSION)
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
