@@ -30,6 +30,7 @@ test.describe('HR workflows', () => {
     const employee = await jsonOk(await request.post(`${API}/hr/employees`, {
       ...auth(),
       data: {
+        code: `EMP-${marker}`,
         name: `Nguyen Van ${marker}`,
         email: `${marker.toLowerCase()}@company.test`,
         phone: `09${Date.now().toString().slice(-8)}`,

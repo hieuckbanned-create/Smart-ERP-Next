@@ -81,7 +81,7 @@ test.describe('Inventory workflows', () => {
     }
 
     // 8. List lots
-    const lots = await jsonOk(await request.get(`${API}/lots`, auth()), 'GET /lots');
+    const lots = await jsonOk(await request.get(`${API}/inventory/lots`, auth()), 'GET /inventory/lots');
     expect(lots).toBeDefined();
   });
 });

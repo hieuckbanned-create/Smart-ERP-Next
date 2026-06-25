@@ -42,15 +42,18 @@ test.describe('Accounting workflows', () => {
     const entries = await jsonOk(await request.get(`${API}/accounting/entries`, auth()), 'GET /accounting/entries');
     expect(entries).toBeDefined();
 
-    // 5. Create a journal entry
+    // 5. Create a journal entry with real account IDs
+    const accts = Array.isArray(accounts) ? accounts : accounts.items ?? [];
+    const debitAccount = accts.find((a: any) => a.accountCode === '1111') || accts[0];
+    const creditAccount = accts.find((a: any) => a.accountCode === '5111') || accts[1] || accts[0];
     const journalEntry = await jsonOk(await request.post(`${API}/accounting/entries`, {
       ...auth(),
       data: {
         voucherDate: new Date().toISOString().split('T')[0],
         description: `Bút toán test E2E ${marker}`,
         lines: [
-          { accountCode: '1111', debitAmount: 100000, creditAmount: 0 },
-          { accountCode: '5111', debitAmount: 0, creditAmount: 100000 },
+          { accountId: debitAccount.id, debit: 100000, credit: 0 },
+          { accountId: creditAccount.id, debit: 0, credit: 100000 },
         ],
       },
     }), 'POST /accounting/entries');
