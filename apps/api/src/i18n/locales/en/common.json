@@ -1673,4 +1673,25 @@
     "readinessItem3": "Create orders at POS, print invoices and track payments",
     "readinessItem4": "User roles and permissions, data isolated by tenant"
   }
+,
+    "pos": {
+      "searchPlaceholderDetailed": "Search products by name, SKU, barcode... (F2)",
+      "customerSearchPlaceholder": "Retail customer (search customer...)",
+      "searching": "Searching...",
+      "stockLabel": "Stock: {{stock}}",
+      "cartEmptyHint": "Search and select products to add",
+      "itemDiscount": "Item discount",
+      "orderDiscount": "Order discount",
+      "exactCash": "Exact cash",
+      "itemCount": "{{count}} item(s)",
+      "orderCodeLabel": "Order code",
+      "newOrder": "New order",
+      "createOrderFailed": "Create order failed",
+      "cash": "Cash",
+      "bankTransfer": "Bank transfer",
+      "card": "Card",
+      "momo": "MoMo",
+      "vnpay": "VNPay",
+      "zalopay": "ZaloPay"
+    }
 }
