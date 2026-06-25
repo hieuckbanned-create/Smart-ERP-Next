@@ -38,8 +38,12 @@ echo "Starting API server on port ${PORT:-3456}..."
 node apps/api/dist/apps/api/src/main.js &
 
 # Start Web server if present
-if [ -d "apps/web/.next/standalone/apps/web" ]; then
+if [ -f "apps/web/.next/standalone/server.js" ]; then
   echo "Starting Web server (standalone) on port ${WEB_PORT:-3457}..."
+  cd apps/web && PORT="${WEB_PORT:-3457}" node .next/standalone/server.js &
+  cd /app
+elif [ -f "apps/web/.next/standalone/apps/web/server.js" ]; then
+  echo "Starting Web server (standalone, monorepo path) on port ${WEB_PORT:-3457}..."
   cd apps/web && PORT="${WEB_PORT:-3457}" node .next/standalone/apps/web/server.js &
   cd /app
 elif [ -f "apps/web/node_modules/.bin/next" ] && [ -d "apps/web/.next" ]; then
