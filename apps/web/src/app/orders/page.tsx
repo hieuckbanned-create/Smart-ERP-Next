@@ -107,7 +107,6 @@ export default function OrdersPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchOrders();
   };
 
   return (

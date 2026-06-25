@@ -58,7 +58,6 @@ export default function SuppliersPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchSuppliers();
   };
 
   const handleDelete = async (id: string) => {

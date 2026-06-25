@@ -54,7 +54,7 @@ export default function CrmPage() {
     try {
       await apiClient.patch(`/crm/leads/${leadId}`, { status: newStatus });
     } catch {
-      fetchLeads();
+        await fetchLeads();
     }
   };
 

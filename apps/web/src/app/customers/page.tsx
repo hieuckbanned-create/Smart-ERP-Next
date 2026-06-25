@@ -63,7 +63,6 @@ export default function CustomersPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchCustomers();
   };
 
   const handleDelete = async (id: string) => {

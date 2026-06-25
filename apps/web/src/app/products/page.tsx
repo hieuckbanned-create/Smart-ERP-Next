@@ -48,7 +48,6 @@ export default function ProductsPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchProducts(1, search);
   };
 
   const handleDelete = async (id: string) => {

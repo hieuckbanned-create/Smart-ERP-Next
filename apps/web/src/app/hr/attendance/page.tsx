@@ -104,6 +104,9 @@ export default function AttendancePage() {
       setLeaveReqs((leaveRes.data as any) || []);
     } catch {
       setToday(null);
+      setSummary(null);
+      setRecords([]);
+      setLeaveReqs([]);
     } finally {
       setLoading(false);
     }

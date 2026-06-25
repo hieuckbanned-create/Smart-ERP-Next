@@ -168,7 +168,7 @@ export default function POSPage() {
     setCart((prev) =>
       prev.map((i) => {
         if (i.productId !== productId) return i;
-        const d = Math.min(discount, i.price * i.quantity);
+        const d = Math.min(Math.max(0, discount), i.price * i.quantity);
         return { ...i, discount: d, lineTotal: i.quantity * i.price - d };
       })
     );

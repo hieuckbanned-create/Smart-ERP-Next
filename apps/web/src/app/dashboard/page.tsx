@@ -335,48 +335,6 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-
-        {/* Recent orders */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-          <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white">
-              {t('dashboard.recentOrders')}
-            </h2>
-            <Link href="/orders" className="text-sm text-blue-600 hover:underline">{t('dashboard.viewAll')} →</Link>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.orderCode')}</th>
-                  <th className="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.customer')}</th>
-                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.total')}</th>
-                  <th className="px-5 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.status')}</th>
-                  <th className="px-5 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase">{t('dashboard.time')}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {stats.recentOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    <td className="px-5 py-3 font-medium text-blue-600">{order.code}</td>
-                    <td className="px-5 py-3 text-gray-900 dark:text-white">{order.customerName}</td>
-                    <td className="px-5 py-3 text-right font-semibold text-gray-900 dark:text-white">
-                      {formatVND(order.total)}
-                    </td>
-                    <td className="px-5 py-3 text-center">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status] }`}>
-                        {statusLabels[order.status] || order.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3 text-right text-gray-400 text-xs">
-                      {new Date(order.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </AuthGuard>
   );

@@ -78,19 +78,26 @@ export default function PurchasingPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
-    fetchOrders();
   };
 
-  const handleConfirm = async (id: string) => {
-    await apiClient.patch(`/purchasing/${id}/confirm`);
-    fetchOrders();
-  };
+const handleConfirm = async (id: string) => {
+    try {
+      await apiClient.patch(`/purchasing/${id}/confirm`);
+      fetchOrders();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Lỗi khi xác nhận đơn mua');
+    }
+};
 
-  const handleCancel = async (id: string) => {
+const handleCancel = async (id: string) => {
     if (!confirm(t('common.confirmDeleteMessage'))) return;
-    await apiClient.patch(`/purchasing/${id}/cancel`);
-    fetchOrders();
-  };
+    try {
+      await apiClient.patch(`/purchasing/${id}/cancel`);
+      fetchOrders();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Lỗi khi hủy đơn mua');
+    }
+};
 
   return (
     <AuthGuard>
