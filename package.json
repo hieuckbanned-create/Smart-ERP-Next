@@ -25,6 +25,7 @@
     "qa:release": "node scripts/quality-gate.js release",
     "smoke:release-runtime": "node scripts/release-runtime-smoke.js",
     "test": "jest",
+    "test:api:integration": "jest --testPathPattern=\"(auth|users|products|inventory|orders)-integration\" --collectCoverage=false --verbose",
     "test:api:e2e": "node scripts/run-api-e2e.js",
     "test:cov": "jest --coverage",
     "test:e2e": "playwright test -c e2e/playwright.config.ts",
