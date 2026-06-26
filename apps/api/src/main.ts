@@ -35,22 +35,26 @@ async function bootstrap() {
   app.useStaticAssets(uploadsDir, { prefix: '/uploads/' });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  const config = new DocumentBuilder()
-    .setTitle('Smart ERP Next API')
-    .setDescription(`Smart ERP Next — API v${APP_VERSION}`)
-    .setVersion(APP_VERSION)
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  if (process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Smart ERP Next API')
+      .setDescription(`Smart ERP Next — API v${APP_VERSION}`)
+      .setVersion(APP_VERSION)
+      .addBearerAuth()
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+  }
 
   const port = process.env.PORT ?? 3000;
   
-  // SRE: Kích hoạt Graceful Shutdown
   app.enableShutdownHooks();
   
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger docs: http://localhost:${port}/api`);
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`Swagger docs: http://localhost:${port}/api`);
+  }
 }
 bootstrap();

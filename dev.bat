@@ -40,13 +40,20 @@ echo  Smart ERP Next - Dev Server
 echo ============================================
 echo  API: http://localhost:3456
 echo  Web: http://localhost:3457
+echo  Press any key to stop all servers...
+echo ============================================
 echo.
 
-start "SmartERP-API" cmd /c "set PORT=3456 && call pnpm --filter @smart-erp/api dev"
-start "SmartERP-Web" cmd /c "set PORT=3457 && call pnpm --filter @smart-erp/web dev"
+echo [API] Starting on port 3456...
+start /b "" cmd /c "set PORT=3456 && pnpm --filter @smart-erp/api dev"
 
-echo Press any key to stop all servers...
+echo [Web] Starting on port 3457...
+start /b "" cmd /c "set PORT=3457 && pnpm --filter @smart-erp/web dev"
+
 pause >nul
-taskkill /f /fi "WINDOWTITLE eq SmartERP-API" >nul 2>nul
-taskkill /f /fi "WINDOWTITLE eq SmartERP-Web" >nul 2>nul
+echo Shutting down...
+
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3456') do taskkill /f /pid %%a 2>nul
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3457') do taskkill /f /pid %%a 2>nul
+
 echo Stopped.
