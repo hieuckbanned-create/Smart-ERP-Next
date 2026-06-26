@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { ExportFormat } from './export.enums';
+import * as schema from '@smart-erp/database/schema';
+import { eq } from '@smart-erp/database/drizzle';
 
 export interface ExportJob {
   id: string;
@@ -17,7 +19,72 @@ export interface ExportJob {
 
 @Injectable()
 export class DataExportService {
+  private readonly entityMapping: Record<string, any> = {
+    products: schema.products,
+    customers: schema.customers,
+    orders: schema.orders,
+    inventory: schema.inventoryTransactions,
+    payments: schema.payments,
+    accounting: schema.accountingEntries,
+    suppliers: schema.suppliers,
+    crm: schema.crmLeads,
+  };
+
   constructor(private readonly drizzle: DrizzleService) {}
+
+  /** Export data in the requested format */
+  async exportData(tenantId: string, format: ExportFormat, entities: string[], filters?: any) {
+    const collected: Record<string, any[]> = {};
+    let totalCount = 0;
+
+    for (const entity of entities) {
+      const table = this.entityMapping[entity];
+      if (!table) {
+        throw new Error(`Unknown entity: ${entity}`);
+      }
+      const data = await this.drizzle.db.select().from(table).where(eq(table.tenantId, tenantId));
+      collected[entity] = data;
+      totalCount += data.length;
+    }
+
+    if (format === ExportFormat.CSV) {
+      let csv = '';
+      for (const entity of entities) {
+        const rows = collected[entity];
+        if (rows.length > 0) {
+          const headers = Object.keys(rows[0]);
+          csv += headers.join(',') + '\n';
+          for (const row of rows) {
+            csv += headers.map((h) => this.escapeCsvField(row[h])).join(',') + '\n';
+          }
+        }
+      }
+      return {
+        data: csv,
+        format: 'csv',
+        filename: `export-${Date.now()}.csv`,
+        mimeType: 'text/csv',
+        entityCount: totalCount,
+      };
+    }
+
+    return {
+      data: JSON.stringify(collected),
+      format: 'json',
+      filename: `export-${Date.now()}.json`,
+      mimeType: 'application/json',
+      entityCount: totalCount,
+    };
+  }
+
+  private escapeCsvField(value: any): string {
+    if (value === null || value === undefined) return '';
+    const str = String(value);
+    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  }
 
   /** Create a new export job */
   async createExportJob(tenantId: string, format: ExportFormat, entities: string[]) {
