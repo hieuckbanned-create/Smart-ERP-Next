@@ -33,20 +33,31 @@ LABEL org.opencontainers.image.description="Hệ thống quản trị doanh nghi
 LABEL org.opencontainers.image.source="https://github.com/hieuck/Smart-ERP-Next"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# Install Node.js + pnpm + curl
-RUN apk add --no-cache nodejs npm curl && \
-    npm install -g pnpm@10.33.0
+# Install Node.js + curl (no pnpm — use node_modules from build stage)
+RUN apk add --no-cache nodejs curl
 
-# Copy built artifacts
-COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
+# Copy only built artifacts and config files (not TypeScript source)
 COPY --from=build /app/packages /app/packages
-COPY --from=build /app/apps /app/apps
+COPY --from=build /app/apps/api/dist /app/apps/api/dist
+COPY --from=build /app/apps/web/.next /app/apps/web/.next
+COPY --from=build /app/apps/web/public /app/apps/web/public
+COPY --from=build /app/apps/web/package.json /app/apps/web/package.json
+COPY --from=build /app/apps/web/next.config.mjs /app/apps/web/next.config.mjs
+COPY --from=build /app/apps/api/package.json /app/apps/api/package.json
+COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
 COPY --from=build /app/scripts /app/scripts
 COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
 
-# Production install
+# Copy node_modules from build stage (already contains all production deps)
+COPY --from=build /app/node_modules /app/node_modules
+
+# Remove TypeScript source from packages, remove pnpm, create workspace symlinks
 RUN set -eux; \
-    pnpm install --no-frozen-lockfile --prod; \
+    rm -rf /app/apps/web/src /app/apps/api/src; \
+    for d in /app/packages/*/; do \
+      rm -rf "${d}src" "${d}__tests__" 2>/dev/null || true; \
+    done; \
+    rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
     for d in /app/packages/*/; do \
       name="$(basename "$d")"; \
       link="/app/node_modules/@smart-erp/${name}"; \

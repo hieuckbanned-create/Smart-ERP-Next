@@ -80,3 +80,27 @@ smart-erp-next/
 ├── scripts/          # Dev/CI scripts
 └── .github/          # GitHub Actions workflows
 ```
+
+```mermaid
+flowchart TD
+    subgraph Apps
+        A[apps/api - NestJS REST API + WebSocket]
+        W[apps/web - Next.js 15 App Router PWA]
+    end
+    subgraph Packages
+        SH[packages/shared - UI components]
+        HO[packages/hooks - React hooks]
+        DB[packages/database - Drizzle ORM schema + migrations]
+        UT[packages/utils - Shared utilities]
+        VA[packages/validation - Zod schemas]
+        TY[packages/types - TypeScript types]
+        SY[packages/sync - Offline sync engine]
+        AC[packages/accounting - Accounting engine]
+    end
+    A --> DB
+    W --> SH
+    W --> HO
+    W --> AC
+    A --> SH
+    A --> UT
+```

@@ -4,7 +4,7 @@ import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { setupSwagger } from './swagger-setup';
 import { NestExpressApplication } from '@nestjs/platform-express';
 let APP_VERSION = '0.0.0';
 try {
@@ -35,16 +35,7 @@ async function bootstrap() {
   app.useStaticAssets(uploadsDir, { prefix: '/uploads/' });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  if (process.env.NODE_ENV !== 'production') {
-    const config = new DocumentBuilder()
-      .setTitle('Smart ERP Next API')
-      .setDescription(`Smart ERP Next — API v${APP_VERSION}`)
-      .setVersion(APP_VERSION)
-      .addBearerAuth()
-      .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
-  }
+  setupSwagger(app, APP_VERSION);
 
   const port = process.env.PORT ?? 3000;
   
