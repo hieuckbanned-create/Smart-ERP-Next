@@ -52,6 +52,7 @@ export default function LoginPage() {
   };
 
   const fillDemo = () => {
+    // Demo credentials — only for development/demo environments
     const demoEmail = process.env.NEXT_PUBLIC_DEMO_EMAIL || 'admin@smarterp.vn';
     const demoPassword = process.env.NEXT_PUBLIC_DEMO_PASSWORD || 'admin123';
     if (emailRef.current) emailRef.current.value = demoEmail;
