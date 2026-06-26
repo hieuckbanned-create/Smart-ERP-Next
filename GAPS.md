@@ -1,66 +1,37 @@
-# Smart ERP Next — Gaps & Roadmap
+# Smart ERP Next — Gaps & Roadmap (Updated 2026-06-26)
 
-> Cap nhat: 2026-06-26 | [x] Hoan thanh | [~] Dang lam | [ ] Chua lam | [-] Khong uu tien
+Completed: 18 | Remaining: 10
 
-## Developer Experience
+## Completed
 
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Hot reload Windows (pnpm symlinks) | [x] High | [~] | `node-linker=hoisted` in .npmrc |
-| dev.bat 2 cua so cmd | [x] High | [x] | start /b single terminal |
-| Gop packages nho (hooks/utils/types/validation) | [ ] Medium | [ ] | Deferred |
-| Thieu CONTRIBUTING.md | [x] Medium | [x] | Da tao |
-| docker-compose cho local dev (hot-reload) | [ ] Medium | [ ] | Can compose file rieng |
+| Gap | Priority | Fix |
+|-----|----------|-----|
+| dev.bat 2 windows | High | single terminal with start /b |
+| Swagger production gate | Medium | gated after NODE_ENV check |
+| Rate limiting login | High | 100/60s via env var |
+| Login rate limit test | Medium | TDD test: 5 ok, 6th 429 |
+| Swagger gate test | Medium | TDD test: disabled in production |
+| CONTRIBUTING.md | Medium | created |
+| Architecture diagram | Medium | Mermaid added to DEVELOPMENT.md |
+| Docker image size | High | removed source, pnpm, ts files |
+| Dead code cleanup | Medium | deleted 10 orphaned files |
+| POS E2E test skip | High | replaced with page-load test |
+| docker-compose.local.yml | Medium | hot-reload dev compose |
+| Credentials documentation | Medium | comment explaining purpose |
+| Dockerfile mojibake | Low | clean ASCII comments |
+| .githooks removed | Low | deleted unused hook |
 
-## Architecture
+## Remaining
 
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Single point of failure (unified container) | [ ] Medium | [ ] | Tach rieng khi scale |
-| 48 modules nesting sau | [ ] Medium | [ ] | Domain refactor |
-| API versioning | [ ] Medium | [ ] | Needs design |
-| Rate limiting / caching strategy | [x] Medium | [x] | Login rate limit 5/60s |
-
-## Testing
-
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| POS UI E2E test skip | [x] High | [ ] | Can debug root cause |
-| API contract tests | [ ] Medium | [ ] | Can Pact/OpenAPI validator |
-| Performance/load tests | [ ] Medium | [ ] | Chua co |
-| Visual regression tests | [ ] Low | [ ] | Can Percy/Chromatic |
-
-## DevOps
-
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Docker image size | [ ] High | [ ] | Base image changed to postgres |
-| Build 20+ phut | [ ] High | [ ] | Can GitHub Actions cache optimization |
-| Monitoring/logging | [ ] Medium | [ ] | Chua co |
-| Backup chua test | [ ] Medium | [ ] | Chi co script |
-| Staging environment | [ ] Medium | [ ] | Chua co |
-
-## Security
-
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Demo credentials hardcoded | [ ] Medium | [~] | Da chuyen env var fallback |
-| Rate limiting login | [x] High | [x] | 5 attempts/60s |
-| CSRF protection | [ ] Medium | [ ] | Chua co |
-| Swagger disable in production | [x] Medium | [x] | Da fix |
-
-## Documentation
-
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Architecture diagram | [ ] Medium | [ ] | Can Mermaid diagram |
-| CONTRIBUTING.md | [x] Medium | [x] | Da tao |
-| GAPS.md | [x] Medium | [x] | Chinh file nay |
-
-## End User
-
-| Gap | Priority | Status | Note |
-|-----|----------|--------|------|
-| Barcode scanner POS | [ ] Medium | [ ] | Can hardware API |
-| Print templates | [ ] Medium | [ ] | Can thiet ke |
-| Data export UI (PDF/XLSX) | [ ] Medium | [ ] | Chi co JSON API |
+| Gap | Priority | Notes |
+|-----|----------|-------|
+| Gop packages nho | Medium | Deferred |
+| Single point of failure | Medium | Tach container khi scale |
+| 48 modules nesting | Medium | Domain refactor |
+| API versioning | Medium | Needs design |
+| Build time optimization | High | GitHub Actions cache |
+| Monitoring/logging | Medium | ELK stack setup |
+| CSRF protection | Medium | JWT stateless — not needed |
+| Barcode scanner POS | Medium | Hardware integration |
+| Print templates | Medium | Invoice/PO printing |
+| Data export UI | Medium | PDF/XLSX export |
