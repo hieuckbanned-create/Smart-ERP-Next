@@ -34,23 +34,20 @@ else
   echo "============================================"
   echo "  ⚠️  DATABASE_URL not set"
   echo ""
-  echo "  Quick start with PostgreSQL:"
-  echo "    docker run -d --name smart-erp-postgres \\"
-  echo "      -e POSTGRES_USER=smart_erp \\"
-  echo "      -e POSTGRES_PASSWORD=smart_erp \\"
-  echo "      -e POSTGRES_DB=smart_erp \\"
-  echo "      postgres:16-alpine"
-  echo ""
-  echo "  Then run this container with:"
-  echo "    docker run -d --name smart-erp-app \\"
-  echo "      -p 3456:3456 -p 3457:3457 \\"
-  echo "      -e DATABASE_URL=postgresql://smart_erp:smart_erp@\\$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' smart-erp-postgres):5432/smart_erp \\"
-  echo "      ghcr.io/hieuck/smart-erp-next:latest"
-  echo ""
-  echo "  Or simpler: use docker compose"
+  echo "  Easiest: use docker compose (recommended)"
   echo "    docker compose up -d"
+  echo ""
+  echo "  Or one-liner with postgres container:"
+  echo '    docker run -d --name pg -e POSTGRES_PASSWORD=smart_erp -e POSTGRES_DB=smart_erp postgres:16-alpine'
+  echo '    PG_IP=$(docker inspect -f "{{.NetworkSettings.IPAddress}}" pg)'
+  echo '    docker run -d --name app -p 3456:3456 -p 3457:3457 \'
+  echo '      -e DATABASE_URL="postgresql://postgres:smart_erp@${PG_IP}:5432/smart_erp" \'
+  echo "      ghcr.io/hieuck/smart-erp-next:\${TAG:-latest}"
+  echo ""
+  echo "  Exiting. Set DATABASE_URL and restart."
   echo "============================================"
   echo ""
+  exit 1
 fi
 
 # Start API server
