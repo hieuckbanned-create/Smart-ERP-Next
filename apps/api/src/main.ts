@@ -14,6 +14,9 @@ try {
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn', 'log'] });
 
+  // CSRF is NOT needed — API uses JWT Bearer tokens (stateless auth).
+  // CSRF only applies to cookie/session-based authentication.
+
   // CORS configuration - allow specific origins in production
   const configuredCorsOrigins = process.env.CORS_ORIGINS
     ?.split(',')
