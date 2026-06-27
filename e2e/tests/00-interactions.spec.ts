@@ -214,9 +214,10 @@ test.describe('API CRUD tests', () => {
 
   test.beforeAll(async ({ request }) => {
     const res = await request.post(`${API}/auth/login`, { data: { email: 'admin@demo.vn', password: 'admin123' } });
+    if (res.status() !== 200) throw new Error(`Login failed: ${res.status()} ${await res.text()}`);
     const body = await res.json();
-    token = body.access_token || body.data?.access_token;
-    expect(token).toBeTruthy();
+    token = body.access_token || (body.data && body.data.access_token) || body.token;
+    if (!token) throw new Error(`No token in response: ${JSON.stringify(body)}`);
   });
 
   test('Product CRUD: create → read → update → search', async ({ request }) => {
