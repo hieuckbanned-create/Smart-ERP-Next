@@ -41,16 +41,13 @@ jobs:
           provenance: false
 
       - name: Deploy to staging server
-        if: github.ref == 'refs/heads/dev' && secrets.STAGING_SSH_KEY != ''
-        uses: appleboy/ssh-action@v1
+        if: ${{ secrets.STAGING_HOST != '' }}
+        uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_PORT || '22' }}
           script: |
-            cd ${{ secrets.STAGING_PATH || '/opt/smart-erp-next' }}
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose -f docker-compose.prod.yml pull
+            docker pull ghcr.io/${{ github.repository_owner }}/smart-erp-next:staging
+            cd /opt/smart-erp-next
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
-            echo "Deployment complete"
