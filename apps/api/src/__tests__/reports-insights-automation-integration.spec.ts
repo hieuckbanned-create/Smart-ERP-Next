@@ -4,6 +4,7 @@ jest.mock('@smart-erp/database', () => {
   db.select = chainFn;
   db.from = chainFn;
   db.where = chainFn;
+  db.innerJoin = chainFn;
   db.orderBy = chainFn;
   db.limit = chainFn;
   db.offset = chainFn;
@@ -558,47 +559,6 @@ describe('AiCopilotService', () => {
 });
 
 // ────────────────────────────────────────────────────────────────────────────
-// ForecastService (in-memory, no DI)
-// ────────────────────────────────────────────────────────────────────────────
-describe('ForecastService', () => {
-  let service: ForecastService;
-
-  beforeEach(() => {
-    jest.restoreAllMocks();
-    service = new ForecastService();
-  });
-
-  describe('getMonthlyDemand', () => {
-    it('returns forecast with predictions for 30 days', async () => {
-      const result = await service.getMonthlyDemand('product-1');
-
-      expect(result.productId).toBe('product-1');
-      expect(result.predictions).toHaveLength(30);
-      expect(result.predictions[0]).toHaveProperty('date');
-      expect(result.predictions[0]).toHaveProperty('quantity');
-      expect(result.suggestedOrder).toBeGreaterThan(0);
-      expect(result.confidenceLower).toHaveLength(30);
-      expect(result.confidenceUpper).toHaveLength(30);
-      expect(result.source).toBe('builtin');
-      expect(result.lookaheadDays).toBe(30);
-    });
-
-    it('confidenceLower is <= predictions and confidenceUpper >= predictions', async () => {
-      jest.spyOn(Math, 'random').mockReturnValue(0.5);
-      const result = await service.getMonthlyDemand('product-1');
-
-      for (let i = 0; i < result.predictions.length; i++) {
-        expect(result.confidenceLower[i].quantity).toBeLessThanOrEqual(result.predictions[i].quantity);
-        expect(result.confidenceUpper[i].quantity).toBeGreaterThanOrEqual(result.predictions[i].quantity);
-      }
-    });
-
-    it('generates deterministic structure across different product ids', async () => {
-      const r1 = await service.getMonthlyDemand('product-a');
-      const r2 = await service.getMonthlyDemand('product-b');
-
-      expect(r1.predictions).toHaveLength(30);
-      expect(r2.predictions).toHaveLength(30);
-    });
-  });
-});
+// ForecastService tests moved to:
+// - __tests__/forecast-real-data.spec.ts
+// - forecast/forecast.service.coverage.spec.ts

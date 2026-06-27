@@ -183,7 +183,7 @@ export class InsightsService {
 
     const forecast = await Promise.all(
       allProducts.map(async (p) => {
-        const result = await new ForecastService().getMonthlyDemand(p.id);
+        const result = await new ForecastService().getMonthlyDemand(tenantId, p.id);
         return {
           productId: p.id,
           productName: p.name,

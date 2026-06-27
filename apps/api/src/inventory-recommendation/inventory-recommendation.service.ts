@@ -43,7 +43,7 @@ export class InventoryRecommendationService {
    * @deprecated Use getReorderSuggestion with AI-powered calculations.
    */
   async getRecommendation(tenantId: string, userId: string, productId: string, currentStock: number) {
-    const forecast = this.normalizeForecastDemand(await this.forecastService.getMonthlyDemand(productId));
+    const forecast = this.normalizeForecastDemand(await this.forecastService.getMonthlyDemand(tenantId, productId));
     const demandWindow = forecast.slice(0, 3);
     const avgDemand = demandWindow.length
       ? demandWindow.reduce((sum: number, d: ForecastDemandItem) => sum + this.getDemandQuantity(d), 0) / demandWindow.length
@@ -117,7 +117,7 @@ export class InventoryRecommendationService {
         reasons: response.data.reasons,
       };
     } catch (error) {
-      return this.getFallbackReorderSuggestion(productId, currentStock);
+      return this.getFallbackReorderSuggestion(tenantId, productId, currentStock);
     }
   }
 
@@ -135,8 +135,8 @@ export class InventoryRecommendationService {
     return history;
   }
 
-  private async getFallbackReorderSuggestion(productId: string, currentStock: number): Promise<ReorderResult> {
-    const forecast = this.normalizeForecastDemand(await this.forecastService.getMonthlyDemand(productId));
+  private async getFallbackReorderSuggestion(tenantId: string, productId: string, currentStock: number): Promise<ReorderResult> {
+    const forecast = this.normalizeForecastDemand(await this.forecastService.getMonthlyDemand(tenantId, productId));
     const demand7d = forecast.slice(0, 7).reduce((sum: number, d: ForecastDemandItem) => sum + this.getDemandQuantity(d), 0);
     const safetyStock = Math.floor(demand7d * 0.3);
     const reorderPoint = demand7d;

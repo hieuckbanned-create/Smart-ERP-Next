@@ -14,8 +14,9 @@ describe('ForecastController (forecast)', () => {
   it('getProductForecast delegates to forecastService.getMonthlyDemand', async () => {
     const mockData = { productId: 'p1', predictions: [], suggestedOrder: 0 };
     svc.getMonthlyDemand.mockResolvedValue(mockData);
-    const r = await ctrl.getProductForecast('p1');
-    expect(svc.getMonthlyDemand).toHaveBeenCalledWith('p1');
+    const req = { user: { tenantId: 't1' } };
+    const r = await ctrl.getProductForecast(req, 'p1');
+    expect(svc.getMonthlyDemand).toHaveBeenCalledWith('t1', 'p1');
     expect(r).toEqual({ productId: 'p1', data: mockData });
   });
 });

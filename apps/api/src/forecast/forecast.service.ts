@@ -1,16 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { db } from '@smart-erp/database';
+import { orders, orderItems } from '@smart-erp/database/schema';
+import { eq, and, gte, sql } from '@smart-erp/database/drizzle';
 
 @Injectable()
 export class ForecastService {
-  async getMonthlyDemand(productId: string) {
-    return this.computeForecast(productId);
-  }
-
-  private computeForecast(productId: string) {
+  async getMonthlyDemand(tenantId: string, productId: string) {
     const today = new Date();
-    const salesHistory = this.generateSalesHistory();
-    const avg = salesHistory.reduce((s, v) => s + v, 0) / salesHistory.length;
-    const trend = (salesHistory[salesHistory.length - 1] - salesHistory[0]) / salesHistory.length;
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    // Query real sales data from order items for this product
+    const salesHistory = await db
+      .select({
+        date: sql<string>`DATE(${orders.createdAt})`,
+        total_qty: sql<number>`COALESCE(SUM(${orderItems.quantity}), 0)`,
+      })
+      .from(orderItems)
+      .innerJoin(orders, eq(orderItems.orderId, orders.id))
+      .where(and(
+        eq(orderItems.productId, productId),
+        eq(orders.tenantId, tenantId),
+        gte(orders.createdAt, thirtyDaysAgo),
+      ))
+      .groupBy(sql`DATE(${orders.createdAt})`)
+      .orderBy(sql`DATE(${orders.createdAt})`);
+
+    const dailyTotals = salesHistory.map((r: any) => Number(r.total_qty || 0));
+    const avg = dailyTotals.length > 0
+      ? dailyTotals.reduce((s, v) => s + v, 0) / dailyTotals.length
+      : 10;
+    const trend = dailyTotals.length >= 2
+      ? (dailyTotals[dailyTotals.length - 1] - dailyTotals[0]) / dailyTotals.length
+      : 0;
 
     const predictions = Array.from({ length: 30 }, (_, i) => {
       const date = new Date(today);
@@ -38,9 +60,5 @@ export class ForecastService {
       lookaheadDays: 30,
       generatedAt: new Date().toISOString(),
     };
-  }
-
-  private generateSalesHistory(): number[] {
-    return Array.from({ length: 60 }, () => Math.floor(10 + Math.random() * 20));
   }
 }
