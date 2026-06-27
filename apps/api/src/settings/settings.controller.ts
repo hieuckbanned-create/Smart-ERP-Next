@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Patch, Body, UseGuards, Request } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
@@ -10,5 +10,15 @@ export class SettingsController {
   @Get('register')
   async getRegisterSettings(@Request() req: any) {
     return this.service.getRegisterSettings(req.tenantId);
+  }
+
+  @Get('currency')
+  async getDefaultCurrency(@Request() req: any) {
+    return this.service.getDefaultCurrency(req.user?.tenantId ?? req.tenantId);
+  }
+
+  @Patch('currency')
+  async setDefaultCurrency(@Request() req: any, @Body('currency') currency: string) {
+    return this.service.setDefaultCurrency(req.user?.tenantId ?? req.tenantId, currency);
   }
 }
