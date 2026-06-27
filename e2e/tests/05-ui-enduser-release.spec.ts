@@ -53,7 +53,7 @@ test.describe('UI/UX end-user release audit', () => {
     // Demo button fills fields via autofill — wait for the value to be set
     await page.getByRole('button', { name: /demo/i }).click();
     await page.waitForTimeout(1000);
-    await expect(page.locator(emailSelector)).toHaveValue('admin@demo.vn', { timeout: 10000 });
+    await expect(page.locator(emailSelector)).toHaveValue('admin@smarterp.vn', { timeout: 10000 });
     await expect(page.locator(passwordSelector)).toHaveValue('admin123', { timeout: 10000 });
     await expectNoFrameworkOverlay(page);
     await expectNoHorizontalOverflow(page);
