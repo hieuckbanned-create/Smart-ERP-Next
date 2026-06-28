@@ -1,0 +1,12 @@
+{
+  "name": "Smart ERP Next",
+  "short_name": "SmartERP",
+  "description": "Hệ thống quản trị doanh nghiệp thông minh",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

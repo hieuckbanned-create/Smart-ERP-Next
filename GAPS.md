@@ -1,6 +1,6 @@
-# Smart ERP Next — Gaps & Roadmap (Updated 2026-06-26)
+# Smart ERP Next — Gaps & Roadmap (Updated 2026-06-28)
 
-Completed: 44 | Remaining: 6
+Completed: 52 | Remaining: 6
 
 ## Completed
 
@@ -25,47 +25,57 @@ Completed: 44 | Remaining: 6
 | E2E parallel workers | Medium | workers 1→2, est. 6min→3min |
 | 100% service test coverage | High | 792 integration tests covering all 58 services |
 | CI unit test gate | High | +pnpm test step, unit tests gate the pipeline |
-| AuthService integration tests | Medium | 5 tests (login, validate, register) |
-| UsersService integration tests | Medium | 16 tests (CRUD, findMany) |
-| ProductsService integration tests | Medium | 30 tests (CRUD, stock, categories) |
-| InventoryService integration tests | Medium | 33 tests (reservations, marketplace) |
-| OrdersService integration tests | Medium | 33 tests (e-invoice XML, status workflow) |
-| Real CSV/JSON data export | Medium | exportData() with 8 entity types, CSV escaping |
-| Lockfile prune | Low | removed stale apps/docs, apps/mobile entries |
+| Structured logging | Medium | StructuredLogger + RequestLoggingInterceptor |
+| JWT hardcoded secret | Critical | removed fallback (P0 security) |
+| Helmet HTTP headers | Critical | helmet() middleware (P0 security) |
+| Unguarded controllers | High | Forecast + Benchmarks controllers secured |
+| Multi-container Docker | High | docker-compose.prod.yml (postgres+api+web) |
+| Staging deployment workflow | High | deploy-staging.yml (needs VPS secrets) |
+| Refresh token flow | High | access_token 15m + refresh_token 7d + rotation |
+| Real forecast from orders | High | ForecastService queries historical order data |
+| Global exception filter | High | { success, data, error, requestId } format |
+| API response format | High | ResponseFormatInterceptor wraps all responses |
+| Print templates | Medium | PrintService: invoice + PO HTML |
+| PDF export | Medium | ExportPdfService: pdfkit-based PDF |
+| Barcode scan | Medium | GET /products/by-barcode/:code + POS scan UI |
+| Barcode label printing | Medium | JsBarcode labels with product name + price |
+| Excel import | Medium | ImportService: parse xlsx → preview → confirm |
+| Onboarding wizard | Medium | 3-step: company → seed → complete |
+| Roles & permissions | Medium | 11 modules × 4 actions, 3 default roles |
+| Customer portal | Medium | Order list + detail with tracking timeline |
+| Email service | Medium | nodemailer SMTP, configurable via env vars |
+| Scheduled tasks | Medium | Daily cron: low stock check + log cleanup |
+| Multi-currency | Medium | PriceDisplay + settings/currency API |
+| System status API | Medium | GET /status: version, uptime, dbStatus |
+| Load test infra | Medium | scripts/load-test.mjs |
+| Release notes gen | Low | fetch-depth: 0 + generate-release-notes.js |
+| Lockfile prune | Low | removed stale workspace entries |
 | pnpm deps fix | Low | added testing-library, jest-environment-jsdom |
-| Structured logging | Medium | StructuredLogger + RequestLoggingInterceptor + 11 tests |
-| JWT hardcoded secret | Critical | removed fallback 'super_secret_jwt_key_...' (P0 security) |
-| Helmet HTTP headers | Critical | added helmet() middleware (P0 security) |
-| Unguarded controllers | High | ForecastController + BenchmarksController secured (P1) |
+| .coverage.spec convention | None | 166 files verified as real tests (0 empty stubs) |
+| E2E login fix | High | JWT_SECRET in Playwright config + migration |
+| E2E response format | High | jsonOk unwraps { success, data } → data |
+| E2E POS checkout | Medium | Full POS flow E2E test |
+| E2E feature smoke | Low | Status, currency, export, activity E2E tests |
+| Customer portal API test | Medium | 9 tests for controller delegation |
 
 ## Known Tech Debt
 
 | Item | Impact | Notes |
 |------|--------|-------|
 | ~48 modules flat import | Low | app.module.ts imports all modules without domain grouping |
-| Legacy .coverage.spec.ts convention | None | 166 co-located test files — all have real test logic (0 empty stubs) |
+| E2E test coverage (12 files) | Medium | Covers critical paths, missing edge cases |
+| Docker image size ~2GB | Low | postgres:16-alpine base is large |
 
 ## Remaining
 
 | Gap | Priority | Notes |
 |-----|----------|-------|
-| Gop packages nho | Medium | Deferred |
-| Single point of failure | Medium | Tach container khi scale |
-| 48 modules nesting | Medium | Domain refactor |
-| API versioning | Medium | Needs design, requires frontend coordination |
-| Monitoring/logging | Medium | ELK stack setup |
-
-## Closed (Completed)
-
-| Gap | Sprint | Resolution |
-|-----|--------|------------|
-| Barcode scanner POS | S26 | GET /products/by-barcode/:code + frontend scan UI + JsBarcode |
-| Print templates | S24 | PrintService: GET /print/invoice/:id + /print/purchase-order/:id |
-| PDF/XLSX export | S25 | ExportPdfService: pdfkit-based PDF generation |
-| Multi-currency | S31 | GET/PATCH /settings/currency + PriceDisplay component |
-| System status API | S32 | GET /status: version, uptime, dbStatus |
-| Load test infra | S33 | scripts/load-test.mjs: 10 concurrent users |
-| Release notes gen | S33 | fetch-depth: 0 + generate-release-notes.js |
+| Deploy staging server (VPS) | **High** | Needs VPS + GitHub secrets (STAGING_HOST, SSH_KEY) |
+| Mobile PWA / manifest | Medium | manifest.json + service worker for offline |
+| Monitoring (ELK/Grafana) | Medium | Status API exists, full stack missing |
+| Multi-language i18n | Medium | Only vi/en basics, 50% pages translated |
+| Domain refactoring | Medium | 48→6 domain modules |
+| API versioning | Low | Needs design + frontend coordination |
 
 ## Closed (Won't Fix)
 
