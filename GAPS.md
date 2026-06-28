@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-26)
 
-Completed: 36 | Remaining: 2
+Completed: 44 | Remaining: 6
 
 ## Completed
 
@@ -54,9 +54,18 @@ Completed: 36 | Remaining: 2
 | 48 modules nesting | Medium | Domain refactor |
 | API versioning | Medium | Needs design, requires frontend coordination |
 | Monitoring/logging | Medium | ELK stack setup |
-| Barcode scanner POS | Medium | Hardware integration |
-| Print templates | Medium | Invoice/PO printing |
-| PDF/XLSX export | Medium | Beyond CSV/JSON — needs library integration |
+
+## Closed (Completed)
+
+| Gap | Sprint | Resolution |
+|-----|--------|------------|
+| Barcode scanner POS | S26 | GET /products/by-barcode/:code + frontend scan UI + JsBarcode |
+| Print templates | S24 | PrintService: GET /print/invoice/:id + /print/purchase-order/:id |
+| PDF/XLSX export | S25 | ExportPdfService: pdfkit-based PDF generation |
+| Multi-currency | S31 | GET/PATCH /settings/currency + PriceDisplay component |
+| System status API | S32 | GET /status: version, uptime, dbStatus |
+| Load test infra | S33 | scripts/load-test.mjs: 10 concurrent users |
+| Release notes gen | S33 | fetch-depth: 0 + generate-release-notes.js |
 
 ## Closed (Won't Fix)
 
