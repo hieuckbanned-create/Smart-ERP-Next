@@ -22,7 +22,7 @@ test.describe('Chat', () => {
     const users = Array.isArray(usersBody) ? usersBody : usersBody.items || usersBody.data || [];
     if (users.length < 2) { return; }
     const otherUserId = users.find((u: any) => u.id)?.id;
-    const res = await request.get(`${API}/chat/conversation?userId=${otherUserId}`, { headers: h() });
+    const res = await request.get(`${API}/chat/conversation/${otherUserId}`, { headers: h() });
     expect(res.ok()).toBeTruthy();
   });
 });
