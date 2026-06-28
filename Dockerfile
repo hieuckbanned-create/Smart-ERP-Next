@@ -12,7 +12,6 @@ RUN npm install -g pnpm@10.33.0 && apk add --no-cache curl
 # Step 1: Copy only package manifests (rarely change → cached install)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/database/package.json packages/database/package.json
-COPY packages/common/package.json packages/common/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/utils/package.json packages/utils/package.json
 COPY packages/validation/package.json packages/validation/package.json
