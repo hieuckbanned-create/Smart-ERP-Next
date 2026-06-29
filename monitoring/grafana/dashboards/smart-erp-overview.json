@@ -1,0 +1,22 @@
+{
+  "uid": "smart-erp-overview",
+  "title": "Smart ERP Overview",
+  "schemaVersion": 40,
+  "version": 1,
+  "refresh": "30s",
+  "tags": ["smart-erp", "api", "status"],
+  "panels": [
+    {
+      "type": "stat",
+      "title": "API scrape health",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "targets": [{ "expr": "up{job=\"smart-erp-api-status\"}", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "API scrape duration",
+      "gridPos": { "h": 8, "w": 16, "x": 8, "y": 0 },
+      "targets": [{ "expr": "scrape_duration_seconds{job=\"smart-erp-api-status\"}", "refId": "A" }]
+    }
+  ]
+}

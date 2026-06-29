@@ -44,6 +44,12 @@ jobs:
       - name: Check i18n keys and encoding
         run: pnpm audit:i18n
 
+      - name: Check i18n locale parity
+        run: pnpm audit:i18n-parity
+
+      - name: Check committed secrets
+        run: pnpm audit:secrets
+
       - name: Run commit quality gate
         run: pnpm qa:commit
 

@@ -15,7 +15,9 @@ pnpm qa:commit
 Runs the commit gate:
 
 - lint all workspaces
-- test directory ownership audit
+- runtime i18n key and encoding audit
+- Vietnamese/English locale parity audit
+- committed secret audit
 - type-check all workspaces
 - Jest unit/integration tests with configured coverage thresholds
 
@@ -52,6 +54,10 @@ Jest/unit coverage is intentionally separate from browser and native journey tes
 - `e2e/tests`: Playwright release web flows run by `pnpm test:e2e`.
 - `tests`: legacy/root Playwright flows listed by `playwright.config.ts`.
 - `apps/web/e2e`, `apps/mobile/e2e`, and `apps/desktop/tests`: app-local journey tests.
+
+The i18n parity audit is documented in `docs/i18n-parity.md` and runs in both CI and `pnpm qa:commit`.
+
+The committed secret audit is documented in `docs/security/continuous-security-checklist.md` and runs in both CI and `pnpm qa:commit`.
 
 The e2e assertion audit scans every end-user/app-local root above: `apps/api/test`, `apps/desktop/tests`, `apps/mobile/e2e`, `apps/web/e2e`, `e2e/tests`, and `tests`.
 

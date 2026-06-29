@@ -6,8 +6,8 @@ import { sql } from '@smart-erp/database/drizzle';
 export class StatusService {
   private readonly startTime = Date.now();
 
-  async getSystemStatus() {
-    let dbStatus = 'healthy';
+  async getSystemStatus(): Promise<{ version: string; uptime: number; dbStatus: 'healthy' | 'unhealthy'; timestamp: string }> {
+    let dbStatus: 'healthy' | 'unhealthy' = 'healthy';
     try {
       await db.execute(sql`SELECT 1`);
     } catch {
@@ -20,5 +20,20 @@ export class StatusService {
       dbStatus,
       timestamp: new Date().toISOString(),
     };
+  }
+
+  async getPrometheusMetrics(): Promise<string> {
+    const status = await this.getSystemStatus();
+    const dbHealthy = status.dbStatus === 'healthy' ? 1 : 0;
+
+    return [
+      '# HELP smart_erp_status_db_healthy Database health from Smart ERP status check (1 healthy, 0 unhealthy).',
+      '# TYPE smart_erp_status_db_healthy gauge',
+      `smart_erp_status_db_healthy ${dbHealthy}`,
+      '# HELP smart_erp_uptime_seconds Smart ERP API process uptime in seconds.',
+      '# TYPE smart_erp_uptime_seconds gauge',
+      `smart_erp_uptime_seconds ${status.uptime}`,
+      '',
+    ].join('\n');
   }
 }
