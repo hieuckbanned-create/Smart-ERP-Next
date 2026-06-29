@@ -25,7 +25,8 @@ COPY apps/api/package.json apps/api/package.json
 COPY apps/web/package.json apps/web/package.json
 
 # Step 2: Install deps (cached unless any package.json changes)
-RUN pnpm install --no-frozen-lockfile --ignore-scripts
+# Use hoisted linker so node_modules with flat layout can survive COPY to runtime
+RUN NODE_LINKER=hoisted pnpm install --no-frozen-lockfile --ignore-scripts
 
 # Step 3: Copy source code (frequently changes, but install is cached)
 COPY packages/ ./packages/
