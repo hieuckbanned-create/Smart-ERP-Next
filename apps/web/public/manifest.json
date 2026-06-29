@@ -1,12 +1,17 @@
 {
   "name": "Smart ERP Next",
   "short_name": "SmartERP",
-  "description": "Hệ thống quản trị doanh nghiệp thông minh",
-  "start_url": "/login",
+  "description": "Hệ thống quản trị doanh nghiệp thông minh cho bán hàng, kho, CRM và kế toán.",
+  "id": "/",
+  "start_url": "/login?source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
+  "categories": ["business", "productivity", "finance"],
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }
   ]
 }

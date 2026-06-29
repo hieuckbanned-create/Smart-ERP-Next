@@ -9,6 +9,7 @@ import { setupSwagger } from './swagger-setup';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ResponseFormatInterceptor } from './common/interceptors/response-format.interceptor';
 import { GlobalExceptionFilter } from './common/filters';
+import { API_VERSIONING_CONFIG } from './common/api-versioning';
 let APP_VERSION = '0.0.0';
 try {
   APP_VERSION = JSON.parse(readFileSync(join(__dirname, '../../../package.json'), 'utf-8')).version || '0.0.0';
@@ -37,6 +38,7 @@ async function bootstrap() {
     credentials: true
   });
   app.use(helmet());
+  app.enableVersioning(API_VERSIONING_CONFIG);
   const uploadsDir = join(process.cwd(), 'uploads');
   if (!existsSync(uploadsDir)) mkdirSync(uploadsDir, { recursive: true });
   app.useStaticAssets(uploadsDir, { prefix: '/uploads/' });

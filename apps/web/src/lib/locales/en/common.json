@@ -29,7 +29,8 @@
       "triggerEvent": "Trigger Event",
       "schedule": "Schedule",
       "addWorkflow": "Add Workflow",
-      "description": "Description"
+      "description": "Description",
+      "step": "Bước"
     },
     "webhooks": "Webhooks",
     "webhooks.title": "Webhooks & Integrations",
@@ -79,7 +80,17 @@
     "syncNow": "Sync Now",
     "change": "Change",
     "notes": "Notes",
-    "grantPermission": "Grant permission"
+    "grantPermission": "Grant permission",
+    "processing": "Đang xử lý",
+    "success": "Thao tác thành công",
+    "error": "Có lỗi xảy ra",
+    "approved": "Đã duyệt",
+    "created": "Đã tạo",
+    "deleted": "Đã xóa",
+    "export": "Xuất",
+    "rejected": "Từ chối",
+    "stockAdjusted": "Điều chỉnh tồn kho",
+    "updated": "Đã cập nhật"
   },
   "status": {
     "active": "Active",
@@ -144,11 +155,17 @@
       "delivered": "Delivered",
       "cancelled": "Cancelled",
       "pending": "Pending",
-      "completed": "Completed"
+      "completed": "Completed",
+      "returned": "Đã trả hàng"
     },
     "statusAll": "All",
     "paymentStatus": "Payment",
-    "channel": "Channel",
+    "channel": {
+      "pos": "In-store",
+      "online": "Online",
+      "phone": "Phone",
+      "wholesale": "Wholesale"
+    },
     "channelLabel": "Channel",
     "items": "Items",
     "subtotal": "Subtotal",
@@ -190,19 +207,15 @@
     "products": "Products",
     "history": "History",
     "cancelReason": "Cancellation Reason",
-    "channel": {
-      "pos": "In-store",
-      "online": "Online",
-      "phone": "Phone",
-      "wholesale": "Wholesale"
-    },
     "timeline": {
       "createOrder": "Create Order",
       "confirm": "Confirmed",
       "ship": "Shipped",
       "delivered": "Delivered",
       "cancel": "Cancelled"
-    }
+    },
+    "delivered": "Đã giao",
+    "createdAt": "Ngày tạo"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -252,20 +265,39 @@
         "materialCost": "Material Cost"
       }
     },
-    "contracts": "Contracts"
+    "contracts": "Contracts",
+    "warehouses": "Quản lý kho",
+    "reports": "Báo cáo",
+    "crm": "CRM",
+    "accounting": "Kế toán",
+    "users": "Người dùng",
+    "settings": "Cài đặt",
+    "forecast": "Dự báo",
+    "quality": "Chất lượng",
+    "omnichannel": "Đa kênh",
+    "hr": "Nhân sự",
+    "einvoice": "Hóa đơn điện tử"
   },
   "ecommerce": {
     "title": "E-commerce Integrations",
     "stores": {
       "empty": "No stores connected yet. Go to Settings → E-commerce to add.",
       "addHint": "Add a sales channel to start syncing",
-      "lastSync": "Last sync"
+      "lastSync": "Last sync",
+      "title": "Kết nối cửa hàng",
+      "platform": "Nền tảng",
+      "name": "Tên store",
+      "active": "Kích hoạt",
+      "lastSyncAt": "Lần sync gần nhất",
+      "lastSyncStatus": "Trạng thái sync"
     },
     "create": {
       "title": "Create store",
       "platform": "Platform",
       "name": "Name",
-      "configJson": "Config (JSON)"
+      "configJson": "Config (JSON)",
+      "configHelp": "Nhập cấu hình API dưới dạng JSON chuẩn.",
+      "invalidJson": "Dữ liệu JSON không hợp lệ"
     },
     "logs": {
       "title": "Sync logs",
@@ -379,7 +411,9 @@
       "meter": "Meter",
       "pair": "Pair",
       "set": "Set"
-    }
+    },
+    "exportTitle": "Xuất sản phẩm",
+    "importTitle": "Nhập sản phẩm"
   },
   "customers": {
     "title": "Customers",
@@ -420,7 +454,12 @@
       "province": "Select province",
       "notes": "Notes about customer..."
     },
-    "loyaltyPoints": "Loyalty points"
+    "loyaltyPoints": "Loyalty points",
+    "contact": "Liên hệ",
+    "group": "Nhóm",
+    "currentDebt": "Công nợ hiện tại",
+    "totalPurchased": "Tổng đã mua",
+    "empty": "Không có khách hàng nào"
   },
   "suppliers": {
     "title": "Suppliers",
@@ -609,7 +648,8 @@
       "totalProducts": "Total Products",
       "transfersInTransit": "Transfers In Transit",
       "warehousePerformance": "Warehouse Performance"
-    }
+    },
+    "notes": "Ghi chú..."
   },
   "purchasing": {
     "title": "Purchasing",
@@ -798,7 +838,9 @@
     "editWarehouse": "Edit Warehouse",
     "codePlaceholder": "WHO-001",
     "namePlaceholder": "Main Warehouse",
-    "addressPlaceholder": "Warehouse address..."
+    "addressPlaceholder": "Warehouse address...",
+    "noWarehouses": "Chưa có kho nào. Hãy tạo kho đầu tiên.",
+    "createWarehouse": "Tạo kho"
   },
   "analytics": {
     "title": "Analytics Dashboard",
@@ -811,7 +853,49 @@
     "qualityPass": "Quality Pass Rate",
     "topProducts": "Top Products",
     "revenueChart": "Revenue (30 days)",
-    "period": "Period"
+    "period": "Period",
+    "forecast": {
+      "title": "Dự báo AI",
+      "subtitle": "Dự báo nhu cầu và gợi ý vận hành",
+      "productId": "Mã sản phẩm",
+      "metrics": {
+        "reorder": "Gợi ý nhập",
+        "confidence": "Độ tin cậy",
+        "mape": "Sai số MAPE"
+      },
+      "table": {
+        "predicted": "Giá trị dự báo",
+        "date": "Ngày",
+        "lower": "Cận dưới",
+        "upper": "Cận trên"
+      }
+    },
+    "actualNetCash": "Dòng tiền thực tế",
+    "avgOrderValue": "Giá trị đơn trung bình",
+    "cashflowDescription": "Dự báo dòng tiền theo doanh thu, chi phí và khoản phải thu/phải trả.",
+    "cashflowDisclaimer": "Dữ liệu dự báo chỉ dùng để tham khảo vận hành.",
+    "cashflowForecast": "Dự báo dòng tiền",
+    "churnComputeFailed": "Không thể tính rủi ro rời bỏ",
+    "churnComputeSuccess": "Đã tính rủi ro rời bỏ",
+    "churnDisclaimer": "Kết quả churn là mô hình dự đoán, cần đối chiếu dữ liệu thực tế.",
+    "churnPrediction": "Dự đoán rời bỏ",
+    "churnProbability": "Xác suất rời bỏ",
+    "clv": "Giá trị vòng đời khách hàng",
+    "clvComputeFailed": "Không thể tính CLV",
+    "clvComputeSuccess": "Đã tính CLV",
+    "clvDisclaimer": "CLV là ước tính dựa trên dữ liệu bán hàng hiện có.",
+    "confidenceScore": "Độ tin cậy",
+    "customerLifetimeValue": "Giá trị vòng đời khách hàng",
+    "forecastNetCash": "Dòng tiền dự báo",
+    "predictedClv": "CLV dự đoán",
+    "purchaseFrequency": "Tần suất mua",
+    "recencyDays": "Số ngày từ lần mua gần nhất",
+    "revenueBreakdown": "Phân tích doanh thu",
+    "riskSegment": "Nhóm rủi ro",
+    "runChurn": "Chạy dự đoán churn",
+    "runClv": "Chạy tính CLV",
+    "segment": "Phân khúc",
+    "topProductsBreakdown": "Phân tích sản phẩm bán chạy"
   },
   "reports": {
     "totalRevenue": "Total Revenue",
@@ -851,7 +935,9 @@
     "exportPdf": "Export PDF",
     "exportExcel": "Export Excel",
     "exportCSV": "Export CSV",
-    "orders": "Orders"
+    "orders": "Orders",
+    "expense": "Chi phí",
+    "generatedAt": "Ngày tạo báo cáo"
   },
   "accounting": {
     "title": "Accounting",
@@ -935,7 +1021,11 @@
       "baseCurrency": "Base Currency",
       "convertedAmount": "Converted Amount"
     },
-    "bankAccounts": "Bank accounts"
+    "bankAccounts": "Bank accounts",
+    "equity": "Vốn chủ sở hữu",
+    "description": "Diễn giải",
+    "posted": "Đã ghi",
+    "unposted": "Chưa ghi"
   },
   "auth": {
     "login": "Login",
@@ -956,7 +1046,19 @@
     "sessionExpired": "Session expired",
     "validation": {
       "required": "Please enter email and password"
-    }
+    },
+    "registering": "Đang tạo tài khoản...",
+    "registerFailed": "Không thể đăng ký tài khoản. Vui lòng thử lại.",
+    "registerSubtitle": "Tạo workspace ERP để bắt đầu dùng MVP",
+    "haveAccount": "Đã có tài khoản?",
+    "fullName": "Họ tên",
+    "fullNamePlaceholder": "Nguyễn Văn A",
+    "companyName": "Tên công ty",
+    "companyNamePlaceholder": "Công ty ABC",
+    "confirmPasswordPlaceholder": "Nhập lại mật khẩu",
+    "confirmPasswordMismatch": "Mật khẩu xác nhận không khớp.",
+    "fillDemo": "Điền demo",
+    "loginSubtitle": "Đăng nhập để quản lý doanh nghiệp của bạn"
   },
   "users": {
     "title": "Users",
@@ -1013,7 +1115,9 @@
     "brandColorPurple": "Purple",
     "brandColorOrange": "Orange",
     "brandColorRed": "Red",
-    "language": "Language"
+    "language": "Language",
+    "lightMode": "Chế độ sáng",
+    "darkMode": "Chế độ tối"
   },
   "sync": {
     "conflictTitle": "Sync Conflict Detected",
@@ -1026,7 +1130,12 @@
       "idle": "Up to date",
       "offline": "Offline",
       "syncing": "Syncing..."
-    }
+    },
+    "lastSync": "Lần đồng bộ cuối",
+    "pendingChanges": "{{count}} thay đổi đang chờ",
+    "syncNow": "Đồng bộ ngay",
+    "useLocal": "Dùng bản cục bộ",
+    "useRemote": "Dùng bản máy chủ"
   },
   "chat": {
     "users": "Users",
@@ -1100,7 +1209,20 @@
     "save": "Save",
     "cancel": "Cancel",
     "search": "Search",
-    "type": "Type"
+    "type": "Type",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa?",
+    "viewAll": "Xem tất cả",
+    "change": "Thay đổi",
+    "close": "Đóng",
+    "createdAt": "Ngày tạo",
+    "days": "ngày",
+    "export": "Xuất",
+    "fromDate": "Từ ngày",
+    "next": "Tiếp",
+    "previous": "Trước",
+    "status": "Trạng thái",
+    "time": "Thời gian",
+    "toDate": "Đến ngày"
   },
   "validation": {
     "required": "{{field}} is required",
@@ -1158,7 +1280,9 @@
       "approved": "Document approved",
       "rejected": "Document rejected",
       "needApproval": "Your approval is needed"
-    }
+    },
+    "pending": "Đang chờ duyệt",
+    "amount": "Số tiền"
   },
   "activity": {
     "created": "created",
@@ -1179,7 +1303,9 @@
       "comment": "comment",
       "chat": "chat",
       "lot": "lot",
-      "transfer": "transfer"
+      "transfer": "transfer",
+      "chat.mention": "đã nhắn đến bạn",
+      "chat.newMessage": "Tin nhắn mới"
     }
   },
   "crm": {
@@ -1228,7 +1354,8 @@
     "totalScore": "Total Score",
     "dragHint": "Drag & drop leads to update status",
     "noLeads": "No leads yet",
-    "noLeadsDesc": "Add new leads to build your pipeline"
+    "noLeadsDesc": "Add new leads to build your pipeline",
+    "email": "Email"
   },
   "advanced_reports": {
     "title": "Advanced Reports",
@@ -1269,7 +1396,8 @@
     "placeholder": "Search products, orders, customers...",
     "noResults": "No results found",
     "results": "Search Results",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "viewAll": "Xem tất cả"
   },
   "automation": {
     "title": "Automation",
@@ -1324,7 +1452,8 @@
       "inProgress": "In Progress",
       "completedToday": "Completed Today",
       "yieldRate": "Yield Rate"
-    }
+    },
+    "mrp": "Hoạch định MRP"
   },
   "qms": {
     "title": "Quality Management (QMS)",
@@ -1350,7 +1479,10 @@
       "fail": "Fail",
       "pending": "Pending",
       "in_review": "In Review"
-    }
+    },
+    "fail": "Không đạt",
+    "noNCRs": "Chưa có phiếu không phù hợp",
+    "pass": "Đạt"
   },
   "mrp": {
     "title": "Material Requirements Planning",
@@ -1420,7 +1552,12 @@
       "totalEmployees": "Payroll Employees",
       "totalNet": "Total Payroll",
       "totalOT": "Total OT",
-      "totalDeductions": "Insurance & Tax"
+      "totalDeductions": "Insurance & Tax",
+      "salary": "Lương"
+    },
+    "employee": {
+      "add": "Thêm nhân viên",
+      "title": "Nhân viên"
     }
   },
   "loyalty": {
@@ -1645,7 +1782,41 @@
     "totalOT": "Overtime Hours",
     "absences": "Absences",
     "lateCount": "Late Arrivals",
-    "exportReport": "Export Report"
+    "exportReport": "Export Report",
+    "halfDay": "Nửa ngày",
+    "onLeave": "Nghỉ phép",
+    "methods": {
+      "manual": "Thủ công",
+      "biometric": "Vân tay / Khuôn mặt",
+      "qr": "Quét mã QR",
+      "gps": "GPS",
+      "app": "Ứng dụng"
+    },
+    "leave": {
+      "title": "Đơn nghỉ phép",
+      "create": "Tạo đơn",
+      "types": {
+        "annual": "Nghỉ phép năm",
+        "sick": "Nghỉ ốm",
+        "unpaid": "Nghỉ không lương",
+        "maternity": "Thai sản",
+        "paternity": "Nuôi con",
+        "compensatory": "Nghỉ bù"
+      },
+      "statuses": {
+        "pending": "Chờ duyệt",
+        "approved": "Đã duyệt",
+        "rejected": "Từ chối",
+        "cancelled": "Đã hủy"
+      },
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "totalDays": "Số ngày",
+      "reason": "Lý do",
+      "approvedBy": "Người duyệt",
+      "rejectionReason": "Lý do từ chối"
+    },
+    "status": "Trạng thái"
   },
   "contracts": {
     "confirmSign": "Are you sure you want to sign this contract?",
@@ -1680,5 +1851,56 @@
     "readinessItem2": "Manage products, customers, orders and inventory",
     "readinessItem3": "Create orders at POS, print invoices and track payments",
     "readinessItem4": "User roles and permissions, data isolated by tenant"
+  },
+  "forecast": {
+    "demand": "Nhu cầu dự báo",
+    "avgDemand": "Nhu cầu trung bình",
+    "days": "Số ngày",
+    "forecasted": "Đã dự báo",
+    "noData": "Chưa có dữ liệu dự báo",
+    "title": "Dự báo"
+  },
+  "webhooks": "Webhooks",
+  "activityLogs": {
+    "title": "Nhật ký hoạt động",
+    "action": "Hành động",
+    "details": "Chi tiết",
+    "entityId": "Mã đối tượng",
+    "entityType": "Loại đối tượng",
+    "timestamp": "Thời gian",
+    "user": "Người dùng"
+  },
+  "days": "ngày",
+  "entities": {
+    "customer": "Khách hàng",
+    "inventory": "Tồn kho",
+    "order": "Đơn hàng",
+    "product": "Sản phẩm",
+    "supplier": "Nhà cung cấp"
+  },
+  "forecastError": "Không thể tải dữ liệu dự báo",
+  "socket": {
+    "new_activity": "Có hoạt động mới"
+  },
+  "theme": {
+    "darkMode": "Chế độ tối",
+    "lightMode": "Chế độ sáng"
+  },
+  "xero": {
+    "clientId": "Client ID",
+    "clientSecret": "Client Secret",
+    "connected": "Đã kết nối",
+    "disconnected": "Chưa kết nối",
+    "refreshToken": "Refresh token",
+    "saved": "Đã lưu cấu hình Xero",
+    "status": "Trạng thái",
+    "syncCustomers": "Đồng bộ khách hàng",
+    "syncCustomersNow": "Đồng bộ khách hàng ngay",
+    "syncInvoices": "Đồng bộ hóa đơn",
+    "syncInvoicesNow": "Đồng bộ hóa đơn ngay",
+    "syncPayments": "Đồng bộ thanh toán",
+    "syncPaymentsNow": "Đồng bộ thanh toán ngay",
+    "tenantId": "Tenant ID",
+    "title": "Tích hợp Xero"
   }
 }

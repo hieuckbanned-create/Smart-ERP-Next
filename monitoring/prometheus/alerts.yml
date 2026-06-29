@@ -1,0 +1,22 @@
+groups:
+  - name: smart-erp-api
+    rules:
+      - alert: SmartErpApiStatusDown
+        expr: up{job="smart-erp-api-status"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: api
+        annotations:
+          summary: Smart ERP API status endpoint is unreachable
+          description: Prometheus has not been able to scrape /status for more than 2 minutes.
+
+      - alert: SmartErpApiDatabaseUnhealthy
+        expr: smart_erp_status_db_healthy == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: Smart ERP database health is failing
+          description: The API status-derived database health metric has reported unhealthy for 5 minutes.

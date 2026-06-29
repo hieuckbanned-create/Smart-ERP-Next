@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Header } from '@nestjs/common';
 import { StatusService } from './status.service';
 
 @Controller('status')
@@ -8,5 +8,11 @@ export class StatusController {
   @Get()
   async getStatus() {
     return this.statusService.getSystemStatus();
+  }
+
+  @Get('metrics')
+  @Header('Content-Type', 'text/plain; version=0.0.4')
+  async getMetrics() {
+    return this.statusService.getPrometheusMetrics();
   }
 }

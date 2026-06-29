@@ -15,6 +15,18 @@ const COMMON_GATES = [
     args: ['audit:i18n'],
   },
   {
+    id: 'i18n-parity',
+    name: 'Audit Vietnamese/English locale parity',
+    command: 'pnpm',
+    args: ['audit:i18n-parity'],
+  },
+  {
+    id: 'secret-audit',
+    name: 'Audit tracked files for high-confidence secrets',
+    command: 'pnpm',
+    args: ['audit:secrets'],
+  },
+  {
     id: 'type-check',
     name: 'Type-check all workspaces',
     command: 'pnpm',

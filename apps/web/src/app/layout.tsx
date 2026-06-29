@@ -5,6 +5,7 @@ import './globals.css';
 import { I18nProvider } from '@/components/providers/i18n-provider';
 import { ToastProvider } from '@/components/providers/ToastProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { ServiceWorkerProvider } from '@/components/providers/ServiceWorkerProvider';
 import { SyncConflictModal } from '@/components/SyncConflictModal';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
@@ -87,8 +88,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <I18nProvider>
             <ToastProvider>
               <ThemeProvider>
-                {children}
-                <SyncConflictModal />
+                <ServiceWorkerProvider>
+                  {children}
+                  <SyncConflictModal />
+                </ServiceWorkerProvider>
               </ThemeProvider>
             </ToastProvider>
           </I18nProvider>
@@ -97,4 +100,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-

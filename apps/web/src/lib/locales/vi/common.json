@@ -34,8 +34,8 @@
     "netCashflow": "Dòng tiền ròng (30 ngày)",
     "avgDailyInflow": "Thu trung bình/ngày",
     "avgDailyOutflow": "Chi trung bình/ngày",
-    "pendingApprovals": "Ph? duy?t ?ang ch?",
-    "quickActions": "Thao t?c nhanh",
+    "pendingApprovals": "Phê duyệt đang chờ",
+    "quickActions": "Thao tác nhanh",
     "revenueTrend": "Xu hướng doanh thu",
     "apiFailed": "Không thể tải dữ liệu trực tiếp. Đang hiển thị dữ liệu cũ."
   },
@@ -168,7 +168,7 @@
     "rejected": "Từ chối",
     "stockAdjusted": "Điều chỉnh tồn kho",
     "updated": "Đã cập nhật",
-    "grantPermission": "C?p quy?n"
+    "grantPermission": "Cấp quyền"
   },
   "status": {
     "active": "Hoạt động",
@@ -292,7 +292,8 @@
     "retailCustomer": "Khách lẻ",
     "backToOrder": "Quay lại đơn hàng",
     "printSavePdf": "In / Lưu PDF",
-    "thankYou": "Cảm ơn quý khách"
+    "thankYou": "Cảm ơn quý khách",
+    "cancelReasonPrompt": "Cancellation reason (optional):"
   },
   "nav": {
     "dashboard": "Tổng quan",
@@ -313,10 +314,47 @@
     "forecast": "Dự báo",
     "quality": "Chất lượng",
     "omnichannel": "Đa kênh",
-    "manufacturing": "Sản xuất",
+    "manufacturing": {
+      "title": "Sản xuất",
+      "bom": "Bill of Materials (BOM)",
+      "bomItem": "BOM Item",
+      "productionOrder": "Production Order",
+      "productionOrders": "Production Orders",
+      "createOrder": "Create Production Order",
+      "startOrder": "Start Production",
+      "completeOrder": "Complete Production",
+      "status": {
+        "draft": "Draft",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "qc": {
+        "title": "Quality Control",
+        "checkpoints": "Checkpoints",
+        "passed": "Passed",
+        "failed": "Failed",
+        "pending": "Pending"
+      },
+      "cost": {
+        "title": "Production Cost",
+        "totalCost": "Total Cost",
+        "unitCost": "Unit Cost",
+        "materialCost": "Material Cost"
+      }
+    },
     "hr": "Nhân sự",
     "einvoice": "Hóa đơn điện tử",
-    "contracts": "H?p ??ng"
+    "contracts": "Hợp đồng",
+    "currencies": "Currencies",
+    "currencies.rate": "Exchange Rate",
+    "currencies.convert": "Convert",
+    "currencies.supported": "Supported Currencies",
+    "currencies.from": "From",
+    "currencies.to": "To",
+    "currencies.amount": "Amount",
+    "currencies.converted": "Converted Amount",
+    "currencies.exchangeRate": "Exchange Rate"
   },
   "common": {
     "loading": "Đang tải...",
@@ -374,9 +412,29 @@
     "status": "Trạng thái",
     "time": "Thời gian",
     "toDate": "Đến ngày",
-    "retry": "Th? l?i",
-    "sold": "?? b?n",
-    "type": "Loại"
+    "retry": "Thử lại",
+    "sold": "đã bán",
+    "type": "Loại",
+    "warning": "Warning",
+    "info": "Info",
+    "sync": {
+      "status": {
+        "idle": "Up to date",
+        "syncing": "Syncing...",
+        "error": "Sync error",
+        "offline": "Offline"
+      },
+      "lastSync": "Last sync",
+      "pendingChanges": "{{count}} pending change",
+      "pendingChanges_plural": "{{count}} pending changes",
+      "syncNow": "Sync now"
+    },
+    "lastSync": "Last Sync",
+    "pendingChanges": "Pending Changes",
+    "conflictResolved": "Conflict Resolved",
+    "welcome": "Welcome to Smart ERP Next",
+    "profile": "Profile",
+    "version": "Version"
   },
   "inventory": {
     "title": "Quản lý kho",
@@ -434,7 +492,16 @@
       "expiryDate": "Ngày hết hạn",
       "quantity": "Số lượng",
       "remainingQuantity": "Số lượng còn lại",
-      "warehouse": "Kho hàng"
+      "warehouse": "Kho hàng",
+      "edit": "Edit Lot",
+      "receivedDate": "Received Date",
+      "product": "Product",
+      "status": "Status",
+      "inStock": "In Stock",
+      "depleted": "Depleted",
+      "expired": "Expired",
+      "expiringSoon": "Expiring Soon",
+      "confirmDelete": "Delete this lot?"
     },
     "transfers": {
       "title": "Chuyển kho",
@@ -455,12 +522,37 @@
       "items": "Danh sách sản phẩm",
       "createSuccess": "Tạo phiếu chuyển kho thành công",
       "receiveSuccess": "Nhận hàng thành công",
-      "approve": "Duy?t chuy?n kho"
+      "approve": "Duyệt chuyển kho",
+      "ship": "Ship",
+      "quantityShipped": "Qty Shipped",
+      "quantityReceived": "Qty Received"
     },
     "metrics": {
       "totalProducts": "Tổng sản phẩm",
       "transfersInTransit": "Đơn đang vận chuyển",
       "warehousePerformance": "Hiệu suất kho"
+    },
+    "dailyDemand": "Daily demand forecast",
+    "date": "Date",
+    "predicted": "Predicted",
+    "warehouses": "Warehouses",
+    "addWarehouse": "Add Warehouse",
+    "transfer": "Transfer Stock",
+    "batchNumber": "Batch Number",
+    "expiryDate": "Expiry Date",
+    "serialNumber": "Serial Number",
+    "normal": "Normal",
+    "allStockOK": "All stock levels OK",
+    "fetchSuggestionsError": "Failed to load suggestions",
+    "serials": {
+      "title": "Serial Management",
+      "serialNumber": "Serial Number",
+      "add": "Add Serial",
+      "status": "Status",
+      "inStock": "In Stock",
+      "sold": "Sold",
+      "returned": "Returned",
+      "warrantyExpiry": "Warranty Expiry"
     }
   },
   "products": {
@@ -534,9 +626,9 @@
     "selectWarehouseOptional": "Chọn kho nhận (không bắt buộc)",
     "preview": "Xem trước: {{items}} mặt hàng, tổng {{quantity}} đơn vị",
     "all": "Tất cả",
-    "cancel": "H?y ??n mua",
-    "confirmReceive": "X?c nh?n nh?n h?ng",
-    "subtotal": "T?m t?nh",
+    "cancel": "Hủy đơn mua",
+    "confirmReceive": "Xác nhận nhận hàng",
+    "subtotal": "Tạm tính",
     "draft": "Nháp",
     "confirmed": "Đã xác nhận",
     "partial": "Nhận một phần",
@@ -559,7 +651,24 @@
     "supplierSearchPlaceholder": "Tìm nhà cung cấp...",
     "changeSupplier": "Đổi",
     "notesPlaceholder": "Ghi chú đơn nhập...",
-    "productCount": "Số sản phẩm"
+    "productCount": "Số sản phẩm",
+    "subtitle": "{{count}} purchase orders",
+    "addItem": "Add Item",
+    "receivedAt": "Received Date",
+    "orderedQty": "Ordered Qty",
+    "receivedQty": "Received Qty",
+    "unitCost": "Unit Cost",
+    "tax": "Tax",
+    "items": "Items",
+    "selectSupplierAndItems": "Please select a supplier and add at least one item",
+    "receiveError": "Failed to confirm receipt.",
+    "cancelError": "Failed to cancel purchase order.",
+    "orders": "purchase orders",
+    "empty": "No purchase orders yet",
+    "confirmDeleteMessage": "Are you sure you want to cancel this purchase order?",
+    "expectedDatePlaceholder": "Expected date (YYYY-MM-DD)",
+    "include": "Include",
+    "orderQty": "Order qty"
   },
   "suppliers": {
     "title": "Nhà cung cấp",
@@ -613,6 +722,23 @@
       "qualityScore": "Điểm chất lượng",
       "confirmDelivery": "Xác nhận giao hàng",
       "deliveryConfirmed": "Đã xác nhận giao hàng"
+    },
+    "paymentTermDays": "Payment Term (days)",
+    "customerPortal": {
+      "title": "Customer Portal",
+      "orders": "Orders",
+      "invoices": "Invoices",
+      "payments": "Payment History",
+      "tickets": "Support Tickets",
+      "profile": "Profile",
+      "orderCode": "Order Code",
+      "status": "Status",
+      "total": "Total",
+      "items": "Items",
+      "invoiceCode": "Invoice No.",
+      "dueDate": "Due Date",
+      "paidAt": "Paid At",
+      "method": "Method"
     }
   },
   "customers": {
@@ -659,7 +785,7 @@
       "province": "Chọn tỉnh/thành",
       "notes": "Ghi chú về khách hàng..."
     },
-    "loyaltyPoints": "?i?m t?ch l?y"
+    "loyaltyPoints": "Điểm tích lũy"
   },
   "settings": {
     "title": "Cài đặt",
@@ -717,10 +843,10 @@
     "useLocal": "Dùng bản cục bộ",
     "useRemote": "Dùng bản máy chủ",
     "status": {
-      "error": "L?i ??ng b?",
-      "idle": "?? c?p nh?t",
-      "offline": "Ngo?i tuy?n",
-      "syncing": "?ang ??ng b?..."
+      "error": "Lỗi đồng bộ",
+      "idle": "Đã cập nhật",
+      "offline": "Ngoại tuyến",
+      "syncing": "Đang đồng bộ..."
     }
   },
   "crm": {
@@ -759,7 +885,7 @@
       "other": "Khác"
     },
     "email": "Email",
-    "searchLeads": "T?m ki?m kh?ch h?ng ti?m n?ng",
+    "searchLeads": "Tìm kiếm khách hàng tiềm năng",
     "subtitle": "Quản lý khách hàng tiềm năng & hành trình chốt Sale",
     "new": "Khách mới",
     "contacted": "Đã liên hệ",
@@ -785,7 +911,9 @@
     "accountsPayable": "Phải trả nhà cung cấp",
     "financialReports": {
       "incomeStatement": "Báo cáo kết quả kinh doanh",
-      "balanceSheet": "Bảng cân đối kế toán"
+      "balanceSheet": "Bảng cân đối kế toán",
+      "cashFlow": "Cash Flow",
+      "trialBalance": "Trial Balance"
     },
     "journalEntries": "Bút toán gần đây",
     "voucherNumber": "Số chứng từ",
@@ -795,7 +923,68 @@
     "credit": "Có",
     "posted": "Đã ghi",
     "unposted": "Chưa ghi",
-    "bankAccounts": "T?i kho?n ng?n h?ng"
+    "bankAccounts": "Tài khoản ngân hàng",
+    "accountCode": "Account Code",
+    "accountName": "Account Name",
+    "accountType": "Account Type",
+    "financeOverview": "Financial Overview",
+    "accountTypes": {
+      "asset": "Asset",
+      "liability": "Liability",
+      "equity": "Equity",
+      "revenue": "Revenue",
+      "expense": "Expense"
+    },
+    "balance": "Balance",
+    "totalDebit": "Total Debit",
+    "totalCredit": "Total Credit",
+    "postEntry": "Post Entry",
+    "reverseEntry": "Reverse Entry",
+    "unbalancedEntry": "Unbalanced Entry",
+    "vouchers": {
+      "payment": "Payment Voucher",
+      "receipt": "Receipt Voucher",
+      "journal": "Journal Entry",
+      "invoice": "Invoice"
+    },
+    "vat": {
+      "title": "VAT",
+      "rate": "Tax Rate",
+      "rates": {
+        "exempt": "Exempt",
+        "zero": "0%",
+        "five": "5%",
+        "ten": "10%"
+      },
+      "output": "Output VAT",
+      "input": "Input VAT",
+      "payable": "VAT Payable",
+      "declaration": "Tax Declaration"
+    },
+    "tax": {
+      "title": "Tax",
+      "incomeTax": "Income Tax",
+      "withholding": "Withholding Tax",
+      "declaration": "Tax Declaration",
+      "payment": "Tax Payment",
+      "dueDate": "Due Date"
+    },
+    "depreciation": {
+      "title": "Depreciation",
+      "fixedAssets": "Fixed Assets",
+      "purchaseCost": "Purchase Cost",
+      "usefulLife": "Useful Life",
+      "residualValue": "Residual Value",
+      "accumulatedDepreciation": "Accumulated Depreciation",
+      "currentValue": "Current Value",
+      "monthlyDepreciation": "Monthly Depreciation"
+    },
+    "currency": {
+      "title": "Currency",
+      "exchangeRate": "Exchange Rate",
+      "baseCurrency": "Base Currency",
+      "convertedAmount": "Converted Amount"
+    }
   },
   "auth": {
     "login": "Đăng nhập",
@@ -879,8 +1068,8 @@
       "lastSyncAt": "Lần sync gần nhất",
       "lastSyncStatus": "Trạng thái sync",
       "empty": "Chưa có cửa hàng nào được kết nối. Hãy vào Cài đặt để thêm.",
-      "addHint": "Th?m k?nh b?n h?ng ?? b?t ??u ??ng b?",
-      "lastSync": "??ng b? l?n cu?i"
+      "addHint": "Thêm kênh bán hàng để bắt đầu đồng bộ",
+      "lastSync": "Đồng bộ lần cuối"
     },
     "logs": {
       "title": "Lịch sử đồng bộ",
@@ -1363,10 +1552,10 @@
     "isDefault": "Kho mặc định",
     "noWarehouses": "Chưa có kho nào. Hãy tạo kho đầu tiên.",
     "createWarehouse": "Tạo kho",
-    "confirmDelete": "B?n c? ch?c mu?n x?a kho n?y?",
-    "createInfo": "T?o kho ?? qu?n l? t?n kho v? giao d?ch",
-    "empty": "Ch?a c? kho n?o",
-    "subtitle": "Qu?n l? kho h?ng v? ??a ?i?m l?u tr?",
+    "confirmDelete": "Bạn có chắc muốn xóa kho này?",
+    "createInfo": "Tạo kho để quản lý tồn kho và giao dịch",
+    "empty": "Chưa có kho nào",
+    "subtitle": "Quản lý kho hàng và địa điểm lưu trữ",
     "setDefault": "Đặt làm mặc định",
     "edit": "Sửa",
     "delete": "Xóa",
@@ -1382,7 +1571,9 @@
     "editWarehouse": "Sửa kho",
     "codePlaceholder": "KHO-001",
     "namePlaceholder": "Kho chính",
-    "addressPlaceholder": "Địa chỉ kho..."
+    "addressPlaceholder": "Địa chỉ kho...",
+    "manager": "Manager",
+    "searchPlaceholder": "Search by name, code..."
   },
   "reports": {
     "title": "Báo cáo",
@@ -1400,7 +1591,31 @@
     "thisQuarter": "Quý này",
     "exportCSV": "Xuất CSV",
     "products": "Sản phẩm",
-    "orders": "Đơn hàng"
+    "orders": "Đơn hàng",
+    "totalRevenue": "Total Revenue",
+    "orderCount": "Order Count",
+    "avgOrderValue": "Avg Order Value",
+    "topCustomers": "Top Customers",
+    "inventoryValue": "Inventory Value",
+    "stockLevel": "Stock Level",
+    "lowStockItems": "Low Stock Items",
+    "noData": "No report data",
+    "cashflow": {
+      "title": "Cashflow Forecast",
+      "inflow": "Inflow",
+      "outflow": "Outflow",
+      "net_cashflow": "Net Cashflow",
+      "period": "Period"
+    },
+    "from": "From",
+    "to": "To",
+    "yesterday": "Yesterday",
+    "lastWeek": "Last Week",
+    "lastMonth": "Last Month",
+    "thisYear": "This Year",
+    "custom": "Custom",
+    "exportPdf": "Export PDF",
+    "exportExcel": "Export Excel"
   },
   "einvoice": {
     "title": "Hóa đơn điện tử",
@@ -1565,7 +1780,13 @@
     "methodCredit": "Công nợ",
     "methodMomo": "MoMo",
     "methodVnpay": "VNPay",
-    "methodZalopay": "ZaloPay"
+    "methodZalopay": "ZaloPay",
+    "title": "Payments",
+    "amount": "Amount",
+    "totalReceipt": "Total Receipts",
+    "totalPayment": "Total Payments",
+    "paidAt": "Paid At",
+    "searchPlaceholder": "Search by code, party..."
   },
   "socket": {
     "new_activity": "Có hoạt động mới"
@@ -1579,10 +1800,30 @@
     "email": "Email",
     "name": "Tên",
     "role": "Vai trò",
-    "title": "Người dùng"
+    "title": "Người dùng",
+    "roles": {
+      "admin": "Administrator",
+      "manager": "Manager",
+      "user": "Staff",
+      "accountant": "Accountant",
+      "warehouse": "Warehouse Staff",
+      "sales": "Sales Staff"
+    }
   },
   "validation": {
-    "required": "Trường này là bắt buộc"
+    "required": "Trường này là bắt buộc",
+    "email": "Invalid email address",
+    "minLength": "Minimum {{min}} characters",
+    "maxLength": "Maximum {{max}} characters",
+    "min": "Minimum value is {{min}}",
+    "max": "Maximum value is {{max}}",
+    "positive": "Must be a positive number",
+    "integer": "Must be an integer",
+    "invalidFormat": "Invalid format",
+    "passwordMismatch": "Passwords do not match",
+    "duplicateSku": "SKU already exists",
+    "duplicateEmail": "Email already in use",
+    "duplicateCode": "Code already exists"
   },
   "xero": {
     "clientId": "Client ID",
@@ -1602,14 +1843,14 @@
     "title": "Tích hợp Xero"
   },
   "contracts": {
-    "confirmSign": "B?n c? ch?c mu?n k? h?p ??ng n?y?",
-    "empty": "Ch?a c? h?p ??ng n?o",
-    "fetchFailed": "Kh?ng th? t?i danh s?ch h?p ??ng",
-    "signAction": "K? h?p ??ng",
-    "signFailed": "K? h?p ??ng th?t b?i",
-    "signNow": "K? ngay",
-    "signTitle": "K? h?p ??ng ?i?n t?",
-    "signedSuccess": "H?p ??ng ?? ???c k? th?nh c?ng"
+    "confirmSign": "Bạn có chắc muốn ký hợp đồng này?",
+    "empty": "Chưa có hợp đồng nào",
+    "fetchFailed": "Không thể tải danh sách hợp đồng",
+    "signAction": "Ký hợp đồng",
+    "signFailed": "Ký hợp đồng thất bại",
+    "signNow": "Ký ngay",
+    "signTitle": "Ký hợp đồng điện tử",
+    "signedSuccess": "Hợp đồng đã được ký thành công"
   },
   "landing": {
     "heroBadge": "ERP thực chiến cho doanh nghiệp Việt Nam",
@@ -1634,5 +1875,32 @@
     "readinessItem2": "Quản lý sản phẩm, khách hàng, đơn hàng và tồn kho",
     "readinessItem3": "Tạo đơn tại POS, in hóa đơn và theo dõi thanh toán",
     "readinessItem4": "Phân quyền người dùng, dữ liệu tách theo tenant"
+  },
+  "currencies": {
+    "title": "Currencies",
+    "code": "Code",
+    "name": "Name",
+    "symbol": "Symbol",
+    "decimalPlaces": "Decimal places",
+    "isBaseCurrency": "Base currency",
+    "createSuccess": "Currency created successfully",
+    "updateSuccess": "Currency updated successfully",
+    "deleteSuccess": "Currency deleted successfully",
+    "confirmDelete": "Are you sure you want to delete this currency?",
+    "cannotDeleteBase": "Cannot delete the base currency of the tenant"
+  },
+  "advanced_reports": {
+    "title": "Advanced Reports",
+    "templates": "Report Templates",
+    "create_template": "Create Template",
+    "template_name": "Template name",
+    "sql_query": "SQL query",
+    "parameters": "Parameters",
+    "run_report": "Run report",
+    "schedule": "Schedule",
+    "monthly_revenue": "Monthly Revenue",
+    "order_count": "Order count",
+    "total_revenue": "Total revenue",
+    "avg_order_value": "Avg order value"
   }
 }
