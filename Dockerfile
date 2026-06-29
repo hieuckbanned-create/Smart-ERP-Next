@@ -87,9 +87,9 @@ RUN set -eux; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
     # Fix compiled JS path resolution: TypeScript emits relative paths
     # from source location, but compiled output is in dist/ subdirectory.
-    # Remove real accounting/database dirs (build artifacts), replace packages
-    # symlink to point to /app/packages for correct resolution.
-    rm -rf /app/apps/api/dist/packages/accounting /app/apps/api/dist/packages/database; \
+    # The dist/ COPY creates a real packages/ dir that shadows the symlink.
+    # Remove the real dir first, then create symlink at that path.
+    rm -rf /app/apps/api/dist/packages; \
     ln -sfn /app/packages /app/apps/api/dist/packages; \
     for d in /app/packages/*/; do \
       name="$(basename "$d")"; \
