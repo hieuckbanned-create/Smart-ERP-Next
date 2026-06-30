@@ -45,7 +45,7 @@ RUN pnpm --filter @smart-erp/shared exec tsc -b && \
     pnpm --filter @smart-erp/api exec node -e "require('fs').cpSync('src/i18n/locales', 'dist/apps/api/src/i18n/locales', {recursive: true, force: true})"
 
 # Runtime stage — based on postgres for embedded database
-FROM postgres:16-alpine
+FROM postgres:18-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
