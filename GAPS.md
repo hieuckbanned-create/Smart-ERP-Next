@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 180 | Remaining: 0
+Completed: 181 | Remaining: 0
 
 ## Completed
 
@@ -165,6 +165,7 @@ Completed: 180 | Remaining: 0
 | Merge Dependabot testing group PR | Medium | @playwright/test, jest, @types/jest, playwright updated |
 | Merge Dependabot react group PR | Medium | react, react-dom, react-i18next, react-icons updated |
 | Fix deploy-staging CI failure noise | Medium | Gated job on STAGING_HOST secret, skipped when unconfigured |
+| Fix CodeQL SAST SARIF upload failure | Low | Removed custom output/category from analyze step |
 
 | Item | Impact | Notes |
 |------|--------|-------|
