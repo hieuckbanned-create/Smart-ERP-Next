@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 164 | Remaining: 0
+Completed: 168 | Remaining: 0
 
 ## Completed
 
@@ -152,6 +152,9 @@ Completed: 164 | Remaining: 0
 | Cron scheduler monitoring | Medium | SchedulerMonitorService tracks runs/failures/consecutive failures (TDD: 5 tests) |
 | scheduler_log schema | Low | Database table for scheduler execution history |
 | Sentry error reporting | High | GlobalExceptionFilter captures 500 errors when SENTRY_DSN configured |
+| API key rate limiting | High | ApiKeyThrottlerGuard with 200/100 per-minute limits (TDD: 4 tests) |
+| scheduler_log indexes | Medium | Index on job_name + created_at for query performance |
+| Compression middleware | Low | Express compression for API response body compression |
 
 | Item | Impact | Notes |
 |------|--------|-------|
