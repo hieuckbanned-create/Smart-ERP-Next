@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 179 | Remaining: 0
+Completed: 180 | Remaining: 0
 
 ## Completed
 
@@ -164,6 +164,7 @@ Completed: 179 | Remaining: 0
 | Docker Compose healthcheck alignment | Low | Consistent 30s/5s/30s/3 retries across all compose files |
 | Merge Dependabot testing group PR | Medium | @playwright/test, jest, @types/jest, playwright updated |
 | Merge Dependabot react group PR | Medium | react, react-dom, react-i18next, react-icons updated |
+| Fix deploy-staging CI failure noise | Medium | Gated job on STAGING_HOST secret, skipped when unconfigured |
 
 | Item | Impact | Notes |
 |------|--------|-------|

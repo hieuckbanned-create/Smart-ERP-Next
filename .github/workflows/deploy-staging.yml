@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   build-and-deploy:
+    if: secrets.STAGING_HOST != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +35,6 @@ jobs:
           provenance: false
 
       - name: Deploy to staging
-        if: secrets.STAGING_HOST != ''
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.STAGING_HOST }}
