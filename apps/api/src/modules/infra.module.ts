@@ -1,4 +1,11 @@
 import { Module } from '@nestjs/common';
+import { ApprovalsModule } from '../approvals/approvals.module';
+import { CommentsModule } from '../comments/comments.module';
+import { ChatModule } from '../chat/chat.module';
+import { ActivityModule } from './activity/activity.module';
+import { ExportPdfModule } from '../export-pdf/export-pdf.module';
+import { HealthModule } from '../health/health.module';
+import { StatusModule } from '../monitor/status.module';
 import { SettingsModule } from '../settings/settings.module';
 import { WebhooksModule } from '../webhooks/webhooks.module';
 import { SearchModule } from '../search/search.module';
@@ -13,12 +20,16 @@ import { CustomerPortalModule } from '../customers/customer-portal.module';
 
 @Module({
   imports: [
+    ApprovalsModule, CommentsModule, ChatModule, ActivityModule,
+    ExportPdfModule, HealthModule, StatusModule,
     SettingsModule, WebhooksModule, SearchModule,
     AutomationModule, SyncModule, SocketModule,
     SchedulerModule, ImportModule, OnboardingModule,
     PrintModule, CustomerPortalModule,
   ],
   exports: [
+    ApprovalsModule, CommentsModule, ChatModule, ActivityModule,
+    ExportPdfModule, HealthModule, StatusModule,
     SettingsModule, WebhooksModule, SearchModule,
     AutomationModule, SyncModule, SocketModule,
     SchedulerModule, ImportModule, OnboardingModule,

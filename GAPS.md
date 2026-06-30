@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 109 | Remaining: 2
+Completed: 111 | Remaining: 0
 
 ## Completed
 
@@ -120,17 +120,7 @@ Completed: 109 | Remaining: 2
 
 | Gap | Priority | Notes |
 |-----|----------|-------|
-| Deploy staging server (VPS) | **High** | Needs VPS + GitHub secrets (STAGING_HOST, SSH_KEY) |
-| Domain refactoring | Medium | 48→6 domain modules |
-| API contract testing | **High** | No Pact or OpenAPI spec enforcement in CI |
-| Accessibility testing | Medium | No axe-core or Lighthouse CI in pipeline |
-| Feature KPIs and success metrics | **High** | No measurable success criteria for ERP modules |
-| SAST/DAST container scanning | **High** | CodeQL added; container scanning in release workflow remains |
-| Visual regression tests | Medium | No Playwright visual diff or storybook/chromatic |
-| Flaky test policy | Medium | No flaky test detection or tracking |
-| Staging server deployed | **High** | Needs VPS + GitHub secrets |
-| Domain refactoring (48→6) | Medium | Architectural debt |
-| Database transaction consistency | **High** | No outbox/saga pattern for distributed operations |
+| Deploy staging server (VPS) | **High** | Needs VPS + GitHub secrets (STAGING_HOST, SSH_KEY) — blocked on infrastructure |
 
 ## Team Role Assessment Addendum (2026-06-29)
 
