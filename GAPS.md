@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 141 | Remaining: 0
+Completed: 146 | Remaining: 0
 
 ## Completed
 
@@ -136,6 +136,10 @@ Completed: 141 | Remaining: 0
 | Load test baseline output | Low | JSON baseline saved in CI for performance regression tracking |
 | Sentry error tracking config | Medium | sentry-config.ts with DSN/env/tracesSampleRate |
 | DB_POOL_* env vars | High | DB_POOL_MAX, DB_POOL_IDLE_TIMEOUT, DB_POOL_CONNECTION_TIMEOUT |
+| Outbox integration tests | High | emit + processPending + cleanup + failure scenarios (TDD: 4 tests) |
+| Feature flags integration tests | High | setFlag + isEnabled + getAllFlags + update (TDD: 4 tests) |
+| Swagger docs for orders | Medium | @ApiOperation + @ApiResponse + @ApiBearerAuth on all endpoints |
+| Swagger API doc exports | Low | @ApiTags on 14 core controllers, full docs on Orders |
 
 | Item | Impact | Notes |
 |------|--------|-------|

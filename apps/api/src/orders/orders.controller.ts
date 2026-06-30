@@ -17,9 +17,10 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { IdempotencyGuard } from '../common/errors/idempotency.guard';
 import { AuditLog } from '../common/decorators/audit-log.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('Orders')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('orders')
 export class OrdersController {
@@ -27,11 +28,16 @@ export class OrdersController {
 
   @Post()
   @UseGuards(IdempotencyGuard)
+  @ApiOperation({ summary: 'Create a new order', description: 'Creates an order with line items, calculates totals, and broadcasts real-time notification' })
+  @ApiResponse({ status: 201, description: 'Order created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid input or product not found' })
   create(@Request() req: any, @Body() dto: CreateOrderDto) {
     return this.ordersService.create(req.user.tenantId, req.user.sub, dto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'List orders', description: 'Paginated list with search/filter by status, channel, payment status' })
+  @ApiResponse({ status: 200, description: 'Returns orders list with pagination metadata' })
   findAll(
     @Request() req: any,
     @Query('page') page?: string,
@@ -52,11 +58,16 @@ export class OrdersController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get order by ID', description: 'Returns order details with line items' })
+  @ApiResponse({ status: 200, description: 'Order found' })
+  @ApiResponse({ status: 404, description: 'Order not found' })
   findOne(@Request() req: any, @Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.findOne(req.user.tenantId, id);
   }
 
   @Get(':id/einvoice')
+  @ApiOperation({ summary: 'Generate e-invoice XML', description: 'Generates Vietnamese-standard e-invoice XML for an order' })
+  @ApiResponse({ status: 200, description: 'XML invoice downloaded' })
   async generateEInvoice(
     @Request() req: any,
     @Param('id', ParseUUIDPipe) id: string,
@@ -70,6 +81,9 @@ export class OrdersController {
 
   @Patch(':id/status')
   @AuditLog('update_order_status', 'order')
+  @ApiOperation({ summary: 'Update order status', description: 'Transitions order through workflow: draft→confirmed→processing→shipped→delivered' })
+  @ApiResponse({ status: 200, description: 'Status updated' })
+  @ApiResponse({ status: 400, description: 'Invalid status transition' })
   updateStatus(
     @Request() req: any,
     @Param('id', ParseUUIDPipe) id: string,
