@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 82 | Remaining: 2
+Completed: 90 | Remaining: 2
 
 ## Completed
 
@@ -86,6 +86,13 @@ Completed: 82 | Remaining: 2
 | WebSocket reconnection handling | Medium | 'reconnect' event handler with room re-ack in socket gateway |
 | Ownership matrix + Definition of Done | Medium | docs/ownership-matrix.md with module ownership, DoD, engineering KPIs |
 | Forecast accuracy monitoring docs | Low | docs/forecast-accuracy-monitoring.md with metrics and monitoring process |
+| Feature flags service | Medium | FeatureFlagsService + Controller + api + schema (TDD: 9 tests) |
+| 2FA/TOTP foundation | High | TotpService with generate/verify/provisioning URI (TDD: 7 tests) |
+| Visual regression testing setup | Medium | Playwright haveScreenshot test + snapshotPathTemplate config |
+| Accessibility testing via axe-core | Medium | e2e/accessibility.spec.ts with @axe-core/playwright integration |
+| Semantic versioning policy | Low | docs/semver-policy.md with MAJOR/MINOR/PATCH definitions |
+| PII classification docs | Low | docs/pii-classification.md with data classification levels |
+| Competitive positioning docs | Low | docs/competitive-positioning.md with competitor analysis |
 
 | Item | Impact | Notes |
 |------|--------|-------|

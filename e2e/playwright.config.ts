@@ -13,6 +13,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
+  snapshotPathTemplate: '{testDir}/__screenshots__/{testFilePath}/{arg}{ext}',
   projects: [
     {
       name: 'chromium',
