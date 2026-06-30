@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   build-and-deploy:
-    if: secrets.STAGING_HOST != ''
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - uses: actions/checkout@v4
 
@@ -24,6 +24,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push staging image
+        if: vars.STAGING_ENABLED == 'true'
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -35,6 +36,7 @@ jobs:
           provenance: false
 
       - name: Deploy to staging
+        if: vars.STAGING_ENABLED == 'true'
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.STAGING_HOST }}
