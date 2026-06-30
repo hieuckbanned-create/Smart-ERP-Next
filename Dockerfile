@@ -7,25 +7,24 @@
 FROM node:26-alpine AS build
 WORKDIR /app
 ENV NODE_ENV=production
-RUN npm install -g pnpm@10.33.0 && apk add --no-cache curl
+RUN apk add --no-cache curl && corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 # Step 1: Copy only package manifests (rarely change → cached install)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/database/package.json packages/database/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/utils/package.json packages/utils/package.json
 COPY packages/validation/package.json packages/validation/package.json
 COPY packages/hooks/package.json packages/hooks/package.json
 COPY packages/types/package.json packages/types/package.json
 COPY packages/sync/package.json packages/sync/package.json
+COPY packages/database/package.json packages/database/package.json
 COPY packages/accounting/package.json packages/accounting/package.json
-COPY packages/config-eslint/package.json packages/config-eslint/package.json
-COPY packages/config-typescript/package.json packages/config-typescript/package.json
+COPY packages/test-utils/package.json packages/test-utils/package.json
 COPY apps/api/package.json apps/api/package.json
 COPY apps/web/package.json apps/web/package.json
 
 # Step 2: Install deps (cached unless any package.json changes)
-RUN npm_config_node_linker=hoisted pnpm install --no-frozen-lockfile --ignore-scripts
+RUN npm_config_node_linker=hoisted pnpm install --frozen-lockfile --ignore-scripts
 
 # Step 3: Copy source code (frequently changes, but install is cached)
 COPY packages/ ./packages/
@@ -34,13 +33,13 @@ COPY scripts/ ./scripts/
 COPY apps/web/public/ ./apps/web/public/
 
 # Step 4: Build (use pnpm exec with hoisted linker — tsc resolves from root node_modules/.bin)
-RUN pnpm --filter @smart-erp/shared exec tsc -b && \
+RUN pnpm --filter @smart-erp/database exec tsc -p tsconfig.json && \
+    pnpm --filter @smart-erp/accounting exec tsc -p tsconfig.json && \
+    pnpm --filter @smart-erp/shared exec tsc -b && \
     pnpm --filter @smart-erp/utils exec tsc -b && \
     pnpm --filter @smart-erp/validation exec tsc -b && \
     pnpm --filter @smart-erp/hooks exec tsc -b && \
     pnpm --filter @smart-erp/types exec tsc -b && \
-    pnpm --filter @smart-erp/database exec tsc -p tsconfig.json && \
-    pnpm --filter @smart-erp/accounting exec tsc -p tsconfig.json && \
     pnpm --filter @smart-erp/api exec tsc -p tsconfig.json && \
     pnpm --filter @smart-erp/api exec node -e "require('fs').cpSync('src/i18n/locales', 'dist/apps/api/src/i18n/locales', {recursive: true, force: true})"
 
@@ -52,11 +51,6 @@ ENV NODE_ENV=production
 ENV PORT=3456
 ENV WEB_PORT=3457
 ENV NEXT_PUBLIC_API_URL=http://localhost:3456
-
-LABEL org.opencontainers.image.title="Smart ERP Next"
-LABEL org.opencontainers.image.description="Smart ERP Next - POS, Kho, CRM, Ke toan, HR"
-LABEL org.opencontainers.image.source="https://github.com/hieuck/Smart-ERP-Next"
-LABEL org.opencontainers.image.licenses="MIT"
 
 # Install Node.js + curl (no pnpm — use node_modules from build stage)
 RUN apk add --no-cache nodejs curl
@@ -77,7 +71,7 @@ COPY apps/api/docker-entrypoint.sh /app/docker-entrypoint.sh
 COPY --from=build /app/node_modules /app/node_modules
 
 # Convert to hoisted linker for runtime (ensures @smart-erp/* are in node_modules)
-RUN npm_config_node_linker=hoisted pnpm install --no-frozen-lockfile --offline 2>/dev/null; \
+RUN npm_config_node_linker=hoisted pnpm install --frozen-lockfile --offline 2>/dev/null; \
     rm -rf /app/apps/web/src /app/apps/web/.next/cache /app/apps/api/src /app/packages/*/__tests__; \
     find /app/packages -type f \( -name '*.map' -o -name 'tsconfig*' \) -not -path '*/node_modules/*' -not -name 'drizzle.config.ts' -delete; \
     rm -f /usr/local/bin/pnpm /usr/local/lib/node_modules/pnpm; \
