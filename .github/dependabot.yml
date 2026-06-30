@@ -1,0 +1,36 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+    open-pull-requests-limit: 10
+    labels:
+      - 'dependencies'
+    ignore:
+      - dependency-name: 'eslint'
+        versions: ['>=9.x']
+    groups:
+      nestjs:
+        patterns:
+          - '@nestjs/*'
+      testing:
+        patterns:
+          - 'jest*'
+          - '@types/jest'
+          - '@playwright/*'
+          - 'playwright'
+      react:
+        patterns:
+          - 'react*'
+          - '@types/react*'
+      eslint:
+        patterns:
+          - 'eslint*'
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'

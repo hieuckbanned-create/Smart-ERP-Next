@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 111 | Remaining: 0
+Completed: 115 | Remaining: 0
 
 ## Completed
 
@@ -109,6 +109,10 @@ Completed: 111 | Remaining: 0
 | SBOM in release workflow | Low | sbom.json artifact generated during Docker build in release.yml |
 | Telemetry wired to order creation | Medium | TelemetryService injected into OrdersService, tracks order.created event |
 | error.tsx for all 21 remaining routes | Medium | Error boundaries for accounting/approvals/automation/chat/crm/e-invoice/fixed-assets/forecast/hr/inventory/manufacturing/payments/pos/purchasing/quality/reports/settings/suppliers/users/warehouse-transfers/warehouses |
+| Domain refactoring 48→12 modules | **High** | CoreModule, FinanceModule, InfraModule expanded — 28 flat imports reduced to 12 domain modules |
+| Environment variable validation | High | EnvValidatorService with required checks + default/dev value detection (TDD: 6 tests) |
+| Dependabot auto-updates | Medium | .github/dependabot.yml with grouped updates for NestJS, React, ESLint, testing |
+| Health check detail | Medium | HealthMonitorService with DB failure detection coverage (TDD: 2 tests) |
 
 | Item | Impact | Notes |
 |------|--------|-------|
