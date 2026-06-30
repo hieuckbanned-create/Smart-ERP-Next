@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 125 | Remaining: 0
+Completed: 130 | Remaining: 0
 
 ## Completed
 
@@ -121,6 +121,10 @@ Completed: 125 | Remaining: 0
 | Security headers audit | Medium | helmet-config extracted, CSP audit tests (TDD: 5 tests) |
 | Slow query logging | Medium | SlowQueryLoggerInterceptor warns on >1s requests (TDD: 2 tests) |
 | Docker vulnerability scanning | High | Trivy filesystem scan in CI (HIGH/CRITICAL severity) |
+| CORS hardened config | Medium | cors-config.ts extracted with env-based origins, tests (TDD: 5 tests) |
+| Graceful shutdown wired | High | GracefulShutdownService + EnvValidatorService in bootstrap |
+| API envelope consistency | Medium | Response format contract tests for success/error shapes |
+| Migration test script | Medium | scripts/test-migration.js — validates drizzle-kit generate + migrate |
 
 | Item | Impact | Notes |
 |------|--------|-------|

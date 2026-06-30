@@ -4,12 +4,15 @@ import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import helmet from 'helmet';
 import { setupSwagger } from './swagger-setup';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ResponseFormatInterceptor } from './common/interceptors/response-format.interceptor';
 import { GlobalExceptionFilter } from './common/filters';
 import { API_VERSIONING_CONFIG } from './common/api-versioning';
+import { buildCorsOptions } from './common/config/cors-config';
+import { helmetMiddleware } from './common/config/helmet-config';
+import { GracefulShutdownService } from './common/shutdown/graceful-shutdown.service';
+import { EnvValidatorService } from './common/config/env-validator.service';
 let APP_VERSION = '0.0.0';
 try {
   APP_VERSION = JSON.parse(readFileSync(join(__dirname, '../../../package.json'), 'utf-8')).version || '0.0.0';
@@ -21,37 +24,8 @@ async function bootstrap() {
   // CSRF is NOT needed — API uses JWT Bearer tokens (stateless auth).
   // CSRF only applies to cookie/session-based authentication.
 
-  // CORS configuration - allow specific origins in production
-  const configuredCorsOrigins = process.env.CORS_ORIGINS
-    ?.split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-  const corsOrigins = configuredCorsOrigins?.length ? configuredCorsOrigins : [
-    'http://localhost:3457',
-    'http://localhost:3467',
-    'http://localhost:3456',
-    'http://localhost:3001',
-    'http://localhost:3000',
-  ];
-  app.enableCors({
-    origin: corsOrigins,
-    credentials: true
-  });
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'", "data:"],
-        objectSrc: ["'none'"],
-        frameSrc: ["'none'"],
-        upgradeInsecureRequests: [],
-      },
-    },
-  }));
+  app.enableCors(buildCorsOptions());
+  app.use(helmetMiddleware);
   app.enableVersioning(API_VERSIONING_CONFIG);
   const uploadsDir = join(process.cwd(), 'uploads');
   if (!existsSync(uploadsDir)) mkdirSync(uploadsDir, { recursive: true });
@@ -59,6 +33,16 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalInterceptors(new ResponseFormatInterceptor());
   app.useGlobalFilters(new GlobalExceptionFilter());
+
+  // Validate environment
+  const envIssues = new EnvValidatorService().validate();
+  for (const issue of envIssues) {
+    console.warn(`[EnvValidator] ${issue}`);
+  }
+
+  // Graceful shutdown
+  const shutdownService = new GracefulShutdownService();
+  shutdownService.registerShutdown(app.getHttpServer());
 
   setupSwagger(app, APP_VERSION);
 
