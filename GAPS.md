@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 177 | Remaining: 0
+Completed: 179 | Remaining: 0
 
 ## Completed
 
@@ -162,6 +162,8 @@ Completed: 177 | Remaining: 0
 | CodeQL v3→v4 | Medium | github/codeql-action upgraded to v4 for Node 24 compatibility |
 | NestJS Dependabot PR merged | Medium | 14 NestJS dependency updates |
 | Docker Compose healthcheck alignment | Low | Consistent 30s/5s/30s/3 retries across all compose files |
+| Merge Dependabot testing group PR | Medium | @playwright/test, jest, @types/jest, playwright updated |
+| Merge Dependabot react group PR | Medium | react, react-dom, react-i18next, react-icons updated |
 
 | Item | Impact | Notes |
 |------|--------|-------|
