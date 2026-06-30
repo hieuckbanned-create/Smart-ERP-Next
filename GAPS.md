@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 101 | Remaining: 2
+Completed: 105 | Remaining: 2
 
 ## Completed
 
@@ -103,6 +103,9 @@ Completed: 101 | Remaining: 2
 | SBOM generation script | Low | scripts/generate-sbom.js — CycloneDX JSON from pnpm-lock.yaml |
 | Feature usage telemetry | Medium | TelemetryService + telemetry_events schema (TDD: 3 tests) |
 | Environment parity check | Low | scripts/check-env-parity.js — validates matching env var keys |
+| Test data factories | Medium | @smart-erp/test-utils with buildUser/buildProduct/buildCustomer/buildOrder (TDD: 7 tests) |
+| loading.tsx for all 19 remaining routes | Medium | loading spinners for approvals/automation/chat/crm/e-invoice/fixed-assets/forecast/hr/manufacturing/payments/pos/purchasing/quality/settings/users/warehouse-transfers/warehouses |
+| Analytics aggregation service | Medium | AggregationService with dailyRevenue/topProducts/orderStats (TDD: 4 tests) |
 
 | Item | Impact | Notes |
 |------|--------|-------|
