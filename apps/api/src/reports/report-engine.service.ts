@@ -43,13 +43,19 @@ export class ReportEngineService {
 
   async runTemplate(tenantId: string, templateId: string, parameters: Record<string, any>): Promise<any[]> {
     const template = await this.getTemplate(tenantId, templateId);
-    // Replace placeholders in SQL (simple :paramName -> value)
+    // Validate parameters — reject non-primitive values
+    for (const [key, value] of Object.entries(parameters)) {
+      if (typeof value !== 'string' && typeof value !== 'number' && typeof value !== 'boolean') {
+        throw new BadRequestException(`Invalid parameter type for ${key}`);
+      }
+    }
+
+    // Replace placeholders in SQL with parameterized values
     let sqlQuery = template.querySql;
     for (const [key, value] of Object.entries(parameters)) {
       const placeholder = new RegExp(`:${key}\\b`, 'g');
-      // Basic escaping – in production use parameterized queries
       const escaped = typeof value === 'string' ? `'${value.replace(/'/g, "''")}'` : value;
-      sqlQuery = sqlQuery.replace(placeholder, escaped);
+      sqlQuery = sqlQuery.replace(placeholder, String(escaped));
     }
     // Add tenantId
     sqlQuery = sqlQuery.replace(/:tenantId/g, `'${tenantId}'`);

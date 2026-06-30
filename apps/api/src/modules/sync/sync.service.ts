@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectDatabase } from '../../database/database.decorator';
 import { Database } from '../../database/database.module';
 import { syncMetadata, SyncMetadata } from '@smart-erp/database';
 import { eq, and, sql } from 'drizzle-orm';
+
+const ALLOWED_TABLES = ['products', 'orders', 'customers', 'suppliers', 'inventory_transactions'];
 
 @Injectable()
 export class SyncService {
@@ -35,8 +37,7 @@ export class SyncService {
   async pull(tenantId: string, clientId: string, sinceVector: Record<string, number>) {
     // Delta sync: fetch only entities changed after the timestamp for each table
     const changes: any = {};
-    const tableNames = ['products', 'orders', 'customers', 'suppliers', 'inventory_transactions'];
-    for (const table of tableNames) {
+    for (const table of ALLOWED_TABLES) {
       const since = sinceVector[table] || 0;
       if (since === 0) {
         // No local data yet – return full snapshot
@@ -54,7 +55,7 @@ export class SyncService {
     }
     // Return a simple vector clock (last sync timestamp per table)
     const newClock: Record<string, number> = {};
-    for (const table of tableNames) {
+    for (const table of ALLOWED_TABLES) {
       newClock[table] = Date.now();
     }
     await this.updateMetadata(tenantId, clientId, newClock);
