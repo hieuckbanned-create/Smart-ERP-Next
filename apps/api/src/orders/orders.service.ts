@@ -2,7 +2,9 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  HttpException,
 } from '@nestjs/common';
+import { ErrorCode } from '../common/errors/error-codes';
 import { db } from '@smart-erp/database';
 import { customers, orders, orderItems, products } from '@smart-erp/database/schema';
 import { eq, and, ilike, sql, desc, inArray } from '@smart-erp/database/drizzle';
@@ -45,7 +47,7 @@ export class OrdersService {
 
   async create(tenantId: string, userId: string, dto: CreateOrderDto) {
     if (!dto.items?.length) {
-      throw new BadRequestException('Order must have at least 1 product');
+      throw new BadRequestException({ message: 'Order must have at least 1 product', errorCode: ErrorCode.VALIDATION_ERROR });
     }
 
     // Fetch products for snapshot
@@ -59,7 +61,7 @@ export class OrdersService {
     let subtotal = 0;
     const itemsData = dto.items.map((item) => {
       const product = productMap.get(item.productId);
-      if (!product) throw new BadRequestException(`Product ${item.productId} not found`);
+      if (!product) throw new BadRequestException({ message: `Product ${item.productId} not found`, errorCode: ErrorCode.PRODUCT_NOT_FOUND });
       const lineDiscount = item.discountAmount ?? 0;
       const lineTotal = item.quantity * item.unitPrice - lineDiscount;
       subtotal += lineTotal;
@@ -184,7 +186,7 @@ export class OrdersService {
       .leftJoin(customers, eq(orders.customerId, customers.id))
       .where(and(eq(orders.tenantId, tenantId), eq(orders.id, id)));
     const order = orderRow ? { ...orderRow.order, customerName: orderRow.customerName } : null;
-    if (!order) throw new NotFoundException('Order not found');
+    if (!order) throw new NotFoundException({ message: 'Order not found', errorCode: ErrorCode.ORDER_NOT_FOUND });
 
     const items = await db
       .select()
@@ -251,13 +253,11 @@ export class OrdersService {
       .select()
       .from(orders)
       .where(and(eq(orders.tenantId, tenantId), eq(orders.id, id)));
-    if (!order) throw new NotFoundException('Order not found');
+    if (!order) throw new NotFoundException({ message: 'Order not found', errorCode: ErrorCode.ORDER_NOT_FOUND });
 
     const allowed = validTransitions[order.status] ?? [];
     if (!allowed.includes(status)) {
-      throw new BadRequestException(
-        `Cannot transition from "${order.status}" to "${status}"`
-      );
+      throw new BadRequestException({ message: `Cannot transition from "${order.status}" to "${status}"`, errorCode: ErrorCode.ORDER_INVALID_STATUS });
     }
 
     const updateData: Record<string, any> = { status, updatedAt: new Date() };

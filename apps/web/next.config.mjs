@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   output: 'standalone',
   transpilePackages: [
@@ -14,6 +15,7 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   images: { remotePatterns: [] },
   reactStrictMode: true,
+  ...(process.env.ANALYZE === 'true' ? { outputFileTracing: true } : {}),
   compress: true,
   poweredByHeader: false,
   async headers() {
@@ -49,4 +51,5 @@ const nextConfig = {
 };
 
 export default nextConfig;
+
 

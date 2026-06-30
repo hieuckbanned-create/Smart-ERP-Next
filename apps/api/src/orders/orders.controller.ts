@@ -15,6 +15,7 @@ import { Response } from 'express';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { IdempotencyGuard } from '../common/errors/idempotency.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('orders')
@@ -22,6 +23,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
+  @UseGuards(IdempotencyGuard)
   create(@Request() req: any, @Body() dto: CreateOrderDto) {
     return this.ordersService.create(req.user.tenantId, req.user.sub, dto);
   }

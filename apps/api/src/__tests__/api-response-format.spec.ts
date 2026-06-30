@@ -45,6 +45,7 @@ describe('GlobalExceptionFilter', () => {
       success: false,
       data: null,
       error: 'Test error',
+      errorCode: 'VALIDATION_ERROR',
       requestId: 'req-1',
     });
   });
@@ -67,6 +68,7 @@ describe('GlobalExceptionFilter', () => {
       success: false,
       data: null,
       error: 'Internal server error',
+      errorCode: 'INTERNAL_ERROR',
       requestId: 'req-2',
     });
   });
@@ -92,6 +94,7 @@ describe('GlobalExceptionFilter', () => {
       success: false,
       data: null,
       error: 'Validation failed',
+      errorCode: 'VALIDATION_ERROR',
       requestId: 'req-3',
     });
   });

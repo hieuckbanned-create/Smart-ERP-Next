@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 62 | Remaining: 2
+Completed: 73 | Remaining: 2
 
 ## Completed
 
@@ -67,8 +67,18 @@ Completed: 62 | Remaining: 2
 | Dependency vulnerability scanning | High | `pnpm audit --audit-level=high` added to CI pipeline |
 | Global rate limiting | High | ThrottlerModule moved to global AppModule — ALL endpoints rate-limited by default, env-controlled via GLOBAL_RATE_LIMIT |
 | Remove unused bcrypt dependency | Low | Only bcryptjs is used in codebase; native bcrypt and @types/bcrypt removed |
-
-## Known Tech Debt
+| Error code catalog | High | ErrorCode enum + standardized error response in global exception filter |
+| Idempotency guard for orders/payments | **High** | IdempotencyGuard prevents duplicate POST requests via Idempotency-Key header |
+| Reusable pagination DTO | Medium | PaginationParamsDto with page/limit/sortBy/sortOrder, plus PaginatedResult interface |
+| Migration rollback script + docs | High | db-rollback.js script + docs/migration-rollback.md with rollback process |
+| loading.tsx for 8 routes | Medium | Dashboard, products, orders, customers, suppliers, inventory, accounting, reports |
+| error.tsx for 4 routes | Medium | Dashboard, orders, products, customers |
+| SEO metadata for 7 routes | Low | Layout files with metadata export for dashboard, products, orders, customers, inventory, accounting, reports |
+| Bundle analyzer setup | Low | @next/bundle-analyzer dev dep + ANALYZE=true script + env-gated config |
+| Cross-browser Playwright config | Low | Firefox + WebKit enabled via CROSS_BROWSER env var in e2e Playwright config |
+| CodeQL SAST workflow | High | .github/workflows/codeql.yml — runs on push/PR/schedule for JS/TS |
+| Performance load test CI step | Low | node scripts/load-test.mjs runs after Playwright in CI |
+| Component test sample | Low | Button.test.tsx with render/click/variant tests |
 
 | Item | Impact | Notes |
 |------|--------|-------|
@@ -82,14 +92,15 @@ Completed: 62 | Remaining: 2
 |-----|----------|-------|
 | Deploy staging server (VPS) | **High** | Needs VPS + GitHub secrets (STAGING_HOST, SSH_KEY) |
 | Domain refactoring | Medium | 48→6 domain modules |
-| Idempotency for order/payment/inventory | **High** | No idempotency key support — network retry can create duplicate orders |
-| Database migration rollback process | **High** | No rollback strategy or CI rollback step |
 | API contract testing | **High** | No Pact or OpenAPI spec enforcement in CI |
-| Bundle size monitoring | **High** | No Lighthouse CI or bundle analysis for Next.js |
-| Component + visual regression tests | **High** | Frontend has no component tests, no visual diff |
-| Cross-browser testing | Medium | Playwright only runs Chromium, no Firefox/Safari |
 | Accessibility testing | Medium | No axe-core or Lighthouse CI in pipeline |
 | Feature KPIs and success metrics | **High** | No measurable success criteria for ERP modules |
+| SAST/DAST container scanning | **High** | CodeQL added; container scanning in release workflow remains |
+| Visual regression tests | Medium | No Playwright visual diff or storybook/chromatic |
+| Flaky test policy | Medium | No flaky test detection or tracking |
+| Staging server deployed | **High** | Needs VPS + GitHub secrets |
+| Domain refactoring (48→6) | Medium | Architectural debt |
+| Database transaction consistency | **High** | No outbox/saga pattern for distributed operations |
 
 ## Team Role Assessment Addendum (2026-06-29)
 

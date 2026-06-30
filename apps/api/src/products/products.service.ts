@@ -4,6 +4,7 @@ import {
   ConflictException,
   BadRequestException,
 } from "@nestjs/common";
+import { ErrorCode } from "../common/errors/error-codes";
 import { db } from "@smart-erp/database";
 import { products, inventoryTransactions, productCategories } from "@smart-erp/database/schema";
 import {
@@ -148,7 +149,7 @@ export class ProductsService {
       .select()
       .from(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.id, id)));
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException({ message: "Product not found", errorCode: ErrorCode.PRODUCT_NOT_FOUND });
     const prod = product as any;
     if (lang && prod.translations && prod.translations[lang]) {
       product.description = prod.translations[lang].description;
@@ -161,7 +162,7 @@ export class ProductsService {
       .select()
       .from(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.sku, sku)));
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException({ message: "Product not found", errorCode: ErrorCode.PRODUCT_NOT_FOUND });
     return product;
   }
 
@@ -190,7 +191,7 @@ export class ProductsService {
       .set(values)
       .where(and(eq(products.tenantId, tenantId), eq(products.id, id)))
       .returning();
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException({ message: "Product not found", errorCode: ErrorCode.PRODUCT_NOT_FOUND });
 
     if (userId) {
       await this.activityService.log(tenantId, userId, 'updated', 'product', id, {
@@ -206,7 +207,7 @@ export class ProductsService {
       .delete(products)
       .where(and(eq(products.tenantId, tenantId), eq(products.id, id)))
       .returning();
-    if (!product) throw new NotFoundException("Product not found");
+    if (!product) throw new NotFoundException({ message: "Product not found", errorCode: ErrorCode.PRODUCT_NOT_FOUND });
 
     if (userId) {
       await this.activityService.log(tenantId, userId, 'deleted', 'product', id, {
@@ -233,9 +234,7 @@ export class ProductsService {
       type === "OUT" ? previousStock - quantity : previousStock + quantity;
 
     if (newStock < 0) {
-      throw new ConflictException(
-        `Insufficient stock. Available: ${previousStock}, requested: ${quantity}`,
-      );
+      throw new ConflictException({ message: `Insufficient stock. Available: ${previousStock}, requested: ${quantity}`, errorCode: ErrorCode.INVENTORY_INSUFFICIENT });
     }
 
     const [updated] = await db

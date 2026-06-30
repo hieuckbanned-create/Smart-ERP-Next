@@ -5,6 +5,7 @@ import {
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { IdempotencyGuard } from '../common/errors/idempotency.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('payments')
@@ -12,6 +13,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
+  @UseGuards(IdempotencyGuard)
   create(@Request() req: any, @Body() dto: CreatePaymentDto) {
     return this.paymentsService.create(req.user.tenantId, req.user.sub, dto);
   }

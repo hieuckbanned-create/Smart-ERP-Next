@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { ErrorCode } from "../common/errors/error-codes";
 import { db } from "@smart-erp/database";
 import { payments } from "@smart-erp/database/schema";
 import {
@@ -98,7 +99,7 @@ export class PaymentsService {
       .select()
       .from(payments)
       .where(and(eq(payments.tenantId, tenantId), eq(payments.id, id)));
-    if (!payment) throw new NotFoundException("Payment record not found");
+    if (!payment) throw new NotFoundException({ message: "Payment record not found", errorCode: ErrorCode.NOT_FOUND });
     return payment;
   }
 
