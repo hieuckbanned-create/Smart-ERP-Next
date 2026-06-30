@@ -9,6 +9,7 @@ import { LoggerModule } from './common/logger/logger.module';
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
 import { TenantMiddleware } from './common/middleware/tenant.middleware';
 import { RequestTimeoutMiddleware } from './common/middleware/request-timeout.middleware';
+import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 import { db } from '@smart-erp/database';
 import { DRIZZLE } from './common/drizzle.decorator';
 import { I18nModule } from './i18n/i18n.module';
@@ -59,7 +60,7 @@ import { InventoryRecommendationModule } from './inventory-recommendation/invent
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(RequestTimeoutMiddleware, TenantMiddleware)
+      .apply(RequestIdMiddleware, RequestTimeoutMiddleware, TenantMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

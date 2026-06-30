@@ -1,6 +1,6 @@
 # Smart ERP Next — Gaps & Roadmap (Updated 2026-06-30)
 
-Completed: 134 | Remaining: 0
+Completed: 137 | Remaining: 0
 
 ## Completed
 
@@ -129,6 +129,9 @@ Completed: 134 | Remaining: 0
 | WebSocket shutdown notification | Medium | GracefulShutdownService.setNotifyClients → SocketGateway.notifyShutdown |
 | Docker image labels | Low | org.opencontainers.* labels for metadata |
 | Healthcheck improved | Low | 30s interval, 5s timeout, 30s start-period, 3 retries |
+| RequestIdMiddleware wired | Medium | Applied in AppModule, propagates x-request-id through all requests |
+| Swagger @ApiTags for core routes | Low | Orders, Products tagged — improves API doc navigation |
+| REQUEST_TIMEOUT env var | Low | Configurable request timeout via environment variable |
 
 | Item | Impact | Notes |
 |------|--------|-------|

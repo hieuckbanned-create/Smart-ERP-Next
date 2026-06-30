@@ -17,7 +17,9 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { IdempotencyGuard } from '../common/errors/idempotency.guard';
 import { AuditLog } from '../common/decorators/audit-log.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Orders')
 @UseGuards(JwtAuthGuard)
 @Controller('orders')
 export class OrdersController {
