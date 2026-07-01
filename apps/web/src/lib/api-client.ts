@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const API_BASE_URL = "";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3456";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json", "X-API-Version": "1" },
 });
 
 // Attach JWT token to every request
