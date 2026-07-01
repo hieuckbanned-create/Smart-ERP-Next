@@ -20,9 +20,9 @@ function generate() {
 
   const packages = Object.entries(lock.packages || {}).map(([spec, info]) => ({
     name: spec.split('@')[0] || spec,
-    version: (info as any).version,
-    resolved: (info as any).resolution?.integrity,
-    license: (info as any).license,
+    version: info.version,
+    resolved: info.resolution?.integrity,
+    license: info.license,
   }));
 
   const sbom = {
