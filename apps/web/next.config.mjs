@@ -51,6 +51,12 @@ const nextConfig = {
       { source: '/auth/:path*', destination: `${apiUrl}/auth/:path*` },
       { source: '/health', destination: `${apiUrl}/health` },
       { source: '/status', destination: `${apiUrl}/status` },
+      { source: '/accounting/dashboard', destination: `${apiUrl}/accounting/dashboard` },
+      { source: '/accounting/reports', destination: `${apiUrl}/accounting/reports` },
+      { source: '/accounting/entries', destination: `${apiUrl}/accounting/entries` },
+      { source: '/accounting/accounts', destination: `${apiUrl}/accounting/accounts` },
+      { source: '/activity', destination: `${apiUrl}/activity` },
+      { source: '/activity/recent', destination: `${apiUrl}/activity/recent` },
       { source: '/socket.io/:path*', destination: `${apiUrl}/socket.io/:path*` },
     ];
   },
