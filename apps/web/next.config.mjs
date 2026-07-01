@@ -45,17 +45,14 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    if (process.env.NODE_ENV === 'development' || process.env.NEXT_API_URL) {
-      const apiUrl = process.env.NEXT_API_URL || 'http://localhost:3456';
-      return [
-        { source: '/api/:path*', destination: `${apiUrl}/api/:path*` },
-        { source: '/auth/:path*', destination: `${apiUrl}/auth/:path*` },
-        { source: '/health', destination: `${apiUrl}/health` },
-        { source: '/status', destination: `${apiUrl}/status` },
-        { source: '/socket.io/:path*', destination: `${apiUrl}/socket.io/:path*` },
-      ];
-    }
-    return [];
+    const apiUrl = process.env.NEXT_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3456';
+    return [
+      { source: '/api/:path*', destination: `${apiUrl}/api/:path*` },
+      { source: '/auth/:path*', destination: `${apiUrl}/auth/:path*` },
+      { source: '/health', destination: `${apiUrl}/health` },
+      { source: '/status', destination: `${apiUrl}/status` },
+      { source: '/socket.io/:path*', destination: `${apiUrl}/socket.io/:path*` },
+    ];
   },
 };
 
